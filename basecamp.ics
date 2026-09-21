@@ -734,17 +734,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Disney's The Muppet Christmas Carol in Concert Live-To-Film
 DTSTART;TZID=America/Chicago:20261222T190000
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260921T113533Z
 UID:muppet-christmas-carol-in-concert-2026@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:screening
 DESCRIPTION:$34.80 to $112.80.\nSource: Austin Chronicle film calendar\, r
- ead 2026-09-21\nhttps://calendar.austinchronicle.com/austin/EventSearch?ev
- entSection=12198199&sortType=date&v=g
-LAST-MODIFIED:20260921T104648Z
+ ead 2026-09-21\nhttps://calendar.austinchronicle.com/event/disneys-the-mup
+ pet-christmas-carol-in-concert-live-to-film-14244941
+LAST-MODIFIED:20260921T113533Z
 LOCATION:Bass Concert Hall\, Austin\, TX
-URL:https://calendar.austinchronicle.com/austin/EventSearch?eventSection=1
- 2198199&sortType=date&v=g
+URL:https://calendar.austinchronicle.com/event/disneys-the-muppet-christma
+ s-carol-in-concert-live-to-film-14244941
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Deadline: Texas Documentary Film Festival\, discount
