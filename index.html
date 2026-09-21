@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Random Storytelling Studios</title>
+<meta name="description" content="Lawrence Whitaker III. Actor and voice in Austin, Texas, and everything he makes by hand in between.">
+<meta property="og:title" content="Random Storytelling Studios">
+<meta property="og:description" content="On camera, on the mic, and everything I make by hand in between.">
+<style>
+  @font-face{font-family:"Elza";src:url("fonts/Elza-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+  @font-face{font-family:"Elza";src:url("fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Elza";src:url("fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+  @font-face{font-family:"Elza";src:url("fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+  @font-face{font-family:"Elza";src:url("fonts/Elza-Black.woff2") format("woff2");font-weight:900;font-display:swap}
+</style>
+<style>
+  :root{--paper:#F4F1EA;--ink:#17130F;--red:#E8302A;--mute:#6B6157;--rule:#CFC7B8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;
+       font-weight:400;line-height:1.45;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .w{max-width:1180px;margin:0 auto;padding:0 28px}
+  .rule{border-top:1px solid var(--rule)}
+
+  /* masthead */
+  .top{display:flex;justify-content:flex-start;align-items:flex-end;gap:20px;padding:26px 0 18px;flex-wrap:wrap}
+  .mk{font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:.01em;line-height:1}
+  .loc{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.18em;font-weight:500}
+
+  /* hero */
+  .hero{padding:72px 0 56px}
+  h1{font-weight:900;text-transform:uppercase;font-size:clamp(44px,10.5vw,148px);line-height:.86;
+     letter-spacing:-.055em}
+  h1 em{font-style:normal;color:var(--red)}
+  .sub{margin-top:34px;display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start}
+  .sub p{max-width:470px;font-size:clamp(17px,2vw,20px);color:var(--mute);font-weight:400}
+  .sub p b{color:var(--ink);font-weight:700}
+  .go{display:flex;flex-direction:column;gap:4px;font-size:15px;font-weight:700}
+  .go a{border-bottom:2px solid var(--red);padding-bottom:2px;width:max-content}
+  .go a:hover{background:var(--red);color:var(--paper);border-color:var(--red)}
+
+  /* index */
+  .lbl{display:flex;justify-content:space-between;align-items:baseline;padding:52px 0 14px;gap:16px;flex-wrap:wrap}
+  .lbl h2{font-size:13px;text-transform:uppercase;letter-spacing:.2em;font-weight:900}
+  .lbl span{font-size:13px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
+
+  .row{display:grid;grid-template-columns:44px 1.05fr 1.85fr 0.95fr;gap:28px;
+       padding:26px 0;border-top:1px solid var(--rule);align-items:start}
+  .row:hover{background:rgba(232,48,42,.045)}
+  .n{font-size:13px;color:var(--red);font-weight:700;padding-top:6px;font-variant-numeric:tabular-nums}
+  .nm{font-size:clamp(24px,3vw,34px);font-weight:900;text-transform:uppercase;line-height:.96;letter-spacing:-.045em}
+  .nm a{border-bottom:2px solid var(--red)}
+  .for{font-size:12.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.13em;font-weight:500;margin-top:9px}
+  .ben{font-size:16.5px;color:var(--mute);font-weight:400}
+  .ben b{color:var(--ink);font-weight:700}
+  .pr{text-align:right;font-size:19px;font-weight:900;letter-spacing:-.04em;line-height:1.18}
+  .pr small{display:block;font-size:12.5px;font-weight:400;color:var(--mute);letter-spacing:-.01em;margin-top:5px}
+  .pr .live{color:var(--red)}
+  @media(max-width:860px){
+    .row{grid-template-columns:30px 1fr;gap:6px 16px}
+    .ben{grid-column:2}.pr{grid-column:2;text-align:left;margin-top:10px}
+  }
+
+  /* sheet */
+  .sheet{display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;
+         padding:56px 0;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);margin-top:56px}
+  .sheet h3{font-size:clamp(30px,5.4vw,60px);font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.05em}
+  .sheet p{margin-top:16px;max-width:560px;color:var(--mute);font-size:16.5px}
+  .bigbtn{background:var(--red);color:#fff;font-weight:900;text-transform:uppercase;letter-spacing:.02em;
+          font-size:17px;padding:22px 34px;white-space:nowrap}
+  .bigbtn:hover{background:var(--ink)}
+  @media(max-width:760px){.sheet{grid-template-columns:1fr}.bigbtn{text-align:center}}
+
+  /* note + links */
+  .note{padding:56px 0;max-width:760px;font-size:clamp(18px,2.3vw,23px);font-weight:400}
+  .note b{font-weight:700}
+  .els{display:flex;flex-wrap:wrap;gap:0 34px;padding:22px 0 0}
+  .els a{font-size:15px;font-weight:700;padding:11px 0;border-bottom:2px solid transparent}
+  .els a:hover{border-color:var(--red);color:var(--red)}
+  footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+         padding:34px 0 60px;margin-top:40px;border-top:1px solid var(--rule);
+         font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="w">
+
+  <div class="top">
+    <div class="mk">Random Storytelling</div>
+  </div>
+
+  <div class="hero rule">
+    <h1>Made by hand.<br><em>Told out loud.</em></h1>
+    <div class="sub">
+      <p><b>Lawrence Whitaker III.</b> On camera, on the mic, and a studio for everything I make in between. I care a lot about getting it right, which is slow at the start and hard to argue with later. Everything below is something I made or something I am in. <b>Start anywhere.</b></p>
+      <div class="go">
+        <a href="#index">See the work</a>
+        <a href="#sheet">The full story</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="index">
+    <div class="lbl"><h2>The work</h2><span>What it does for you &middot; what it costs</span></div>
+
+    <div class="row">
+      <div class="n">01</div>
+      <div><div class="nm">Swish</div><div class="for">Hoopers &middot; hoop parents &middot; trainers</div></div>
+      <div class="ben">Fix the flaw in your shot without paying a trainer by the hour. Film one jumper, see exactly what breaks down, and get the three drills that fix it. <b>Your footage never leaves your phone.</b></div>
+      <div class="pr">$9 / mo<small>or $79 a year</small></div>
+    </div>
+
+    <div class="row">
+      <div class="n">02</div>
+      <div><div class="nm">The Crew</div><div class="for">Founder run Shopify &amp; Amazon brands</div></div>
+      <div class="ben"><b>Get your week back.</b> Thirteen stations work the inbox, chase the money you are owed, watch compliance, read the ad numbers and keep content moving. Every day, without you in the loop.</div>
+      <div class="pr">$4,000 + $1,500 / mo<small>Install, then monthly</small></div>
+    </div>
+
+    <div class="row">
+      <div class="n">03</div>
+      <div><div class="nm"><a href="https://instagram.com/craneseyeview" target="_blank" rel="noopener">Custom denim</a></div><div class="for">With @craneseyeview</div></div>
+      <div class="ben"><b>Own a jacket nobody else has.</b> Hand built one at a time, made to the story you want on your back. No two are the same and none get remade.</div>
+      <div class="pr">Commission<small>Priced per piece</small></div>
+    </div>
+
+    <div class="row">
+      <div class="n">04</div>
+      <div><div class="nm"><a href="https://vybrancelabs.co" target="_blank" rel="noopener">Vybrance Labs</a></div><div class="for">Anyone who forgets the powder</div></div>
+      <div class="ben">Creatine you will <b>actually take,</b> because it tastes good and there is no shaker bottle involved. Third party tested, made in the USA. The brand the Crew was built to run.</div>
+      <div class="pr"><span class="live">Live</span><small>vybrancelabs.co</small></div>
+    </div>
+
+    <div class="row">
+      <div class="n">05</div>
+      <div><div class="nm"><a href="http://bit.ly/lawrencewhitakertheactor" target="_blank" rel="noopener">On camera &amp; voice</a></div><div class="for">Agencies, brands, casting</div></div>
+      <div class="ben">Book someone who shows up ready and <b>makes your day run shorter.</b> Commercial, industrial and voice over, with the reels and credits one click away.</div>
+      <div class="pr"><span class="live">Booking</span><small>Reels on the sheet</small></div>
+    </div>
+
+    <div class="row">
+      <div class="n">06</div>
+      <div><div class="nm"><a href="https://randomstorytelling.beehiiv.com/subscribe" target="_blank" rel="noopener">Austin Film &amp; TV</a></div><div class="for">Anyone working in Austin film</div></div>
+      <div class="ben"><b>Know what is shooting and who is casting before your friends do.</b> Every screening, festival, workshop and open call in town, in one email a month.</div>
+      <div class="pr"><span class="live">Free</span><small>Monthly</small></div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div>
+      <h3>Every room<br>I have been in.</h3>
+      <p>Commercials you have probably already seen, the voice work, the press, the denim, what is coming up live, and how to reach my agents. One page, built to be scanned instead of read.</p>
+    </div>
+    <a class="bigbtn" href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Go deeper &rarr;</a>
+  </div>
+
+  
+
+  <div class="rule">
+    <div class="lbl"><h2>Elsewhere</h2></div>
+    <div class="els">
+      <a href="http://imdb.me/lawrencewhitaker" target="_blank" rel="noopener">IMDb</a>
+      <a href="https://bit.ly/Larry_TV" target="_blank" rel="noopener">YouTube</a>
+      <a href="http://instagram.com/randomstorytelling" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.tiktok.com/@randomstorytelling" target="_blank" rel="noopener">TikTok</a>
+      <a href="https://patreon.com/randomstorytelling" target="_blank" rel="noopener">Patreon</a>
+      <a href="https://www.patreon.com/collection/762364" target="_blank" rel="noopener">Let The Music Play</a>
+      <a href="http://linkedin.com/lawrencewhitakeriii" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+
+  <footer>
+    <span>Random Storytelling Studios</span>
+    <span>Lawrence Whitaker III</span>
+  </footer>
+
+</div>
+</body>
+</html>
