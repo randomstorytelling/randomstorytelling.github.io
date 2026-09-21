@@ -463,19 +463,19 @@ BEGIN:VEVENT
 SUMMARY:AFF Pitch Competition
 DTSTART;VALUE=DATE:20261029
 DTEND;VALUE=DATE:20261101
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260921T112823Z
 UID:aff-pitch-competition-2026@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:festival
 DESCRIPTION:$30 pitch ticket.\nNinety seconds\, judges give notes\, winner
   takes a Producers Badge for 2027. The page still carries 2024 eligibility
   text\; confirm the 2026 registration date with AFF.\nSource: meet_show_le
  velup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://aus
- tinfilmfestival.com/conference/pitch-competition/
-LAST-MODIFIED:20260921T104648Z
+ tinfilmfestival.com/pitch/
+LAST-MODIFIED:20260921T112823Z
 LOCATION:Austin Film Festival Writers Conference\, downtown\, Austin\, TX
 TRANSP:TRANSPARENT
-URL:https://austinfilmfestival.com/conference/pitch-competition/
+URL:https://austinfilmfestival.com/pitch/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin Film Festival & Writers Conference
