@@ -1,0 +1,767 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Random Storytelling//Base Camp//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALDESC:Base Camp. Where Texas storytellers find their people\, make 
+ something and show it. Austin rooted\, Texas wide. Updated as we update it
+ .
+NAME:Base Camp
+X-WR-CALNAME:Base Camp
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+URL:https://randomstorytelling.com/basecamp.ics
+X-PUBLISHED-TTL:PT12H
+X-WR-TIMEZONE:America/Chicago
+BEGIN:VTIMEZONE
+TZID:America/Chicago
+BEGIN:STANDARD
+DTSTART:20071104T020000
+RRULE:FREQ=YEARLY;BYMONTH=11;BYDAY=1SU
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0600
+TZNAME:CST
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:20070311T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=2SU
+TZOFFSETFROM:-0600
+TZOFFSETTO:-0500
+TZNAME:CDT
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+SUMMARY:Deadline: Fronterror Film Fest\, Laredo\, regular
+DTSTART;VALUE=DATE:20261001
+DTEND;VALUE=DATE:20261002
+DTSTAMP:20260921T104648Z
+UID:fronterror-film-fest-regular-deadline-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nLaredo
+ . Festival Oct 17. Fee not listed.\nSource: meet_show_levelup_oct_dec_2026
+ .md (room hunt\, each page read 2026-09-21)\nhttps://gov.texas.gov/film/ho
+ tline-entries
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://gov.texas.gov/film/hotline-entries
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: SXSW 2027 Film and TV\, final
+DTSTART;VALUE=DATE:20261001
+DTEND;VALUE=DATE:20261002
+DTSTAMP:20260921T104648Z
+UID:sxsw-2027-film-tv-final-deadline@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Feature $125\, short $90\, music video $90.\nVenue TBD per the
+  listing.\nOnline. Submissions close Oct 1\, 2026.\nSource: meet_show_leve
+ lup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://sxsw.
+ com/film-submissions/
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://sxsw.com/film-submissions/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:UCB Harold Night
+DTSTART;TZID=America/Chicago:20261001T190000
+DTSTAMP:20260921T104648Z
+UID:ucb-harold-night-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:comedy
+DESCRIPTION:Price not listed.\nThursdays. The UCB house long form room. UC
+ B owns ColdTowne now. Price not shown on the listing.\nSource: meet_show_l
+ evelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://co
+ ldtownetheater.com/live-shows/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
+URL:https://coldtownetheater.com/live-shows/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:To Be Seen
+DTSTART;TZID=America/Chicago:20261002T193000
+DTEND;TZID=America/Chicago:20261002T213000
+DTSTAMP:20260921T104648Z
+UID:to-be-seen-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:screening
+DESCRIPTION:$5.\nDoc on Austin restaurants\, with Director and crew Q&A.\n
+ Source: Austin Chronicle film calendar\, read 2026-09-21\nhttps://calendar
+ .austinchronicle.com/event/to-be-seen-14362373
+LAST-MODIFIED:20260921T104648Z
+LOCATION:We Luv Video\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/to-be-seen-14362373
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Hideout Theatre\, Level Two starts
+DTSTART;TZID=America/Chicago:20261003T133000
+DTEND;TZID=America/Chicago:20261003T160000
+DTSTAMP:20260921T104648Z
+UID:hideout-level-two-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$230 to $265.\nSaturdays\, six weeks.\nSource: meet_show_level
+ up_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://hideou
+ ttheatre.com/austin-improv-classes/calendar/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Hideout Annex\, Austin\, TX
+URL:https://hideouttheatre.com/austin-improv-classes/calendar/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:UCB Class Shows\, Improv 201 and 401
+DTSTART;TZID=America/Chicago:20261003T150000
+DTSTAMP:20260921T104648Z
+UID:ucb-class-shows-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:comedy
+DESCRIPTION:Price not listed.\nSaturdays\, 3pm (201) and 5pm (401). The st
+ udents’ first audience. Ticket price not shown.\nSource: meet_show_level
+ up_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://coldto
+ wnetheater.com/live-shows/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
+URL:https://coldtownetheater.com/live-shows/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Lighting and Grip
+DTSTART;TZID=America/Chicago:20261004T153000
+DTEND;TZID=America/Chicago:20261004T183000
+DTSTAMP:20260921T104648Z
+UID:afs-intro-lighting-and-grip-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nIn person. Price not shown on the list page
+ .\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2
+ 026-09-21)\nhttps://www.austinfilm.org/classes/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Austin Film Society\, Austin\, TX
+URL:https://www.austinfilm.org/classes/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Hideout Theatre\, free improv class
+DTSTART;TZID=America/Chicago:20261004T173000
+DTEND;TZID=America/Chicago:20261004T184500
+DTSTAMP:20260921T104648Z
+UID:hideout-free-improv-class-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Free to $7.\nSundays.\nSource: meet_show_levelup_oct_dec_2026.
+ md (room hunt\, each page read 2026-09-21)\nhttps://hideouttheatre.com/aus
+ tin-improv-classes/calendar/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Hideout Annex\, Austin\, TX
+URL:https://hideouttheatre.com/austin-improv-classes/calendar/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Hideout Student Showcase
+DTSTART;TZID=America/Chicago:20261004T190000
+DTEND;TZID=America/Chicago:20261004T201500
+DTSTAMP:20260921T104648Z
+UID:hideout-student-showcase-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:comedy
+DESCRIPTION:$5 to $15.\nSundays.\nSource: meet_show_levelup_oct_dec_2026.m
+ d (room hunt\, each page read 2026-09-21)\nhttps://hideouttheatre.com/cale
+ ndar/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:The Hideout Theatre\, Austin\, TX
+URL:https://hideouttheatre.com/calendar/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Austin Film Meet Open Mic Mixer
+DTSTART;TZID=America/Chicago:20261005T190000
+DTSTAMP:20260921T104648Z
+UID:austin-film-meet-open-mic-mixer-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:meetup
+DESCRIPTION:Free with RSVP.\nSixty seconds on the mic to say who you are a
+ nd what you need\, then the room. Filmmakers\, actors\, writers\, camera\,
+  sound\, art department.\nSource: meet_show_levelup_oct_dec_2026.md (room 
+ hunt\, each page read 2026-09-21)\nhttps://www.eventbrite.com/e/austin-fil
+ m-meet-open-mic-mixer-film-video-entertainment-industry-tickets-1435001099
+ 919
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Ani’s Day and Night\, 7107 E Riverside Dr\, Austin\, TX
+URL:https://www.eventbrite.com/e/austin-film-meet-open-mic-mixer-film-vide
+ o-entertainment-industry-tickets-1435001099919
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Librarians: Official Screening
+DTSTART;TZID=America/Chicago:20261005T193000
+DTEND;TZID=America/Chicago:20261005T213000
+DTSTAMP:20260921T104648Z
+UID:the-librarians-official-screening-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:screening
+DESCRIPTION:$17.\nSource: Austin Chronicle film calendar\, read 2026-09-21
+ \nhttps://calendar.austinchronicle.com/event/the-librarians-official-scree
+ ning-14242893
+LAST-MODIFIED:20260921T104648Z
+LOCATION:AMC Barton Creek Square 14\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/the-librarians-official-scr
+ eening-14242893
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Women Writers Walk\, Women Writing for Film and Television ATX
+DTSTART;TZID=America/Chicago:20261007T093000
+DTEND;TZID=America/Chicago:20261007T103000
+DTSTAMP:20260921T104648Z
+UID:women-writers-walk-wwft-atx-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:meetup
+DESCRIPTION:Free.\nThen Mueller Lake Park. No pitching\, no agenda.\nSourc
+ e: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-2
+ 1)\nhttps://www.meetup.com/women-writing-for-film-and-television-atx-meetu
+ p-group/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Merit Coffee\, 1900 Aldrich St (Mueller)\, Austin\, TX
+URL:https://www.meetup.com/women-writing-for-film-and-television-atx-meetu
+ p-group/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Field Audio
+DTSTART;TZID=America/Chicago:20261008T183000
+DTEND;TZID=America/Chicago:20261008T213000
+DTSTAMP:20260921T104648Z
+UID:afs-intro-field-audio-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nIn person. Price not shown on the list page
+ .\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2
+ 026-09-21)\nhttps://www.austinfilm.org/classes/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Austin Film Society\, Austin\, TX
+URL:https://www.austinfilm.org/classes/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Adobe After Effects\, Visual FX
+DTSTART;TZID=America/Chicago:20261011T130000
+DTEND;TZID=America/Chicago:20261011T170000
+DTSTAMP:20260921T104648Z
+UID:afs-after-effects-visual-fx-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nIn person. Price not shown on the list page
+ .\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2
+ 026-09-21)\nhttps://www.austinfilm.org/classes/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Austin Film Society\, Austin\, TX
+URL:https://www.austinfilm.org/classes/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ATX Short Film Showcase\, Season 6 opener
+DTSTART;TZID=America/Chicago:20261012T193000
+DTSTAMP:20260921T104648Z
+UID:atx-short-film-showcase-2026-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:showcase
+DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8. Eight Texas short
+ s\, filmmaker Q and A\, audience vote. Submit on FilmFreeway: under 25 min
+ utes\, a local filmmaker in the room.\nSource: meet_show_levelup_oct_dec_2
+ 026.md (room hunt\, each page read 2026-09-21)\nhttps://www.tickettailor.c
+ om/events/atxshortfilmshowcase/819561
+LAST-MODIFIED:20260921T104648Z
+LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
+URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AEB Halloween Event\, All Entertainment Business
+DTSTART;TZID=America/Chicago:20261014T180000
+DTEND;TZID=America/Chicago:20261014T210000
+DTSTAMP:20260921T104648Z
+UID:aeb-halloween-event-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:meetup
+DESCRIPTION:$15\, $5 off with code EARLYBIRD before 9/25.\nVenue TBD per t
+ he listing.\nLocation posts closer to the date. Open mic at every AEB nigh
+ t.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 
+ 2026-09-21)\nhttps://www.meetup.com/austinentertainmentbusiness/events/316
+ 504239/
+LAST-MODIFIED:20260921T104648Z
+URL:https://www.meetup.com/austinentertainmentbusiness/events/316504239/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Denton Black Film Festival\, regular
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+DTSTAMP:20260921T104648Z
+UID:denton-black-film-festival-regular-deadline-2026@randomstorytelling.co
+ m
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nInclud
+ es Texas short screenplays. Extended deadline Nov 4. Festival Jan 27 to Fe
+ b 7\, 2027.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each p
+ age read 2026-09-21)\nhttps://filmfreeway.com/DentonBlackFilmFestival
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/DentonBlackFilmFestival
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Thin Line Fest\, Denton\, earlybird
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+DTSTAMP:20260921T104648Z
+UID:thin-line-fest-earlybird-deadline-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nDocume
+ ntary features and shorts\, music videos. Festival Mar 10 to 14\, 2027.\nS
+ ource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2026-
+ 09-21)\nhttps://filmfreeway.com/ThinLine
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/ThinLine
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Carol Hickey Acting Studio\, fall Thursday classes start
+DTSTART;TZID=America/Chicago:20261015T173000
+DTSTAMP:20260921T104648Z
+UID:carol-hickey-fall-thursdays-start-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nActing for Film 2 with Jon Michael Davis\, 
+ 5:30 to 9pm\, eight weeks. Improvisation with Garrett Rojas\, 6 to 8pm\, $
+ 650\, through Dec 10.\nSource: meet_show_levelup_oct_dec_2026.md (room hun
+ t\, each page read 2026-09-21)\nhttps://www.carolhickeyactingstudio.com/fa
+ ll26.htm
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Carol Hickey Acting Studio\, 979 Springdale Rd Suite 114\, Austin
+ \, TX
+URL:https://www.carolhickeyactingstudio.com/fall26.htm
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AI and the Race for the Future
+DTSTART;TZID=America/Chicago:20261015T180000
+DTEND;TZID=America/Chicago:20261015T203000
+DTSTAMP:20260921T104648Z
+UID:ai-and-the-race-for-the-future-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:screening
+DESCRIPTION:Free.\nScreening and Q&A.\nSource: Austin Chronicle film calen
+ dar\, read 2026-09-21\nhttps://calendar.austinchronicle.com/event/ai-and-t
+ he-race-for-the-future-documentary-screening-and-qanda-14357667
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Rowling Hall\, Crum Auditorium\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/ai-and-the-race-for-the-fut
+ ure-documentary-screening-and-qanda-14357667
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Ethereal Horror Fest
+DTSTART;VALUE=DATE:20261016
+DTEND;VALUE=DATE:20261019
+DTSTAMP:20260921T104648Z
+UID:ethereal-horror-fest-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:festival
+DESCRIPTION:$25 per day\, $40 for the pass.\nSource: Austin Chronicle film
+  calendar\, read 2026-09-21\nhttps://calendar.austinchronicle.com/event/et
+ hereal-horror-fest-14346676
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Violet Crown Cinema\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/event/ethereal-horror-fest-143466
+ 76
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Tour de Force of Visual Imagination: opening night
+DTSTART;TZID=America/Chicago:20261017T143000
+DTEND;TZID=America/Chicago:20261017T173000
+DTSTAMP:20260921T104648Z
+UID:tour-de-force-of-visual-imagination-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:other
+DESCRIPTION:Free.\nPoster art and design.\nSource: Austin Chronicle film c
+ alendar\, read 2026-09-21\nhttps://calendar.austinchronicle.com/event/tour
+ -de-force-of-visual-imagination-poster-art-and-design-opening-event-143405
+ 79
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Round Rock Public Library\, Round Rock\, TX
+URL:https://calendar.austinchronicle.com/event/tour-de-force-of-visual-ima
+ gination-poster-art-and-design-opening-event-14340579
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Actor’s School\, fall October starts
+DTSTART;VALUE=DATE:20261021
+DTEND;VALUE=DATE:20261022
+DTSTAMP:20260921T104648Z
+UID:actors-school-october-starts-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$205 to $275.\nActing Fundamentals (10.21)\, Acting Exploratio
+ ns I (10.22)\, Acting on Camera I (10.24)\, Acting Explorations II (10.24 
+ and 10.25)\, Acting Shakespeare (10.26)\, Introduction to Voiceover I (10.
+ 27)\, Acting Fundamentals (10.30). Six to seven weeks.\nSource: meet_show_
+ levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://t
+ heactorsschool.org/index.php/fall2026/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:The Actor’s School\, three campuses\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://theactorsschool.org/index.php/fall2026/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Camera Rig and Stabilizers
+DTSTART;TZID=America/Chicago:20261021T183000
+DTEND;TZID=America/Chicago:20261021T213000
+DTSTAMP:20260921T104648Z
+UID:afs-camera-rig-and-stabilizers-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nIn person. Price not shown on the list page
+ .\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2
+ 026-09-21)\nhttps://www.austinfilm.org/classes/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Austin Film Society\, Austin\, TX
+URL:https://www.austinfilm.org/classes/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Behind the Scream with David Arquette
+DTSTART;VALUE=DATE:20261028
+DTEND;VALUE=DATE:20261029
+DTSTAMP:20260921T104648Z
+UID:behind-the-scream-with-david-arquette-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:other
+DESCRIPTION:Time and price not listed.\nSource: Austin Chronicle film cale
+ ndar\, read 2026-09-21\nhttps://calendar.austinchronicle.com/event/behind-
+ the-scream-with-david-arquette-14329312
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Bass Concert Hall\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/event/behind-the-scream-with-davi
+ d-arquette-14329312
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: The Professional Film Set
+DTSTART;TZID=America/Chicago:20261028T173000
+DTEND;TZID=America/Chicago:20261028T213000
+DTSTAMP:20260921T104648Z
+UID:afs-professional-film-set-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nIn person. Price not shown on the list page
+ .\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2
+ 026-09-21)\nhttps://www.austinfilm.org/classes/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Austin Film Society\, Austin\, TX
+URL:https://www.austinfilm.org/classes/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Storytelling Workshop\, Before Page One
+DTSTART;TZID=America/Chicago:20261028T183000
+DTEND;TZID=America/Chicago:20261028T213000
+DTSTAMP:20260921T104648Z
+UID:afs-before-page-one-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nOnline. Price n
+ ot shown on the list page.\nSource: meet_show_levelup_oct_dec_2026.md (roo
+ m hunt\, each page read 2026-09-21)\nhttps://www.austinfilm.org/classes/
+LAST-MODIFIED:20260921T104648Z
+URL:https://www.austinfilm.org/classes/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFF Pitch Competition
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261101
+DTSTAMP:20260921T104648Z
+UID:aff-pitch-competition-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:festival
+DESCRIPTION:$30 pitch ticket.\nNinety seconds\, judges give notes\, winner
+  takes a Producers Badge for 2027. The page still carries 2024 eligibility
+  text\; confirm the 2026 registration date with AFF.\nSource: meet_show_le
+ velup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://aus
+ tinfilmfestival.com/conference/pitch-competition/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Austin Film Festival Writers Conference\, downtown\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://austinfilmfestival.com/conference/pitch-competition/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Austin Film Festival & Writers Conference
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261106
+DTSTAMP:20260921T101524Z
+UID:austin-film-festival-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:festival
+DESCRIPTION:Film passes start at $80.\nSource: austinfilmfestival.com and 
+ the Austin Chronicle film calendar\, read 2026-09-21\nhttps://austinfilmfe
+ stival.com/
+LAST-MODIFIED:20260921T101524Z
+LOCATION:Various locations\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://austinfilmfestival.com/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Actor’s School\, Introduction to Voiceover II starts
+DTSTART;TZID=America/Chicago:20261102T180000
+DTEND;TZID=America/Chicago:20261102T203000
+DTSTAMP:20260921T104648Z
+UID:actors-school-voiceover-ii-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$205.\nMondays\, six weeks\, Cliff Miller.\nSource: meet_show_
+ levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://t
+ heactorsschool.org/index.php/fall2026/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:The Actor’s School\, Austin\, TX
+URL:https://theactorsschool.org/index.php/fall2026/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Denton Black Film Festival\, extended
+DTSTART;VALUE=DATE:20261104
+DTEND;VALUE=DATE:20261105
+DTSTAMP:20260921T104648Z
+UID:denton-black-film-festival-extended-deadline-2026@randomstorytelling.c
+ om
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nLast d
+ ate to enter\, including Texas short screenplays.\nSource: meet_show_level
+ up_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://filmfr
+ eeway.com/DentonBlackFilmFestival
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/DentonBlackFilmFestival
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Austin Polish Film Festival
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261109
+DTSTAMP:20260921T104648Z
+UID:austin-polish-film-festival-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:festival
+DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nSource: Austin 
+ Chronicle film calendar\, read 2026-09-21\nhttps://calendar.austinchronicl
+ e.com/event/austin-polish-film-festival-14332434
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/event/austin-polish-film-festival
+ -14332434
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Actor’s School\, Acting Fundamentals starts
+DTSTART;TZID=America/Chicago:20261105T183000
+DTEND;TZID=America/Chicago:20261105T213000
+DTSTAMP:20260921T104648Z
+UID:actors-school-acting-fundamentals-2026-11-05@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$245.\nThursdays\, six weeks\, Sims Holland.\nSource: meet_sho
+ w_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps:/
+ /theactorsschool.org/index.php/fall2026/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:The Actor’s School\, Austin\, TX
+URL:https://theactorsschool.org/index.php/fall2026/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ATX Short Film Showcase
+DTSTART;TZID=America/Chicago:20261109T193000
+DTSTAMP:20260921T104648Z
+UID:atx-short-film-showcase-2026-11@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:showcase
+DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8. The Q and A after
+  is the room.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each
+  page read 2026-09-21)\nhttps://www.tickettailor.com/events/atxshortfilmsh
+ owcase/819561
+LAST-MODIFIED:20260921T104648Z
+LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
+URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:The Actor’s School\, Acting Fundamentals starts
+DTSTART;TZID=America/Chicago:20261110T183000
+DTEND;TZID=America/Chicago:20261110T213000
+DTSTAMP:20260921T104648Z
+UID:actors-school-acting-fundamentals-2026-11-10@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$245.\nTuesdays\, six weeks\, Jacqui Calloway.\nSource: meet_s
+ how_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps
+ ://theactorsschool.org/index.php/fall2026/
+LAST-MODIFIED:20260921T104648Z
+LOCATION:The Actor’s School\, Austin\, TX
+URL:https://theactorsschool.org/index.php/fall2026/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Round Top Film Festival
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261116
+DTSTAMP:20260921T104648Z
+UID:round-top-film-festival-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:festival
+DESCRIPTION:$425 to $725.\nSource: Austin Chronicle film calendar\, read 2
+ 026-09-21\nhttps://calendar.austinchronicle.com/event/round-top-film-festi
+ val-14288513
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Various locations\, Round Top\, TX
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/event/round-top-film-festival-142
+ 88513
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Dallas International Film Festival 2027\, fall
+DTSTART;VALUE=DATE:20261113
+DTEND;VALUE=DATE:20261114
+DTSTAMP:20260921T104648Z
+UID:dallas-international-film-festival-fall-deadline-2026@randomstorytelli
+ ng.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nFeatur
+ es\, shorts\, Texas strands\, and four screenplay categories with live tab
+ le reads at the festival. Festival Apr 22 to 29\, 2027.\nSource: meet_show
+ _levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://
+ filmfreeway.com/DallasInternationalFilmFestival
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/DallasInternationalFilmFestival
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Thin Line Fest\, Denton\, regular
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+DTSTAMP:20260921T104648Z
+UID:thin-line-fest-regular-deadline-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nDocume
+ ntary.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page r
+ ead 2026-09-21)\nhttps://filmfreeway.com/ThinLine
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/ThinLine
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: WorldFest Houston\, regular
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+DTSTAMP:20260921T104648Z
+UID:worldfest-houston-regular-deadline-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nLate d
+ eadline Dec 15. Fee not listed on the Commission page.\nSource: meet_show_
+ levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://g
+ ov.texas.gov/film/hotline-entries
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://gov.texas.gov/film/hotline-entries
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:On Cinema Live!
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+DTSTAMP:20260921T101524Z
+UID:on-cinema-live-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:other
+DESCRIPTION:Time and price not listed.\nSource: Austin Chronicle film cale
+ ndar\, read 2026-09-21\nhttps://calendar.austinchronicle.com/austin/EventS
+ earch?eventSection=12198199&sortType=date&v=g
+LAST-MODIFIED:20260921T101524Z
+LOCATION:Bass Concert Hall\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/austin/EventSearch?eventSection=1
+ 2198199&sortType=date&v=g
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Carole Dorothy Joyce Student Filmmaker Grant
+DTSTART;VALUE=DATE:20261130
+DTEND;VALUE=DATE:20261201
+DTSTAMP:20260921T104648Z
+UID:carole-dorothy-joyce-student-grant-deadline-2026@randomstorytelling.co
+ m
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nStatew
+ ide. Details on the Texas Film Commission calls for entries page.\nSource:
+  meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)
+ \nhttps://gov.texas.gov/film/hotline-entries
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://gov.texas.gov/film/hotline-entries
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:ATX Short Film Showcase\, last one of the year
+DTSTART;TZID=America/Chicago:20261214T193000
+DTSTAMP:20260921T104648Z
+UID:atx-short-film-showcase-2026-12@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:showcase
+DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8. Season 6 runs to 
+ the awards in August.\nSource: meet_show_levelup_oct_dec_2026.md (room hun
+ t\, each page read 2026-09-21)\nhttps://www.tickettailor.com/events/atxsho
+ rtfilmshowcase/819561
+LAST-MODIFIED:20260921T104648Z
+LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
+URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Thin Line Fest\, Denton\, late
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+DTSTAMP:20260921T104648Z
+UID:thin-line-fest-late-deadline-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nExtend
+ ed deadline Jan 15\, 2027.\nSource: meet_show_levelup_oct_dec_2026.md (roo
+ m hunt\, each page read 2026-09-21)\nhttps://filmfreeway.com/ThinLine
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/ThinLine
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: WorldFest Houston\, late
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+DTSTAMP:20260921T104648Z
+UID:worldfest-houston-late-deadline-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nHousto
+ n.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 
+ 2026-09-21)\nhttps://gov.texas.gov/film/hotline-entries
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://gov.texas.gov/film/hotline-entries
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Disney's The Muppet Christmas Carol in Concert Live-To-Film
+DTSTART;TZID=America/Chicago:20261222T190000
+DTSTAMP:20260921T104648Z
+UID:muppet-christmas-carol-in-concert-2026@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:screening
+DESCRIPTION:$34.80 to $112.80.\nSource: Austin Chronicle film calendar\, r
+ ead 2026-09-21\nhttps://calendar.austinchronicle.com/austin/EventSearch?ev
+ entSection=12198199&sortType=date&v=g
+LAST-MODIFIED:20260921T104648Z
+LOCATION:Bass Concert Hall\, Austin\, TX
+URL:https://calendar.austinchronicle.com/austin/EventSearch?eventSection=1
+ 2198199&sortType=date&v=g
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Deadline: Texas Documentary Film Festival\, discount
+DTSTART;VALUE=DATE:20261231
+DTEND;VALUE=DATE:20270101
+DTSTAMP:20260921T104648Z
+UID:texas-documentary-film-festival-discount-deadline-2026@randomstorytell
+ ing.com
+SEQUENCE:0
+CATEGORIES:deadline
+DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nAustin
+ . Doc feature\, short\, micro\, animated\, series episode\, experimental. 
+ Festival Nov 6\, 2027.\nSource: meet_show_levelup_oct_dec_2026.md (room hu
+ nt\, each page read 2026-09-21)\nhttps://filmfreeway.com/TexasDocumentaryF
+ ilmFestival
+LAST-MODIFIED:20260921T104648Z
+TRANSP:TRANSPARENT
+URL:https://filmfreeway.com/TexasDocumentaryFilmFestival
+END:VEVENT
+END:VCALENDAR
