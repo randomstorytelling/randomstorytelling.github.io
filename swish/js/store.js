@@ -312,7 +312,8 @@ export function weekReport(days = 7) {
   ];
   if (trend != null) lines.push(`Trend inside the week: ${trend >= 0 ? "+" : ""}${trend}`);
   if (topFix) lines.push(`Showing up most: ${topFix[0]} (${topFix[1]} of ${count} reps)`);
-  lines.push("", "Paste this whole message into Swish to load it:", text);
+  lines.push("", "Coach: paste this whole message into Swish and it lands on my row.",
+             "Swish is free for players. https://randomstorytelling.com/swish/", "", text);
   return { text: lines.join("\n"), count, avg, best, topFix: topFix?.[0] || null };
 }
 

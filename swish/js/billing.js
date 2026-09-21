@@ -7,13 +7,17 @@
 //
 // TO GO LIVE, EDIT THE THREE CONSTANTS BELOW. Nothing else needs to change.
 
-export const CHECKOUT_URL = "";           // e.g. a Stripe Payment Link. Empty = show the email fallback.
+// Live Stripe Payment Links, created 2026-09-21 on acct_1TnjDo90Xq05dzfC.
+export const CHECKOUT_URL = "";           // per-plan links live in PLANS below
+export const BOOK_A_CALL   = "";          // 15-minute intro call link, set when Calendly is live
 export const SALES_EMAIL  = "lawrence@vybrancelabs.co";
 
 export const PLANS = {
-  free:  { name: "Solo",   price: "Free",      players: 3,        blurb: "Your own reps plus three players." },
-  pro:   { name: "Roster", price: "$29 / mo",  players: 25,       blurb: "Up to 25 players, the full week log, unlimited hand-offs." },
-  team:  { name: "Program",price: "$79 / mo",  players: Infinity, blurb: "A whole program: unlimited players and coaches." },
+  free:  { name: "Solo",   price: "Free",      players: 3,        blurb: "Your own reps plus three players.", url: "" },
+  pro:   { name: "Roster", price: "$29 / mo",  players: 25,       blurb: "Up to 25 players, the full week log, unlimited hand-offs.",
+           url: "https://buy.stripe.com/aFa9ANglv13jeY8aYb3ZK00" },
+  team:  { name: "Program",price: "$79 / mo",  players: Infinity, blurb: "A whole program: unlimited players and coaches.",
+           url: "https://buy.stripe.com/5kQaER7OZaDTaHSean3ZK01" },
 };
 
 export const TRIAL_DAYS = 14;
@@ -68,6 +72,7 @@ export function entitlement(settings) {
 }
 
 export function buyHref(plan = "pro") {
+  if (PLANS[plan]?.url) return PLANS[plan].url;
   if (CHECKOUT_URL) return CHECKOUT_URL + (CHECKOUT_URL.includes("?") ? "&" : "?") + "plan=" + plan;
   const subject = encodeURIComponent(`Swish ${PLANS[plan].name} plan`);
   const body = encodeURIComponent("How many players do you train a week?");
