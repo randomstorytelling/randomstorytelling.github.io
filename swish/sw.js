@@ -1,7 +1,7 @@
 // sw.js — app-shell cache. Numbers-only privacy; never caches video.
 // NETWORK-FIRST for the same-origin shell so a deploy always reaches the
 // installed PWA (cache is only the offline fallback) — the Gata stale-SW lesson.
-const CACHE = "swish-v2";
+const CACHE = "swish-v3";
 const SHELL = [
   "./",
   "./index.html",
@@ -13,6 +13,7 @@ const SHELL = [
   "./js/drills.js",
   "./js/ai.js",
   "./js/coaches.js",
+  "./js/billing.js",
   "./manifest.webmanifest",
   "./icons/icon.svg",
 ];

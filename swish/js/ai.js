@@ -33,10 +33,10 @@ export async function enhanceCoach(report) {
     strengths: report.metrics.filter(m => m.status === "good").map(m => m.label),
   };
   const prompt =
-`You are ${persona.coach}, an elite basketball shooting coach. Coaching voice: ${persona.style}
+`You are "${persona.name}", an elite basketball shooting coach archetype (${persona.role}). Coaching voice: ${persona.style}
 Non-negotiables you believe: ${PRINCIPLES.slice(0, 4).join(" ")}
-Given this shot-analysis JSON, write 2 short sentences IN ${persona.coach}'s voice.
-Rules: praise one real strength, then give ONE external/outcome cue (talk about the rim and the ball flight, never anatomy jargon or degrees). Encouraging, specific, no lists, no emojis.
+Given this shot-analysis JSON, write 2 short sentences in that archetype's voice.
+Rules: praise one real strength, then give ONE external/outcome cue (talk about the rim and the ball flight, never anatomy jargon or degrees). Encouraging, specific, no lists, no emojis. Never name or imitate a real coach, player or brand.
 JSON: ${JSON.stringify(payload)}`;
 
   try {

@@ -21,9 +21,21 @@
   <!-- Top bar -->
   <header class="topbar">
     <div class="brand">
-      <span class="logo" aria-hidden="true"></span>
+      <svg class="logo" viewBox="0 0 120 120" aria-hidden="true">
+        <defs><radialGradient id="logoGrad" cx="36%" cy="30%" r="80%">
+          <stop offset="0%" stop-color="#ffb37a"/><stop offset="52%" stop-color="#ff6a2b"/><stop offset="100%" stop-color="#a5320a"/>
+        </radialGradient></defs>
+        <circle cx="60" cy="60" r="56" fill="url(#logoGrad)"/>
+        <g fill="none" stroke="rgba(12,7,4,.6)" stroke-width="4" stroke-linecap="round">
+          <path d="M60 4 V116"/><path d="M6 60 H114"/>
+          <path d="M22 16 A46 46 0 0 0 22 104"/><path d="M98 16 A46 46 0 0 1 98 104"/>
+        </g>
+      </svg>
       <span class="brand-name">Swish</span>
     </div>
+    <button id="whoChip" class="who-chip" hidden>
+      <span class="who-dot"></span><span id="whoName">Me</span>
+    </button>
     <button id="settingsBtn" class="icon-btn" aria-label="Settings">
       <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8m8.94 4a7 7 0 0 0-.13-1.32l2.11-1.65-2-3.46-2.49 1a7 7 0 0 0-2.28-1.32L15.5 2h-4l-.55 2.93a7 7 0 0 0-2.28 1.32l-2.49-1-2 3.46 2.11 1.65a7 7 0 0 0 0 2.64L1.69 14.6l2 3.46 2.49-1a7 7 0 0 0 2.28 1.32L9 21.5h4l.55-3.12a7 7 0 0 0 2.28-1.32l2.49 1 2-3.46-2.11-1.65c.08-.43.13-.87.13-1.32"/></svg>
     </button>
@@ -37,7 +49,17 @@
 
       <!-- camera not ready / permission state -->
       <div class="cam-placeholder" id="camPlaceholder">
-        <div class="ball-spin"></div>
+        <svg class="ball" viewBox="0 0 120 120" aria-hidden="true">
+          <defs><radialGradient id="ballGrad" cx="36%" cy="30%" r="80%">
+            <stop offset="0%" stop-color="#ffb37a"/><stop offset="52%" stop-color="#ff6a2b"/><stop offset="100%" stop-color="#a5320a"/>
+          </radialGradient></defs>
+          <circle cx="60" cy="60" r="56" fill="url(#ballGrad)"/>
+          <g fill="none" stroke="rgba(14,8,4,.66)" stroke-width="3.4" stroke-linecap="round">
+            <circle cx="60" cy="60" r="56" stroke="rgba(12,7,4,.3)"/>
+            <path d="M60 4 V116"/><path d="M6 60 H114"/>
+            <path d="M22 16 A46 46 0 0 0 22 104"/><path d="M98 16 A46 46 0 0 1 98 104"/>
+          </g>
+        </svg>
         <h2>Let's get your shot on film</h2>
         <p class="muted">Prop the phone back far enough to see your <strong>whole body, head to feet</strong> (and the rim if you can). Side-on is best for arc; front-on is great for your elbow — set the angle in Settings. I'll tell you live when I've got you.</p>
         <button class="btn primary big" id="enableCamBtn">Turn on camera</button>
@@ -87,7 +109,11 @@
   <!-- ===================== ANALYSIS TAB ===================== -->
   <section class="view" id="view-analysis" data-view="analysis" hidden>
     <div class="empty-state" id="analysisEmpty">
-      <div class="empty-icon">🎯</div>
+      <svg class="empty-icon" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".55"/>
+        <circle cx="24" cy="24" r="11" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".8"/>
+        <circle cx="24" cy="24" r="3" fill="currentColor"/>
+      </svg>
       <h2>No shot analyzed yet</h2>
       <p class="muted">Record a shot on the Shoot tab and your full breakdown shows up here.</p>
       <button class="btn primary" data-goto="shoot">Go shoot</button>
@@ -165,10 +191,36 @@
     <div class="history-list" id="historyList"></div>
   </section>
 
+
+  <!-- ===================== ROSTER TAB (trainer seat) ===================== -->
+  <section class="view" id="view-roster" data-view="roster" hidden>
+    <div class="view-head">
+      <h2>Your roster</h2>
+      <p class="muted" id="rosterSub">The week in one log. No film to watch.</p>
+    </div>
+
+    <div class="code-card">
+      <div>
+        <div class="code-lbl">Your coach code</div>
+        <div class="code-val" id="trainerCodeVal">---</div>
+      </div>
+      <button class="btn ghost" id="copyCodeBtn">Copy</button>
+    </div>
+    <p class="muted tiny code-note">Players enter this when they set up Swish, then send you their week from their phone.</p>
+
+    <div class="roster-actions">
+      <button class="btn ghost" id="addPlayerBtn">Add a player</button>
+      <button class="btn primary" id="importWeekBtn">Paste a player's week</button>
+    </div>
+
+    <div class="section-head"><h3>Last 7 days</h3></div>
+    <div class="roster-list" id="rosterList"></div>
+  </section>
+
   <!-- ===================== BOTTOM NAV ===================== -->
   <nav class="tabbar">
     <button class="tab active" data-view="shoot">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3v18M5.6 5.6 18.4 18.4M18.4 5.6 5.6 18.4" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3v18M3 12h18M6.1 5.2a10 10 0 0 0 0 13.6M17.9 5.2a10 10 0 0 1 0 13.6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
       <span>Shoot</span>
     </button>
     <button class="tab" data-view="analysis">
@@ -178,6 +230,10 @@
     <button class="tab" data-view="drills">
       <svg viewBox="0 0 24 24"><path d="M5 12h14M5 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0m18 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0M9 8v8m6-8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <span>Drills</span>
+    </button>
+    <button class="tab" id="tabRoster" data-view="roster" hidden>
+      <svg viewBox="0 0 24 24"><path d="M16 19v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m13 10v-2a4 4 0 0 0-3-3.9M16 2.1a4 4 0 0 1 0 7.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Roster</span>
     </button>
     <button class="tab" data-view="progress">
       <svg viewBox="0 0 24 24"><path d="M4 20V10m5 10V4m5 16v-7m5 7V8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -191,8 +247,21 @@
       <div class="sheet-handle"></div>
       <h2>Settings</h2>
 
+      <button class="field plan-field" id="planRow" type="button">
+        <span>Plan</span>
+        <span class="plan-val" id="planVal">Trial</span>
+      </button>
+
+      <label class="field">
+        <span>I am using Swish as</span>
+        <select id="setSeat">
+          <option value="trainer">A trainer with a roster</option>
+          <option value="player">The player shooting</option>
+        </select>
+      </label>
+
       <label class="field column">
-        <span>Your coach</span>
+        <span>Coaching voice</span>
         <select id="setCoach"></select>
         <small class="muted tiny" id="coachBlurb"></small>
       </label>
@@ -238,6 +307,78 @@
       <div class="settings-foot">
         <p class="tiny muted">Swish runs entirely on your device. Your video never leaves your phone.</p>
         <button class="btn ghost" id="closeSettings">Done</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===================== ONBOARDING ===================== -->
+  <div class="sheet-backdrop" id="onboardSheet" hidden>
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <h2>Who is holding the phone?</h2>
+      <p class="muted tiny" style="margin:-6px 0 14px">You can change this later in Settings.</p>
+
+      <div class="seat-pick">
+        <button class="seat-card" data-seat="trainer">
+          <svg class="seat-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 19v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 9a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m13 10v-2a4 4 0 0 0-3-3.9M16 2.1a4 4 0 0 1 0 7.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="seat-name">I train players</span>
+          <span class="seat-sub">A roster, everyone's week in one log, and your own reps too.</span>
+        </button>
+        <button class="seat-card" data-seat="player">
+          <svg class="seat-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3v18M5.6 5.6 18.4 18.4M18.4 5.6 5.6 18.4" fill="none" stroke="currentColor" stroke-width="1.1"/></svg>
+          <span class="seat-name">I am the one shooting</span>
+          <span class="seat-sub">Film your reps, get the read, send your week to your coach.</span>
+        </button>
+      </div>
+
+      <div id="onboardStep2" hidden>
+        <label class="field column">
+          <span id="onboardNameLbl">Your name</span>
+          <input class="txt" type="text" id="onboardName" placeholder="First name" autocomplete="off" />
+        </label>
+        <label class="field column" id="onboardCodeField" hidden>
+          <span>Coach code (optional)</span>
+          <input class="txt" type="text" id="onboardCode" placeholder="ABC-123" autocomplete="off" />
+          <small class="muted tiny">Ask your trainer for theirs. You can add it later.</small>
+        </label>
+        <div class="settings-foot">
+          <p class="tiny muted">Swish runs entirely on your device. Your video never leaves your phone.</p>
+          <button class="btn primary" id="onboardDone">Start shooting</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== HAND-OFF SHEET ===================== -->
+  <div class="sheet-backdrop" id="handoffSheet" hidden>
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <h2 id="handoffTitle">Send your week to your coach</h2>
+      <p class="muted tiny" id="handoffSub" style="margin:-6px 0 14px">Numbers only. No video ever leaves this phone.</p>
+      <textarea class="txt area" id="handoffText" rows="5" spellcheck="false"></textarea>
+      <div class="handoff-actions">
+        <button class="btn ghost" id="handoffCopy">Copy</button>
+        <button class="btn ghost" id="handoffShare" hidden>Share</button>
+        <button class="btn primary" id="handoffGo">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PLAN SHEET ===================== -->
+  <div class="sheet-backdrop" id="planSheet" hidden>
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <h2 id="planTitle">Your plan</h2>
+      <p class="muted tiny" id="planSub" style="margin:-6px 0 16px"></p>
+      <div class="plan-list" id="planList"></div>
+      <label class="field column" style="border:none">
+        <span>Already bought? Enter your key</span>
+        <input class="txt" type="text" id="licenseInput" placeholder="SW-XXXXXX-XXXX" autocomplete="off" spellcheck="false" />
+      </label>
+      <div class="handoff-actions">
+        <button class="btn ghost" id="licenseApply">Unlock</button>
+        <button class="btn primary" id="planClose">Done</button>
       </div>
     </div>
   </div>

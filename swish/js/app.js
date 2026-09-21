@@ -5,7 +5,8 @@ import { analyzeShot } from "./analyze.js";
 import * as store from "./store.js";
 import { drillsByStage, getDrill } from "./drills.js";
 import { coachLine, enhanceCoach, speak } from "./ai.js";
-import { PERSONAS, getPersona, coachCue, PRINCIPLES, COACHES } from "./coaches.js";
+import { PERSONAS, getPersona, coachCue, PRINCIPLES, LINEAGE } from "./coaches.js";
+import { PLANS, TRIAL_DAYS, entitlement, validateKey, formatKey, buyHref, SALES_EMAIL } from "./billing.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -83,8 +84,42 @@ const el = {
   setLiveSkel: $("#setLiveSkel"),
   setModel: $("#setModel"),
   setCoach: $("#setCoach"),
+  setSeat: $("#setSeat"),
   coachBlurb: $("#coachBlurb"),
   toast: $("#toast"),
+  // seats + roster (v2)
+  whoChip: $("#whoChip"),
+  whoName: $("#whoName"),
+  tabRoster: $("#tabRoster"),
+  rosterSub: $("#rosterSub"),
+  rosterList: $("#rosterList"),
+  trainerCodeVal: $("#trainerCodeVal"),
+  copyCodeBtn: $("#copyCodeBtn"),
+  addPlayerBtn: $("#addPlayerBtn"),
+  importWeekBtn: $("#importWeekBtn"),
+  onboardSheet: $("#onboardSheet"),
+  onboardStep2: $("#onboardStep2"),
+  onboardName: $("#onboardName"),
+  onboardNameLbl: $("#onboardNameLbl"),
+  onboardCode: $("#onboardCode"),
+  onboardCodeField: $("#onboardCodeField"),
+  onboardDone: $("#onboardDone"),
+  handoffSheet: $("#handoffSheet"),
+  handoffTitle: $("#handoffTitle"),
+  handoffSub: $("#handoffSub"),
+  handoffText: $("#handoffText"),
+  handoffCopy: $("#handoffCopy"),
+  handoffShare: $("#handoffShare"),
+  handoffGo: $("#handoffGo"),
+  planRow: $("#planRow"),
+  planVal: $("#planVal"),
+  planSheet: $("#planSheet"),
+  planTitle: $("#planTitle"),
+  planSub: $("#planSub"),
+  planList: $("#planList"),
+  licenseInput: $("#licenseInput"),
+  licenseApply: $("#licenseApply"),
+  planClose: $("#planClose"),
 };
 
 /* ----------------- nav ----------------- */
@@ -94,6 +129,7 @@ function switchView(name) {
   if (name === "shoot" && state.stream && !state.recording) { el.liveHud.hidden = false; startLiveTracking(); }
   else if (name !== "shoot") stopLiveTracking();
   if (name === "progress") renderProgress();
+  if (name === "roster") renderRoster();
   if (name === "drills") renderDrills();
   if (name === "analysis" && state.report) drawReviewAt(el.reviewVideo.currentTime || 0);
 }
@@ -205,7 +241,7 @@ function feedShotDetector(lm) {
   if (sd.phase === "watch") {
     if (sd.wasLow && w.y < headY) {                        // came up over the head = release
       sd.phase = "up"; sd.peakT = now; sd.peakY = w.y;
-      el.poseStatus.textContent = "got your shot ✓";
+      el.poseStatus.textContent = "shot captured";
     }
   } else if (sd.phase === "up") {
     if (w.y < sd.peakY) sd.peakY = w.y;
@@ -234,7 +270,7 @@ function updateFraming(lm) {
   if (lw && rw && (lw.visibility ?? 1) > .3 && (rw.visibility ?? 1) > .3)
     state.liveHand = (rw.y < lw.y) ? "right" : "left";
   const hand = state.liveHand ? ` · ${state.liveHand}-handed` : "";
-  if (head && hips && feet) setLiveStatus("ok", `✓ Got your whole body${hand} — record when ready`);
+  if (head && hips && feet) setLiveStatus("ok", `Whole body in frame${hand} · record when ready`);
   else if ((arm || hips) && !feet) setLiveStatus("warn", "Back up so I can see your feet 👟");
   else if (!head) setLiveStatus("warn", "Step back — I need your head in frame too");
   else setLiveStatus("warn", "Get your whole body in the frame");
@@ -349,7 +385,10 @@ async function loadClipForReview(blobOrFile) {
     // only persist a clip with a solid read, so the trend isn't polluted by junk
     state.currentSessionId = null;
     if (report.metrics.length >= 3 && report.frameCount >= 12) {
-      state.currentSessionId = store.saveSession(report, { drill: state.activeDrill?.id || null }).id;
+      const rec = store.saveSession(report, { drill: state.activeDrill?.id || null });
+      state.currentSessionId = rec?.id || null;
+      if (!rec) toast(store.lastStorageError() || "Could not save that rep.", 4200);
+      else if (store.lastStorageError()) toast(store.lastStorageError(), 4200);
     }
     renderAnalysis(report);
     switchView("analysis");
@@ -402,10 +441,10 @@ function renderAnalysis(report) {
   if (avatar) avatar.textContent = persona.name.replace(/^The\s+/, "").charAt(0);
   const top = report.topFixes[0];
   const ec = top ? coachCue(top.key, persona.id) : null;
-  let html = `<span class="coach-byline">${persona.name} · channeling ${persona.coach}</span>`;
-  if (!report.legsSeen) html += `<span class="legs-note">📷 Only your upper body was in frame — I scored that. Back up next time to add your legs &amp; balance.</span>`;
+  let html = `<span class="coach-byline">${persona.name} · ${persona.role}</span>`;
+  if (!report.legsSeen) html += `<span class="legs-note">Only your upper body was in frame — I scored that. Back up next time to add your legs &amp; balance.</span>`;
   html += mdBold(report.summary);
-  if (ec) html += `<span class="metric-attrib"><b>${ec.coach}:</b> “${ec.cue}”</span>`;
+  if (ec) html += `<span class="metric-attrib"><b>${ec.from}:</b> “${ec.cue}”</span>`;
   el.coachText.innerHTML = html;
 
   // phase chips
@@ -426,7 +465,7 @@ function renderAnalysis(report) {
   report.metrics.forEach(m => el.metricsList.appendChild(metricEl(m)));
 
   // save button reflects whether this shot is actually in history
-  if (state.currentSessionId) { el.saveSessionBtn.textContent = "Saved to history ✓"; el.saveSessionBtn.disabled = true; }
+  if (state.currentSessionId) { el.saveSessionBtn.textContent = "Saved to history"; el.saveSessionBtn.disabled = true; }
   else { el.saveSessionBtn.textContent = "Save to history"; el.saveSessionBtn.disabled = false; }
 
   // first skeleton frame (start of the focused shot window)
@@ -438,9 +477,9 @@ function metricEl(m) {
   wrap.className = "metric";
   const unit = UNIT[m.unit] ?? m.unit;
   const idealTxt = `ideal ${m.ideal[0]}–${m.ideal[1]}${unit}`;
-  const conf = m.lowConf ? ` <span class="muted tiny">· 📷 better from a ${m.confidence < 0.5 ? "front-on" : "side-on"} angle</span>` : "";
+  const conf = m.lowConf ? ` <span class="muted tiny">· read better from a ${m.confidence < 0.5 ? "front-on" : "side-on"} angle</span>` : "";
   const ec = m.status !== "good" ? coachCue(m.key, state.settings.coach) : null;
-  const attrib = ec ? `<div class="metric-attrib"><b>${ec.coach}:</b> “${ec.cue}”</div>` : "";
+  const attrib = ec ? `<div class="metric-attrib"><b>${ec.from}:</b> “${ec.cue}”</div>` : "";
   wrap.innerHTML = `
     <div class="metric-top">
       <span class="metric-name">${m.label}${conf}</span>
@@ -517,8 +556,10 @@ el.slowBtn.addEventListener("click", () => {
 
 el.saveSessionBtn.addEventListener("click", () => {
   if (!state.report?.ok || state.currentSessionId) return;
-  state.currentSessionId = store.saveSession(state.report, { drill: state.activeDrill?.id || null }).id;
-  el.saveSessionBtn.textContent = "Saved to history ✓";
+  const rec = store.saveSession(state.report, { drill: state.activeDrill?.id || null });
+  if (!rec) { toast(store.lastStorageError() || "Could not save that rep.", 4200); return; }
+  state.currentSessionId = rec.id;
+  el.saveSessionBtn.textContent = "Saved to history";
   el.saveSessionBtn.disabled = true;
 });
 
@@ -575,7 +616,12 @@ function drawSkeleton(canvas, video, lm, fit, hand) {
 /* ----------------- progress ----------------- */
 function renderProgress() {
   const s = store.stats();
-  el.progressSub.textContent = s.count ? `${s.count} shot${s.count > 1 ? "s" : ""} logged · keep stacking reps.` : "Film your first shot to start tracking.";
+  const who = seatIsTrainer() ? (store.activePlayer()?.name || "Me") : null;
+  const lead = who ? `${who} · ` : "";
+  el.progressSub.textContent = s.count
+    ? `${lead}${s.count} shot${s.count > 1 ? "s" : ""} logged · keep stacking reps.`
+    : `${lead}Film the first shot to start tracking.`;
+  mountSendWeek();
   const consistency = s.count > 1 ? Math.max(0, 100 - s.std * 4) : null;
   const stats = [
     ["Best", s.best || "—"],
@@ -650,7 +696,7 @@ function renderDrills() {
   brain.innerHTML = `
     <h3>What the greats agree on</h3>
     <ul>${PRINCIPLES.slice(0, 5).map(p => `<li>${p}</li>`).join("")}</ul>
-    <div class="brain-credits">Trained on the world's best: ${COACHES.map(c => `<b>${c.coach}</b>`).join(" · ")}.</div>`;
+    <div class="brain-credits">${LINEAGE}</div>`;
   el.drillList.appendChild(brain);
 
   drillsByStage().forEach(stage => {
@@ -661,11 +707,11 @@ function renderDrills() {
     const sub = document.createElement("p");
     sub.className = "muted tiny"; sub.style.padding = "0 0 6px"; sub.textContent = stage.blurb;
     el.drillList.appendChild(sub);
-    stage.drills.forEach(d => {
+    stage.drills.forEach((d, i) => {
       const card = document.createElement("div");
       card.className = "drill-card";
       card.innerHTML = `
-        <div class="drill-emoji">${d.emoji}</div>
+        <div class="drill-index">${String(i + 1).padStart(2, "0")}</div>
         <div class="drill-info">
           <h3>${d.name}</h3>
           <p>${d.purpose}</p>
@@ -687,11 +733,13 @@ function renderDrills() {
 /* ----------------- settings ----------------- */
 function populateCoachSelect() {
   if (el.setCoach.options.length) return;
-  el.setCoach.innerHTML = PERSONAS.map(p => `<option value="${p.id}">${p.name} — ${p.coach}</option>`).join("");
+  el.setCoach.innerHTML = PERSONAS.map(p => `<option value="${p.id}">${p.name} — ${p.role}</option>`).join("");
 }
 function syncSettingsUI() {
   const s = state.settings;
   populateCoachSelect();
+  el.planVal.textContent = planLabel();
+  el.setSeat.value = s.seat || "trainer";
   el.setCoach.value = s.coach;
   el.coachBlurb.textContent = getPersona(s.coach).style;
   el.setHand.value = s.hand; el.setAngle.value = s.angle;
@@ -723,6 +771,12 @@ bindSetting(el.setVoice, "voice", true);
 bindSetting(el.setLiveSkel, "liveSkel", true);
 bindSetting(el.setModel, "model");
 bindSetting(el.setCoach, "coach");
+el.setSeat.addEventListener("change", () => {
+  state.settings = store.setSettings({ seat: el.setSeat.value });
+  if (el.setSeat.value === "trainer") store.trainerCode();
+  applySeat();
+  toast(el.setSeat.value === "trainer" ? "Trainer seat on — your roster is in the Roster tab." : "Player seat on.");
+});
 el.setCoach.addEventListener("change", () => {
   el.coachBlurb.textContent = getPersona(el.setCoach.value).style;
   if (state.report) renderAnalysis(state.report);   // re-voice the open analysis
@@ -765,10 +819,324 @@ function fmtDate(iso) {
   } catch { return ""; }
 }
 
+
+/* ============================================================
+   SEATS · ROSTER · HAND-OFF  (v2)
+   Swish is sold to the trainer. The trainer seat is a superset: it films the
+   trainer's own reps exactly like the player seat, and adds a roster and a
+   week log on top. The player seat is the free companion that sends a week
+   back to the coach. There is no server, so a "code" is a handle and a
+   hand-off, never a login — and the UI never claims otherwise.
+   ============================================================ */
+
+function seatIsTrainer() { return state.settings.seat === "trainer"; }
+
+function applySeat() {
+  const trainer = seatIsTrainer();
+  el.tabRoster.hidden = !trainer;
+  el.whoChip.hidden = !trainer;
+  if (trainer) el.whoName.textContent = store.activePlayer()?.name || "Me";
+  // a player seat should never be parked on a roster view
+  if (!trainer && !$('[data-view="roster"]').hidden) switchView("shoot");
+  renderProgressSubtitle();
+}
+
+function renderProgressSubtitle() {
+  const who = seatIsTrainer() ? (store.activePlayer()?.name || "Me") : null;
+  el.progressSub.dataset.who = who || "";
+}
+
+/* ---------------- who is shooting ---------------- */
+el.whoChip?.addEventListener("click", () => switchView("roster"));
+
+/* ---------------- onboarding ---------------- */
+let pendingSeat = "trainer";
+function openOnboarding() {
+  el.onboardStep2.hidden = true;
+  $$(".seat-card").forEach(c => c.classList.remove("sel"));
+  el.onboardSheet.hidden = false;
+}
+$$(".seat-card").forEach(card => card.addEventListener("click", () => {
+  pendingSeat = card.dataset.seat;
+  $$(".seat-card").forEach(c => c.classList.toggle("sel", c === card));
+  el.onboardStep2.hidden = false;
+  el.onboardCodeField.hidden = pendingSeat !== "player";
+  el.onboardNameLbl.textContent = pendingSeat === "trainer" ? "Your name" : "Your name";
+  el.onboardName.focus();
+}));
+el.onboardDone?.addEventListener("click", () => {
+  const name = (el.onboardName.value || "").trim() || (pendingSeat === "trainer" ? "Me" : "Me");
+  const first = store.getPlayers()[0];
+  if (first) store.renamePlayer(first.id, name);
+  const patch = { seat: pendingSeat, onboarded: true, activePlayer: first?.id || "" };
+  if (pendingSeat === "player") {
+    const code = store.normalizeCode(el.onboardCode.value);
+    if (code) patch.joinedCode = code;
+  } else {
+    store.trainerCode();
+  }
+  state.settings = store.setSettings(patch);
+  el.onboardSheet.hidden = true;
+  applySeat();
+  toast(pendingSeat === "trainer" ? "Roster ready. Add your players from the Roster tab." : "You are set. Film a rep.", 3600);
+});
+
+/* ---------------- roster ---------------- */
+function initials(name) {
+  return (name || "?").trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
+}
+
+function renderRoster() {
+  el.trainerCodeVal.textContent = store.trainerCode();
+  renderPaywall();
+  const rows = store.weekLog(7);
+  const active = store.activePlayerId();
+  const totalShots = rows.reduce((a, r) => a + r.shots, 0);
+  el.rosterSub.textContent = totalShots
+    ? `${totalShots} shot${totalShots === 1 ? "" : "s"} logged across ${rows.filter(r => r.shots).length} of ${rows.length} players this week.`
+    : "The week in one log. No film to watch.";
+
+  el.rosterList.innerHTML = "";
+  rows.forEach(r => {
+    const card = document.createElement("div");
+    card.className = "roster-card";
+    const deltaChip = r.delta == null ? ""
+      : `<span class="rchip ${r.delta > 0 ? "up" : r.delta < 0 ? "down" : ""}">${r.delta > 0 ? "+" : ""}${r.delta} vs last week</span>`;
+    const quiet = r.shots === 0
+      ? `<span class="rchip quiet">${r.total ? "nothing this week" : "no reps yet"}</span>` : "";
+    card.innerHTML = `
+      <div class="roster-top">
+        <div class="roster-avatar">${initials(r.name)}</div>
+        <div class="roster-name">${escapeHTML(r.name)}${r.id === active ? ' <span class="muted tiny">· shooting</span>' : ""}</div>
+        <div class="roster-avg">${r.avg ?? "—"}<small>${r.avg != null ? " avg" : ""}</small></div>
+      </div>
+      <div class="roster-meta">
+        <span class="rchip">${r.shots} shot${r.shots === 1 ? "" : "s"}</span>
+        <span class="rchip">${r.days} day${r.days === 1 ? "" : "s"}</span>
+        ${r.best != null ? `<span class="rchip">${r.best} best</span>` : ""}
+        ${deltaChip}${quiet}
+      </div>
+      ${r.topFix ? `<div class="roster-fix">Work on: <b>${escapeHTML(r.topFix)}</b></div>` : ""}
+      <div class="roster-btns">
+        <button class="btn ghost" data-act="shoot">Film them</button>
+        <button class="btn ghost" data-act="progress">Their trend</button>
+        <button class="btn ghost subtle" data-act="remove">Remove</button>
+      </div>`;
+    card.querySelector('[data-act="shoot"]').addEventListener("click", () => {
+      store.setActivePlayer(r.id); state.settings = store.getSettings();
+      applySeat(); toast(`Filming ${r.name}. Every rep lands on their log.`); switchView("shoot");
+    });
+    card.querySelector('[data-act="progress"]').addEventListener("click", () => {
+      store.setActivePlayer(r.id); state.settings = store.getSettings();
+      applySeat(); switchView("progress");
+    });
+    card.querySelector('[data-act="remove"]').addEventListener("click", () => {
+      if (!confirm(`Remove ${r.name} and their ${r.total} saved rep${r.total === 1 ? "" : "s"}? This cannot be undone.`)) return;
+      store.removePlayer(r.id); state.settings = store.getSettings(); applySeat(); renderRoster();
+    });
+    el.rosterList.appendChild(card);
+  });
+}
+function escapeHTML(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+el.addPlayerBtn?.addEventListener("click", () => {
+  const e = ent();
+  if (!e.licensed && e.plan === "free" && store.getPlayers().length >= PLANS.free.players) {
+    renderPaywall(); openPlan(); return;
+  }
+  if (store.getPlayers().length >= e.players) { openPlan(); return; }
+  const name = prompt("Player's name");
+  if (name == null) return;
+  const p = store.addPlayer(name);
+  store.setActivePlayer(p.id);
+  state.settings = store.getSettings();
+  applySeat(); renderRoster();
+  toast(`${p.name} added. Reps land on their log until you switch.`);
+});
+
+el.copyCodeBtn?.addEventListener("click", async () => {
+  const code = store.trainerCode();
+  const ok = await copyText(`My Swish coach code is ${code}. Install Swish at ${location.origin}${location.pathname}, pick "I am the one shooting", and put my code in.`);
+  toast(ok ? "Code copied — send it to a player." : `Your code is ${code}`, 3600);
+});
+
+/* ---------------- hand-off ---------------- */
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; }
+  catch {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      const ok = document.execCommand("copy"); ta.remove(); return ok;
+    } catch { return false; }
+  }
+}
+
+let handoffMode = "send";
+function openHandoffSend() {
+  handoffMode = "send";
+  const rep = store.weekReport(7);
+  if (!rep.count) { toast("No saved reps in the last 7 days yet."); return; }
+  el.handoffTitle.textContent = "Send your week to your coach";
+  el.handoffSub.textContent = `${rep.count} rep${rep.count === 1 ? "" : "s"} · ${rep.avg} average. Numbers only, no video.`;
+  el.handoffText.value = rep.text;
+  el.handoffText.readOnly = true;
+  el.handoffShare.hidden = !navigator.share;
+  el.handoffCopy.hidden = false;
+  el.handoffGo.textContent = "Done";
+  el.handoffSheet.hidden = false;
+}
+function openHandoffImport() {
+  handoffMode = "import";
+  el.handoffTitle.textContent = "Paste a player's week";
+  el.handoffSub.textContent = "Paste the whole message they sent you. It merges into their row and never double-counts.";
+  el.handoffText.value = "";
+  el.handoffText.readOnly = false;
+  el.handoffShare.hidden = true;
+  el.handoffCopy.hidden = true;
+  el.handoffGo.textContent = "Load it";
+  el.handoffSheet.hidden = false;
+  setTimeout(() => el.handoffText.focus(), 80);
+}
+el.importWeekBtn?.addEventListener("click", openHandoffImport);
+el.handoffCopy?.addEventListener("click", async () => {
+  toast(await copyText(el.handoffText.value) ? "Copied. Send it to your coach." : "Select the text and copy it.", 3200);
+});
+el.handoffShare?.addEventListener("click", async () => {
+  try { await navigator.share({ title: "My Swish week", text: el.handoffText.value }); } catch {}
+});
+el.handoffGo?.addEventListener("click", () => {
+  if (handoffMode === "send") { el.handoffSheet.hidden = true; return; }
+  const res = store.importHandoff(el.handoffText.value);
+  if (!res.ok) { toast(res.reason, 4200); return; }
+  el.handoffSheet.hidden = true;
+  state.settings = store.getSettings();
+  renderRoster(); applySeat();
+  toast(res.added
+    ? `${res.player.name}: ${res.added} rep${res.added === 1 ? "" : "s"} loaded${res.skipped ? `, ${res.skipped} already here` : ""}.`
+    : `${res.player.name}: nothing new in that one.`, 4200);
+});
+el.handoffSheet?.addEventListener("click", (e) => { if (e.target === el.handoffSheet) el.handoffSheet.hidden = true; });
+el.onboardSheet?.addEventListener("click", (e) => { /* modal on purpose: no dismiss */ });
+
+/* ---------------- the week, sent (the report that leaves the app) ----------------
+   Numbers only: a readable week plus a paste-able payload. A player sends it to
+   their coach; a trainer sends a parent the month their kid actually had. */
+function mountSendWeek() {
+  const host = el.progressSub.parentElement;
+  let btn = host.querySelector("#sendWeekBtn");
+  if (!btn) {
+    btn = document.createElement("button");
+    btn.id = "sendWeekBtn";
+    btn.className = "btn ghost";
+    btn.style.cssText = "margin-top:12px;width:100%";
+    btn.addEventListener("click", openHandoffSend);
+    host.appendChild(btn);
+  }
+  const who = seatIsTrainer() ? (store.activePlayer()?.name || "this player") : null;
+  btn.textContent = who ? `Share ${who}'s week` : "Send my week to my coach";
+  btn.hidden = store.stats().count === 0;
+}
+
+/* ---------------- the plan: how a trainer actually buys this ----------------
+   No card is handled in this app. The buy button opens a hosted checkout (or an
+   email while that link is being set up), and the key that comes back unlocks
+   the roster offline. Nothing here pretends a purchase happened. */
+function ent() { return entitlement(state.settings); }
+
+function planLabel() {
+  const e = ent();
+  if (e.licensed) return e.name;
+  if (e.plan === "trial") return `Trial · ${e.trialDaysLeft}d left`;
+  return "Solo (free)";
+}
+
+function renderPlanSheet() {
+  const e = ent();
+  el.planTitle.textContent = e.licensed ? `${e.name} plan` : e.plan === "trial" ? "You are on the trial" : "Choose your plan";
+  el.planSub.textContent = e.licensed
+    ? `Up to ${e.players === Infinity ? "unlimited" : e.players} players. Thank you.`
+    : e.plan === "trial"
+      ? `${e.trialDaysLeft} day${e.trialDaysLeft === 1 ? "" : "s"} left of the full roster. After that Swish keeps working for you and three players.`
+      : `Swish still works for you and ${PLANS.free.players} players. A plan opens the rest of the roster.`;
+
+  el.planList.innerHTML = "";
+  Object.entries(PLANS).forEach(([id, plan]) => {
+    const card = document.createElement("div");
+    const current = e.licensed ? e.plan === id : id === "free";
+    card.className = "plan-card" + (current ? " current" : "");
+    card.innerHTML = `
+      <div class="plan-info">
+        <div class="plan-name">${plan.name}${current ? ' <span class="muted tiny">· current</span>' : ""}</div>
+        <div class="plan-blurb">${plan.blurb}</div>
+      </div>
+      <div class="plan-price">${plan.price}</div>`;
+    if (id !== "free" && !(e.licensed && e.plan === id)) {
+      const buy = document.createElement("a");
+      buy.className = "plan-buy";
+      buy.href = buyHref(id);
+      buy.target = "_blank"; buy.rel = "noopener";
+      buy.textContent = "Get it";
+      card.appendChild(buy);
+    }
+    el.planList.appendChild(card);
+  });
+}
+function openPlan() { renderPlanSheet(); el.licenseInput.value = formatKey(state.settings.licenseKey); el.planSheet.hidden = false; }
+el.planRow?.addEventListener("click", openPlan);
+el.planClose?.addEventListener("click", () => { el.planSheet.hidden = true; syncSettingsUI(); });
+el.planSheet?.addEventListener("click", (e) => { if (e.target === el.planSheet) { el.planSheet.hidden = true; syncSettingsUI(); } });
+el.licenseApply?.addEventListener("click", () => {
+  const raw = el.licenseInput.value;
+  const plan = validateKey(raw);
+  if (!plan) { toast("That key did not check out. Check it against the email, or write to " + SALES_EMAIL + ".", 5200); return; }
+  state.settings = store.setSettings({ licenseKey: raw.toUpperCase().replace(/[^A-Z0-9]/g, "") });
+  renderPlanSheet(); syncSettingsUI(); renderRoster();
+  toast(`${PLANS[plan].name} unlocked. Full roster is open.`, 4200);
+});
+
+function renderPaywall() {
+  const e = ent();
+  const count = store.getPlayers().length;
+  const host = el.rosterList.parentElement;
+  let card = host.querySelector("#paywallCard");
+  const needed = !e.licensed && e.plan !== "trial" && count >= PLANS.free.players;
+  const soon = !e.licensed && e.plan === "trial" && e.trialDaysLeft <= 5;
+  if (!needed && !soon) { card?.remove(); return; }
+  if (!card) {
+    card = document.createElement("div");
+    card.id = "paywallCard";
+    card.className = "paywall";
+    host.insertBefore(card, el.rosterList);
+  }
+  card.innerHTML = needed
+    ? `<h3>Your roster is full</h3>
+       <p>The free seat holds you plus ${PLANS.free.players} players. ${PLANS.pro.name} opens ${PLANS.pro.players} of them and the full week log for ${PLANS.pro.price}.</p>
+       <a class="btn primary" href="${buyHref("pro")}" target="_blank" rel="noopener">Get ${PLANS.pro.name} · ${PLANS.pro.price}</a>`
+    : `<h3>${e.trialDaysLeft} day${e.trialDaysLeft === 1 ? "" : "s"} left on the trial</h3>
+       <p>Keep the full roster and the week log for ${PLANS.pro.price}. Your players never pay anything.</p>
+       <a class="btn primary" href="${buyHref("pro")}" target="_blank" rel="noopener">Keep the roster</a>`;
+}
+
+/* ---------------- a failure should say so, not go black ---------------- */
+function reportFatal(err) {
+  console.error("[Swish]", err);
+  try { toast("Something broke on that step. Nothing was lost — try again.", 5000); } catch {}
+}
+window.addEventListener("error", (e) => reportFatal(e.error || e.message));
+window.addEventListener("unhandledrejection", (e) => reportFatal(e.reason));
+
 /* boot */
+store.stampInstall();
+const migration = store.migrate();
+if (migration.moved) console.log(`[Swish] migrated ${migration.moved} shots into the roster`);
+state.settings = store.getSettings();
 syncSettingsUI();
+applySeat();
 switchView("shoot");
-console.log("[Swish] ready");
+if (!state.settings.onboarded) openOnboarding();
+console.log("[Swish] ready · seat:", state.settings.seat || "unset");
 
 /* dev-only hook for headless verification (no-op in normal use) */
 if (["localhost", "127.0.0.1", "0.0.0.0"].includes(location.hostname)) {
