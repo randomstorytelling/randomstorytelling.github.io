@@ -9,7 +9,7 @@
 
 // Live Stripe Payment Links, created 2026-09-21 on acct_1TnjDo90Xq05dzfC.
 export const CHECKOUT_URL = "";           // per-plan links live in PLANS below
-export const BOOK_A_CALL   = "";          // 15-minute intro call link, set when Calendly is live
+export const BOOK_A_CALL   = "https://calendly.com/randomstorytelling/free-intro-call";  // 15 minutes, free, phone
 export const SALES_EMAIL  = "lawrence@vybrancelabs.co";
 
 export const PLANS = {

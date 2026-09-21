@@ -6,7 +6,7 @@ import * as store from "./store.js";
 import { drillsByStage, getDrill } from "./drills.js";
 import { coachLine, enhanceCoach, speak } from "./ai.js";
 import { PERSONAS, getPersona, coachCue, PRINCIPLES, LINEAGE } from "./coaches.js";
-import { PLANS, TRIAL_DAYS, entitlement, validateKey, formatKey, buyHref, SALES_EMAIL } from "./billing.js";
+import { PLANS, TRIAL_DAYS, entitlement, validateKey, formatKey, buyHref, SALES_EMAIL, BOOK_A_CALL } from "./billing.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -1085,7 +1085,18 @@ function renderPlanSheet() {
     el.planList.appendChild(card);
   });
 }
-function openPlan() { renderPlanSheet(); el.licenseInput.value = formatKey(state.settings.licenseKey); el.planSheet.hidden = false; }
+function openPlan() {
+  renderPlanSheet();
+  if (BOOK_A_CALL && !el.planList.querySelector(".plan-call")) {
+    const call = document.createElement("a");
+    call.className = "plan-call";
+    call.href = BOOK_A_CALL; call.target = "_blank"; call.rel = "noopener";
+    call.textContent = "Rather ask first? Fifteen minutes, free \u2192";
+    el.planList.appendChild(call);
+  }
+  el.licenseInput.value = formatKey(state.settings.licenseKey);
+  el.planSheet.hidden = false;
+}
 el.planRow?.addEventListener("click", openPlan);
 el.planClose?.addEventListener("click", () => { el.planSheet.hidden = true; syncSettingsUI(); });
 el.planSheet?.addEventListener("click", (e) => { if (e.target === el.planSheet) { el.planSheet.hidden = true; syncSettingsUI(); } });

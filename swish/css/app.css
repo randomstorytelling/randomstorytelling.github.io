@@ -342,3 +342,4 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .paywall h3{font-size:15.5px;font-weight:730}
 .paywall p{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
 .paywall .btn{margin-top:12px;width:100%}
+.plan-call{display:block;text-align:center;padding:14px 8px 4px;font-size:13.5px;font-weight:650;color:var(--accent)}
