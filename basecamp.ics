@@ -233,6 +233,24 @@ LOCATION:Austin Film Society\, Austin\, TX
 URL:https://www.austinfilm.org/classes/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Trick 'r Treat + Filmmaker Q&A with Michael Dougherty
+DTSTART;TZID=America/Chicago:20261009T190000
+DTSTAMP:20260921T173136Z
+UID:trick-r-treat-filmmaker-qa-texas-theatre-2026@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:Price not listed.\nDallas. Director Michael Dougherty in atten
+ dance\; his 1996 short Season's Greetings in 4K first\, then Trick 'r Trea
+ t with a moderated Q&A. Doors 6pm.\nSource: thetexastheatre.com event page
+ \, read 2026-09-21 (Monday station run). Ticket price not stated on the pa
+ ge\nhttps://thetexastheatre.com/films-and-events/trick-r-treat-filmmaker-q
+ a
+LAST-MODIFIED:20260921T173136Z
+LOCATION:The Texas Theatre\, Dallas\, TX
+URL:https://thetexastheatre.com/films-and-events/trick-r-treat-filmmaker-q
+ a
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:AFS: Intro to Adobe After Effects\, Visual FX
 DTSTART;TZID=America/Chicago:20261011T130000
 DTEND;TZID=America/Chicago:20261011T170000
