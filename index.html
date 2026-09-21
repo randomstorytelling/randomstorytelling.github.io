@@ -7,7 +7,7 @@
 <link rel="icon" href="brand/icon-globe.svg" type="image/svg+xml">
 <link rel="icon" href="brand/icon-globe-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="brand/icon-globe-180.png">
-<meta name="theme-color" content="#F3EFE7">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="description" content="Lawrence Whitaker III. On camera, on the mic, and everything he makes in between. It started with embroidered stories on denim jackets, connecting seemingly random moments.">
 <meta property="og:title" content="Random Storytelling">
 <meta property="og:description" content="On camera, on the mic, and everything I make by hand in between.">
@@ -19,12 +19,16 @@
   @font-face{font-family:"Elza";src:url("fonts/Elza-Black.woff2") format("woff2");font-weight:900;font-display:swap}
 </style>
 <style>
-  :root{--paper:#F3EFE7;--ink:#141110;--red:#8E1620;--mute:#6E645A;--rule:#DDD5C7;--hair:#E5DDD0}
+  :root{--paper:#FFFFFF;--ink:#141110;--red:#8E1620;--mute:#6E645A;--rule:#DCDCDC;--hair:#EAEAEA}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;
        font-weight:400;line-height:1.45;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
+  .lt{display:flex;align-items:baseline;gap:10px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
+      font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:600;color:var(--mute)}
+  .lt-city{color:var(--ink);font-weight:700}
+  .lt-clock{font-variant-numeric:tabular-nums}
   .w{max-width:1180px;margin:0 auto;padding:0 28px}
   .rule{border-top:1px solid var(--hair)}
 
@@ -63,6 +67,9 @@
   .pr small{display:block;font-size:12.5px;font-weight:400;color:var(--mute);letter-spacing:-.01em;margin-top:5px}
   .pr small a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}
   .pr .live{color:var(--red)}
+  .kv{display:block;margin-bottom:11px;font-size:11px;text-transform:uppercase;letter-spacing:.18em;
+      font-weight:650;color:var(--ink);line-height:1.5}
+  .kv em{display:block;font-style:normal;color:var(--mute);font-weight:600}
   .cta{display:block;width:max-content;margin:14px 0 0 auto;font-size:12.5px;font-weight:700;
        text-transform:uppercase;letter-spacing:.13em;padding-bottom:5px;
        border-bottom:2px solid var(--red);transition:.25s}
@@ -82,7 +89,7 @@
   .sheet p{margin-top:16px;max-width:560px;color:var(--mute);font-size:16.5px}
   .bigbtn{background:transparent;color:var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:.16em;
           font-size:14px;padding:24px 42px;white-space:nowrap;border:1px solid var(--ink);transition:.25s}
-  .bigbtn:hover{background:var(--red);border-color:var(--red);color:#F3EFE7}
+  .bigbtn:hover{background:var(--red);border-color:var(--red);color:#FFFFFF}
   @media(max-width:760px){.sheet{grid-template-columns:1fr}.bigbtn{text-align:center}}
 
   /* note + links */
@@ -91,6 +98,11 @@
   .els{display:flex;flex-wrap:wrap;gap:0 34px;padding:22px 0 0}
   .els a{font-size:15px;font-weight:700;padding:11px 0;border-bottom:2px solid transparent}
   .els a:hover{border-color:var(--red);color:var(--red)}
+  .ltf{border-top:1px solid var(--hair);padding:26px 0 0;margin-top:34px;display:grid;gap:8px}
+  .ltf .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:600}
+  .ltf .v{font-size:14px;letter-spacing:.06em;font-weight:600;display:flex;gap:12px;flex-wrap:wrap;align-items:baseline}
+  .ltf .t{font-variant-numeric:tabular-nums;color:var(--mute)}
+  .ltf .c{text-transform:uppercase;color:var(--ink)}
   footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
          padding:34px 0 60px;margin-top:40px;border-top:1px solid var(--rule);
          font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
@@ -101,7 +113,12 @@
 
 <div class="w">
 
-  <div class="hero rule">
+  <div class="lt" data-localtime data-localtime-seconds hidden>
+    <span class="lt-city" data-localtime-city></span>
+    <span class="lt-clock" data-localtime-clock></span>
+  </div>
+
+  <div class="hero">
     <h1>Random<br><em>Storytelling</em></h1>
     <div class="sub">
       <p><b>Lawrence Whitaker III.</b> It started with embroidered stories on denim jackets, <b>connecting seemingly random moments.</b></p>
@@ -118,7 +135,7 @@
       <div class="n">01</div>
       <div><div class="nm"><a href="https://vybrancelabs.co/products/creatine-gummies-watermelon?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=watermelon" target="_blank" rel="noopener">Vybrance Labs&trade;</a></div><div class="for">Clarity in motion</div></div>
       <div class="ben">Some days the words arrive late and the tank reads empty by noon. <b>Four gummies is one serving: 5g creatine, 500mg taurine, 120mcg B12.</b> The three your brain and body actually run on. Four a day, that is it.</div>
-      <div class="pr">$49.99<small>Watermelon &middot; 30 day supply</small>
+      <div class="pr"><span class="kv"><em>Product</em>Supplement</span>$49.99<small>Watermelon &middot; 30 day supply</small>
         <a class="cta" href="https://vybrancelabs.co/products/creatine-gummies-watermelon?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=cta" target="_blank" rel="noopener">Shop creatine gummies &rarr;</a>
         <a class="cta" href="https://vybrancelabs.co/community?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=hike_rsvp" target="_blank" rel="noopener">Adventure hike &rarr;</a></div>
     </div>
@@ -127,14 +144,14 @@
       <div class="n">02</div>
       <div><div class="nm"><a href="https://resumes.actorsaccess.com/lawrencewhitaker" target="_blank" rel="noopener">Actor</a></div></div>
       <div class="ben"></div>
-      <div class="pr">Contact<small><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">TAG Talent (TX)</a> &middot; <a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Rage Talent (CA)</a></small></div>
+      <div class="pr"><span class="kv"><em>Product</em>Representation</span>Contact<small><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">TAG Talent (TX)</a> &middot; <a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Rage Talent (CA)</a></small></div>
     </div>
 
     <div class="row">
       <div class="n">03</div>
       <div><div class="nm"><a href="https://instagram.com/craneseyeview" target="_blank" rel="noopener">Custom denim jacket</a></div><div class="for"><!-- held blank 2026-09-21 --></div></div>
       <div class="ben"><!-- Denim copy, price and collaborator line held blank on Lawrence's order 2026-09-21. Exact before values in logs/SITE_CHANGES.md and index.html.bak-2026-09-21-pre-denim. --></div>
-      <div class="pr"><!-- price and sub-line held blank 2026-09-21; the ways in stay -->
+      <div class="pr"><span class="kv"><em>Product</em>Commission</span><!-- price and sub-line held blank 2026-09-21; the ways in stay -->
         <a class="cta" href="https://instagram.com/craneseyeview" target="_blank" rel="noopener">Portfolio &rarr;</a>
         <a class="cta" href="https://buy.stripe.com/fZu28l8T313j03e8Q33ZK04" target="_blank" rel="noopener">Start a jacket &rarr;</a>
         <a class="cta" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Custom%20denim%20jacket" target="_blank" rel="noopener">Free 15 minute call &rarr;</a></div>
@@ -144,7 +161,7 @@
       <div class="n">04</div>
       <div><div class="nm"><a href="/basecamp/" target="_blank" rel="noopener">Base Camp</a></div><div class="for">Find your crew &middot; Austin rooted &middot; Texas wide</div></div>
       <div class="ben">You have the idea and no cast and crew. <b>The rooms in Austin where storytellers find their people and actually make something.</b> Writers groups, showcases, panels, screenings with a Q&amp;A, the classes that level you up, and every festival worth the drive in Texas. One email a month.</div>
-      <div class="pr"><span class="live">Free</span><small>Monthly</small>
+      <div class="pr"><span class="kv"><em>Product</em>Newsletter</span><span class="live">Free</span><small>Monthly</small>
         <a class="cta" href="https://randomstorytelling.beehiiv.com/subscribe" target="_blank" rel="noopener">Get the next one &rarr;</a>
         <a class="cta" href="/basecamp/">Add the calendar &rarr;</a></div>
     </div>
@@ -153,7 +170,7 @@
       <div class="n">05</div>
       <div><div class="nm"><a href="/swish/" target="_blank" rel="noopener">Swish</a></div><div class="for"><!-- held blank 2026-09-21 --></div></div>
       <div class="ben"><!-- Swish row held to the link alone on Lawrence's order 2026-09-21: nothing is claimed here until the product page is ready to carry it. Every removed line is in logs/SITE_CHANGES.md and index.html.bak-2026-09-21-pre-swish-ben. --></div>
-      <div class="pr"><!-- price and seat line held blank 2026-09-21; the try-it link stays -->
+      <div class="pr"><span class="kv"><em>Product</em>Software</span><!-- price and seat line held blank 2026-09-21; the try-it link stays -->
         <a class="cta" href="/swish/" target="_blank" rel="noopener">Try it free, 10 shots &rarr;</a></div>
     </div>
 
@@ -161,7 +178,7 @@
       <div class="n">06</div>
       <div><div class="nm">Home Team</div><div class="for">Founder run Shopify &amp; Amazon brands</div></div>
       <div class="ben"><!-- Home Team copy held blank on Lawrence's order 2026-09-21. Exact before value in logs/SITE_CHANGES.md and index.html.bak-2026-09-21-pre-hometeam. Price and both CTAs stay live. --></div>
-      <div class="pr">$4,000 + $1,500 / mo
+      <div class="pr"><span class="kv"><em>Product</em>Service</span>$4,000 + $1,500 / mo
         <a class="cta" href="https://buy.stripe.com/28EfZb6KV4fv5ny9U73ZK02" target="_blank" rel="noopener">Book the install &rarr;</a>
         <a class="cta" href="https://calendly.com/randomstorytelling/free-intro-call" target="_blank" rel="noopener">Free 15 minute call &rarr;</a></div>
     </div>
@@ -186,11 +203,17 @@
     </div>
   </div>
 
+  <div class="ltf" data-localtime hidden>
+    <span class="k">Local time</span>
+    <span class="v"><span class="t" data-localtime-clock></span><span class="c" data-localtime-city></span></span>
+  </div>
+
   <footer>
     <span>Random Storytelling</span>
     <span><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Lawrence Whitaker III</a></span>
   </footer>
 
 </div>
+<script src="brand/localtime.js" defer></script>
 </body>
 </html>

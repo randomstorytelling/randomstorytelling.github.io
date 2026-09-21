@@ -709,7 +709,7 @@ function drawTrend(canvas, scores) {
   scores.forEach((v, i) => ctx.lineTo(xs(i), ys(v)));
   ctx.strokeStyle = "#8E1620"; ctx.lineWidth = 2.5 * dpr; ctx.lineJoin = "round"; ctx.stroke();
   // dots
-  scores.forEach((v, i) => { ctx.beginPath(); ctx.arc(xs(i), ys(v), 3 * dpr, 0, 7); ctx.fillStyle = "#FBF8F2"; ctx.strokeStyle = "#8E1620"; ctx.lineWidth = 1.5 * dpr; ctx.fill(); ctx.stroke(); });
+  scores.forEach((v, i) => { ctx.beginPath(); ctx.arc(xs(i), ys(v), 3 * dpr, 0, 7); ctx.fillStyle = "#FFFFFF"; ctx.strokeStyle = "#8E1620"; ctx.lineWidth = 1.5 * dpr; ctx.fill(); ctx.stroke(); });
 }
 
 /* ----------------- drills ----------------- */

@@ -888,11 +888,15 @@
   @font-face{font-family:"Elza";src:url("../fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
   @font-face{font-family:"Elza";src:url("../fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
   @font-face{font-family:"Elza";src:url("../fonts/Elza-Black.woff2") format("woff2");font-weight:900;font-display:swap}
-  :root{--paper:#F3EFE7;--ink:#141110;--red:#8E1620;--mute:#6E645A;--rule:#DDD5C7;--hair:#E5DDD0}
+  :root{--paper:#FFFFFF;--ink:#141110;--red:#8E1620;--mute:#6E645A;--rule:#DCDCDC;--hair:#EAEAEA}
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;font-weight:400;line-height:1.45;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
+  .lt{display:flex;align-items:baseline;gap:10px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
+      font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:600;color:var(--mute)}
+  .lt-city{color:var(--ink);font-weight:700}
+  .lt-clock{font-variant-numeric:tabular-nums}
   .w{max-width:1180px;margin:0 auto;padding:0 28px}
   .top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:26px 0 18px;flex-wrap:wrap;border-bottom:1px solid var(--hair)}
   .mk{font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:.01em}
@@ -933,12 +937,22 @@
   .els{display:flex;flex-wrap:wrap;gap:0 34px;padding:56px 0 0}
   .els a{font-size:15px;font-weight:700;padding:11px 0;border-bottom:2px solid transparent}
   .els a:hover{border-color:var(--red);color:var(--red)}
+  .ltf{border-top:1px solid var(--hair);padding:26px 0 0;margin-top:34px;display:grid;gap:8px}
+  .ltf .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:600}
+  .ltf .v{font-size:14px;letter-spacing:.06em;font-weight:600;display:flex;gap:12px;flex-wrap:wrap;align-items:baseline}
+  .ltf .t{font-variant-numeric:tabular-nums;color:var(--mute)}
+  .ltf .c{text-transform:uppercase;color:var(--ink)}
   footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:34px 0 60px;margin-top:40px;border-top:1px solid var(--rule);font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
   footer a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}
 </style>
 </head>
 <body>
 <div class="w">
+  <div class="lt" data-localtime data-localtime-seconds hidden>
+    <span class="lt-city" data-localtime-city></span>
+    <span class="lt-clock" data-localtime-clock></span>
+  </div>
+
   <div class="top">
     <a class="mk" href="/">Random Storytelling</a>
   </div>
@@ -1032,6 +1046,11 @@
     <a href="https://instagram.com/randomstorytelling" target="_blank" rel="noopener">instagram</a>
   </div>
 
+  <div class="ltf" data-localtime hidden>
+    <span class="k">Local time</span>
+    <span class="v"><span class="t" data-localtime-clock></span><span class="c" data-localtime-city></span></span>
+  </div>
+
   <footer>
     <span>Random Storytelling</span>
     <span><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Lawrence Whitaker III</a></span>
@@ -1079,5 +1098,6 @@
   }).catch(function(){document.getElementById("count").textContent="";document.getElementById("list").innerHTML='<p class="empty">The feed did not load. Subscribe with the buttons above; your calendar app reads it directly.</p>';});
 })();
 </script>
+<script src="/brand/localtime.js" defer></script>
 </body>
 </html>
