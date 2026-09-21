@@ -46,7 +46,7 @@ strong{color:var(--text);font-weight:650}
   background:linear-gradient(var(--bg),rgba(243,239,231,.86) 70%,transparent);
 }
 .brand{display:flex;align-items:center;gap:10px}
-.logo{width:26px;height:26px;flex:none;filter:drop-shadow(0 2px 8px rgba(196,87,31,.28))}
+.logo{width:24px;height:24px;flex:none;color:var(--accent)}
 .brand-name{font-weight:750;letter-spacing:.3px;font-size:19px}
 .icon-btn{background:none;border:none;color:var(--muted);padding:6px;border-radius:10px}
 .icon-btn:active{background:var(--card)}
@@ -79,9 +79,7 @@ strong{color:var(--text);font-weight:650}
 .cam-placeholder p strong{color:var(--ink,var(--text));font-weight:700}
 .cam-placeholder .tiny{text-align:center;font-size:12.5px}
 .cam-placeholder .tiny{margin-top:14px}
-.ball{width:62px;height:62px;margin:0 auto 24px;display:block;
-  filter:drop-shadow(0 12px 28px rgba(20,17,16,.16));
-  animation:spin 14s linear infinite}
+.ball{width:56px;height:56px;margin:0 auto 26px;display:block;color:var(--accent);opacity:.9}
 @media(prefers-reduced-motion:reduce){.ball{animation:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -343,3 +341,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .paywall p{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
 .paywall .btn{margin-top:12px;width:100%}
 .plan-call{display:block;text-align:center;padding:14px 8px 4px;font-size:13.5px;font-weight:650;color:var(--accent)}
+
+/* demo link on every drill — house rule: the form is one tap away */
+.drill-watch{display:inline-block;margin-top:12px;font-size:11px;font-weight:680;text-transform:uppercase;letter-spacing:1.1px;
+  color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(142,22,32,.32);padding-bottom:2px}
+.drill-watch:active{color:var(--accent-2);border-bottom-color:var(--accent-2)}

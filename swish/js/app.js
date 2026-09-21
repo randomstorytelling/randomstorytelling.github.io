@@ -272,7 +272,7 @@ function updateFraming(lm) {
     state.liveHand = (rw.y < lw.y) ? "right" : "left";
   const hand = state.liveHand ? ` · ${state.liveHand}-handed` : "";
   if (head && hips && feet) setLiveStatus("ok", `Whole body in frame${hand} · record when ready`);
-  else if ((arm || hips) && !feet) setLiveStatus("warn", "Back up so I can see your feet 👟");
+  else if ((arm || hips) && !feet) setLiveStatus("warn", "Back up so I can see your feet");
   else if (!head) setLiveStatus("warn", "Step back — I need your head in frame too");
   else setLiveStatus("warn", "Get your whole body in the frame");
 }
@@ -720,8 +720,10 @@ function renderDrills() {
             <span class="drill-tag lvl">${d.level}</span>
             <span class="drill-tag">${d.reps}</span>
           </div>
+          ${d.video ? `<a class="drill-watch" href="${d.video}" target="_blank" rel="noopener" title="${d.videoTitle || ""}">Watch the demo</a>` : ""}
         </div>`;
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (e) => {
+        if (e.target.closest(".drill-watch")) return;   // watching the demo is not picking the drill
         state.activeDrill = d;
         toast(`Drill set: ${d.name}. Film a rep — I'll watch ${d.watch.toLowerCase()}`, 3600);
         switchView("shoot");
