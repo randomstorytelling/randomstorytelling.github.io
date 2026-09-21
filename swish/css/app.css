@@ -62,7 +62,7 @@ strong{color:var(--text);font-weight:650}
 /* ---------- buttons ---------- */
 .btn{border:none;border-radius:14px;font-size:15px;font-weight:650;padding:13px 20px;color:var(--text);background:var(--card-2);transition:transform .08s}
 .btn:active{transform:scale(.97)}
-.btn.primary{background:var(--accent);color:#FBF8F2;box-shadow:0 6px 18px rgba(142,22,32,.22)}
+.btn.primary{background:var(--accent);color:#FBF8F2}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
 .btn.big{font-size:16px;padding:15px 26px}
 
@@ -99,7 +99,7 @@ strong{color:var(--text);font-weight:650}
 .live-hud.ok{background:rgba(24,74,52,.88)}
 .live-hud.warn{background:rgba(104,72,16,.88)}
 .live-dot{width:10px;height:10px;border-radius:50%;background:var(--muted);flex-shrink:0}
-.live-hud.ok .live-dot{background:var(--good);box-shadow:0 0 8px var(--good)}
+.live-hud.ok .live-dot{background:var(--good)}
 .live-hud.warn .live-dot{background:var(--warn)}
 .live-hud.searching .live-dot{background:var(--muted);animation:pulse 1.1s infinite}
 .hud-sep{color:var(--muted)}
@@ -116,7 +116,7 @@ strong{color:var(--text);font-weight:650}
 .flip-btn:active{background:var(--card)}
 
 .analyzing-bar{position:relative;height:46px;display:flex;align-items:center;justify-content:center;background:var(--card);font-size:14px;font-weight:600;overflow:hidden}
-.analyzing-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));opacity:.25;transition:width .2s}
+.analyzing-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);opacity:.18;transition:width .2s}
 .analyzing-bar span{position:relative;z-index:2}
 
 /* ---------- empty state ---------- */
@@ -152,7 +152,7 @@ input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:4px;ba
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(142,22,32,.14)}
 
 /* ---------- coach card ---------- */
-.coach-card{display:flex;gap:12px;margin:6px 18px;padding:16px;background:linear-gradient(135deg,var(--card),var(--card-2));border-radius:18px;border:1px solid var(--line)}
+.coach-card{display:flex;gap:12px;margin:6px 18px;padding:16px;background:var(--card);border-radius:18px;border:1px solid var(--line)}
 .coach-avatar{width:38px;height:38px;border-radius:50%;flex-shrink:0;background:var(--accent);display:grid;place-items:center;font-weight:800;color:#FBF8F2}
 .coach-text{font-size:14.5px;line-height:1.5}
 
@@ -240,7 +240,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .legs-note{display:block;margin-bottom:8px;padding:8px 10px;border-radius:10px;background:rgba(154,114,18,.1);color:var(--warn);font-size:12.5px;line-height:1.4}
 
 /* "trained on the greats" strip in Drills */
-.brain-card{margin:4px 18px 8px;background:linear-gradient(135deg,var(--card),var(--card-2));border:1px solid var(--line);border-radius:18px;padding:16px}
+.brain-card{margin:4px 18px 8px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px}
 .brain-card h3{font-size:14px;font-weight:720;margin-bottom:8px}
 .brain-card ul{list-style:none;display:flex;flex-direction:column;gap:7px;margin:0 0 12px}
 .brain-card li{font-size:13px;color:var(--text);padding-left:18px;position:relative;line-height:1.4}
@@ -253,7 +253,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 /* ---------- toast ---------- */
 .toast{position:fixed;bottom:calc(var(--tab-h) + var(--safe-bot) + 16px);left:50%;transform:translateX(-50%);
   background:var(--card-2);border:1px solid var(--line);color:var(--text);padding:12px 18px;border-radius:14px;
-  font-size:14px;font-weight:550;z-index:50;box-shadow:0 10px 30px rgba(20,17,16,.28);max-width:88%;text-align:center;animation:fade .2s}
+  font-size:14px;font-weight:550;z-index:50;box-shadow:0 2px 12px rgba(20,17,16,.14);max-width:88%;text-align:center;animation:fade .2s}
 
 [hidden]{display:none!important}
 
@@ -264,7 +264,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .who-chip:active{transform:scale(.97)}
 
 .code-card{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:4px 18px 0;
-  background:linear-gradient(135deg,rgba(142,22,32,.09),rgba(142,22,32,.02));
+  background:rgba(142,22,32,.06);
   border:1px solid rgba(142,22,32,.28);border-radius:16px;padding:14px 16px}
 .code-lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:680}
 .code-val{font-size:26px;font-weight:820;letter-spacing:3px;margin-top:2px}
@@ -299,8 +299,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .seat-pick{display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
 .seat-card{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;
   background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;color:var(--text)}
-.seat-card.sel{border-color:var(--accent);background:linear-gradient(135deg,rgba(142,22,32,.09),rgba(142,22,32,.02))}
-.seat-emoji{font-size:22px}
+.seat-card.sel{border-color:var(--accent);background:rgba(142,22,32,.06)}
 .seat-name{font-size:16.5px;font-weight:720}
 .seat-sub{font-size:13px;color:var(--muted);line-height:1.4}
 
@@ -329,13 +328,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .plan-val{font-size:14px;font-weight:680;color:var(--accent)}
 .plan-list{display:flex;flex-direction:column;gap:10px;padding-bottom:6px}
 .plan-card{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 16px}
-.plan-card.current{border-color:var(--accent);background:linear-gradient(135deg,rgba(142,22,32,.09),rgba(142,22,32,.02))}
+.plan-card.current{border-color:var(--accent);background:rgba(142,22,32,.06)}
 .plan-info{flex:1;min-width:0}
 .plan-name{font-size:16px;font-weight:720}
 .plan-blurb{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.4}
 .plan-price{font-size:15px;font-weight:760;white-space:nowrap;font-variant-numeric:tabular-nums}
 .plan-buy{font-size:13.5px;font-weight:680;padding:9px 14px;border-radius:11px;background:var(--accent);color:#FBF8F2;white-space:nowrap}
-.paywall{margin:0 18px 14px;background:linear-gradient(135deg,rgba(142,22,32,.09),rgba(142,22,32,.02));
+.paywall{margin:0 18px 14px;background:rgba(142,22,32,.06);
   border:1px solid rgba(142,22,32,.28);border-radius:16px;padding:15px 16px}
 .paywall h3{font-size:15.5px;font-weight:730}
 .paywall p{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.45}
@@ -346,3 +345,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .drill-watch{display:inline-block;margin-top:12px;font-size:11px;font-weight:680;text-transform:uppercase;letter-spacing:1.1px;
   color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(142,22,32,.32);padding-bottom:2px}
 .drill-watch:active{color:var(--accent-2);border-bottom-color:var(--accent-2)}
+
+/* play and pause as line marks, never glyphs: the shipped Elza faces carry
+   neither U+25B6 nor U+275A, so both fell through to a system font and the
+   triangle came back as a colour emoji on iOS. */
+.mini-btn svg{width:18px;height:18px;display:block}
+.mini-btn .ic-pause{display:none}
+.mini-btn[data-playing] .ic-play{display:none}
+.mini-btn[data-playing] .ic-pause{display:block}

@@ -396,7 +396,11 @@ async function loadClipForReview(blobOrFile) {
     switchView("analysis");
     const line = coachLine(report);
     speak(line);
-    enhanceCoach(report).then(txt => { if (txt) el.scoreSummary.textContent = txt; });
+    // Was: enhanceCoach(...).then(txt => scoreSummary.textContent = txt). With no
+    // BYO key set (and no UI to set one) ai.js returns report.summary, which
+    // carries **markdown bold** that textContent prints literally. It also
+    // clobbered the hand/angle/dialed line. The coach card already shows this
+    // text properly through mdBold, so there was nothing to gain.
   } catch (e) {
     console.error(e);
     showAnalyzing(false);
@@ -535,11 +539,15 @@ el.scrubber.addEventListener("input", () => {
   const { from, to } = reviewBounds();
   seekReview(from + (el.scrubber.value / 1000) * (to - from));
 });
+function setPlayIcon(playing) {
+  el.playBtn.dataset.playing = playing ? "1" : "";
+  el.playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+}
 el.playBtn.addEventListener("click", () => {
-  if (el.reviewVideo.paused) { el.reviewVideo.play(); el.playBtn.textContent = "❚❚"; driveReview(); }
-  else { el.reviewVideo.pause(); el.playBtn.textContent = "▶"; }
+  if (el.reviewVideo.paused) { el.reviewVideo.play(); setPlayIcon(true); driveReview(); }
+  else { el.reviewVideo.pause(); setPlayIcon(false); }
 });
-el.reviewVideo.addEventListener("ended", () => { el.playBtn.textContent = "▶"; });
+el.reviewVideo.addEventListener("ended", () => { setPlayIcon(false); });
 function driveReview() {
   const loop = () => {
     if (el.reviewVideo.paused) return;
@@ -603,14 +611,14 @@ function drawSkeleton(canvas, video, lm, fit, hand) {
   for (const [a, b] of CONN) {
     const pa = P(a), pb = P(b); if (!pa || !pb) continue;
     const hot = shoot.has(a) && shoot.has(b);
-    ctx.strokeStyle = hot ? "rgba(255,106,43,.95)" : "rgba(255,255,255,.55)";
+    ctx.strokeStyle = hot ? "#C4571F" : "rgba(255,255,255,.55)";
     ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke();
   }
   for (let i = 0; i < lm.length; i++) {
     const p = P(i); if (!p) continue;
     if (![0, 11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28].includes(i)) continue;
     ctx.fillStyle = shoot.has(i) ? "var(--accent)" : "#fff";
-    ctx.fillStyle = shoot.has(i) ? "#ff6a2b" : "#ffffff";
+    ctx.fillStyle = shoot.has(i) ? "#C4571F" : "#ffffff";
     ctx.beginPath(); ctx.arc(p.x, p.y, ctx.lineWidth * 1.3, 0, 7); ctx.fill();
   }
 }
