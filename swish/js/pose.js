@@ -74,9 +74,28 @@ export function detectVideo(video, tsMs) {
   catch (e) { console.warn("[pose] live detect failed", e); return null; }
 }
 
-// Run pose over an entire recorded video, frame by frame.
+// Run pose over a recorded clip and return the frames around ONE shot.
+//
+// The cost of this used to scale with the length of the clip: a fixed 1/fps
+// step across the whole thing meant a 30s recording ran 900 seek-and-detect
+// passes, and a clip picked from the camera roll had no ceiling at all. On a
+// phone that is a freeze with a progress bar in front of it.
+//
+// It is now two passes and a hard budget, so cost is flat no matter how long
+// the clip is:
+//   1. LOCATE  a coarse scan (COARSE_FPS, at most COARSE_MAX frames) finds the
+//              release, the frame where a wrist is highest above the head.
+//   2. READ    a dense scan at `fps` over that release, plus/minus WINDOW_PAD.
+// A caller that already knows the window (the live detector caught the shot)
+// skips pass 1. Either way the dense pass is capped at DENSE_MAX frames.
+//
 // Returns [{ t, lm:[{x,y,z,visibility}], world:[{x,y,z}] }, ...]
 // onProgress(0..1) for the UI bar.
+const COARSE_FPS = 8;      // enough to see a wrist cross the head
+const COARSE_MAX = 120;    // ~15s of coarse scan, whatever the clip's length
+const DENSE_MAX  = 110;    // ~3.6s at 30fps, the most any one shot needs
+const WINDOW_PAD = { before: 1.7, after: 1.1 };   // matches the live detector
+
 export async function analyzeClip(video, { fps = 30, onProgress, from = 0, to = null } = {}) {
   await initPose({ runningMode: "VIDEO", model: curModel || "full" });
   resetClock();                               // fresh ~33ms deltas for this clip, untainted by the live loop
@@ -89,7 +108,6 @@ export async function analyzeClip(video, { fps = 30, onProgress, from = 0, to = 
   const end = (to != null && to > start) ? Math.min(to, duration) : duration;
   const span = (end - start) || 1;
 
-  const step = 1 / fps;
 
   // Seek + wait. Short-circuits same-value seeks (a fresh <video> at 0 fires no
   // 'seeked' for seekTo(0) → would deadlock) and races a timeout so a missing
@@ -106,22 +124,76 @@ export async function analyzeClip(video, { fps = 30, onProgress, from = 0, to = 
   });
 
   video.pause();
-  for (let t = start; t <= end; t += step) {
-    await seekTo(t);
-    const tsMs = safeTs(Math.round(video.currentTime * 1000));
 
-    let result = null;
-    try { result = landmarker.detectForVideo(video, tsMs); } catch (e) { /* skip frame */ }
+  // One sweep. `budget` caps the frame count, so the step widens on a long
+  // span instead of the pass getting longer.
+  const sweep = async (a, b, wantFps, budget, report) => {
+    const out = [];
+    const width = Math.max(b - a, 1 / wantFps);
+    const step = Math.max(1 / wantFps, width / budget);
+    for (let t = a; t <= b; t += step) {
+      await seekTo(t);
+      const tsMs = safeTs(Math.round(video.currentTime * 1000));
 
-    const lm = result?.landmarks?.[0] || null;
-    const world = result?.worldLandmarks?.[0] || null;
-    frames.push({
-      t: video.currentTime,
-      lm: lm ? lm.map(p => ({ x: p.x, y: p.y, z: p.z, v: p.visibility })) : null,
-      world: world ? world.map(p => ({ x: p.x, y: p.y, z: p.z })) : null,
-    });
-    if (onProgress) onProgress(Math.min(1, (t - start) / span));
+      let result = null;
+      try { result = landmarker.detectForVideo(video, tsMs); } catch (e) { /* skip frame */ }
+
+      const lm = result?.landmarks?.[0] || null;
+      const world = result?.worldLandmarks?.[0] || null;
+      out.push({
+        t: video.currentTime,
+        lm: lm ? lm.map(p => ({ x: p.x, y: p.y, z: p.z, v: p.visibility })) : null,
+        world: world ? world.map(p => ({ x: p.x, y: p.y, z: p.z })) : null,
+      });
+      if (report) report(Math.min(1, (t - a) / width));
+    }
+    return out;
+  };
+
+  // Where the ball leaves the hand: the frame whose higher wrist sits highest
+  // on screen (smallest y), preferring frames where it is above the head. Both
+  // wrists are considered, so handedness is never assumed here.
+  const releaseTime = (fr) => {
+    let best = null, bestY = Infinity, bestOverHead = false;
+    for (const f of fr) {
+      const lm = f.lm;
+      if (!lm) continue;
+      const vis = (p) => p && (p.visibility == null || p.visibility >= 0.5);
+      const wrists = [lm[15], lm[16]].filter(vis);
+      if (!wrists.length) continue;
+      const w = wrists.reduce((hi, p) => (p.y < hi.y ? p : hi));
+      const head = vis(lm[0]) ? lm[0].y : null;
+      const overHead = head != null && w.y < head;
+      if ((overHead && !bestOverHead) || ((overHead === bestOverHead) && w.y < bestY)) {
+        best = f.t; bestY = w.y; bestOverHead = overHead;
+      }
+    }
+    return best;
+  };
+
+  const windowGiven = to != null && to > start;
+  let a = start, b = end;
+
+  if (!windowGiven && span > 4) {
+    // LOCATE. A fifth of the bar; the dense read is the part worth waiting on.
+    const coarse = await sweep(start, end, COARSE_FPS, COARSE_MAX,
+      onProgress ? (p) => onProgress(p * 0.2) : null);
+    const rel = releaseTime(coarse);
+    if (rel != null) {
+      a = Math.max(start, rel - WINDOW_PAD.before);
+      b = Math.min(end, rel + WINDOW_PAD.after);
+    } else {
+      // No shot found anywhere. Read the tail rather than the whole clip: a
+      // person filming themselves ends the recording after the shot.
+      a = Math.max(start, end - (WINDOW_PAD.before + WINDOW_PAD.after));
+      b = end;
+    }
   }
+
+  const dense = await sweep(a, b, fps, DENSE_MAX,
+    onProgress ? (p) => onProgress((windowGiven || span <= 4) ? p : 0.2 + p * 0.8) : null);
+  frames.push(...dense);
+
   if (onProgress) onProgress(1);
   return frames;
 }

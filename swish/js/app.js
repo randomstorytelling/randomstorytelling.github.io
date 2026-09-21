@@ -226,32 +226,50 @@ function startLiveTracking() {
   state.liveRAF = requestAnimationFrame(loop);
 }
 
-// Real-time shot detector: watches the shooting wrist go from loaded (below the
-// shoulder) up past the head (release), then come back down → registers the shot
-// and stops recording after a short follow-through tail.
+// Real-time shot detector: watches a wrist go from loaded (below the shoulder)
+// up past the head (release), then come back down → registers the shot and
+// stops recording after a short follow-through tail.
+//
+// It watches BOTH wrists and latches onto whichever completes that move first.
+// It used to read state.liveHand, which is only ever assigned by updateFraming,
+// which only runs while NOT recording. So a left-handed player whose framing
+// had not resolved before they pressed record was watched on the wrong wrist,
+// no shot was ever caught, and the recording ran to its 30s cap every time.
+// Handedness for SCORING is resolved separately and properly in analyze.js, so
+// nothing here needs to know it.
 function feedShotDetector(lm) {
   if (state.shotCaught || !state.shotDet) return;
   const sd = state.shotDet;
-  const hand = state.liveHand || "right";
-  const wi = hand === "left" ? 15 : 16, si = hand === "left" ? 11 : 12;
-  const w = lm[wi], s = lm[si], nose = lm[0];
   const okv = (p) => p && (p.visibility == null || p.visibility >= 0.5);
-  if (!okv(w) || !okv(s)) return;
-  if (w.y > s.y + 0.04) sd.wasLow = true;                  // wrist loaded below the shoulder
-  const headY = okv(nose) ? nose.y : s.y - 0.12;
+  const nose = lm[0];
   const now = performance.now();
-  if (sd.phase === "watch") {
-    if (sd.wasLow && w.y < headY) {                        // came up over the head = release
-      sd.phase = "up"; sd.peakT = now; sd.peakY = w.y;
-      el.poseStatus.textContent = "shot captured";
-    }
-  } else if (sd.phase === "up") {
-    if (w.y < sd.peakY) sd.peakY = w.y;
-    if (w.y > s.y || now - sd.peakT > 900) {              // hand back down, or a beat after the peak
-      state.shotCaught = true;
-      const offset = (sd.peakT - state.recordStartT) / 1000;
-      state.shotWindow = { from: Math.max(0, offset - 1.7), to: offset + 1.1 };  // just the shot
-      setTimeout(() => { if (state.recording) stopRecord(); }, 350);            // tail for follow-through
+
+  // Candidate sides, or just the one already latched.
+  const sides = sd.side ? [sd.side] : ["right", "left"];
+  if (!sd.low) sd.low = { left: false, right: false };
+
+  for (const side of sides) {
+    const w = lm[side === "left" ? 15 : 16];
+    const sh = lm[side === "left" ? 11 : 12];
+    if (!okv(w) || !okv(sh)) continue;
+
+    if (w.y > sh.y + 0.04) sd.low[side] = true;            // wrist loaded below the shoulder
+    const headY = okv(nose) ? nose.y : sh.y - 0.12;
+
+    if (sd.phase === "watch") {
+      if (sd.low[side] && w.y < headY) {                   // came up over the head = release
+        sd.side = side;                                    // latch: this is the shooting arm
+        sd.phase = "up"; sd.peakT = now; sd.peakY = w.y;
+        el.poseStatus.textContent = "shot captured";
+      }
+    } else if (sd.phase === "up" && sd.side === side) {
+      if (w.y < sd.peakY) sd.peakY = w.y;
+      if (w.y > sh.y || now - sd.peakT > 900) {            // hand back down, or a beat after the peak
+        state.shotCaught = true;
+        const offset = (sd.peakT - state.recordStartT) / 1000;
+        state.shotWindow = { from: Math.max(0, offset - 1.7), to: offset + 1.1 };  // just the shot
+        setTimeout(() => { if (state.recording) stopRecord(); }, 350);            // tail for follow-through
+      }
     }
   }
 }
@@ -309,7 +327,7 @@ async function toggleRecord() {
   state.recording = true;
   state.shotCaught = false;
   state.shotWindow = null;
-  state.shotDet = { phase: "watch", wasLow: false, peakT: 0, peakY: 1 };
+  state.shotDet = { phase: "watch", side: null, low: { left: false, right: false }, peakT: 0, peakY: 1 };
   el.recordBtn.classList.add("recording");
   el.liveHud.hidden = true;            // recHud takes over while recording
   el.recHud.hidden = false;
