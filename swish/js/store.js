@@ -26,7 +26,8 @@ const DEFAULT_SETTINGS = {
   coachName: "",          // what a player calls their coach, for the UI
   onboarded: false,
   installedAt: "",        // set once at boot; the trial clock
-  licenseKey: "",         // unlocks the roster offline (see billing.js)
+  licenseKey: "",         // the key as typed, kept so we can show it back
+  license: null,          // {key, plan, token, exp} issued by the license server
   hand: "auto",
   angle: "auto",
   voice: true,

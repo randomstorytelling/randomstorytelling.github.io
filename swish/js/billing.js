@@ -6,11 +6,20 @@
 // and it is the only honest one without a backend.
 //
 // TO GO LIVE, EDIT THE THREE CONSTANTS BELOW. Nothing else needs to change.
+//
+// 2026-09-21: there IS a server now. LICENSE_API below mints, device-binds,
+// verifies and revokes keys. A key has to be redeemed online ONCE; after that
+// the device carries a signed token for 30 days and refreshes it quietly
+// whenever there is a line, so a gym with no signal never locks anyone out.
 
 // Live Stripe Payment Links, created 2026-09-21 on acct_1TnjDo90Xq05dzfC.
 export const CHECKOUT_URL = "";           // per-plan links live in PLANS below
 export const BOOK_A_CALL   = "https://calendly.com/randomstorytelling/free-intro-call";  // 15 minutes, free, phone
 export const SALES_EMAIL  = "lawrence@vybrancelabs.co";
+
+// The license server. Empty string falls back to offline-checksum-only, which
+// is what shipped before today and which anyone could forge.
+export const LICENSE_API = "https://swish-license.vybrance.workers.dev";
 
 export const PLANS = {
   free:  { name: "Solo",   price: "Free",      players: 3,        blurb: "Your own reps plus three players.", url: "" },
@@ -44,7 +53,9 @@ export function mintKey(plan = "pro") {
   return `SW-${tag}${body}-${checksum(tag + body, plan)}`;
 }
 
-export function validateKey(raw) {
+// Shape check only. It proves a key is typed correctly, NOT that we issued it.
+// Unlocking requires a token from the license server (see redeem below).
+export function keyLooksValid(raw) {
   const key = (raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
   if (!key.startsWith("SW") || key.length !== 12) return null;
   const body = key.slice(2, 8);        // tag + 5
@@ -59,10 +70,74 @@ export function formatKey(raw) {
   return k.length === 12 ? `${k.slice(0, 2)}-${k.slice(2, 8)}-${k.slice(8)}` : raw;
 }
 
+export const validateKey = keyLooksValid;   // old name, same shape check
+
+/* ------------------------- the license server ---------------------------- */
+// One stable id per install, so a trainer's phone and tablet count separately
+// and a key can be limited to a sensible number of devices.
+export function deviceId() {
+  try {
+    let id = localStorage.getItem("swish.device");
+    if (!id) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now());
+      localStorage.setItem("swish.device", id);
+    }
+    return id;
+  } catch { return "no-storage"; }
+}
+
+async function call(path, payload) {
+  const res = await fetch(LICENSE_API + path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { status: res.status, data };
+}
+
+// Redeem a key. Returns {ok:true, license} to store, or {ok:false, message}
+// in plain English that the UI can show as-is.
+export async function redeem(rawKey, deviceName = "") {
+  const key = (rawKey || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (!keyLooksValid(key)) {
+    return { ok: false, message: "That does not look like a Swish key. It reads SW-XXXXXX-XXXX." };
+  }
+  if (!LICENSE_API) {                       // no server configured: old behaviour
+    return { ok: true, license: { key, plan: keyLooksValid(key), token: "", exp: 0, offline: true } };
+  }
+  try {
+    const { status, data } = await call("/redeem", { key, device: deviceId(), name: deviceName });
+    if (status === 200 && data.ok) {
+      return { ok: true, license: { key, plan: data.plan, token: data.token, exp: data.exp } };
+    }
+    return { ok: false, message: data.message || "That key did not go through. Write to " + SALES_EMAIL + " and we will sort it out." };
+  } catch {
+    return { ok: false, message: "I could not reach the license server. Get a signal for a moment and try again. You only need one." };
+  }
+}
+
+// Quiet background refresh. Extends the offline window and picks up a
+// revocation. Never throws, never blocks the UI, never logs anyone out just
+// because the network was down.
+export async function refresh(license) {
+  if (!LICENSE_API || !license?.token) return null;
+  try {
+    const { status, data } = await call("/verify", { token: license.token });
+    if (status === 200 && data.ok) return { ...license, plan: data.plan, token: data.token, exp: data.exp };
+    if (status === 403) return { revoked: true };   // the one case worth acting on
+    return null;
+  } catch { return null; }
+}
+
 /* ---- what this install is entitled to, right now ---- */
 export function entitlement(settings) {
-  const plan = validateKey(settings.licenseKey) || null;
-  if (plan) return { plan, ...PLANS[plan], licensed: true, trialDaysLeft: 0 };
+  // A server-issued token is the only thing that unlocks a paid plan. The old
+  // offline checksum stays a typo check; on its own anyone could forge a key.
+  const lic = settings.license;
+  if (lic && lic.plan && PLANS[lic.plan] && (lic.offline || (lic.exp || 0) > Date.now())) {
+    return { plan: lic.plan, ...PLANS[lic.plan], licensed: true, trialDaysLeft: 0 };
+  }
 
   const started = Date.parse(settings.installedAt || "") || Date.now();
   const used = Math.floor((Date.now() - started) / 86400000);

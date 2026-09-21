@@ -1,8 +1,8 @@
-@font-face{font-family:"Elza";src:url("../fonts/Elza-Light.woff2") format("woff2");font-weight:300;font-display:swap}
-@font-face{font-family:"Elza";src:url("../fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"Elza";src:url("../fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
-@font-face{font-family:"Elza";src:url("../fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:"Elza";src:url("../fonts/Elza-Black.woff2") format("woff2");font-weight:900;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Black.woff2") format("woff2");font-weight:900;font-display:swap}
 
 :root{
   /* paper and ink, the same stock as randomstorytelling.com */

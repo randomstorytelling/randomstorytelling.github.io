@@ -6,7 +6,8 @@ import * as store from "./store.js";
 import { drillsByStage, getDrill } from "./drills.js";
 import { coachLine, enhanceCoach, speak } from "./ai.js";
 import { PERSONAS, getPersona, coachCue, PRINCIPLES, LINEAGE } from "./coaches.js";
-import { PLANS, TRIAL_DAYS, entitlement, validateKey, formatKey, buyHref, SALES_EMAIL, BOOK_A_CALL } from "./billing.js";
+import { PLANS, TRIAL_DAYS, entitlement, keyLooksValid, formatKey, buyHref, SALES_EMAIL, BOOK_A_CALL,
+         redeem as redeemKey, refresh as refreshLicense } from "./billing.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -1102,14 +1103,44 @@ function openPlan() {
 el.planRow?.addEventListener("click", openPlan);
 el.planClose?.addEventListener("click", () => { el.planSheet.hidden = true; syncSettingsUI(); });
 el.planSheet?.addEventListener("click", (e) => { if (e.target === el.planSheet) { el.planSheet.hidden = true; syncSettingsUI(); } });
-el.licenseApply?.addEventListener("click", () => {
+el.licenseApply?.addEventListener("click", async () => {
   const raw = el.licenseInput.value;
-  const plan = validateKey(raw);
-  if (!plan) { toast("That key did not check out. Check it against the email, or write to " + SALES_EMAIL + ".", 5200); return; }
-  state.settings = store.setSettings({ licenseKey: raw.toUpperCase().replace(/[^A-Z0-9]/g, "") });
+  if (!keyLooksValid(raw)) {
+    toast("That does not look like a Swish key. It reads SW-XXXXXX-XXXX.", 5200);
+    return;
+  }
+  const btn = el.licenseApply;
+  const was = btn.textContent;
+  btn.disabled = true; btn.textContent = "Checking\u2026";
+  const res = await redeemKey(raw, state.settings.coachName || "");
+  btn.disabled = false; btn.textContent = was;
+
+  if (!res.ok) { toast(res.message, 6000); return; }
+  state.settings = store.setSettings({
+    licenseKey: raw.toUpperCase().replace(/[^A-Z0-9]/g, ""),
+    license: res.license,
+  });
   renderPlanSheet(); syncSettingsUI(); renderRoster();
-  toast(`${PLANS[plan].name} unlocked. Full roster is open.`, 4200);
+  toast(`${PLANS[res.license.plan].name} unlocked. Full roster is open.`, 4200);
 });
+
+// Quiet license refresh: extends the offline window, and is the only way a
+// revoked key ever stops working. Never blocks anything, never nags.
+async function refreshLicenseQuietly() {
+  const lic = state.settings.license;
+  if (!lic?.token) return;
+  const next = await refreshLicense(lic);
+  if (!next) return;                                  // offline or a blip: leave it alone
+  if (next.revoked) {
+    state.settings = store.setSettings({ license: null });
+    syncSettingsUI(); renderRoster();
+    toast("This license is no longer active. Write to " + SALES_EMAIL + " and we will sort it out.", 6000);
+    return;
+  }
+  state.settings = store.setSettings({ license: next });
+}
+refreshLicenseQuietly();
+window.addEventListener("online", refreshLicenseQuietly);
 
 function renderPaywall() {
   const e = ent();
