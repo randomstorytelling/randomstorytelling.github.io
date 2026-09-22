@@ -1,10 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Swish">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="112" fill="#FFFFFF"/>
-  <g transform="translate(256 256)" fill="none" stroke="#8E1620" stroke-width="15" stroke-linecap="round">
-    <circle cx="0" cy="0" r="150"/>
-    <path d="M0 -150 V150"/>
-    <path d="M-150 0 H150"/>
-    <path d="M-64.6 -138.5 Q-141.8 0 -64.6 138.5"/>
-    <path d="M64.6 -138.5 Q141.8 0 64.6 138.5"/>
+  <g transform="translate(256 256) scale(3.55) translate(-60 -60)"
+     fill="none" stroke="#8E1620" stroke-width="6" stroke-linecap="round">
+    <circle cx="60" cy="60" r="54"/>
+    <path d="M60 6 V114"/><path d="M6 60 H114"/>
+    <path d="M28 16 A58 58 0 0 1 28 104"/><path d="M92 16 A58 58 0 0 0 92 104"/>
   </g>
 </svg>
