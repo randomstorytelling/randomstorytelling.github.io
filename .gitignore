@@ -5,3 +5,9 @@ index.html.bak-2026-09-21-pre-denim
 index.html.bak-2026-09-21-pre-hometeam
 basecamp/index.html.bak-2026-09-21-pre-faq
 *.bak-*
+
+# internal working notes — never publish these on a public Pages site
+logs/
+build_basecamp.py
+patch_denim_row.py
+.claude/
