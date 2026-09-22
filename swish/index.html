@@ -22,13 +22,10 @@
   <header class="topbar">
     <div class="brand">
       <svg class="logo" viewBox="0 0 120 120" aria-hidden="true">
-        <defs><radialGradient id="mkBall" cx="36%" cy="30%" r="80%">
-          <stop offset="0%" stop-color="#F0913F"/><stop offset="52%" stop-color="#D2631F"/><stop offset="100%" stop-color="#8E3A0C"/>
-        </radialGradient></defs>
-        <circle cx="60" cy="60" r="56" fill="url(#mkBall)"/>
-        <g fill="none" stroke="rgba(18,10,5,.72)" stroke-width="6" stroke-linecap="round">
-          <path d="M60 4 V116"/><path d="M6 60 H114"/>
-          <path d="M22 16 A46 46 0 0 0 22 104"/><path d="M98 16 A46 46 0 0 1 98 104"/>
+        <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+          <circle cx="60" cy="60" r="55"/>
+          <path d="M60 5 V115"/><path d="M5 60 H115"/>
+          <path d="M36.3 9.2 Q8 60 36.3 110.8"/><path d="M83.7 9.2 Q112 60 83.7 110.8"/>
         </g>
       </svg>
       <span class="brand-name">Swish</span>
@@ -53,13 +50,10 @@
       <!-- camera not ready / permission state -->
       <div class="cam-placeholder" id="camPlaceholder">
         <svg class="ball" viewBox="0 0 120 120" aria-hidden="true">
-          <defs><radialGradient id="bigBall" cx="36%" cy="30%" r="80%">
-            <stop offset="0%" stop-color="#F5A054"/><stop offset="50%" stop-color="#D2631F"/><stop offset="100%" stop-color="#83340A"/>
-          </radialGradient></defs>
-          <circle cx="60" cy="60" r="56" fill="url(#bigBall)"/>
-          <g fill="none" stroke="rgba(18,10,5,.72)" stroke-width="3.6" stroke-linecap="round">
-            <path d="M60 4 V116"/><path d="M6 60 H114"/>
-            <path d="M22 16 A46 46 0 0 0 22 104"/><path d="M98 16 A46 46 0 0 1 98 104"/>
+          <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+            <circle cx="60" cy="60" r="56"/>
+            <path d="M60 4 V116"/><path d="M4 60 H116"/>
+            <path d="M36.3 9.2 Q8 60 36.3 110.8"/><path d="M83.7 9.2 Q112 60 83.7 110.8"/>
           </g>
         </svg>
         <h2>Film 10 shots</h2>
@@ -223,7 +217,7 @@
   <!-- ===================== BOTTOM NAV ===================== -->
   <nav class="tabbar">
     <button class="tab active" data-view="shoot">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 3v18M3 12h18M5.2 5.2A8.5 8.5 0 0 0 5.2 18.8M18.8 5.2A8.5 8.5 0 0 1 18.8 18.8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <svg viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"><circle cx="60" cy="60" r="53"/><path d="M60 7 V113"/><path d="M7 60 H113"/><path d="M36.3 9.2 Q8 60 36.3 110.8"/><path d="M83.7 9.2 Q112 60 83.7 110.8"/></g></svg>
       <span>Shoot</span>
     </button>
     <button class="tab" data-view="analysis">
@@ -329,14 +323,11 @@
           <span class="seat-sub">A roster, everyone's week in one log, and your own reps too.</span>
         </button>
         <button class="seat-card" data-seat="player">
-          <svg class="seat-icon seat-ball" viewBox="0 0 24 24" aria-hidden="true">
-            <defs><radialGradient id="seatBall" cx="36%" cy="30%" r="80%">
-              <stop offset="0%" stop-color="#F0913F"/><stop offset="52%" stop-color="#D2631F"/><stop offset="100%" stop-color="#8E3A0C"/>
-            </radialGradient></defs>
-            <circle cx="12" cy="12" r="11" fill="url(#seatBall)"/>
-            <g fill="none" stroke="rgba(18,10,5,.75)" stroke-width="1.4" stroke-linecap="round">
-              <path d="M12 1 V23"/><path d="M1 12 H23"/>
-              <path d="M4.6 3.6 A9 9 0 0 0 4.6 20.4"/><path d="M19.4 3.6 A9 9 0 0 1 19.4 20.4"/>
+          <svg class="seat-icon" viewBox="0 0 120 120" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round">
+              <circle cx="60" cy="60" r="54"/>
+              <path d="M60 6 V114"/><path d="M6 60 H114"/>
+              <path d="M36.3 9.2 Q8 60 36.3 110.8"/><path d="M83.7 9.2 Q112 60 83.7 110.8"/>
             </g>
           </svg>
           <span class="seat-name">I am the one shooting</span>
