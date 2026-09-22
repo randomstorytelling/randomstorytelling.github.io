@@ -46,7 +46,7 @@ strong{color:var(--text);font-weight:650}
   background:linear-gradient(var(--bg),rgba(255,255,255,.88) 70%,transparent);
 }
 .brand{display:flex;align-items:center;gap:10px}
-.logo{width:24px;height:24px;flex:none;color:var(--accent)}
+.logo{width:24px;height:24px;flex:none;color:var(--text)}
 .brand-name{font-weight:750;letter-spacing:.3px;font-size:19px}
 .icon-btn{background:none;border:none;color:var(--muted);padding:6px;border-radius:10px}
 .icon-btn:active{background:var(--card)}
@@ -79,7 +79,7 @@ strong{color:var(--text);font-weight:650}
 .cam-placeholder p strong{color:var(--ink,var(--text));font-weight:700}
 .cam-placeholder .tiny{text-align:center;font-size:12.5px}
 .cam-placeholder .tiny{margin-top:14px}
-.ball{width:56px;height:56px;margin:0 auto 26px;display:block;color:var(--accent);opacity:.9}
+.ball{width:56px;height:56px;margin:0 auto 26px;display:block;color:var(--text);opacity:1}
 @media(prefers-reduced-motion:reduce){.ball{animation:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -121,7 +121,7 @@ strong{color:var(--text);font-weight:650}
 
 /* ---------- empty state ---------- */
 .empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;gap:6px}
-.empty-icon{width:46px;height:46px;margin-bottom:10px;color:var(--accent);opacity:.9}
+.empty-icon{width:46px;height:46px;margin-bottom:10px;color:var(--text);opacity:.9}
 .empty-state h2{font-size:21px;font-weight:720}
 .empty-state p{max-width:300px;margin-bottom:14px}
 
@@ -211,7 +211,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   backdrop-filter:blur(16px);border-top:1px solid var(--line);z-index:30}
 .tab{flex:1;background:none;border:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;font-weight:600}
 .tab svg{width:23px;height:23px}
-.tab.active{color:var(--accent)}
+.tab.active{color:var(--text);font-weight:680}
 
 /* ---------- settings sheet ---------- */
 .sheet-backdrop{position:fixed;inset:0;background:rgba(20,17,16,.34);z-index:40;display:flex;align-items:flex-end;animation:fade .2s}
@@ -304,9 +304,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
 .seat-sub{font-size:13px;color:var(--muted);line-height:1.4}
 
 /* ---------- premium pass ---------- */
-.seat-icon{width:22px;height:22px;color:var(--accent);margin-bottom:4px}
+.seat-icon{width:22px;height:22px;color:var(--text);margin-bottom:4px}
 
-.seat-card.sel .seat-icon{color:var(--accent)}
+.seat-card.sel .seat-icon{color:var(--text)}
 .btn.subtle{flex:0 0 auto!important;color:var(--muted);font-weight:600}
 .btn.subtle:active{color:var(--bad)}
 
