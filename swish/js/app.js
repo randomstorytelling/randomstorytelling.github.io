@@ -669,7 +669,7 @@ function renderProgress() {
     item.className = "history-item";
     const pal = rec.overall >= 80 ? ["#2F7D5B", "rgba(47,125,91,.12)"]
       : rec.overall >= 55 ? ["#9A7212", "rgba(154,114,18,.12)"]
-      : ["#A32430", "rgba(163,36,48,.1)"];
+      : ["#A32430", "rgba(0,0,0,.1)"];
     item.innerHTML = `
       <div class="history-score" style="background:${pal[1]};color:${pal[0]}">${rec.overall}</div>
       <div class="history-meta">
@@ -689,7 +689,7 @@ function drawTrend(canvas, scores) {
   if (canvas.height !== h) canvas.height = h;
   ctx.clearRect(0, 0, w, h);
   if (!scores || scores.length < 2) {
-    ctx.fillStyle = "#6E645A"; ctx.font = `${13 * dpr}px Elza,-apple-system,sans-serif`;
+    ctx.fillStyle = "#6E6E6E"; ctx.font = `${13 * dpr}px Elza,-apple-system,sans-serif`;
     ctx.fillText("Need a couple more shots to chart a trend.", 10 * dpr, h / 2);
     return;
   }
@@ -699,7 +699,7 @@ function drawTrend(canvas, scores) {
   const ys = (v) => h - pad - ((v - min) / (max - min || 1)) * (h - 2 * pad);
   // area
   const grad = ctx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, "rgba(142,22,32,.22)"); grad.addColorStop(1, "rgba(142,22,32,0)");
+  grad.addColorStop(0, "rgba(0,0,0,.22)"); grad.addColorStop(1, "rgba(0,0,0,0)");
   ctx.beginPath(); ctx.moveTo(xs(0), ys(scores[0]));
   scores.forEach((v, i) => ctx.lineTo(xs(i), ys(v)));
   ctx.lineTo(xs(scores.length - 1), h - pad); ctx.lineTo(xs(0), h - pad); ctx.closePath();
@@ -707,9 +707,9 @@ function drawTrend(canvas, scores) {
   // line
   ctx.beginPath(); ctx.moveTo(xs(0), ys(scores[0]));
   scores.forEach((v, i) => ctx.lineTo(xs(i), ys(v)));
-  ctx.strokeStyle = "#8E1620"; ctx.lineWidth = 2.5 * dpr; ctx.lineJoin = "round"; ctx.stroke();
+  ctx.strokeStyle = "#000000"; ctx.lineWidth = 2.5 * dpr; ctx.lineJoin = "round"; ctx.stroke();
   // dots
-  scores.forEach((v, i) => { ctx.beginPath(); ctx.arc(xs(i), ys(v), 3 * dpr, 0, 7); ctx.fillStyle = "#FFFFFF"; ctx.strokeStyle = "#8E1620"; ctx.lineWidth = 1.5 * dpr; ctx.fill(); ctx.stroke(); });
+  scores.forEach((v, i) => { ctx.beginPath(); ctx.arc(xs(i), ys(v), 3 * dpr, 0, 7); ctx.fillStyle = "#FFFFFF"; ctx.strokeStyle = "#000000"; ctx.lineWidth = 1.5 * dpr; ctx.fill(); ctx.stroke(); });
 }
 
 /* ----------------- drills ----------------- */
