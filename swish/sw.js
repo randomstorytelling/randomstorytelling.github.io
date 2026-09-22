@@ -5,8 +5,8 @@ const CACHE = "swish-v7";
 const SHELL = [
   "./",
   "./index.html",
-  "./css/app.css",
-  "./js/app.js",
+  "./css/app.css?v=7",
+  "./js/app.js?v=7",
   "./js/pose.js",
   "./js/analyze.js",
   "./js/store.js",
@@ -15,7 +15,7 @@ const SHELL = [
   "./js/coaches.js",
   "./js/billing.js",
   "./manifest.webmanifest",
-  "./icons/icon.svg",
+  "./icons/icon.svg?v=7",
 ];
 
 self.addEventListener("install", (e) => {
