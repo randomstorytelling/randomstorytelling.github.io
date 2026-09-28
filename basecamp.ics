@@ -50,43 +50,6 @@ TRANSP:TRANSPARENT
 URL:https://www.austinfilm.org/screening/deep-in-the-heart-2-texas-rivers/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Georgetown Palace Theatre: Adv. Acting\, Voice for the Actor (ages
-  13 to 18)
-DTSTART;VALUE=DATE:20260929
-DTEND;VALUE=DATE:20261118
-DTSTAMP:20260928T133845Z
-UID:georgetown-palace-theatre-adv-acting-voice-for-the-actor-ages-13-to-18
- -2026-09-29@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:class
-DESCRIPTION:$240.\nTuesdays 6:25 to 7:25pm CDT. Teen acting class\, page s
- hows Waitlist.\nSource: georgetownpalacetheatre.getgalore.com\, read 2026-
- 09-28\nhttps://georgetownpalacetheatre.getgalore.com/
-LAST-MODIFIED:20260928T133845Z
-LOCATION:Doug Smith Performance Center\, Georgetown Palace Theatre\, Georg
- etown\, TX
-TRANSP:TRANSPARENT
-URL:https://georgetownpalacetheatre.getgalore.com/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:The Movie Lab Academy\, youth filmmaking program (ages 11 to 17)
-DTSTART;VALUE=DATE:20260929
-DTEND;VALUE=DATE:20261107
-DTSTAMP:20260928T133845Z
-UID:the-movie-lab-academy-youth-filmmaking-program-ages-11-to-17-2026-09-2
- 9@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:class
-DESCRIPTION:Time and price not listed.\nYouth\; listing dates run Sept 5 t
- o Nov 6 so the program is already under way\; price not stated.\nSource: T
- exas Film Commission calendar page\, read 2026-09-28\nhttps://gov.texas.go
- v/film/event/the-movie-lab-academy
-LAST-MODIFIED:20260928T133845Z
-LOCATION:Cedar Park Library\, Cedar Park\, TX
-TRANSP:TRANSPARENT
-URL:https://gov.texas.gov/film/event/the-movie-lab-academy
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Queer Film Theory 101: The Birdcage
 DTSTART;TZID=America/Chicago:20260929T152000
 DTSTAMP:20260928T134057Z
@@ -340,28 +303,6 @@ DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nLaredo
 LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
 URL:https://gov.texas.gov/film/hotline-entries/fronterror-film-fest
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Georgetown Palace Theatre: Scene Study\, Film and TV (ages 9 to 12
- )
-DTSTART;VALUE=DATE:20261001
-DTEND;VALUE=DATE:20261120
-DTSTAMP:20260928T133845Z
-UID:georgetown-palace-theatre-scene-study-film-and-tv-ages-9-to-12-2026-10
- -01@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:class
-DESCRIPTION:$240.\nThursdays 5:20 to 6:20pm CDT. Youth film and TV scene c
- lass\, page shows Waitlist. Other fall youth acting and improv classes on 
- the same store also show waitlist.\nSource: georgetownpalacetheatre.getgal
- ore.com\, read 2026-09-28\nhttps://georgetownpalacetheatre.getgalore.com/p
- roviders?page=2&reload=false&view=list
-LAST-MODIFIED:20260928T133845Z
-LOCATION:Doug Smith Performance Center\, Georgetown Palace Theatre\, Georg
- etown\, TX
-TRANSP:TRANSPARENT
-URL:https://georgetownpalacetheatre.getgalore.com/providers?page=2&reload=
- false&view=list
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Houston Cinema Arts Festival
@@ -3636,23 +3577,6 @@ LAST-MODIFIED:20260928T133845Z
 LOCATION:Various locations\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://austinfilmfestival.com/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Austin Film Festival Young Filmmakers Showcase
-DTSTART;VALUE=DATE:20261029
-DTEND;VALUE=DATE:20261106
-DTSTAMP:20260928T133845Z
-UID:austin-film-festival-young-filmmakers-showcase-2026-10-29@randomstoryt
- elling.com
-SEQUENCE:0
-CATEGORIES:showcase
-DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nFilmma
- kers ages 13 to 18\; page gives the festival week only\, no showtime\, ven
- ue or price.\nSource: Austin Film Festival Young Filmmakers page\, read 20
- 26-09-28\nhttps://austinfilmfestival.com/yfp/competition/
-LAST-MODIFIED:20260928T133845Z
-TRANSP:TRANSPARENT
-URL:https://austinfilmfestival.com/yfp/competition/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Actor's School: Acting Fundamentals (Friday\, Northridge)
