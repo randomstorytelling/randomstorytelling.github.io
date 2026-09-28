@@ -329,17 +329,17 @@ BEGIN:VEVENT
 SUMMARY:Deadline: Fronterror Film Fest\, Laredo\, regular
 DTSTART;VALUE=DATE:20261001
 DTEND;VALUE=DATE:20261002
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T143836Z
 UID:fronterror-film-fest-regular-deadline-2026@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:deadline
 DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nLaredo
  . Festival Oct 17. Fee not listed.\nSource: meet_show_levelup_oct_dec_2026
  .md (room hunt\, each page read 2026-09-21)\nhttps://gov.texas.gov/film/ho
- tline-entries
-LAST-MODIFIED:20260921T104648Z
+ tline-entries/fronterror-film-fest
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
-URL:https://gov.texas.gov/film/hotline-entries
+URL:https://gov.texas.gov/film/hotline-entries/fronterror-film-fest
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Georgetown Palace Theatre: Scene Study\, Film and TV (ages 9 to 12
@@ -1788,18 +1788,18 @@ URL:https://www.eventbrite.com/e/goremet-cinema-gang-presents-grapes-of-de
  ath-tickets-1996061263973
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:ATX Short Film Showcase\, Season 6 opener
+SUMMARY:ATX Short Film Showcase\, Season 6
 DTSTART;TZID=America/Chicago:20261012T193000
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T143836Z
 UID:atx-short-film-showcase-2026-10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
 DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8. Eight Texas short
  s\, filmmaker Q and A\, audience vote. Submit on FilmFreeway: under 25 min
  utes\, a local filmmaker in the room.\nSource: meet_show_levelup_oct_dec_2
  026.md (room hunt\, each page read 2026-09-21)\nhttps://www.tickettailor.c
  om/events/atxshortfilmshowcase/819561
-LAST-MODIFIED:20260921T104648Z
+LAST-MODIFIED:20260928T143836Z
 LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
 URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
 END:VEVENT
@@ -2016,21 +2016,40 @@ LOCATION:Texas Union Theatre\, UT Austin\, Austin\, TX
 URL:https://calendar.utexas.edu/event/perfect-blue-gkids
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Carol Hickey Acting Studio: Improvisation with Garrett Rojas (Zoom
-  add-on class)
+SUMMARY:Austin Horror Film Festival 3
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261018
+DTSTAMP:20260928T143836Z
+UID:austin-horror-film-festival-3-2026-10-16@randomstorytelling.com
+SEQUENCE:1
+CATEGORIES:festival
+DESCRIPTION:$15 individual screenings\; $80 full festival pass.\nDoors 4:3
+ 0 PM Fri\, 11:30 AM Sat. 65 short and feature horror films\; organizer ATX
+  Short Film Showcase. Not in the current calendar.\nSource: Eventbrite eve
+ nt page (description text)\, read 2026-09-28\nhttps://www.eventbrite.com/e
+ /austin-horror-film-festival-3-tickets-2002014953619
+LAST-MODIFIED:20260928T143836Z
+LOCATION:29th Street Ballroom\, 2906 Fruth St\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://www.eventbrite.com/e/austin-horror-film-festival-3-tickets-200
+ 2014953619
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Carol Hickey Acting Studio: Improvisation with Garrett Rojas (add-
+ on class)
 DTSTART;VALUE=DATE:20261015
 DTEND;VALUE=DATE:20261211
-DTSTAMP:20260928T134057Z
+DTSTAMP:20260928T143836Z
 UID:carol-hickey-acting-studio-improvisation-with-garrett-rojas-zoom-add-o
  -2026-10-15@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:class
 DESCRIPTION:$650.00 USD.\nThursdays 6 to 8pm. Page says no class Nov 24\, 
  which is a Tuesday\, so the skipped Thursday is unclear.\nSource: carolhic
  keyactingstudio.com fall26\, read 2026-09-28\nhttps://www.carolhickeyactin
  gstudio.com/fall26.htm
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Online via Zoom
+LAST-MODIFIED:20260928T143836Z
+LOCATION:Online via Zoom\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://www.carolhickeyactingstudio.com/fall26.htm
 END:VEVENT
@@ -2066,23 +2085,6 @@ DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nDocume
 LAST-MODIFIED:20260921T104648Z
 TRANSP:TRANSPARENT
 URL:https://filmfreeway.com/ThinLine
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Carol Hickey Acting Studio\, fall Thursday classes start
-DTSTART;TZID=America/Chicago:20261015T173000
-DTSTAMP:20260921T104648Z
-UID:carol-hickey-fall-thursdays-start-2026@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:class
-DESCRIPTION:Price not listed.\nActing for Film 2 with Jon Michael Davis\, 
- 5:30 to 9pm\, eight weeks. Improvisation with Garrett Rojas\, 6 to 8pm\, $
- 650\, through Dec 10.\nSource: meet_show_levelup_oct_dec_2026.md (room hun
- t\, each page read 2026-09-21)\nhttps://www.carolhickeyactingstudio.com/fa
- ll26.htm
-LAST-MODIFIED:20260921T104648Z
-LOCATION:Carol Hickey Acting Studio\, 979 Springdale Rd Suite 114\, Austin
- \, TX
-URL:https://www.carolhickeyactingstudio.com/fall26.htm
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:AI and the Race for the Future
@@ -2167,25 +2169,6 @@ LOCATION:AFS Cinema\, 6406 N I-35\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://calendar.austinchronicle.com/event/austin-camerata-presents-no
  sferatu-14358119
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Austin Horror Film Festival 3
-DTSTART;VALUE=DATE:20261016
-DTEND;VALUE=DATE:20261018
-DTSTAMP:20260928T134057Z
-UID:austin-horror-film-festival-3-2026-10-16@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:festival
-DESCRIPTION:$15 individual screenings\; $80 full festival pass.\nDoors 4:3
- 0 PM Fri\, 11:30 AM Sat. 65 short and feature horror films\; organizer ATX
-  Short Film Showcase. Not in the current calendar.\nSource: Eventbrite eve
- nt page (description text)\, read 2026-09-28\nhttps://www.eventbrite.com/e
- /austin-horror-film-festival-3-tickets-2002014953619
-LAST-MODIFIED:20260928T134057Z
-LOCATION:29th Street Ballroom\, 2906 Fruth St\, Austin\, TX
-TRANSP:TRANSPARENT
-URL:https://www.eventbrite.com/e/austin-horror-film-festival-3-tickets-200
- 2014953619
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:AVAFF Austin Veteran Arts Film Festival
@@ -2361,26 +2344,6 @@ DESCRIPTION:$450.00.\nSaturdays 11am to 2pm CT. Taught by Will Cleveland.
 LAST-MODIFIED:20260928T133845Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/ucb/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Into the Industry: Master Class with Keith D. Robinson
-DTSTART;TZID=America/Chicago:20261017T130000
-DTEND;TZID=America/Chicago:20261017T143000
-DTSTAMP:20260928T134057Z
-UID:into-the-industry-master-class-with-keith-d-robinson-2026-10-17@random
- storytelling.com
-SEQUENCE:0
-CATEGORIES:class
-DESCRIPTION:$16.43 to $30.87 (Eventbrite listing data)\; listing availabil
- ity reads SoldOut.\nPerformance skills and career session\, not an auditio
- n or casting call. Listing shows SoldOut.\nSource: Eventbrite event page (
- structured listing data)\, read 2026-09-28\nhttps://www.eventbrite.com/e/i
- nto-the-industry-master-class-with-keith-d-robinson-tickets-1997803759825
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Boyd Vance Auditorium\, George Washington Carver Museum\, 1165 An
- gelina St\, Austin\, TX
-URL:https://www.eventbrite.com/e/into-the-industry-master-class-with-keith
- -d-robinson-tickets-1997803759825
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Matcha + Meetup: Austin\, Film + Music Speed Networking Roulette
@@ -3010,19 +2973,20 @@ TRANSP:TRANSPARENT
 URL:https://www.austinfilm.org/screening/kung-fu-hustle/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Precision Camera: Getting Started with Video
+SUMMARY:Precision Camera: Mastering Video\, A Beginner's Guide to Better V
+ ideography
 DTSTART;TZID=America/Chicago:20261023T170000
 DTEND;TZID=America/Chicago:20261023T190000
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T143836Z
 UID:precision-camera-getting-started-with-video-2026-10-23@randomstorytell
  ing.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$99.00.\nBeginner videography\, instructor Malik Longstreet. S
  ame page also lists Nov 20 (Anderson Lane) and Nov 28 (Southpark Meadows).
  \nSource: Precision Camera class page\, read 2026-09-28\nhttps://www.preci
  sion-camera.com/getting-started-with-video/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T143836Z
 LOCATION:Precision Camera\, Anderson Lane\, Austin\, TX
 URL:https://www.precision-camera.com/getting-started-with-video/
 END:VEVENT
@@ -3779,14 +3743,13 @@ URL:https://www.eventbrite.com/e/eat-the-film-hocus-pocus-tickets-19911565
  67895
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:AFF Awards Luncheon (Kripke\, Jacobson\, Haigh\, Harris\, Taylor h
- onored)
+SUMMARY:AFF Awards Luncheon
 DTSTART;VALUE=DATE:20261031
 DTEND;VALUE=DATE:20261101
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T143836Z
 UID:aff-awards-luncheon-kripke-jacobson-haigh-harris-taylor-honored-2026-1
  0-31@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:talk
 DESCRIPTION:$70.\nVenue TBD per the listing.\nFAQ says tickets are for Con
  ference and Producers badge holders only. Honorees per the blog: Eric Krip
@@ -3795,7 +3758,7 @@ DESCRIPTION:$70.\nVenue TBD per the listing.\nFAQ says tickets are for Con
  ttliff Award for Screenwriting). Venue not stated.\nSource: AFF awardees b
  log and FAQ page\, read 2026-09-28\nhttps://austinfilmfestival.com/blog/20
  26-awardees-and-fellowships/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
 URL:https://austinfilmfestival.com/blog/2026-awardees-and-fellowships/
 END:VEVENT
@@ -3875,17 +3838,18 @@ TRANSP:TRANSPARENT
 URL:https://writersleague.org/calendar/november-2026-write-in-access-pass/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:The Actor’s School\, Introduction to Voiceover II starts
+SUMMARY:The Actor’s School\, Introduction to Voiceover II (Monday\, audi
+ obooks and fiction) starts
 DTSTART;TZID=America/Chicago:20261102T180000
 DTEND;TZID=America/Chicago:20261102T203000
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T143836Z
 UID:actors-school-voiceover-ii-2026@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$205.\nMondays\, six weeks\, Cliff Miller.\nSource: meet_show_
  levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://t
  heactorsschool.org/index.php/fall2026/
-LAST-MODIFIED:20260921T104648Z
+LAST-MODIFIED:20260928T143836Z
 LOCATION:The Actor’s School\, Austin\, TX
 URL:https://theactorsschool.org/index.php/fall2026/
 END:VEVENT
@@ -3927,17 +3891,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Lone Star Film Festival
 DTSTART;VALUE=DATE:20261104
-DTEND;VALUE=DATE:20261112
-DTSTAMP:20260928T133845Z
+DTEND;VALUE=DATE:20261105
+DTSTAMP:20260928T143836Z
 UID:lone-star-film-festival-2026-11-04@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:festival
 DESCRIPTION:Price not listed.\nOUTSIDE AUSTIN\, Texas festival. FilmFreewa
  y says Nov 4 to 11\, Dallas Film Commission says Nov 4 to 10. Festival sit
- e shows official selections but no dates.\nSource: FilmFreeway page and lo
- nestarfilmfestival.com\, read 2026-09-28\nhttps://www.lonestarfilmfestival
- .com/lsff2026
-LAST-MODIFIED:20260928T133845Z
+ e shows official selections but no dates. Closing date not confirmed: sour
+ ces say Nov 10\, 11 or 13\; the festival page prints no dates.\nSource: Fi
+ lmFreeway page and lonestarfilmfestival.com\, read 2026-09-28\nhttps://www
+ .lonestarfilmfestival.com/lsff2026
+LAST-MODIFIED:20260928T143836Z
 LOCATION:Fort Worth Cultural District\, Fort Worth\, TX
 TRANSP:TRANSPARENT
 URL:https://www.lonestarfilmfestival.com/lsff2026
@@ -3959,19 +3924,19 @@ LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/ucb/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Austin Polish Film Festival
+SUMMARY:Austin Polish Film Festival (final screening 11.15)
 DTSTART;VALUE=DATE:20261105
 DTEND;VALUE=DATE:20261109
-DTSTAMP:20260928T134057Z
+DTSTAMP:20260928T143836Z
 UID:austin-polish-film-festival-2026@randomstorytelling.com
-SEQUENCE:3
+SEQUENCE:4
 CATEGORIES:festival
 DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nThe festival si
  te also lists November 15 (21st festival\, Nov 5 to 8 and Nov 15) and says
   details are coming. Visit Austin lists AFS Cinema as the venue.\nSource: 
  Austin Chronicle film calendar\, read 2026-09-21\nhttps://calendar.austinc
  hronicle.com/event/austin-polish-film-festival-14332434
-LAST-MODIFIED:20260928T134057Z
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
 URL:https://calendar.austinchronicle.com/event/austin-polish-film-festival
  -14332434
@@ -4029,16 +3994,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Wimberley Film Festival
 DTSTART;VALUE=DATE:20261107
-DTEND;VALUE=DATE:20261109
-DTSTAMP:20260928T133845Z
+DTEND;VALUE=DATE:20261108
+DTSTAMP:20260928T143836Z
 UID:wimberley-film-festival-2026-11-07@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:festival
 DESCRIPTION:Price not listed.\nHill Country\, not Austin area\, flagged as
   near. Third annual. Schedule coming soon\; FilmFreeway lists Nov 7 only.
  \nSource: Texas Film Commission event page\, read 2026-09-28\nhttps://wimb
  erleyparksandrec.com/special-events/wimberley-film-festival/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T143836Z
 LOCATION:Outdoor setting in Wimberley\, Wimberley\, TX
 TRANSP:TRANSPARENT
 URL:https://wimberleyparksandrec.com/special-events/wimberley-film-festiva
@@ -4230,40 +4195,22 @@ URL:https://calendar.austinchronicle.com/event/round-top-film-festival-142
  88513
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Deadline: Dallas International Film Festival 2027\, fall
-DTSTART;VALUE=DATE:20261113
-DTEND;VALUE=DATE:20261114
-DTSTAMP:20260921T104648Z
-UID:dallas-international-film-festival-fall-deadline-2026@randomstorytelli
- ng.com
-SEQUENCE:0
-CATEGORIES:deadline
-DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nFeatur
- es\, shorts\, Texas strands\, and four screenplay categories with live tab
- le reads at the festival. Festival Apr 22 to 29\, 2027.\nSource: meet_show
- _levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://
- filmfreeway.com/DallasInternationalFilmFestival
-LAST-MODIFIED:20260921T104648Z
-TRANSP:TRANSPARENT
-URL:https://filmfreeway.com/DallasInternationalFilmFestival
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Austin Studio Tour at Motion Media Arts Center: media arts exhibit
- ion\, film workshops\, panel and mixer
+ ion\, panel and mixer
 DTSTART;VALUE=DATE:20261114
 DTEND;VALUE=DATE:20261123
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T143836Z
 UID:austin-studio-tour-at-motion-media-arts-center-media-arts-exhibition-f
  -2026-11-14@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:other
-DESCRIPTION:Free.\nVenue TBD per the listing.\n11am to 5pm daily. Tour pag
- e says Nov 14 and 15 and Nov 21 and 22 at The Canopy and Govalle Elementar
- y\; the MMAC homepage lists Nov 7\, 14\, 15 and 22 to 23\, so dates confli
- ct. Panel and mixer date not given.\nSource: Motion Media Arts Center Aust
- in Studio Tour page\, read 2026-09-28\nhttps://austinfilmschool.org/austin
- -studio-tour
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Free.\nVenue TBD per the listing.\nWeekends Nov 14 to 15 and N
+ ov 21 to 22 per the tour page\; the Motion Media Arts Center homepage list
+ s other dates\, and exact dates and times are still to be posted. Includes
+  youth and family workshops.\nSource: Motion Media Arts Center Austin Stud
+ io Tour page\, read 2026-09-28\nhttps://austinfilmschool.org/austin-studio
+ -tour
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
 URL:https://austinfilmschool.org/austin-studio-tour
 END:VEVENT
@@ -4286,17 +4233,19 @@ BEGIN:VEVENT
 SUMMARY:Deadline: WorldFest Houston\, regular
 DTSTART;VALUE=DATE:20261115
 DTEND;VALUE=DATE:20261116
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T143836Z
 UID:worldfest-houston-regular-deadline-2026@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:deadline
 DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nLate d
  eadline Dec 15. Fee not listed on the Commission page.\nSource: meet_show_
  levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://g
- ov.texas.gov/film/hotline-entries
-LAST-MODIFIED:20260921T104648Z
+ ov.texas.gov/film/hotline-entries/worldfest-houston-international-film-fes
+ tival-2026
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
-URL:https://gov.texas.gov/film/hotline-entries
+URL:https://gov.texas.gov/film/hotline-entries/worldfest-houston-internati
+ onal-film-festival-2026
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB at ColdTowne: Improv 101\, Improv Basics (Sunday)
@@ -4480,18 +4429,19 @@ URL:https://www.austinfilm.org/event/austin-public-studio-crew-certificati
  on-nov20/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Precision Camera: Getting Started with Video
+SUMMARY:Precision Camera: Mastering Video\, A Beginner's Guide to Better V
+ ideography
 DTSTART;TZID=America/Chicago:20261120T170000
 DTEND;TZID=America/Chicago:20261120T190000
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T143836Z
 UID:precision-camera-getting-started-with-video-2026-11-20@randomstorytell
  ing.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$99.00.\nSecond Anderson Lane date for the beginner video clas
  s.\nSource: Precision Camera class page\, read 2026-09-28\nhttps://www.pre
  cision-camera.com/getting-started-with-video/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T143836Z
 LOCATION:Precision Camera\, Anderson Lane\, Austin\, TX
 URL:https://www.precision-camera.com/getting-started-with-video/
 END:VEVENT
@@ -4630,18 +4580,19 @@ URL:https://www.eventbrite.com/e/the-sunshine-boys-milwood-movie-night-tic
  kets-2000656306870
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Precision Camera: Getting Started with Video
+SUMMARY:Precision Camera: Mastering Video\, A Beginner's Guide to Better V
+ ideography
 DTSTART;TZID=America/Chicago:20261128T150000
 DTEND;TZID=America/Chicago:20261128T170000
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T143836Z
 UID:precision-camera-getting-started-with-video-2026-11-28@randomstorytell
  ing.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$99.00.\nSouthpark Meadows date for the beginner video class.
  \nSource: Precision Camera class page\, read 2026-09-28\nhttps://www.preci
  sion-camera.com/getting-started-with-video/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T143836Z
 LOCATION:Precision Camera\, Southpark Meadows\, Austin\, TX
 URL:https://www.precision-camera.com/getting-started-with-video/
 END:VEVENT
@@ -4649,18 +4600,20 @@ BEGIN:VEVENT
 SUMMARY:Deadline: Carole Dorothy Joyce Student Filmmaker Grant
 DTSTART;VALUE=DATE:20261130
 DTEND;VALUE=DATE:20261201
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T143836Z
 UID:carole-dorothy-joyce-student-grant-deadline-2026@randomstorytelling.co
  m
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:deadline
 DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nStatew
  ide. Details on the Texas Film Commission calls for entries page.\nSource:
   meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)
- \nhttps://gov.texas.gov/film/hotline-entries
-LAST-MODIFIED:20260921T104648Z
+ \nhttps://gov.texas.gov/film/hotline-entries/carole-dorothy-joyce-2026-stu
+ dent-filmmaker-grant
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
-URL:https://gov.texas.gov/film/hotline-entries
+URL:https://gov.texas.gov/film/hotline-entries/carole-dorothy-joyce-2026-s
+ tudent-filmmaker-grant
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin School of Film: Intro to DaVinci Resolve 19 (Certified Cour
@@ -4868,16 +4821,18 @@ BEGIN:VEVENT
 SUMMARY:Deadline: WorldFest Houston\, late
 DTSTART;VALUE=DATE:20261215
 DTEND;VALUE=DATE:20261216
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T143836Z
 UID:worldfest-houston-late-deadline-2026@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:deadline
 DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nHousto
  n.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 
- 2026-09-21)\nhttps://gov.texas.gov/film/hotline-entries
-LAST-MODIFIED:20260921T104648Z
+ 2026-09-21)\nhttps://gov.texas.gov/film/hotline-entries/worldfest-houston-
+ international-film-festival-2026
+LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
-URL:https://gov.texas.gov/film/hotline-entries
+URL:https://gov.texas.gov/film/hotline-entries/worldfest-houston-internati
+ onal-film-festival-2026
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Storytelling for Creatives (Dec 15 session)
