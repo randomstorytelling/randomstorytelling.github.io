@@ -3195,19 +3195,19 @@ URL:https://www.crowdwork.com/e/acting-for-improvisers-with-amanda-van-nos
  trand-bb48ad61-ab04-4da9-b4ae-2b01c401d9b3
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:The Actor's School: Acting Explorations I
+SUMMARY:The Actor's School: Acting Explorations I (full\, waitlist)
 DTSTART;VALUE=DATE:20261022
 DTEND;VALUE=DATE:20261211
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T164540Z
 UID:the-actor-s-school-acting-explorations-i-2026-10-22@randomstorytelling
  .com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$275.\nThursdays 6:30 to 9:30 p.m. Scene study for actors with
   prior training\, 10 students max. Page says FULL\, taking waitlist.\nSour
  ce: theactorsschool.org fall2026 page\, read 2026-09-28\nhttps://theactors
  school.org/index.php/fall2026/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:Northridge Campus\, 11928 Stonehollow Dr\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://theactorsschool.org/index.php/fall2026/
@@ -3441,18 +3441,18 @@ URL:https://theactorsschool.org/index.php/fall2026/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Actor's School: Acting on Camera I (Saturday section\, Jacqui 
- Calloway)
+ Calloway\, full)
 DTSTART;VALUE=DATE:20261024
 DTEND;VALUE=DATE:20261213
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T164540Z
 UID:the-actor-s-school-acting-on-camera-i-saturday-section-jacqui-calloway
  -2026-10-24@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$275.\nSaturdays 10 a.m. to 1 p.m. Page marks this section FUL
  L.\nSource: theactorsschool.org fall2026 page\, read 2026-09-28\nhttps://t
  heactorsschool.org/index.php/fall2026/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:ATX Theatre at Central Christian Church\, 12th & Guadalupe\, Aust
  in\, TX
 TRANSP:TRANSPARENT
@@ -3667,19 +3667,19 @@ LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:The Actor's School: Acting Shakespeare
+SUMMARY:The Actor's School: Acting Shakespeare (full\, waitlist)
 DTSTART;VALUE=DATE:20261026
 DTEND;VALUE=DATE:20261201
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T164540Z
 UID:the-actor-s-school-acting-shakespeare-2026-10-26@randomstorytelling.co
  m
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$245.\nMondays 6:30 to 9:30 p.m. Verse\, meter and monologue w
  ork\, 1 to 2 minute monologues. Page says FULL\, taking waitlist.\nSource:
   theactorsschool.org fall2026 page\, read 2026-09-28\nhttps://theactorssch
  ool.org/index.php/fall2026/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:ATX Theatre at Central Christian Church\, 12th & Guadalupe\, Aust
  in\, TX
 TRANSP:TRANSPARENT
@@ -3737,39 +3737,40 @@ URL:https://drafthouse.com/event/queer-film-theory-101-daughters-of-darkne
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Actor's School: Acting on Camera I (Tuesday section\, Sims Hol
- land)
+ land\, prior acting class required)
 DTSTART;VALUE=DATE:20261027
 DTEND;VALUE=DATE:20261216
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T164540Z
 UID:the-actor-s-school-acting-on-camera-i-tuesday-section-sims-holland-202
  6-10-27@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$275.\nTuesdays 6:30 to 9:30 p.m. Marked JUST ADDED\, 10 stude
  nts max\, previous acting class and instructor approval required. Saturday
   section Oct 24 to Dec 12 is marked FULL.\nSource: theactorsschool.org fal
  l2026 page\, read 2026-09-28\nhttps://theactorsschool.org/index.php/fall20
  26/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:ATX Theatre at Central Christian Church\, 12th & Guadalupe\, Aust
  in\, TX
 TRANSP:TRANSPARENT
 URL:https://theactorsschool.org/index.php/fall2026/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:The Actor's School: Introduction to Voiceover I (online)
+SUMMARY:The Actor's School: Introduction to Voiceover I (online\, full\, w
+ aitlist)
 DTSTART;VALUE=DATE:20261027
 DTEND;VALUE=DATE:20261209
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T164540Z
 UID:the-actor-s-school-introduction-to-voiceover-i-online-2026-10-27@rando
  mstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$205.\nTuesdays 6:00 to 8:30 p.m. Taught by Rosanna Pilcher\, 
  no class Nov 24\, 8 students max. Page says FULL\, taking waitlist.\nSourc
  e: theactorsschool.org fall2026 page\, read 2026-09-28\nhttps://theactorss
  chool.org/index.php/fall2026/
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:Online via Zoom
 TRANSP:TRANSPARENT
 URL:https://theactorsschool.org/index.php/fall2026/
@@ -3966,9 +3967,9 @@ BEGIN:VEVENT
 SUMMARY:Austin Film Festival & Writers Conference
 DTSTART;VALUE=DATE:20261029
 DTEND;VALUE=DATE:20261106
-DTSTAMP:20260928T151415Z
+DTSTAMP:20260928T164540Z
 UID:austin-film-festival-2026@randomstorytelling.com
-SEQUENCE:2
+SEQUENCE:3
 CATEGORIES:festival
 DESCRIPTION:Film Pass $80\, Lone Star Badge $175\, Weekend Badge $340\, Co
  nference Badge $480\, Producers Badge $710.\nFilm Pass $80 ($85 walk-up)\;
@@ -3977,10 +3978,11 @@ DESCRIPTION:Film Pass $80\, Lone Star Badge $175\, Weekend Badge $340\, Co
  f Bill Wittliff and The Last Rocketman (Texas stuntman Dan Schlund). Per-f
  ilm dates and times are not posted\; announced list is a first wave per Tr
  ibeza. Honorees: Brad Bird\, Andrew Haigh\, Aleshea Harris\, Jim Taylor\; 
- Awards Luncheon Oct 31.\nSource: austinfilmfestival.com announced films pa
- ge\, Austin Chronicle Sep 16 and Tribeza\, read 2026-09-28\; badge prices 
- read 2026-09-21\nhttps://austinfilmfestival.com/
-LAST-MODIFIED:20260928T151415Z
+ The Awards Luncheon on Oct 31 is sold out (Producers Badge add-on only\, p
+ er the AFF badge page read 2026-09-28).\nSource: austinfilmfestival.com an
+ nounced films page\, Austin Chronicle Sep 16 and Tribeza\, read 2026-09-28
+ \; badge prices read 2026-09-21\nhttps://austinfilmfestival.com/
+LAST-MODIFIED:20260928T164540Z
 LOCATION:Various locations\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://austinfilmfestival.com/
@@ -4355,17 +4357,18 @@ URL:https://www.eventbrite.com/e/bookpeople-presents-julio-torres-the-perf
  ect-gift-tickets-2002080487633
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:The Actor’s School\, Acting Fundamentals starts
+SUMMARY:The Actor’s School\, Acting Fundamentals starts (Thursdays\, Sim
+ s Holland)
 DTSTART;TZID=America/Chicago:20261105T183000
 DTEND;TZID=America/Chicago:20261105T213000
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T164540Z
 UID:actors-school-acting-fundamentals-2026-11-05@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$245.\nThursdays\, six weeks\, Sims Holland.\nSource: meet_sho
  w_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps:/
  /theactorsschool.org/index.php/fall2026/
-LAST-MODIFIED:20260921T104648Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:The Actor’s School\, Austin\, TX
 URL:https://theactorsschool.org/index.php/fall2026/
 END:VEVENT
@@ -4574,17 +4577,18 @@ URL:https://www.austinfilm.org/event/austin-public-studio-crew-certificati
  on-nov10/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:The Actor’s School\, Acting Fundamentals starts
+SUMMARY:The Actor’s School\, Acting Fundamentals starts (Tuesdays\, Jacq
+ ui Calloway)
 DTSTART;TZID=America/Chicago:20261110T183000
 DTEND;TZID=America/Chicago:20261110T213000
-DTSTAMP:20260921T104648Z
+DTSTAMP:20260928T164540Z
 UID:actors-school-acting-fundamentals-2026-11-10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
 DESCRIPTION:$245.\nTuesdays\, six weeks\, Jacqui Calloway.\nSource: meet_s
  how_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps
  ://theactorsschool.org/index.php/fall2026/
-LAST-MODIFIED:20260921T104648Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:The Actor’s School\, Austin\, TX
 URL:https://theactorsschool.org/index.php/fall2026/
 END:VEVENT
@@ -4856,18 +4860,19 @@ TRANSP:TRANSPARENT
 URL:https://www.zachtheater.org/zach-youth/adult-acting-classes/improv/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:UT RTF Media Industry Conversations: Michael Jones\, THE·TEAM
+SUMMARY:UT RTF Media Industry Conversations: Michael Jones\, THE·TEAM (op
+ en to students with RSVP\, public access not stated)
 DTSTART;TZID=America/Chicago:20261116T120000
 DTEND;TZID=America/Chicago:20261116T125500
-DTSTAMP:20260928T133845Z
+DTSTAMP:20260928T164540Z
 UID:ut-rtf-media-industry-conversations-michael-jones-the-team-2026-11-16@
  randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:talk
 DESCRIPTION:Free.\nTalk on the creator economy. Page says free and open to
   students with RSVP\; public access not stated.\nSource: UT RTF Media Indu
  stry Conversations page\, read 2026-09-28\nhttps://rtf.utexas.edu/mic
-LAST-MODIFIED:20260928T133845Z
+LAST-MODIFIED:20260928T164540Z
 LOCATION:DMC 2.106 (Auditorium)\, UT Austin\, Austin\, TX
 URL:https://rtf.utexas.edu/mic
 END:VEVENT
