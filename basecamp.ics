@@ -2593,18 +2593,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Future Traditions Fest 2026\, Latine short film showcase
 DTSTART;VALUE=DATE:20261016
-DTEND;VALUE=DATE:20261018
-DTSTAMP:20260928T133845Z
+DTEND;VALUE=DATE:20261017
+DTSTAMP:20260928T152153Z
 UID:future-traditions-fest-2026-latine-short-film-showcase-2026-10-16@rand
  omstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
-DESCRIPTION:$25 Presale\, $30 at the door.\nFri 7 p.m. film showcase\; Sat
-  5 p.m. live performances. Friday opens with more than ten short films fro
- m Latine filmmakers around the country.\nSource: Austin Chronicle event pa
- ge\, read 2026-09-28\nhttps://calendar.austinchronicle.com/event/future-tr
- aditions-fest-2026-14375151
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$25 Presale\, $30 at the door.\nLatine short film showcase Fri
+  Oct 16 at 7pm\, dadaLab\, 2008 Alexander Ave. The festival runs Oct 16 to
+  17\; Saturday is an artist talk and live music\, not films.\nSource: Aust
+ in Chronicle event page\, read 2026-09-28\nhttps://calendar.austinchronicl
+ e.com/event/future-traditions-fest-2026-14375151
+LAST-MODIFIED:20260928T152153Z
 LOCATION:dadaLab\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://calendar.austinchronicle.com/event/future-traditions-fest-2026
@@ -4398,19 +4398,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Lone Star Film Festival
 DTSTART;VALUE=DATE:20261104
-DTEND;VALUE=DATE:20261111
-DTSTAMP:20260928T151415Z
+DTEND;VALUE=DATE:20261112
+DTSTAMP:20260928T152153Z
 UID:lone-star-film-festival-2026-11-04@randomstorytelling.com
-SEQUENCE:2
+SEQUENCE:3
 CATEGORIES:festival
-DESCRIPTION:Price not listed.\nOUTSIDE AUSTIN\, Texas festival. Nov 4 to 1
- 0 per three pages read 9/28 (festagent\, Houston and Dallas Film Commissio
- n)\; FilmFreeway said Nov 4 to 11. Festival's own page shows selections bu
- t no dates. Submission deadlines were Apr 3\, Jul 31 and Aug 21 and notifi
- cations went out Sep 25\, so submissions look closed\; no later deadline f
- ound.\nSource: FilmFreeway page and lonestarfilmfestival.com\, read 2026-0
- 9-28\nhttps://www.lonestarfilmfestival.com/lsff2026
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nFestival dates Nov 4 to 11 per the organize
+ r's Eventive page and the FilmFreeway listing\; the separate gala is Fri N
+ ov 13 at the Bowie House.\nSource: FilmFreeway page and lonestarfilmfestiv
+ al.com\, read 2026-09-28\nhttps://www.lonestarfilmfestival.com/lsff2026
+LAST-MODIFIED:20260928T152153Z
 LOCATION:Fort Worth Cultural District\, Fort Worth\, TX
 TRANSP:TRANSPARENT
 URL:https://www.lonestarfilmfestival.com/lsff2026
@@ -5175,23 +5172,6 @@ DESCRIPTION:$99.00.\nSecond Anderson Lane date for the beginner video clas
 LAST-MODIFIED:20260928T143836Z
 LOCATION:Precision Camera\, Anderson Lane\, Austin\, TX
 URL:https://www.precision-camera.com/getting-started-with-video/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Reel Science: How Deep Is Your Love\, with ship-to-shore stream an
- d UT researcher discussion
-DTSTART;TZID=America/Chicago:20261120T183000
-DTSTAMP:20260928T133845Z
-UID:reel-science-how-deep-is-your-love-with-ship-to-shore-stream-and-ut-re
- -2026-11-20@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:$13\, $8 with promo code TXSCIENCE.\nScience and environmental
-  documentary audiences\; Sandbox Films series.\nSource: UT Austin calendar
-  event page\, read 2026-09-28\nhttps://calendar.utexas.edu/event/reel-scie
- nce-how-deep-is-your-love
-LAST-MODIFIED:20260928T133845Z
-LOCATION:Long Center for the Performing Arts\, Austin\, TX
-URL:https://calendar.utexas.edu/event/reel-science-how-deep-is-your-love
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Eat the Film: Elf
