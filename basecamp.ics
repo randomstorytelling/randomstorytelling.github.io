@@ -457,25 +457,6 @@ TRANSP:TRANSPARENT
 URL:https://reelviewpro.com/afff
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Dive-in Movies: Spooky Edition
-DTSTART;VALUE=DATE:20261002
-DTEND;VALUE=DATE:20261031
-DTSTAMP:20260928T134057Z
-UID:dive-in-movies-spooky-edition-2026-10-02@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:$25 to $95.\n6:30 PM to 10:00 PM (Fridays). Poolside Fridays: 
- Beetlejuice\, Hocus Pocus\, The Addams Family\, The Nightmare Before Chris
- tmas\, Practical Magic\; per-date order not stated.\nSource: Visit Austin 
- event listing\, read 2026-09-28\nhttps://www.austintexas.org/event/dive-in
- -movies%3a-spooky-edition/398098/
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Fairmont Austin\, 101 Red River St\, Austin\, TX
-TRANSP:TRANSPARENT
-URL:https://www.austintexas.org/event/dive-in-movies%3a-spooky-edition/398
- 098/
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:First They Came for My College\, with filmmaker Q&A
 DTSTART;VALUE=DATE:20261002
 DTEND;VALUE=DATE:20261004
@@ -763,21 +744,6 @@ LAST-MODIFIED:20260928T134057Z
 LOCATION:The Highball\, 1120 S. Lamar Blvd\, Austin\, TX
 URL:https://www.austintexas.org/event/the-highball-retro-market-w-allen-da
  nziger-of-texas-chainsaw-massacre/397949/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Toon Time\, Halloween cartoons
-DTSTART;TZID=America/Chicago:20261003T120000
-DTEND;TZID=America/Chicago:20261003T140000
-DTSTAMP:20260928T133845Z
-UID:toon-time-halloween-cartoons-2026-10-03@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Free.\nKids and families\, animation fans\; bring your own sna
- cks.\nSource: We Luv Video event page\, read 2026-09-28\nhttps://store.wel
- uvvideo.org/events/toon-time-2-copy
-LAST-MODIFIED:20260928T133845Z
-LOCATION:We Luv Video\, 100 North Loop Blvd E\, Austin\, TX
-URL:https://store.weluvvideo.org/events/toon-time-2-copy
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Hideout Theatre\, Level Two starts
@@ -1678,38 +1644,6 @@ LOCATION:AFS Cinema\, 6226 Middle Fiskville Rd\, Austin\, TX
 URL:https://www.meetup.com/austin-cinematalk/events/316713442/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Movies Behind the Museum: Hoppers
-DTSTART;TZID=America/Chicago:20261010T180000
-DTEND;TZID=America/Chicago:20261010T210000
-DTSTAMP:20260928T134057Z
-UID:movies-behind-the-museum-hoppers-2026-10-10@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Price not listed.\nOutdoor screening\; admission includes muse
- um access\, price not stated.\nSource: Do512 event page\, read 2026-09-28
- \nhttps://do512.com/events/2026/10/10/movies-behind-the-museum-tickets
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Texas Science and Natural History Museum\, Austin\, TX
-URL:https://do512.com/events/2026/10/10/movies-behind-the-museum-tickets
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Movies in the Park: Puss in Boots The Last Wish
-DTSTART;TZID=America/Chicago:20261010T180000
-DTEND;TZID=America/Chicago:20261010T220000
-DTSTAMP:20260928T134057Z
-UID:movies-in-the-park-puss-in-boots-the-last-wish-2026-10-10@randomstoryt
- elling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Free.\nFree outdoor screening.\nSource: Eventbrite event page 
- (structured listing data)\, read 2026-09-28\nhttps://www.eventbrite.com/e/
- movies-in-the-park-puss-in-boots-the-last-wish-tickets-1999411458495
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Dove Springs District Park\, 5801 Ainez Dr\, Austin\, TX
-URL:https://www.eventbrite.com/e/movies-in-the-park-puss-in-boots-the-last
- -wish-tickets-1999411458495
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Hyperreal: Leave a Comment with filmmaker Q&A (Michael Burns)
 DTSTART;TZID=America/Chicago:20261010T190000
 DTSTAMP:20260928T133845Z
@@ -1837,23 +1771,6 @@ DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
 LAST-MODIFIED:20260928T151415Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Movies in the Park: Coco
-DTSTART;TZID=America/Chicago:20261011T173000
-DTEND;TZID=America/Chicago:20261011T220000
-DTSTAMP:20260928T134057Z
-UID:movies-in-the-park-coco-2026-10-11@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Free.\nAustin Parks Foundation\; costume contest\, free popcor
- n.\nSource: Eventbrite event page (structured listing data)\, read 2026-09
- -28\nhttps://www.eventbrite.com/e/movies-in-the-park-coco-tickets-19994125
- 06630
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Springwoods Park\, 9117 Anderson Mill Rd\, Austin\, TX
-URL:https://www.eventbrite.com/e/movies-in-the-park-coco-tickets-199941250
- 6630
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:On A String\, Discovery Zone Roadshow
@@ -2105,6 +2022,31 @@ DESCRIPTION:$313.39 including fees.\nFirst date shown on the classes page.
 LAST-MODIFIED:20260928T151415Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://crowdwork.com/v/fallouttheater/classes
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Noah Hawley\, showrunner of Fargo and Alien: Earth\, in conversati
+ on with Alice Hoffman (Letterpress Play and Books)
+DTSTART;TZID=America/Chicago:20261013T190000
+DTEND;TZID=America/Chicago:20261013T203000
+DTSTAMP:20260928T162623Z
+UID:alice-hoffman-in-conversation-with-noah-hawley-2026-10-13@randomstoryt
+ elling.com
+SEQUENCE:0
+CATEGORIES:talk
+DESCRIPTION:Price not listed.\nIn person only\, first author event at the 
+ new Letterpress Play and Books. Conversation\, audience Q and A and book s
+ igning. A ticket is required and each ticket includes one copy of The Witc
+ hes of Cambridge\; the price was not shown on the pages read. Check in 6:1
+ 5 PM.\nSource: Letterpress Play and Books Eventbrite listing (organizer)\,
+  Letterpress PLAY press release 2026-09-14\, alicehoffman.com/events\; rea
+ d 2026-09-28. The store was announced to open early October\, so re-check 
+ the opening before each send\nhttps://www.eventbrite.com/e/alice-hoffman-i
+ n-conversation-with-noah-hawley-tickets-2001090216706
+LAST-MODIFIED:20260928T162623Z
+LOCATION:Letterpress Play & Books\, 2209 S 1st St\, Suite 101\, Austin\, T
+ X
+URL:https://www.eventbrite.com/e/alice-hoffman-in-conversation-with-noah-h
+ awley-tickets-2001090216706
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin School of Film: Intro to Production Management (virtual)
@@ -2889,21 +2831,6 @@ LOCATION:Austin Public Edit Lab\, Austin\, TX
 URL:https://www.austinfilm.org/event/adobe_suite_oct18/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:MONSTER HOUSE 20th Anniversary
-DTSTART;TZID=America/Chicago:20261018T143000
-DTSTAMP:20260928T134057Z
-UID:monster-house-20th-anniversary-2026-10-18@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 2:30 PM. Panic at the Paramount matin
- ee.\nSource: Do512 event page\, read 2026-09-28\nhttps://do512.com/events/
- 2026/10/18/monster-house-20th-anniversary-tickets
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Paramount and Stateside Theatres\, Austin\, TX
-URL:https://do512.com/events/2026/10/18/monster-house-20th-anniversary-tic
- kets
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:AFS: Studio 1 Production & Control Room Lab
 DTSTART;TZID=America/Chicago:20261018T153000
 DTEND;TZID=America/Chicago:20261018T183000
@@ -3553,39 +3480,6 @@ TRANSP:TRANSPARENT
 URL:https://austinclassicalguitar.org/acg-originals
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Black Outside Fest
-DTSTART;TZID=America/Chicago:20261024T120000
-DTEND;TZID=America/Chicago:20261024T180000
-DTSTAMP:20260928T134057Z
-UID:black-outside-fest-2026-10-24@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:festival
-DESCRIPTION:Free entry tier\; Eventbrite offer data runs up to $49.87.\n40
- + Black makers\, skating\, live performances and Black Outside Cinema film
-  screenings\; organizer Black Makers Market.\nSource: Eventbrite event pag
- e (structured listing data)\, read 2026-09-28\nhttps://www.eventbrite.com/
- e/black-outside-fest-tickets-1998934148849
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Millennium Youth Entertainment Complex\, 1156 Hargrave St\, Austi
- n\, TX
-URL:https://www.eventbrite.com/e/black-outside-fest-tickets-1998934148849
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Cozy Craft Cinema: HALLOWEENTOWN
-DTSTART;TZID=America/Chicago:20261024T130000
-DTSTAMP:20260928T134057Z
-UID:cozy-craft-cinema-halloweentown-2026-10-24@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Price not listed.\nPanic at the Paramount\; crafting plus scre
- ening.\nSource: Do512 event page\, read 2026-09-28\nhttps://do512.com/even
- ts/2026/10/24/cozy-craft-cinema-halloweentown-tickets
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Paramount and Stateside Theatres\, Austin\, TX
-URL:https://do512.com/events/2026/10/24/cozy-craft-cinema-halloweentown-ti
- ckets
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Matcha + Meetup: Austin\, Film + Music Industry Monthly Mingle
 DTSTART;TZID=America/Chicago:20261024T130000
 DTEND;TZID=America/Chicago:20261024T160000
@@ -3633,23 +3527,6 @@ LAST-MODIFIED:20260928T133845Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\; mixer at Yellow Jacket Soci
  al Club\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-24/short-film-showcase
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Eat the Film: Hocus Pocus (new date)
-DTSTART;TZID=America/Chicago:20261024T193000
-DTSTAMP:20260928T134057Z
-UID:eat-the-film-hocus-pocus-new-date-2026-10-24@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:$53.98 to $129.06 (Eventbrite offers\, fees included).\n7:30 P
- M to 10:00 PM (doors 7:00 PM). Screening with a four course menu\; Oct 30 
- date of the same series is listed as SoldOut.\nSource: Eventbrite event pa
- ge (structured listing data)\, read 2026-09-28\nhttps://www.eventbrite.com
- /e/eat-the-film-hocus-pocus-new-date-added-tickets-2001898803210
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Hotel Viata\, 320 S Capital of Texas Hwy\, West Lake Hills\, TX
-URL:https://www.eventbrite.com/e/eat-the-film-hocus-pocus-new-date-added-t
- ickets-2001898803210
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:STLL Entertainment Launch Party + Theatrical Release of The End of
@@ -4062,6 +3939,30 @@ TRANSP:TRANSPARENT
 URL:https://austinfilmfestival.com/pitch/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Austin Film Festival Writers Conference\, showrunner sessions anno
+ unced: Eric Kripke (The Boys)\, Steven Conrad (DTF St. Louis)\, John Hober
+ g (Paradise)\, Oren Uziel (Spider-Noir)
+DTSTART;VALUE=DATE:20261029
+DTEND;VALUE=DATE:20261102
+DTSTAMP:20260928T162623Z
+UID:aff-writers-conference-showrunner-sessions-2026-10-29@randomstorytelli
+ ng.com
+SEQUENCE:0
+CATEGORIES:talk
+DESCRIPTION:Conference Badge $480\, $525 after Oct 7.\nVenue TBD per the l
+ isting.\nSession days\, times and rooms are not published yet (the schedul
+ e page says to check back later). Conference or Producers badge required\;
+  Conference Badge $480\, $525 after Oct 7. Writers Conference runs Oct 29 
+ to Nov 1 per the organizer.\nSource: AFF announcement posts 2026-08-26 and
+  2026-09-16 and the AFF Sched speaker directory\, read 2026-09-28 by two r
+ eaders\; badge page austinfilmfestival.com/shop/badges-and-film-passes-inf
+ o/ read 2026-09-28\nhttps://2026austinfilmfestival.sched.com/directory/spe
+ akers
+LAST-MODIFIED:20260928T162623Z
+TRANSP:TRANSPARENT
+URL:https://2026austinfilmfestival.sched.com/directory/speakers
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:Austin Film Festival & Writers Conference
 DTSTART;VALUE=DATE:20261029
 DTEND;VALUE=DATE:20261106
@@ -4170,59 +4071,6 @@ LAST-MODIFIED:20260928T134057Z
 LOCATION:Online via Zoom
 TRANSP:TRANSPARENT
 URL:https://theactorsschool.org/index.php/fall2026/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Community Cinema: The Nightmare Before Christmas (1993)
-DTSTART;TZID=America/Chicago:20261030T183000
-DTEND;TZID=America/Chicago:20261030T213000
-DTSTAMP:20260928T133845Z
-UID:community-cinema-the-nightmare-before-christmas-1993-2026-10-30@random
- storytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:Free.\nFamilies\; same Mobile Loaves and Fishes community cine
- ma series.\nSource: Austin Chronicle listing (Eventbrite link listed there
- )\, read 2026-09-28\nhttps://eventvesta.com/events/157106/t/tickets
-LAST-MODIFIED:20260928T133845Z
-LOCATION:Community First! Village\, 9301 Hog Eye Rd\, Austin\, TX
-URL:https://eventvesta.com/events/157106/t/tickets
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Eat the Film: Hocus Pocus (Oct 30)
-DTSTART;TZID=America/Chicago:20261030T193000
-DTEND;TZID=America/Chicago:20261030T220000
-DTSTAMP:20260928T134057Z
-UID:eat-the-film-hocus-pocus-oct-30-2026-10-30@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:$53.98 to $100.19 (Eventbrite offers)\; listing reads SoldOut.
- \nListing availability reads SoldOut.\nSource: Eventbrite event page (stru
- ctured listing data)\, read 2026-09-28\nhttps://www.eventbrite.com/e/eat-t
- he-film-hocus-pocus-tickets-1991156567895
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Hotel Viata\, 320 S Capital of Texas Hwy\, West Lake Hills\, TX
-URL:https://www.eventbrite.com/e/eat-the-film-hocus-pocus-tickets-19911565
- 67895
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:AFF Awards Luncheon
-DTSTART;VALUE=DATE:20261031
-DTEND;VALUE=DATE:20261101
-DTSTAMP:20260928T143836Z
-UID:aff-awards-luncheon-kripke-jacobson-haigh-harris-taylor-honored-2026-1
- 0-31@randomstorytelling.com
-SEQUENCE:1
-CATEGORIES:talk
-DESCRIPTION:$70.\nVenue TBD per the listing.\nFAQ says tickets are for Con
- ference and Producers badge holders only. Honorees per the blog: Eric Krip
- ke (Outstanding Television Writer)\, Andrew Haigh (Writer's Writer)\, Ales
- hea Harris (New Voice)\, Nina Jacobson (Polly Platt)\, Jim Taylor (Bill Wi
- ttliff Award for Screenwriting). Venue not stated.\nSource: AFF awardees b
- log and FAQ page\, read 2026-09-28\nhttps://austinfilmfestival.com/blog/20
- 26-awardees-and-fellowships/
-LAST-MODIFIED:20260928T143836Z
-TRANSP:TRANSPARENT
-URL:https://austinfilmfestival.com/blog/2026-awardees-and-fellowships/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Alamo: Invincible Czars live scores (Faust\, Nosferatu\, Caligari)
@@ -4478,6 +4326,33 @@ DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nOUTSIDE AUSTIN
 LAST-MODIFIED:20260928T133845Z
 TRANSP:TRANSPARENT
 URL:https://www.orangefilmandartsfestival.com/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Julio Torres (Fantasmas\, Los Espookys)\, The Perfect Gift book si
+ gning at BookPeople (ticket page says Thu 11.5\, BookPeople's site says We
+ d 11.4)
+DTSTART;TZID=America/Chicago:20261105T180000
+DTEND;TZID=America/Chicago:20261105T200000
+DTSTAMP:20260928T162623Z
+UID:julio-torres-the-perfect-gift-book-signing-2026-11-05@randomstorytelli
+ ng.com
+SEQUENCE:0
+CATEGORIES:talk
+DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
+ \, which publishes Nov 3. BookPeople's own event page says Wed 11/4 at 6:0
+ 0pm\; its Eventbrite ticket page says Thu 11/5\, 6 to 8 PM with check in a
+ t 5:30 PM. The two disagree and no third source settles it\, so confirm wi
+ th BookPeople. A ticket is required and includes a copy of the book\, whic
+ h is needed to get it signed\; the price was not shown.\nSource: BookPeopl
+ e event page (Wed 11/4) and BookPeople's Eventbrite ticket page (Thu 11/5
+ \, JSON-LD 2026-11-05T18:00-06:00)\, both read 2026-09-28\; three independ
+ ent readers could not settle the date. Julio Torres credits from the BookP
+ eople page and Wikipedia\nhttps://www.eventbrite.com/e/bookpeople-presents
+ -julio-torres-the-perfect-gift-tickets-2002080487633
+LAST-MODIFIED:20260928T162623Z
+LOCATION:BookPeople\, 603 N Lamar Blvd\, Austin\, TX
+URL:https://www.eventbrite.com/e/bookpeople-presents-julio-torres-the-perf
+ ect-gift-tickets-2002080487633
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Actor’s School\, Acting Fundamentals starts
@@ -5174,22 +5049,6 @@ LOCATION:Precision Camera\, Anderson Lane\, Austin\, TX
 URL:https://www.precision-camera.com/getting-started-with-video/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Eat the Film: Elf
-DTSTART;TZID=America/Chicago:20261120T193000
-DTEND;TZID=America/Chicago:20261120T220000
-DTSTAMP:20260928T134057Z
-UID:eat-the-film-elf-2026-11-20@randomstorytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:$53.98 to $100.19 (Eventbrite offers\, fees included).\nScreen
- ing with a multi course dinner.\nSource: Eventbrite event page (structured
-  listing data)\, read 2026-09-28\nhttps://www.eventbrite.com/e/eat-the-fil
- m-elf-tickets-1991156614033
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Hotel Viata\, 320 S Capital of Texas Hwy\, West Lake Hills\, TX
-URL:https://www.eventbrite.com/e/eat-the-film-elf-tickets-1991156614033
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Lainie Frasier's VoiceWorks: Industrial/Narration VO Workshop\, Go
   the Distance
 DTSTART;VALUE=DATE:20261121
@@ -5804,24 +5663,6 @@ TRANSP:TRANSPARENT
 URL:https://limners.art/filmfest
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Eat the Film: Dr. Seuss' How the Grinch Stole Christmas
-DTSTART;TZID=America/Chicago:20261218T193000
-DTEND;TZID=America/Chicago:20261218T220000
-DTSTAMP:20260928T134057Z
-UID:eat-the-film-dr-seuss-how-the-grinch-stole-christmas-2026-12-18@random
- storytelling.com
-SEQUENCE:0
-CATEGORIES:screening
-DESCRIPTION:$53.98 to $100.19 (Eventbrite offers\, fees included).\nScreen
- ing with a multi course dinner.\nSource: Eventbrite event page (structured
-  listing data)\, read 2026-09-28\nhttps://www.eventbrite.com/e/eat-the-fil
- m-dr-suess-how-the-grinch-stole-christmas-tickets-1991212293572
-LAST-MODIFIED:20260928T134057Z
-LOCATION:Hotel Viata\, 320 S Capital of Texas Hwy\, West Lake Hills\, TX
-URL:https://www.eventbrite.com/e/eat-the-film-dr-suess-how-the-grinch-stol
- e-christmas-tickets-1991212293572
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Lainie Frasier's VoiceWorks: Animation/Gaming VO Workshop\, Voices
   in My Head
 DTSTART;VALUE=DATE:20261219
@@ -5839,21 +5680,6 @@ LAST-MODIFIED:20260928T133845Z
 LOCATION:The VoiceWorks Studio (address not stated)\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://www.lainiefrasier.com/workshops
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Disney's The Muppet Christmas Carol in Concert Live-To-Film
-DTSTART;TZID=America/Chicago:20261222T190000
-DTSTAMP:20260921T113533Z
-UID:muppet-christmas-carol-in-concert-2026@randomstorytelling.com
-SEQUENCE:2
-CATEGORIES:screening
-DESCRIPTION:$34.80 to $112.80.\nSource: Austin Chronicle film calendar\, r
- ead 2026-09-21\nhttps://calendar.austinchronicle.com/event/disneys-the-mup
- pet-christmas-carol-in-concert-live-to-film-14244941
-LAST-MODIFIED:20260921T113533Z
-LOCATION:Bass Concert Hall\, Austin\, TX
-URL:https://calendar.austinchronicle.com/event/disneys-the-muppet-christma
- s-carol-in-concert-live-to-film-14244941
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Cameron Winter at Carnegie Hall (Paul Thomas Anderson)\, AFS Cinem
