@@ -8,8 +8,9 @@
    IP to a third party; if it is slow, blocked or down, the timezone city just
    stays. Enabled on Lawrence's word 2026-09-21.
 
-   A mount carrying [data-localtime-zone] skips pass two and keeps the zone
-   city (Chicago, IL for all of Central). Added 2026-09-29 on Lawrence's word.
+   A mount carrying [data-localtime-zone="America/Chicago"] is FIXED: it shows
+   that zone's time and city to every visitor and skips pass two. With the
+   attribute empty it keeps the visitor's own zone city. Lawrence, 2026-09-29.
 
    Mount points: any element with [data-localtime]. Inside it,
    [data-localtime-clock] gets the time and [data-localtime-city] the place.
@@ -34,9 +35,10 @@
     } catch (e) { return ""; }
   }
 
-  function clock(now, withSeconds) {
+  function clock(now, withSeconds, tz) {
     var opts = { hour: "2-digit", minute: "2-digit", hour12: true };
     if (withSeconds) opts.second = "2-digit";
+    if (tz) opts.timeZone = tz;
     try { return now.toLocaleTimeString("en-US", opts); } catch (e) { return ""; }
   }
 
@@ -47,6 +49,8 @@
   hosts.forEach(function (h) {
     var c = h.querySelector("[data-localtime-city]");
     if (!c) return;
+    var fixed = h.getAttribute("data-localtime-zone");
+    if (fixed) { c.textContent = US[fixed] || fixed.split("/").pop().replace(/_/g, " "); return; }
     if (where) c.textContent = where; else c.remove();
   });
 
@@ -86,7 +90,7 @@
     hosts.forEach(function (h) {
       var t = h.querySelector("[data-localtime-clock]");
       if (!t) return;
-      var s = clock(now, h.hasAttribute("data-localtime-seconds"));
+      var s = clock(now, h.hasAttribute("data-localtime-seconds"), h.getAttribute("data-localtime-zone"));
       if (s) t.textContent = s;
     });
   }
