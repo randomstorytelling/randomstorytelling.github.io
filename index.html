@@ -37,6 +37,7 @@
   .flap{display:inline-block;transform-origin:50% 60%;backface-visibility:hidden}
   .flap.on{animation:flap .11s ease-out}
   @keyframes flap{0%{transform:perspective(60px) rotateX(-88deg);opacity:.25}100%{transform:perspective(60px) rotateX(0);opacity:1}}
+  .pmark{font-weight:500;text-transform:uppercase;white-space:nowrap;font-size:clamp(15px,4.6vw,56px);line-height:1.15;letter-spacing:.2em}
   .w{max-width:1180px;margin:0 auto;padding:0 28px}
   .rule{border-top:1px solid var(--hair)}
 
@@ -167,7 +168,8 @@
     <!-- Hero wordmark taken off the page on Lawrence's order 2026-09-29; it lives in the foot. Kept for screen readers and search. -->
     <h1 class="sr">Random Storytelling</h1>
     <!-- Name and title line taken off the top on Lawrence's order 2026-09-29; both live in the foot. -->
-    <div class="sub" style="margin-top:0">
+    <p class="pmark">Lawrence Whitaker III</p>
+    <div class="sub">
       <div class="go">
         <a href="#index">Work</a>
         <a href="#sheet">Credits</a>
