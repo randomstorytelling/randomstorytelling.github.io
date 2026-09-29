@@ -14,7 +14,7 @@
 
    A mount carrying [data-localtime-rotate="6"] walks the SPOTS list below,
    one place every 6 seconds, each with its own local time: widely loved
-   hikes, the same number on each continent. Same for every visitor, no
+   hikes, weighted to Africa, South America and Asia. Same for every visitor, no
    lookup. (If brand/sisters.js is loaded it shows the visitor's sister
    cities instead; the home page does not load it.) Lawrence, 2026-09-29.
 
@@ -37,26 +37,39 @@
     "America/Mexico_City": "Mexico City, MX"
   };
 
-  /* Widely loved hikes, three to a continent, six continents, dealt one
-     continent at a time so the board keeps crossing the world. */
+  /* Widely loved hikes: Africa 9, South America 6, Asia 6, North America 3,
+     Europe 3, Oceania 3. Dealt so the same continent never comes up twice
+     running. His split, 2026-09-29. */
   var SPOTS = [
-    ["America/Los_Angeles", "Yosemite, California"],
-    ["America/Punta_Arenas", "Torres del Paine, Chile"],
-    ["Europe/Paris", "Tour du Mont Blanc, France"],
-    ["Asia/Kathmandu", "Everest Base Camp, Nepal"],
     ["Africa/Dar_es_Salaam", "Kilimanjaro, Tanzania"],
-    ["Pacific/Auckland", "Milford Track, New Zealand"],
-    ["America/Phoenix", "Grand Canyon, Arizona"],
-    ["America/Lima", "Inca Trail, Peru"],
-    ["Europe/Rome", "Dolomites, Italy"],
-    ["Asia/Tokyo", "Kumano Kodo, Japan"],
+    ["America/Punta_Arenas", "Torres del Paine, Chile"],
     ["Africa/Johannesburg", "Drakensberg, South Africa"],
-    ["Australia/Hobart", "Overland Track, Tasmania"],
-    ["America/Edmonton", "Banff, Canada"],
-    ["America/Argentina/Rio_Gallegos", "Fitz Roy, Argentina"],
-    ["Atlantic/Reykjavik", "Laugavegur, Iceland"],
-    ["Asia/Shanghai", "Tiger Leaping Gorge, China"],
+    ["Asia/Kathmandu", "Everest Base Camp, Nepal"],
     ["Africa/Addis_Ababa", "Simien Mountains, Ethiopia"],
+    ["America/Lima", "Inca Trail, Peru"],
+    ["Africa/Nairobi", "Mount Kenya, Kenya"],
+    ["Asia/Tokyo", "Kumano Kodo, Japan"],
+    ["Africa/Kampala", "Rwenzori Mountains, Uganda"],
+    ["America/Argentina/Rio_Gallegos", "Fitz Roy, Argentina"],
+    ["Africa/Windhoek", "Fish River Canyon, Namibia"],
+    ["Asia/Shanghai", "Tiger Leaping Gorge, China"],
+    ["Africa/Casablanca", "Toubkal, Morocco"],
+    ["America/Lima", "Huayhuash, Peru"],
+    ["Asia/Kathmandu", "Annapurna Circuit, Nepal"],
+    ["America/Los_Angeles", "Yosemite, California"],
+    ["Europe/Paris", "Tour du Mont Blanc, France"],
+    ["Pacific/Auckland", "Milford Track, New Zealand"],
+    ["Africa/Johannesburg", "Table Mountain, South Africa"],
+    ["America/Bogota", "Ciudad Perdida, Colombia"],
+    ["Asia/Thimphu", "Tiger's Nest, Bhutan"],
+    ["America/Phoenix", "Grand Canyon, Arizona"],
+    ["Europe/Rome", "Dolomites, Italy"],
+    ["Australia/Hobart", "Overland Track, Tasmania"],
+    ["Africa/Blantyre", "Mount Mulanje, Malawi"],
+    ["America/Bahia", "Chapada Diamantina, Brazil"],
+    ["Asia/Kuching", "Mount Kinabalu, Malaysia"],
+    ["America/Edmonton", "Banff, Canada"],
+    ["Atlantic/Reykjavik", "Laugavegur, Iceland"],
     ["Pacific/Auckland", "Tongariro, New Zealand"]
   ];
   var born = Date.now();
