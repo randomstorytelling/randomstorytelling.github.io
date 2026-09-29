@@ -37,38 +37,44 @@
     "America/Mexico_City": "Mexico City, MX"
   };
 
-  /* Widely loved hikes: Africa 9, South America 6, Asia 6, North America 3,
-     Europe 3, Oceania 3. Dealt so the same continent never comes up twice
-     running. His split, 2026-09-29. */
+  /* Widely loved hikes: Africa 9, South America 6, Asia 6, North America 6
+     (5 in the United States), Costa Rica 3, Europe 3, Oceania 3. Dealt so
+     the same group never comes up twice running. His split, 2026-09-29. */
   var SPOTS = [
     ["Africa/Dar_es_Salaam", "Kilimanjaro, Tanzania"],
     ["America/Punta_Arenas", "Torres del Paine, Chile"],
     ["Africa/Johannesburg", "Drakensberg, South Africa"],
     ["Asia/Kathmandu", "Everest Base Camp, Nepal"],
     ["Africa/Addis_Ababa", "Simien Mountains, Ethiopia"],
-    ["America/Lima", "Inca Trail, Peru"],
+    ["America/Los_Angeles", "Yosemite, California"],
     ["Africa/Nairobi", "Mount Kenya, Kenya"],
-    ["Asia/Tokyo", "Kumano Kodo, Japan"],
+    ["America/Lima", "Inca Trail, Peru"],
     ["Africa/Kampala", "Rwenzori Mountains, Uganda"],
-    ["America/Argentina/Rio_Gallegos", "Fitz Roy, Argentina"],
+    ["Asia/Tokyo", "Kumano Kodo, Japan"],
+    ["America/Phoenix", "Grand Canyon, Arizona"],
     ["Africa/Windhoek", "Fish River Canyon, Namibia"],
+    ["America/Argentina/Rio_Gallegos", "Fitz Roy, Argentina"],
     ["Asia/Shanghai", "Tiger Leaping Gorge, China"],
+    ["America/Edmonton", "Banff, Canada"],
     ["Africa/Casablanca", "Toubkal, Morocco"],
     ["America/Lima", "Huayhuash, Peru"],
     ["Asia/Kathmandu", "Annapurna Circuit, Nepal"],
-    ["America/Los_Angeles", "Yosemite, California"],
+    ["America/Denver", "Zion, Utah"],
+    ["America/Costa_Rica", "Corcovado, Costa Rica"],
     ["Europe/Paris", "Tour du Mont Blanc, France"],
     ["Pacific/Auckland", "Milford Track, New Zealand"],
     ["Africa/Johannesburg", "Table Mountain, South Africa"],
     ["America/Bogota", "Ciudad Perdida, Colombia"],
     ["Asia/Thimphu", "Tiger's Nest, Bhutan"],
-    ["America/Phoenix", "Grand Canyon, Arizona"],
+    ["Pacific/Honolulu", "Kalalau Trail, Hawaii"],
+    ["America/Costa_Rica", "Chirripó, Costa Rica"],
     ["Europe/Rome", "Dolomites, Italy"],
     ["Australia/Hobart", "Overland Track, Tasmania"],
     ["Africa/Blantyre", "Mount Mulanje, Malawi"],
     ["America/Bahia", "Chapada Diamantina, Brazil"],
     ["Asia/Kuching", "Mount Kinabalu, Malaysia"],
-    ["America/Edmonton", "Banff, Canada"],
+    ["America/Denver", "Glacier, Montana"],
+    ["America/Costa_Rica", "Arenal, Costa Rica"],
     ["Atlantic/Reykjavik", "Laugavegur, Iceland"],
     ["Pacific/Auckland", "Tongariro, New Zealand"]
   ];
