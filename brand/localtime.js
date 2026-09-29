@@ -8,6 +8,9 @@
    IP to a third party; if it is slow, blocked or down, the timezone city just
    stays. Enabled on Lawrence's word 2026-09-21.
 
+   A mount carrying [data-localtime-zone] skips pass two and keeps the zone
+   city (Chicago, IL for all of Central). Added 2026-09-29 on Lawrence's word.
+
    Mount points: any element with [data-localtime]. Inside it,
    [data-localtime-clock] gets the time and [data-localtime-city] the place.
    Fails silent: if anything throws, the block stays hidden. */
@@ -50,6 +53,7 @@
   /* pass two: the real town, once per session, never blocking */
   function paint(label) {
     hosts.forEach(function (h) {
+      if (h.hasAttribute("data-localtime-zone")) return;
       var c = h.querySelector("[data-localtime-city]");
       if (c) c.textContent = label;
     });
@@ -89,7 +93,7 @@
 
   tick();
   hosts.forEach(function (h) { h.hidden = false; });
-  refine();
+  if (hosts.some(function (h) { return !h.hasAttribute("data-localtime-zone"); })) refine();
 
   var id = setInterval(tick, 1000);
   document.addEventListener("visibilitychange", function () {
