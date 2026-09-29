@@ -1417,6 +1417,13 @@
     .fbar .v a{white-space:nowrap}
     .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
   }
+  .spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0;margin-top:0;border-top:1px solid var(--ink)}
+  .cell{padding:20px 20px 22px 0;border-bottom:1px solid var(--hair)}
+  .cell .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:500}
+  .cell .v{margin-top:7px;font-size:15.5px;font-weight:500;line-height:1.35}
+  .cell .v small{display:block;font-weight:400;color:var(--mute);font-size:13.5px;margin-top:4px;letter-spacing:-.01em}
+  .spec{margin-top:0;grid-template-columns:repeat(3,1fr)}
+  .spec{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 </style>
 </head>
 <body>
@@ -1443,6 +1450,11 @@
   </div>
 
   <!-- Calendar list taken off the page on Lawrence's order 2026-09-29. The feed (basecamp.ics) and the subscribe buttons stay. build_basecamp.py has no aeo-events marker to write into now. -->
+
+  <div class="spec">
+    <div class="cell"><div class="k">Product</div><div class="v">Newsletter</div></div>
+    <div class="cell"><div class="k">Role</div><div class="v">Creator · Publisher</div></div>
+  </div>
 
   <div class="lbl"><h2>FAQ</h2></div>
   <div class="faq">
