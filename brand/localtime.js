@@ -12,11 +12,11 @@
    that zone's time and city to every visitor and skips pass two. With the
    attribute empty it keeps the visitor's own zone city. Lawrence, 2026-09-29.
 
-   A mount carrying [data-localtime-rotate="6"] shows the SISTER CITIES of the
-   visitor's own city (brand/sisters.js), one every 6 seconds, each with its
-   own local time. A visitor whose city is not in that table gets the SPOTS
-   list below, the places the Apple TV aerial screensavers fly over.
-   Lawrence, 2026-09-29.
+   A mount carrying [data-localtime-rotate="6"] walks the SPOTS list below,
+   one place every 6 seconds, each with its own local time: widely loved
+   hikes, the same number on each continent. Same for every visitor, no
+   lookup. (If brand/sisters.js is loaded it shows the visitor's sister
+   cities instead; the home page does not load it.) Lawrence, 2026-09-29.
 
    The rotating mount changes its letters like a split flap board: every
    letter that differs spins through a few others, left to right, then lands.
@@ -37,15 +37,27 @@
     "America/Mexico_City": "Mexico City, MX"
   };
 
+  /* Widely loved hikes, three to a continent, six continents, dealt one
+     continent at a time so the board keeps crossing the world. */
   var SPOTS = [
-    ["America/Chicago", "Chicago, IL"], ["America/Los_Angeles", "San Francisco, CA"],
-    ["America/New_York", "New York, NY"], ["Europe/London", "London, UK"],
-    ["Asia/Dubai", "Dubai, UAE"], ["Asia/Hong_Kong", "Hong Kong"],
-    ["America/Los_Angeles", "Los Angeles, CA"], ["Pacific/Honolulu", "Hawaii"],
-    ["Asia/Shanghai", "Great Wall, China"], ["Asia/Dubai", "Liwa, UAE"],
-    ["America/Godthab", "Greenland"], ["Atlantic/Reykjavik", "Iceland"],
-    ["Europe/London", "Scotland"], ["America/Los_Angeles", "Yosemite, CA"],
-    ["America/Phoenix", "Grand Canyon, AZ"]
+    ["America/Los_Angeles", "Yosemite, California"],
+    ["America/Punta_Arenas", "Torres del Paine, Chile"],
+    ["Europe/Paris", "Tour du Mont Blanc, France"],
+    ["Asia/Kathmandu", "Everest Base Camp, Nepal"],
+    ["Africa/Dar_es_Salaam", "Kilimanjaro, Tanzania"],
+    ["Pacific/Auckland", "Milford Track, New Zealand"],
+    ["America/Phoenix", "Grand Canyon, Arizona"],
+    ["America/Lima", "Inca Trail, Peru"],
+    ["Europe/Rome", "Dolomites, Italy"],
+    ["Asia/Tokyo", "Kumano Kodo, Japan"],
+    ["Africa/Johannesburg", "Drakensberg, South Africa"],
+    ["Australia/Hobart", "Overland Track, Tasmania"],
+    ["America/Edmonton", "Banff, Canada"],
+    ["America/Argentina/Rio_Gallegos", "Fitz Roy, Argentina"],
+    ["Atlantic/Reykjavik", "Laugavegur, Iceland"],
+    ["Asia/Shanghai", "Tiger Leaping Gorge, China"],
+    ["Africa/Addis_Ababa", "Simien Mountains, Ethiopia"],
+    ["Pacific/Auckland", "Tongariro, New Zealand"]
   ];
   var born = Date.now();
   var ring = SPOTS;
@@ -183,7 +195,7 @@
 
   tick();
   hosts.forEach(function (h) { h.hidden = false; });
-  if (hosts.some(function (h) { return !h.hasAttribute("data-localtime-zone"); })) refine();
+  if (hosts.some(function (h) { return !h.hasAttribute("data-localtime-zone") && !(h.hasAttribute("data-localtime-rotate") && !window.RS_SISTERS); })) refine();
 
   var id = setInterval(tick, 1000);
   document.addEventListener("visibilitychange", function () {

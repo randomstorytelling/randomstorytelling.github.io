@@ -30,7 +30,9 @@
   .lt{position:sticky;top:0;z-index:5;background:var(--paper);
       display:flex;align-items:baseline;gap:12px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
       font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;color:var(--mute)}
-  .lt-city{color:var(--ink)}
+  .lt-city{color:var(--ink);white-space:nowrap}
+  .lt-clock{white-space:nowrap}
+  @media(max-width:480px){.lt{letter-spacing:.12em;font-size:11px;gap:10px}}
   .lt-clock{font-variant-numeric:tabular-nums}
   .flap{display:inline-block;transform-origin:50% 60%;backface-visibility:hidden}
   .flap.on{animation:flap .11s ease-out}
@@ -287,7 +289,6 @@
   </footer>
 
 </div>
-<script src="brand/sisters.js" defer></script>
 <script src="brand/localtime.js" defer></script>
 </body>
 </html>
