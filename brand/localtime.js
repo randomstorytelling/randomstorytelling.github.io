@@ -12,9 +12,10 @@
    that zone's time and city to every visitor and skips pass two. With the
    attribute empty it keeps the visitor's own zone city. Lawrence, 2026-09-29.
 
-   A mount carrying [data-localtime-rotate="6"] walks the SPOTS list below,
-   one place every 6 seconds, each with its own local time, Chicago first.
-   The places are the ones the Apple TV aerial screensavers fly over.
+   A mount carrying [data-localtime-rotate="6"] shows the SISTER CITIES of the
+   visitor's own city (brand/sisters.js), one every 6 seconds, each with its
+   own local time. A visitor whose city is not in that table gets the SPOTS
+   list below, the places the Apple TV aerial screensavers fly over.
    Lawrence, 2026-09-29.
 
    Mount points: any element with [data-localtime]. Inside it,
@@ -42,10 +43,18 @@
     ["America/Phoenix", "Grand Canyon, AZ"]
   ];
   var born = Date.now();
+  var ring = SPOTS;
+
+  function sisters(label) {
+    var all = window.RS_SISTERS || {};
+    var list = all[label];
+    if (list && list.length) { ring = list.map(function (r) { return [r[1], r[0]]; }); born = Date.now(); return true; }
+    return false;
+  }
 
   function spot(h, now) {
     var every = parseFloat(h.getAttribute("data-localtime-rotate")) || 6;
-    return SPOTS[Math.floor((now - born) / (every * 1000)) % SPOTS.length];
+    return ring[Math.floor((now - born) / (every * 1000)) % ring.length];
   }
 
   function place() {
@@ -68,10 +77,11 @@
   if (!hosts.length) return;
 
   var where = place();
+  sisters(where);
   hosts.forEach(function (h) {
     var c = h.querySelector("[data-localtime-city]");
     if (!c) return;
-    if (h.hasAttribute("data-localtime-rotate")) { c.textContent = SPOTS[0][1]; return; }
+    if (h.hasAttribute("data-localtime-rotate")) { c.textContent = ring[0][1]; return; }
     var fixed = h.getAttribute("data-localtime-zone");
     if (fixed) { c.textContent = US[fixed] || fixed.split("/").pop().replace(/_/g, " "); return; }
     if (where) c.textContent = where; else c.remove();
@@ -79,6 +89,7 @@
 
   /* pass two: the real town, once per session, never blocking */
   function paint(label) {
+    if (sisters(label)) tick();
     hosts.forEach(function (h) {
       if (h.hasAttribute("data-localtime-zone") || h.hasAttribute("data-localtime-rotate")) return;
       var c = h.querySelector("[data-localtime-city]");
@@ -126,7 +137,7 @@
 
   tick();
   hosts.forEach(function (h) { h.hidden = false; });
-  if (hosts.some(function (h) { return !h.hasAttribute("data-localtime-zone") && !h.hasAttribute("data-localtime-rotate"); })) refine();
+  if (hosts.some(function (h) { return !h.hasAttribute("data-localtime-zone"); })) refine();
 
   var id = setInterval(tick, 1000);
   document.addEventListener("visibilitychange", function () {
