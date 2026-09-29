@@ -117,6 +117,10 @@
   .fbar > div{display:flex;flex-direction:column;justify-content:space-between;gap:30px;padding:12px 14px}
   .fbar > div:first-child{padding-left:0}
   .fbar > div + div{border-left:1px solid var(--rule)}
+  .fbar > .fclock{flex-direction:row;align-items:center;gap:16px}
+  .fclock .fc{display:flex;flex-direction:column;justify-content:space-between;gap:30px;flex:1;align-self:stretch}
+  .fvyb{flex:none;line-height:0}
+  .fvyb img{height:40px;width:auto;display:block}
   .fbar .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:500;line-height:1}
   .fbar .v{font-size:12.5px;text-transform:uppercase;letter-spacing:.14em;font-weight:500;
            display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
@@ -126,6 +130,7 @@
     .fmark{flex-direction:column;gap:6px}
     .fbar{grid-template-columns:1fr}
     .fbar > div{padding:12px 0;gap:14px}
+    .fclock .fc{gap:14px}
     .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
   }
   .intro{margin:18px 0 0;font-size:13px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;color:var(--mute)}
@@ -140,8 +145,8 @@
   <div class="hero">
     <!-- Hero wordmark taken off the page on Lawrence's order 2026-09-29; it lives in the foot. Kept for screen readers and search. -->
     <h1 class="sr">Random Storytelling&trade;</h1>
-    <p class="intro" style="margin-top:0">Lawrence Whitaker III<span class="title">founder & artist</span></p>
-    <div class="sub">
+    <!-- Name and title line taken off the top on Lawrence's order 2026-09-29; both live in the foot. -->
+    <div class="sub" style="margin-top:0">
       <div class="go">
         <a href="#index">Work</a>
         <a href="#sheet">Credits</a>
@@ -254,8 +259,10 @@
     <div class="fbar">
       <div><span class="k">Founder + Artist</span>
         <span class="v"><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Lawrence Whitaker III</a></span></div>
-      <div data-localtime data-localtime-zone="America/Chicago" hidden><span class="k">Local time</span>
+      <div class="fclock" data-localtime data-localtime-zone="America/Chicago" hidden>
+        <div class="fc"><span class="k">Local time</span>
         <span class="v"><span class="t" data-localtime-clock></span><span class="c" data-localtime-city></span></span></div>
+        <a class="fvyb" href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=foot_logo" target="_blank" rel="noopener"><img src="brand/vyblabs-black.svg" alt="VYB LABS" width="1500" height="684"></a></div>
       <div><span class="k">Newsletter</span>
         <span class="v"><a href="https://randomstorytelling.beehiiv.com/subscribe" target="_blank" rel="noopener">Base Camp &rarr;</a></span></div>
     </div>
