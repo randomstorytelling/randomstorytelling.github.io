@@ -12,8 +12,8 @@
    that zone's time and city to every visitor and skips pass two. With the
    attribute empty it keeps the visitor's own zone city. Lawrence, 2026-09-29.
 
-   A mount carrying [data-localtime-rotate="6"] walks the SPOTS list below,
-   one place every 6 seconds, each with its own local time: widely loved
+   A mount carrying [data-localtime-rotate="8"] walks the SPOTS list below,
+   one place every 8 seconds, each with its own local time: widely loved
    hikes, weighted to Africa, South America and Asia. Same for every visitor, no
    lookup. (If brand/sisters.js is loaded it shows the visitor's sister
    cities instead; the home page does not load it.) Lawrence, 2026-09-29.
@@ -80,17 +80,19 @@
   ];
   var born = Date.now();
   var ring = SPOTS;
+  /* every visit opens on a different place, so short visits see the whole list over time */
+  var first = Math.floor(Math.random() * SPOTS.length);
 
   function sisters(label) {
     var all = window.RS_SISTERS || {};
     var list = all[label];
-    if (list && list.length) { ring = list.map(function (r) { return [r[1], r[0]]; }); born = Date.now(); return true; }
+    if (list && list.length) { ring = list.map(function (r) { return [r[1], r[0]]; }); born = Date.now(); first = 0; return true; }
     return false;
   }
 
   function spot(h, now) {
-    var every = parseFloat(h.getAttribute("data-localtime-rotate")) || 6;
-    return ring[Math.floor((now - born) / (every * 1000)) % ring.length];
+    var every = parseFloat(h.getAttribute("data-localtime-rotate")) || 8;
+    return ring[(first + Math.floor((now - born) / (every * 1000))) % ring.length];
   }
 
   var FLAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -155,7 +157,7 @@
   hosts.forEach(function (h) {
     var c = h.querySelector("[data-localtime-city]");
     if (!c) return;
-    if (h.hasAttribute("data-localtime-rotate")) { flap(c, ring[0][1]); return; }
+    if (h.hasAttribute("data-localtime-rotate")) { flap(c, ring[first % ring.length][1]); return; }
     var fixed = h.getAttribute("data-localtime-zone");
     if (fixed) { c.textContent = US[fixed] || fixed.split("/").pop().replace(/_/g, " "); return; }
     if (where) c.textContent = where; else c.remove();

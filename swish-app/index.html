@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Swish &middot; RANDOM STORYTELLING&trade;</title>
+<title>Swish &middot; RANDOM STORYTELLING</title>
 <meta name="description" content="A basketball shooting app sold to trainers. It films a shot on the player's own phone, reads the shooting form from body pose, scores nine mechanics and names one fix. The video never leaves the phone. From $29 per month, players free.">
 <link rel="canonical" href="https://randomstorytelling.com/swish-app/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://randomstorytelling.com/swish-app/">
-<meta property="og:title" content="Swish &middot; RANDOM STORYTELLING&trade;">
+<meta property="og:title" content="Swish &middot; RANDOM STORYTELLING">
 <meta property="og:description" content="Film a shot, read the form, get one fix. A roster and a week log for every player. On device, so the video never leaves the phone.">
 <meta property="og:image" content="https://randomstorytelling.com/brand/swish-logo-800.png">
 <meta name="theme-color" content="#FFFFFF">
@@ -194,10 +194,16 @@
   body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;font-weight:400;line-height:1.45;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   .w{max-width:1180px;margin:0 auto;padding:0 28px}
-  .lt{display:flex;align-items:baseline;gap:10px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
-      font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:600;color:var(--mute)}
-  .lt-city{color:var(--ink);font-weight:700}
+  .lt{position:sticky;top:0;z-index:5;background:var(--paper);
+      display:flex;align-items:baseline;gap:12px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
+      font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;color:var(--mute)}
+  .lt-city{color:var(--ink);white-space:nowrap}
+  .lt-clock{white-space:nowrap}
+  @media(max-width:480px){.lt{letter-spacing:.12em;font-size:11px;gap:10px}}
   .lt-clock{font-variant-numeric:tabular-nums}
+  .flap{display:inline-block;transform-origin:50% 60%;backface-visibility:hidden}
+  .flap.on{animation:flap .11s ease-out}
+  @keyframes flap{0%{transform:perspective(60px) rotateX(-88deg);opacity:.25}100%{transform:perspective(60px) rotateX(0);opacity:1}}
   .top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:26px 0 18px;flex-wrap:wrap;border-bottom:1px solid var(--hair)}
   .mk{font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:.01em}
   .mk:hover{color:var(--red)}
@@ -240,26 +246,49 @@
   .faq{padding:8px 0 4px;display:grid;gap:26px;max-width:780px}
   .qa h3{font-size:17px;font-weight:700;letter-spacing:-.02em}
   .qa p{margin-top:7px;font-size:15.5px;color:var(--mute);line-height:1.55}
-  .ltf{border-top:1px solid var(--hair);padding:26px 0 0;margin-top:56px;display:grid;gap:8px}
-  .ltf .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:600}
-  .ltf .v{font-size:14px;letter-spacing:.06em;font-weight:600;display:flex;gap:12px;flex-wrap:wrap;align-items:baseline}
-  .ltf .t{font-variant-numeric:tabular-nums;color:var(--mute)}
-  .ltf .c{text-transform:uppercase;color:var(--ink)}
-  footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:34px 0 60px;margin-top:34px;border-top:1px solid var(--rule);font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
-  footer a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}
+  /* foot: wordmark split across the page, then a ruled bar with the clock in the middle cell */
+  .fmark{display:flex;justify-content:space-between;align-items:baseline;gap:24px;
+         padding:64px 0 0;margin-top:56px;border-top:1px solid var(--ink);
+         font-weight:500;text-transform:uppercase;line-height:1;letter-spacing:.14em;
+         font-size:clamp(22px,4.6vw,58px)}
+  .fmark span:last-child{margin-right:-.14em}
+  .fgap{height:clamp(90px,16vw,220px)}
+  .fbar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule);
+        border-bottom:1px solid var(--rule);margin-bottom:28px}
+  .fbar > div{display:flex;flex-direction:column;justify-content:space-between;gap:30px;padding:12px 14px}
+  .fbar > div:first-child{padding-left:0}
+  .fbar > div + div{border-left:1px solid var(--rule)}
+  .fbar > .fclock{flex-direction:row;align-items:center;gap:16px}
+  .fclock .fc{display:flex;flex-direction:column;justify-content:space-between;gap:30px;flex:1;align-self:stretch}
+  .fvyb{flex:none;line-height:0}
+  .fvyb img{height:40px;width:auto;display:block}
+  .fword img{height:20px}
+  .fbar .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:500;line-height:1}
+  .fbar .v{font-size:12.5px;text-transform:uppercase;letter-spacing:.14em;font-weight:500;
+           display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .fbar .t{font-variant-numeric:tabular-nums;color:var(--mute)}
+  .fbar a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}
+  @media(max-width:760px){
+    .fmark{flex-direction:column;gap:6px}
+    .fbar{grid-template-columns:1fr}
+    .fbar > div{padding:12px 0;gap:14px}
+    .fclock .fc{gap:14px}
+    .fword img{height:15px}
+    .fbar .v a{white-space:nowrap}
+    .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
+  }
   @media(max-width:700px){.cell{padding-right:0}}
 </style>
 </head>
 <body>
 <div class="w">
 
-  <div class="lt" data-localtime data-localtime-seconds hidden>
-    <span class="lt-city" data-localtime-city></span>
+  <div class="lt" data-localtime data-localtime-rotate="8" hidden>
     <span class="lt-clock" data-localtime-clock></span>
+    <span class="lt-city" data-localtime-city></span>
   </div>
 
   <div class="top">
-    <a class="mk" href="/">RANDOM STORYTELLING&trade;</a>
     <a class="back" href="/">&larr; Back to the index</a>
   </div>
 
@@ -326,14 +355,21 @@
     <div class="qa"><h3>Do my players have to pay?</h3><p>No. Swish is sold to trainers. Players use it free. A trainer seat is the player app plus a roster: it films the trainer&rsquo;s own reps and adds a week log for every player.</p></div>
   </div>
 
-  <div class="ltf" data-localtime hidden>
-    <span class="k">Local time</span>
-    <span class="v"><span class="t" data-localtime-clock></span><span class="c" data-localtime-city></span></span>
-  </div>
-
   <footer>
-    <span>RANDOM STORYTELLING&trade;</span>
-    <span><a href="https://randomstorytelling.com/swish/">The app</a></span>
+    <div class="fmark"><span>Random</span><span>Storytelling</span></div>
+    <div class="fgap"></div>
+    <div class="fbar">
+      <div class="fclock">
+        <div class="fc"><span class="k">Founder + Artist</span>
+        <span class="v"><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Lawrence Whitaker III</a></span></div>
+        <a class="fvyb fword" href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=foot_wordmark" target="_blank" rel="noopener"><img src="/brand/vybrance-labs-wordmark-black.png" alt="Vybrance Labs" width="900" height="124"></a></div>
+      <div class="fclock" data-localtime data-localtime-zone="America/Chicago" hidden>
+        <div class="fc"><span class="k">Do you have the time?</span>
+        <span class="v"><span class="t" data-localtime-clock></span><span class="c" data-localtime-city></span></span></div>
+        <a class="fvyb" href="https://vybrancelabs.co/films" target="_blank" rel="noopener"><img src="/brand/vyblabs-black.png" alt="VYB LABS" width="600" height="273"></a></div>
+      <div><span class="k">Newsletter</span>
+        <span class="v"><a href="https://randomstorytelling.beehiiv.com/subscribe" target="_blank" rel="noopener">Base Camp &rarr;</a></span></div>
+    </div>
   </footer>
 </div>
 <script src="/brand/localtime.js" defer></script>
