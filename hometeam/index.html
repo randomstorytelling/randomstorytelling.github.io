@@ -234,6 +234,25 @@
     .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
   }
   @media(max-width:700px){.cell{padding-right:0}}
+  /* the lens: one name, one line, one action, three facts. Everything else folds. */
+  .hero{padding:clamp(88px,13vw,168px) 0 clamp(56px,8vw,104px)}
+  .hero .kicker{margin-top:34px;max-width:640px}
+  .hero .btns{margin-top:48px}
+  .spec{margin-top:0;grid-template-columns:repeat(3,1fr)}
+  .spec .cell{padding:26px 20px 30px 0}
+  .folds{margin-top:clamp(64px,9vw,120px);border-top:1px solid var(--ink)}
+  .fold{border-bottom:1px solid var(--hair)}
+  .fold summary{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:24px 0;cursor:pointer;list-style:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{font-size:13px;text-transform:uppercase;letter-spacing:.2em;font-weight:500}
+  .fold summary span{font-size:13px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin-left:auto}
+  .fold summary::after{content:"+";font-size:18px;font-weight:400;line-height:1;color:var(--mute);width:14px;text-align:center}
+  .fold[open] summary::after{content:"\2212"}
+  .fold .in{padding:4px 0 34px}
+  .fold .list{margin-top:0}
+  .fold .price{margin-top:0}
+  .faqlbl{margin-top:clamp(64px,9vw,120px)}
+  @media(max-width:700px){.spec{grid-template-columns:1fr}.fold summary span{display:none}}
 </style>
 </head>
 <body>
@@ -258,14 +277,13 @@
   </div>
 
   <div class="spec">
-    <div class="cell"><div class="k">Product</div><div class="v">Green Light<small>One card, one loop, one person</small></div></div>
     <div class="cell"><div class="k">For</div><div class="v">Founders selling on Amazon<small>Seller Central is enough. Helium 10 if you have it</small></div></div>
-    <div class="cell"><div class="k">What you get</div><div class="v">The card, the listing loop, the halo read, the plumbing check, and your chief of staff<small>Installed on your own AI. $5,000 to install</small></div></div>
     <div class="cell"><div class="k">Cadence</div><div class="v">Every morning<small>Yesterday against the last 7 and the last 90</small></div></div>
-    <div class="cell"><div class="k">Access</div><div class="v">Read only<small>We connect the accounts you already have. Seller Central alone is enough. We hold no data</small></div></div>
+    <div class="cell"><div class="k">Install</div><div class="v">$5,000<small>Plus your chief of staff, priced on the intro call</small></div></div>
   </div>
 
-  <div class="lbl"><h2>What it is</h2><span>What you are buying</span></div>
+  <div class="folds">
+    <details class="fold"><summary><h2>What it is</h2><span>What you are buying</span></summary><div class="in">
   <div class="body">
     <p><b>The card.</b> Gross sales, discounts, ad spend, contribution margin. Yesterday next to the last seven and the last ninety. One question: did it do more than yesterday? Green light, put more there. Red light, pull back and fix before you spend another dollar.</p>
     <p><b>The listing loop.</b> It starts with a recorded brand DNA hour. I sit with you and ask a fixed set of questions about what your brand is and is not. That hour becomes the standard. Your title, bullets, images and backend keywords get read against it, and against what the best sellers in your category do. The loop suggests. You decide. It never edits a live listing.</p>
@@ -273,8 +291,8 @@
     <p><b>The plumbing check.</b> Traffic with no sales usually means a leak. A flavor out of stock, a listing pulled over an expiration flag, a price swing Amazon did not like, an order the fulfillment bridge rejected. The check reads the pipes every morning and names the leak before it costs a week.</p>
     <p><b>The chief of staff.</b> A person, not a chatbot. Expert in Amazon and in your business. They read the card with you every morning. They run the weekly listing audit, write the weekly note and tune the system as your business changes. A trained backup covers absences. They are the glue between you and the software you already own. <b>Nothing here acts on its own.</b> It reads. It suggests. A human decides.</p>
   </div>
-
-  <div class="lbl"><h2>What it will not do</h2><span>On purpose</span></div>
+    </div></details>
+    <details class="fold"><summary><h2>What it will not do</h2><span>On purpose</span></summary><div class="in">
   <div class="list">
     <div class="item"><div class="n">01</div><div><div class="t">Move money</div><div class="d">No bids changed, no prices set, no orders placed. It reads.</div></div></div>
     <div class="item"><div class="n">02</div><div><div class="t">Act alone</div><div class="d">Every suggestion waits for a person. Yours or ours.</div></div></div>
@@ -283,13 +301,13 @@
     <div class="item"><div class="n">05</div><div><div class="t">Go quiet and call it calm</div><div class="d">A morning with no card is a red light on us.</div></div></div>
   </div>
 
-  <div class="btns">
-    <a class="btn ink" href="https://buy.stripe.com/3cIfZb3yJ7rH8zK9U73ZK08" target="_blank" rel="noopener"><strong>Book the install</strong></a>
-    <a class="btn" href="https://calendly.com/randomstorytelling/free-intro-call" target="_blank" rel="noopener"><strong>Free 15 minute call</strong></a>
-  </div>
+    </div></details>
+    <details class="fold"><summary><h2>Price</h2></summary><div class="in">
   <div class="price">$5,000 to install, plus your chief of staff, priced on the intro call.<small>The install includes the brand DNA hour with me, recorded. Your accounts connected. The pack on your own AI. Your first card running. The floor set. Your chief of staff matched and trained. The pack stays current at no extra charge. No software fee.<br>* The chief of staff line is set after the intro call, based on the hours your business needs.</small></div>
+    </div></details>
+  </div>
 
-  <div class="lbl"><h2>Questions</h2><span>Founders selling on Amazon</span></div>
+  <div class="lbl faqlbl"><h2>Questions</h2><span>Founders selling on Amazon</span></div>
   <div class="faq">
     <div class="qa"><h3>What is on the morning card?</h3><p>Four numbers: gross sales, discounts, ad spend, contribution margin. Each one yesterday, last seven days, last ninety. Plus days of cover at FBA and one green or red light per line.</p></div>
     <div class="qa"><h3>Do I need Helium 10 or another tool?</h3><p>No. Seller Central is enough. If you already pay for Helium 10 the system reads it too.</p></div>

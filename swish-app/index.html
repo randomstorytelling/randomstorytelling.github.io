@@ -283,6 +283,25 @@
     .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
   }
   @media(max-width:700px){.cell{padding-right:0}}
+  /* the lens: one name, one line, one action, three facts. Everything else folds. */
+  .hero{padding:clamp(88px,13vw,168px) 0 clamp(56px,8vw,104px)}
+  .hero .kicker{margin-top:34px;max-width:640px}
+  .hero .btns{margin-top:48px}
+  .spec{margin-top:0;grid-template-columns:repeat(3,1fr)}
+  .spec .cell{padding:26px 20px 30px 0}
+  .folds{margin-top:clamp(64px,9vw,120px);border-top:1px solid var(--ink)}
+  .fold{border-bottom:1px solid var(--hair)}
+  .fold summary{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:24px 0;cursor:pointer;list-style:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{font-size:13px;text-transform:uppercase;letter-spacing:.2em;font-weight:500}
+  .fold summary span{font-size:13px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin-left:auto}
+  .fold summary::after{content:"+";font-size:18px;font-weight:400;line-height:1;color:var(--mute);width:14px;text-align:center}
+  .fold[open] summary::after{content:"\2212"}
+  .fold .in{padding:4px 0 34px}
+  .fold .list{margin-top:0}
+  .fold .price{margin-top:0}
+  .faqlbl{margin-top:clamp(64px,9vw,120px)}
+  @media(max-width:700px){.spec{grid-template-columns:1fr}.fold summary span{display:none}}
 </style>
 </head>
 <body>
@@ -308,31 +327,29 @@
   </div>
 
   <div class="spec">
-    <div class="cell"><div class="k">Product</div><div class="v">App</div></div>
     <div class="cell"><div class="k">For</div><div class="v">Basketball trainers and their players</div></div>
     <div class="cell"><div class="k">Price</div><div class="v">From $29 per month<small>Up to 25 players, players free</small></div></div>
     <div class="cell"><div class="k">Privacy</div><div class="v">On device<small>Video never leaves the phone</small></div></div>
-    <div class="cell"><div class="k">Measures</div><div class="v">Nine mechanics</div></div>
-    <div class="cell"><div class="k">Seats</div><div class="v">Trainer and player</div></div>
   </div>
 
-  <div class="lbl"><h2>Details</h2><span>What you are buying</span></div>
+  <div class="folds">
+    <details class="fold"><summary><h2>Details</h2><span>What you are buying</span></summary><div class="in">
   <div class="body">
     <p>A trainer gets an hour with a player, then loses sight of them. The player shoots alone. No eye on the form. No way to tell which miss is worth fixing.</p>
     <p><b>Swish is that eye, on the player&rsquo;s own phone.</b> It films a shot and reads the form from body pose. It scores nine mechanics against ideal ranges. Then it names the one fix with the most leverage, not a list of everything wrong.</p>
     <p><b>A trainer seat is the player app plus a roster.</b> It films the trainer&rsquo;s own reps. It adds a seven day log for every player: shots, days, average, change versus last week, best, and the fix showing up most.</p>
     <p>The nine mechanics: leg load, elbow set, elbow flare, set point height, release arc, follow through, balance, stance width and drift. The feedback comes in one of five coaching voices: The Shot Doctor, The Skills Trainer, The Hype, The Professor and The Fundamentalist. They are archetypes and composites. No real coach, athlete, brand or trademarked system is named anywhere in the app. That is deliberate.</p>
   </div>
-
-  <div class="lbl"><h2>Price by roster</h2><span>Trainers pay, players never do</span></div>
+    </div></details>
+    <details class="fold"><summary><h2>Price by roster</h2><span>Trainers pay, players never do</span></summary><div class="in">
   <div class="list">
     <div class="item"><div class="n">03</div><div><div class="t">Solo, free</div><div class="d">Your own reps plus three players.</div></div></div>
     <div class="item"><div class="n">25</div><div><div class="t">Roster, $29 per month</div><div class="d">Up to twenty five players.</div></div></div>
     <div class="item"><div class="n">ALL</div><div><div class="t">Program, $79 per month</div><div class="d">Unlimited players and coaches.</div></div></div>
     <div class="item"><div class="n">14</div><div><div class="t">Free trial</div><div class="d">Fourteen days of the full roster. Players never pay on any tier.</div></div></div>
   </div>
-
-  <div class="lbl"><h2>How it works</h2><span>Five steps</span></div>
+    </div></details>
+    <details class="fold"><summary><h2>How it works</h2><span>Five steps</span></summary><div class="in">
   <div class="list">
     <div class="item"><div class="n">01</div><div><div class="t">Film a shot</div><div class="d">On the player&rsquo;s own phone. Everything runs on that device. Only numbers are stored.</div></div></div>
     <div class="item"><div class="n">02</div><div><div class="t">It reads the form</div><div class="d">The form comes off the body pose in the clip. Nine mechanics, each scored against its ideal range.</div></div></div>
@@ -340,22 +357,18 @@
     <div class="item"><div class="n">04</div><div><div class="t">The player sends the week</div><div class="d">A readable report plus a paste-able payload goes to the coach. Numbers only, no video.</div></div></div>
     <div class="item"><div class="n">05</div><div><div class="t">The coach sees the roster</div><div class="d">Paste the payload. It merges into that player&rsquo;s row: shots, days, average, change versus last week, best, and the fix showing up most, across seven days.</div></div></div>
   </div>
-
-  <div class="lbl"><h2>What it will not do</h2><span>On purpose</span></div>
+    </div></details>
+    <details class="fold"><summary><h2>What it will not do</h2><span>On purpose</span></summary><div class="in">
   <div class="list">
     <div class="item"><div class="n">01</div><div><div class="t">It will not upload the video</div><div class="d">Everything runs on the player&rsquo;s own device. The video never leaves the phone. Only numbers are stored. There is no server for a clip to land on.</div></div></div>
     <div class="item"><div class="n">02</div><div><div class="t">It will not grade a clip that is not a shot</div><div class="d">It declines to score it and says so. No invented grade.</div></div></div>
     <div class="item"><div class="n">03</div><div><div class="t">It will not name or imitate a real coach</div><div class="d">The five voices are archetypes and composites. No real coach, athlete, brand or trademarked system is named anywhere in the app.</div></div></div>
     <div class="item"><div class="n">04</div><div><div class="t">It will not charge your players</div><div class="d">The seat is the trainer&rsquo;s. Players use it free.</div></div></div>
   </div>
-
-  <div class="btns">
-    <a class="btn ink" href="/swish/"><strong>Try it free</strong><span>Players never pay</span></a>
-    <a class="btn" href="https://buy.stripe.com/aFa9ANglv13jeY8aYb3ZK00" target="_blank" rel="noopener"><strong>Start your roster</strong><span>$29 a month &middot; up to 25 players</span></a>
-    <a class="btn" href="https://calendly.com/randomstorytelling/free-intro-call" target="_blank" rel="noopener"><strong>Free 15 minute call</strong></a>
+    </div></details>
   </div>
 
-  <div class="lbl"><h2>FAQ</h2><span>Trainers and players</span></div>
+  <div class="lbl faqlbl"><h2>FAQ</h2><span>Trainers and players</span></div>
   <div class="faq">
     <div class="qa"><h3>How do I track my shooting form?</h3><p>Film a shot with Swish on your own phone. It reads your form from your body pose. It scores nine mechanics against ideal ranges. It names the one fix with the most leverage, not a list of everything wrong. The nine are leg load, elbow set, elbow flare, set point height, release arc, follow through, balance, stance width and drift.</p></div>
     <div class="qa"><h3>Is there an app that analyses a basketball shot?</h3><p>Swish does. It films a shot, reads the form from body pose, scores it and names one fix, in one of five coaching voices. It runs entirely on the player&rsquo;s own device. The video never leaves the phone. Only numbers are stored.</p></div>

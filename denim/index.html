@@ -206,6 +206,7 @@
   ::-moz-selection{background:var(--ink);color:var(--paper)}
   body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;font-weight:400;line-height:1.45;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
+  h1.pmark{font-weight:500;font-size:clamp(30px,5vw,56px);line-height:1.1;letter-spacing:.2em}
   .w{max-width:1180px;margin:0 auto;padding:0 28px}
   .lt{position:sticky;top:0;z-index:5;background:var(--paper);
       display:flex;align-items:baseline;gap:12px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
@@ -294,6 +295,25 @@
     .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
   }
   @media(max-width:700px){.cell{padding-right:0}}
+  /* the lens: one name, one line, one action, three facts. Everything else folds. */
+  .hero{padding:clamp(88px,13vw,168px) 0 clamp(56px,8vw,104px)}
+  .hero .kicker{margin-top:34px;max-width:640px}
+  .hero .btns{margin-top:48px}
+  .spec{margin-top:0;grid-template-columns:repeat(3,1fr)}
+  .spec .cell{padding:26px 20px 30px 0}
+  .folds{margin-top:clamp(64px,9vw,120px);border-top:1px solid var(--ink)}
+  .fold{border-bottom:1px solid var(--hair)}
+  .fold summary{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:24px 0;cursor:pointer;list-style:none}
+  .fold summary::-webkit-details-marker{display:none}
+  .fold summary h2{font-size:13px;text-transform:uppercase;letter-spacing:.2em;font-weight:500}
+  .fold summary span{font-size:13px;color:var(--mute);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin-left:auto}
+  .fold summary::after{content:"+";font-size:18px;font-weight:400;line-height:1;color:var(--mute);width:14px;text-align:center}
+  .fold[open] summary::after{content:"\2212"}
+  .fold .in{padding:4px 0 34px}
+  .fold .list{margin-top:0}
+  .fold .price{margin-top:0}
+  .faqlbl{margin-top:clamp(64px,9vw,120px)}
+  @media(max-width:700px){.spec{grid-template-columns:1fr}.fold summary span{display:none}}
 </style>
 </head>
 <body>
@@ -309,27 +329,30 @@
   </div>
 
   <div class="hero">
-    <h1>Custom<br><em>Denim</em></h1>
+    <h1 class="pmark">Custom Denim</h1>
     <p class="kicker">That jacket had a whole life before it got to you. <span>We find it, then build your story into the patches and the placement. Yours is the second life it gets.</span></p>
+    <div class="btns">
+      <a class="btn ink" href="https://buy.stripe.com/fZu28l8T313j03e8Q33ZK04" target="_blank" rel="noopener"><strong>Start your story</strong><span>$250 &middot; credited to the piece</span></a>
+      <a class="btn" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Custom%20denim%20jacket" target="_blank" rel="noopener"><strong>Free 15 minute call</strong></a>
+    </div>
   </div>
 
   <div class="spec">
-    <div class="cell"><div class="k">Product</div><div class="v">Art</div></div>
     <div class="cell"><div class="k">Price</div><div class="v">From $750<small>Three patches, jacket included</small></div></div>
     <div class="cell"><div class="k">To start</div><div class="v">$250<small>Credited to the piece</small></div></div>
     <div class="cell"><div class="k">Edition</div><div class="v">One of one</div></div>
-    <div class="cell"><div class="k">Garment</div><div class="v">Vintage, sourced by us</div></div>
   </div>
 
-  <div class="lbl"><h2>Price by patches</h2><span>The story sets the number</span></div>
+  <div class="folds">
+    <details class="fold"><summary><h2>Price by patches</h2><span>The story sets the number</span></summary><div class="in">
   <div class="list">
     <div class="item"><div class="n">03</div><div><div class="t">$750</div><div class="d">Three patches. The base, jacket included.</div></div></div>
     <div class="item"><div class="n">06</div><div><div class="t">$1,050</div><div class="d">Six patches.</div></div></div>
     <div class="item"><div class="n">10</div><div><div class="t">$1,450</div><div class="d">Ten patches.</div></div></div>
     <div class="item"><div class="n">+1</div><div><div class="t">$100</div><div class="d">Each patch after the third.</div></div></div>
   </div>
-
-  <div class="lbl"><h2>The process</h2><span>Six steps</span></div>
+    </div></details>
+    <details class="fold"><summary><h2>The process</h2><span>Six steps</span></summary><div class="in">
   <div class="list">
     <div class="item"><div class="n">01</div><div><div class="t">Tell the story</div><div class="d">A free fifteen minute call. What the jacket is for, who it is about, what the moments are. Nothing is drawn yet.</div></div></div>
     <div class="item"><div class="n">02</div><div><div class="t">Put $250 down</div><div class="d">The deposit starts the work and is credited to the piece. It buys the design: the conversation, the placement and the drawing.</div></div></div>
@@ -338,13 +361,10 @@
     <div class="item"><div class="n">05</div><div><div class="t">It gets built</div><div class="d">Made with Crane&#x27;s Eye View. The story goes into the patches and the placement. That is what makes it yours and not a template.</div></div></div>
     <div class="item"><div class="n">06</div><div><div class="t">One of one, to you</div><div class="d">There is no second copy. The jacket had a life before you and now it carries yours.</div></div></div>
   </div>
-
-  <div class="btns">
-    <a class="btn ink" href="https://buy.stripe.com/fZu28l8T313j03e8Q33ZK04" target="_blank" rel="noopener"><strong>Start your story</strong><span>$250 &middot; credited to the piece</span></a>
-    <a class="btn" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Custom%20denim%20jacket" target="_blank" rel="noopener"><strong>Free 15 minute call</strong></a>
+    </div></details>
   </div>
 
-  <div class="lbl"><h2>FAQ</h2><span>Custom denim</span></div>
+  <div class="lbl faqlbl"><h2>FAQ</h2><span>Custom denim</span></div>
   <div class="faq">
     <div class="qa"><h3>How much does a custom embroidered denim jacket cost?</h3><p>Every jacket starts at $750 all in with three patches. That includes sourcing and buying the vintage jacket. Six patches is $1,050. Ten patches is $1,450. Each patch after the third is $100. A $250 deposit starts the work and is credited to the piece.</p></div>
     <div class="qa"><h3>How do I get a one of one jacket made?</h3><p>It starts with a free fifteen minute call about the story you want on it. A $250 deposit opens the design. We source the vintage jacket. You approve a drawing before anything is stitched.</p></div>
