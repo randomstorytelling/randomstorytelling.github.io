@@ -27,7 +27,8 @@
   body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;
        font-weight:400;line-height:1.45;letter-spacing:-.03em;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
-  .lt{display:flex;align-items:baseline;gap:12px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
+  .lt{position:sticky;top:0;z-index:5;background:var(--paper);
+      display:flex;align-items:baseline;gap:12px;padding:14px 0 12px;border-bottom:1px solid var(--hair);
       font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;color:var(--mute)}
   .lt-city{color:var(--ink)}
   .lt-clock{font-variant-numeric:tabular-nums}
@@ -125,6 +126,7 @@
   .fclock .fc{display:flex;flex-direction:column;justify-content:space-between;gap:30px;flex:1;align-self:stretch}
   .fvyb{flex:none;line-height:0}
   .fvyb img{height:40px;width:auto;display:block}
+  .fword img{height:20px}
   .fbar .k{font-size:11px;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);font-weight:500;line-height:1}
   .fbar .v{font-size:12.5px;text-transform:uppercase;letter-spacing:.14em;font-weight:500;
            display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
@@ -135,6 +137,8 @@
     .fbar{grid-template-columns:1fr}
     .fbar > div{padding:12px 0;gap:14px}
     .fclock .fc{gap:14px}
+    .fword img{height:15px}
+    .fbar .v a{white-space:nowrap}
     .fbar > div + div{border-left:0;border-top:1px solid var(--rule)}
   }
   .intro{margin:18px 0 0;font-size:13px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;color:var(--mute)}
@@ -266,12 +270,14 @@
     <div class="fmark"><span>Random</span><span>Storytelling</span></div>
     <div class="fgap"></div>
     <div class="fbar">
-      <div><span class="k">Founder + Artist</span>
+      <div class="fclock">
+        <div class="fc"><span class="k">Founder + Artist</span>
         <span class="v"><a href="https://docs.google.com/spreadsheets/d/1e1U3E8objQgBxJlchwm96cCpPX10MO0QR6YbripdG94/edit" target="_blank" rel="noopener">Lawrence Whitaker III</a></span></div>
+        <a class="fvyb fword" href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=foot_wordmark" target="_blank" rel="noopener"><img src="brand/vybrance-labs-wordmark-black.png" alt="Vybrance Labs" width="900" height="124"></a></div>
       <div class="fclock" data-localtime data-localtime-zone="America/Chicago" hidden>
         <div class="fc"><span class="k">Local time</span>
         <span class="v"><span class="t" data-localtime-clock></span><span class="c" data-localtime-city></span></span></div>
-        <a class="fvyb" href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=foot_logo" target="_blank" rel="noopener"><img src="brand/vyblabs-black.svg" alt="VYB LABS" width="1500" height="684"></a></div>
+        <a class="fvyb" href="https://vybrancelabs.co/films" target="_blank" rel="noopener"><img src="brand/vyblabs-black.png" alt="VYB LABS" width="600" height="273"></a></div>
       <div><span class="k">Newsletter</span>
         <span class="v"><a href="https://randomstorytelling.beehiiv.com/subscribe" target="_blank" rel="noopener">Base Camp &rarr;</a></span></div>
     </div>
