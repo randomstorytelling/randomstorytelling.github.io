@@ -18,6 +18,11 @@
    list below, the places the Apple TV aerial screensavers fly over.
    Lawrence, 2026-09-29.
 
+   The rotating mount changes its letters like a split flap board: every
+   letter that differs spins through a few others, left to right, then lands.
+   Visitors who ask their system for less motion get a plain swap.
+   Lawrence, 2026-09-29.
+
    Mount points: any element with [data-localtime]. Inside it,
    [data-localtime-clock] gets the time and [data-localtime-city] the place.
    Fails silent: if anything throws, the block stays hidden. */
@@ -57,6 +62,44 @@
     return ring[Math.floor((now - born) / (every * 1000)) % ring.length];
   }
 
+  var FLAPS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  var still = false;
+  try { still = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+  function land(cell, ch) {
+    cell.textContent = ch === " " ? "\u00a0" : ch;
+    cell.classList.remove("on");
+    void cell.offsetWidth;
+    cell.classList.add("on");
+  }
+
+  function flap(el, text) {
+    if (el._txt === text) return;
+    if (still || !el.classList) { el.textContent = text; el._txt = text; return; }
+    if (el._txt === undefined) el.textContent = "";
+    el._txt = text;
+    el.setAttribute("aria-label", text);
+    var want = Array.from(text), cells = el.children, i;
+    while (cells.length > want.length) el.removeChild(el.lastChild);
+    while (cells.length < want.length) {
+      var n = document.createElement("span");
+      n.className = "flap"; n.setAttribute("aria-hidden", "true"); n.textContent = "\u00a0";
+      el.appendChild(n);
+    }
+    for (i = 0; i < want.length; i++) (function (cell, ch, i) {
+      var now = cell.textContent === "\u00a0" ? " " : cell.textContent;
+      if (cell._t) { clearInterval(cell._t); cell._t = 0; }
+      if (now === ch) return;
+      /* lands on the clock, not on a count: a throttled tab still finishes */
+      var due = Date.now() + (4 + Math.min(i, 14)) * 55;
+      cell._t = setInterval(function () {
+        if (el._txt !== text) { clearInterval(cell._t); cell._t = 0; return; }
+        if (Date.now() >= due) { clearInterval(cell._t); cell._t = 0; land(cell, ch); return; }
+        land(cell, FLAPS.charAt(Math.floor(Math.random() * FLAPS.length)));
+      }, 55);
+    })(cells[i], want[i], i);
+  }
+
   function place() {
     try {
       var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
@@ -81,7 +124,7 @@
   hosts.forEach(function (h) {
     var c = h.querySelector("[data-localtime-city]");
     if (!c) return;
-    if (h.hasAttribute("data-localtime-rotate")) { c.textContent = ring[0][1]; return; }
+    if (h.hasAttribute("data-localtime-rotate")) { flap(c, ring[0][1]); return; }
     var fixed = h.getAttribute("data-localtime-zone");
     if (fixed) { c.textContent = US[fixed] || fixed.split("/").pop().replace(/_/g, " "); return; }
     if (where) c.textContent = where; else c.remove();
@@ -128,7 +171,10 @@
       if (h.hasAttribute("data-localtime-rotate")) {
         var sp = spot(h, now.getTime()), c = h.querySelector("[data-localtime-city]");
         tz = sp[0];
-        if (c && c.textContent !== sp[1]) c.textContent = sp[1];
+        if (c) flap(c, sp[1]);
+        var rs = clock(now, h.hasAttribute("data-localtime-seconds"), tz);
+        if (rs) flap(t, rs);
+        return;
       }
       var s = clock(now, h.hasAttribute("data-localtime-seconds"), tz);
       if (s) t.textContent = s;

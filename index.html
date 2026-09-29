@@ -32,6 +32,9 @@
       font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:500;color:var(--mute)}
   .lt-city{color:var(--ink)}
   .lt-clock{font-variant-numeric:tabular-nums}
+  .flap{display:inline-block;transform-origin:50% 60%;backface-visibility:hidden}
+  .flap.on{animation:flap .11s ease-out}
+  @keyframes flap{0%{transform:perspective(60px) rotateX(-88deg);opacity:.25}100%{transform:perspective(60px) rotateX(0);opacity:1}}
   .w{max-width:1180px;margin:0 auto;padding:0 28px}
   .rule{border-top:1px solid var(--hair)}
 
