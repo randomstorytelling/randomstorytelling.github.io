@@ -49,6 +49,7 @@ const el = {
   recTimer: $("#recTimer"),
   poseStatus: $("#poseStatus"),
   frameGuide: $("#frameGuide"),
+  zoomBtn: $("#zoomBtn"),
   analyzingBar: $("#analyzingBar"),
   analyzingFill: $("#analyzingFill"),
   analyzingText: $("#analyzingText"),
@@ -163,23 +164,89 @@ async function enableCamera() {
 }
 el.enableCamBtn.addEventListener("click", enableCamera);
 
+// Find the back ultrawide lens by label (iOS: "Back Ultra Wide Camera"; some
+// Androids expose "ultra"/"wide" in the label). Labels only exist after a grant.
+async function findUltraWide() {
+  try {
+    const devs = await navigator.mediaDevices.enumerateDevices();
+    const cams = devs.filter(d => d.kind === "videoinput");
+    return cams.find(d => /ultra.?wide|0\.5x|wide angle/i.test(d.label) && !/front|user/i.test(d.label)) || null;
+  } catch { return null; }
+}
+
+// Try the `zoom` capability (iOS 17+ / Chrome): a min below 1 means the
+// virtual camera can step out to 0.5x without switching devices.
+async function applyZoom(track, wantWide) {
+  try {
+    const caps = track.getCapabilities?.() || {};
+    const z = caps.zoom;
+    if (!z || typeof z.min !== "number") return false;
+    if (z.min >= 1 && wantWide) return false;
+    await track.applyConstraints({ advanced: [{ zoom: wantWide ? z.min : Math.max(1, z.min) }] });
+    return true;
+  } catch (e) { console.warn("[cam] zoom constraint failed", e); return false; }
+}
+
+if (state.wide === undefined) { state.wide = true; state.wideAvail = false; }   // prefer 0.5x on the back lens
+
 async function startStream() {
   stopStream();
+  const base = { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 30 } };
+  const tryGet = (video) => navigator.mediaDevices.getUserMedia({ audio: false, video });
+  let stream = null;
   try {
-    state.stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: { facingMode: { ideal: state.facing }, width: { ideal: 1280 }, height: { ideal: 720 } },
-    });
+    stream = await tryGet({ facingMode: { ideal: state.facing }, ...base });
   } catch (e) {
     console.warn(e);
-    toast("Camera needs permission. Enable it for this site in your browser settings.");
-    return false;
+    try { stream = await tryGet({ facingMode: { ideal: state.facing } }); }   // no size hints at all
+    catch (e2) {
+      console.warn(e2);
+      toast("Camera needs permission. Enable it for this site in your browser settings.");
+      return false;
+    }
   }
+
+  // Back camera + wide preferred: swap to the ultrawide device if the phone has one,
+  // else ask the current track to zoom out to its minimum (0.5x on recent iPhones).
+  state.wideAvail = false;
+  if (state.facing === "environment") {
+    const uw = await findUltraWide();
+    if (uw) {
+      state.wideAvail = true;
+      if (state.wide) {
+        try {
+          const s2 = await tryGet({ deviceId: { exact: uw.deviceId }, ...base });
+          stream.getTracks().forEach(t => t.stop());
+          stream = s2;
+        } catch (e) { console.warn("[cam] ultrawide device open failed, keeping main lens", e); }
+      }
+    } else {
+      const track = stream.getVideoTracks()[0];
+      const caps = track?.getCapabilities?.() || {};
+      if (caps.zoom && typeof caps.zoom.min === "number" && caps.zoom.min < 1) {
+        state.wideAvail = true;
+        await applyZoom(track, state.wide);
+      }
+    }
+  }
+  if (el.zoomBtn) {
+    el.zoomBtn.hidden = !state.wideAvail;
+    el.zoomBtn.classList.toggle("on", state.wide && state.wideAvail);
+    el.zoomBtn.textContent = state.wide ? "0.5×" : "1×";
+  }
+
+  state.stream = stream;
   el.camFeed.srcObject = state.stream;
   el.camFeed.muted = true; el.camFeed.playsInline = true;
   try { await el.camFeed.play(); } catch {}
   return true;
 }
+el.zoomBtn?.addEventListener("click", async () => {
+  if (state.recording || !state.stream) return;
+  state.wide = !state.wide;
+  await startStream();
+  toast(state.wide ? "0.5× wide — fits more of you in frame" : "1× lens", 1600);
+});
 function stopStream() {
   if (state.stream) { state.stream.getTracks().forEach(t => t.stop()); state.stream = null; }
 }
@@ -214,12 +281,13 @@ function startLiveTracking() {
   const loop = () => {
     state.liveRAF = requestAnimationFrame(loop);
     const now = performance.now();
-    if (now - (state._lastDet || 0) < 40) return;      // ~25fps cap (plenty for framing)
+    const gap = state.recording ? 66 : 40;             // ~15fps while recording (encoder first), ~25fps framing
+    if (now - (state._lastDet || 0) < gap) return;
     state._lastDet = now;
     if (!state.stream || el.camFeed.readyState < 2) return;
     let lm = null;
     if (state.poseWarm) { try { lm = pose.detectVideo(el.camFeed, now)?.landmarks?.[0] || null; } catch {} }
-    drawSkeleton(el.overlay, el.camFeed, lm, "cover", state.liveHand);
+    drawSkeleton(el.overlay, el.camFeed, lm, "contain", state.liveHand);
     if (!state.recording) updateFraming(lm);
     else if (lm) feedShotDetector(lm);
   };
@@ -278,13 +346,13 @@ function stopLiveTracking() {
   state.liveRAF = null;
   clearCanvas(el.overlay);
 }
-function visOK(lm, i) { const p = lm[i]; return p && (p.visibility == null || p.visibility >= 0.5); }
+function visOK(lm, i) { const p = lm[i]; return p && (p.visibility == null || p.visibility >= 0.35); }
 function updateFraming(lm) {
   if (!state.poseWarm) { setLiveStatus("searching", "loading coach…"); return; }
   if (!lm) { setLiveStatus("searching", "Looking for you — step into the frame, good light"); return; }
   const head = visOK(lm, 0);
   const hips = visOK(lm, 23) || visOK(lm, 24);
-  const feet = visOK(lm, 27) || visOK(lm, 28) || visOK(lm, 31) || visOK(lm, 32);
+  const feet = visOK(lm, 27) || visOK(lm, 28) || visOK(lm, 29) || visOK(lm, 30) || visOK(lm, 31) || visOK(lm, 32);
   const arm = (visOK(lm, 13) && visOK(lm, 15)) || (visOK(lm, 14) && visOK(lm, 16));
   const lw = lm[15], rw = lm[16];
   if (lw && rw && (lw.visibility ?? 1) > .3 && (rw.visibility ?? 1) > .3)
@@ -297,11 +365,20 @@ function updateFraming(lm) {
 }
 
 /* ----------------- record ----------------- */
-function pickMime() {
-  const cands = ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+// iOS says isTypeSupported("video/mp4;codecs=avc1") is true and then throws in the
+// constructor on some builds, so we try each candidate IN the constructor and keep
+// the first that actually builds. Last resort: no mimeType at all (browser default).
+function buildRecorder(stream) {
   if (!("MediaRecorder" in window)) return null;
-  for (const m of cands) { try { if (MediaRecorder.isTypeSupported(m)) return m; } catch {} }
-  return "";
+  const cands = ["video/mp4", "video/mp4;codecs=avc1", "video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"];
+  let lastErr = null;
+  for (const m of cands) {
+    try { if (!MediaRecorder.isTypeSupported(m)) continue; } catch { continue; }
+    try { return new MediaRecorder(stream, { mimeType: m, videoBitsPerSecond: 6_000_000 }); } catch (e) { lastErr = e; }
+    try { return new MediaRecorder(stream, { mimeType: m }); } catch (e) { lastErr = e; }
+  }
+  try { return new MediaRecorder(stream); } catch (e) { lastErr = e; }
+  throw lastErr || new Error("MediaRecorder unavailable");
 }
 el.recordBtn.addEventListener("click", toggleRecord);
 
@@ -309,18 +386,25 @@ async function toggleRecord() {
   if (!state.stream) { toast("Turn on the camera first."); return; }
   if (state.recording) { stopRecord(); return; }
 
-  const mime = pickMime();
-  if (mime === null) { toast("Recording isn't supported here — use the upload button to analyze a clip instead."); return; }
-
+  if (el.camFeed.readyState < 2 || !state.stream.getVideoTracks().some(t => t.readyState === "live")) {
+    toast("Camera is still warming up — give it a second and tap again."); return;
+  }
   try {
     state.chunks = [];
-    state.recorder = new MediaRecorder(state.stream, mime ? { mimeType: mime } : undefined);
+    state.recorder = buildRecorder(state.stream);
+    if (!state.recorder) { toast("Recording isn't supported here — use the upload button to analyze a clip instead."); return; }
     state.recorder.ondataavailable = (e) => { if (e.data && e.data.size) state.chunks.push(e.data); };
     state.recorder.onstop = onRecordStop;
+    state.recorder.onerror = (e) => {
+      console.error("[rec] error", e?.error || e);
+      toast("Recording hit an error: " + (e?.error?.name || "unknown") + ". Try again or use upload.", 4200);
+      stopRecord();
+    };
     state.recorder.start();
+    console.log("[rec] started", state.recorder.mimeType);
   } catch (e) {
-    console.warn(e);
-    toast("Couldn't start recording — try the upload button instead.");
+    console.error("[rec] start failed", e);
+    toast(`Couldn't start recording (${e?.name || "error"}). Try the upload button instead.`, 4200);
     return;
   }
 
@@ -356,7 +440,7 @@ function stopRecord() {
 }
 
 async function onRecordStop() {
-  if (!state.chunks.length) { toast("That clip came back empty — try recording again."); el.liveHud.hidden = false; return; }
+  if (!state.chunks.length) { toast("That clip came back empty — try recording again."); el.liveHud.hidden = false; startLiveTracking(); return; }
   const blob = new Blob(state.chunks, { type: state.recorder.mimeType || "video/mp4" });
   state.chunks = [];
   loadClipForReview(blob);

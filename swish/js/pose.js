@@ -43,9 +43,10 @@ export async function initPose({ model = "full", runningMode = "VIDEO" } = {}) {
     baseOptions: { modelAssetPath: MODELS[model] ?? MODELS.full, delegate },
     runningMode,
     numPoses: 1,
-    minPoseDetectionConfidence: 0.5,
-    minPosePresenceConfidence: 0.5,
-    minTrackingConfidence: 0.5,
+    // 0.3 (was 0.5): a farther, smaller body (ultrawide / full court) still registers
+    minPoseDetectionConfidence: 0.3,
+    minPosePresenceConfidence: 0.3,
+    minTrackingConfidence: 0.3,
     outputSegmentationMasks: false,
   });
 

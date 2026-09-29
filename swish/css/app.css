@@ -69,7 +69,8 @@ strong{color:var(--text);font-weight:650}
 /* ---------- camera stage ---------- */
 .camera-stage{position:relative;flex:1;background:var(--bg);overflow:hidden;display:flex;align-items:center;justify-content:center}
 .camera-stage.live{background:#000000}
-#camFeed,#reviewVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:transparent}
+#camFeed,#reviewVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:transparent}
+/* contain (was cover): cover cropped a landscape stream to a centre strip on a portrait phone, so the body was cut off both sides */
 .camera-stage.live #camFeed{background:#000000}
 .player-stage #reviewVideo{background:#000000}
 #overlay,#reviewOverlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
@@ -83,8 +84,11 @@ strong{color:var(--text);font-weight:650}
 @media(prefers-reduced-motion:reduce){.ball{animation:none}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.frame-guide{position:absolute;inset:8% 14%;border:2px dashed rgba(255,255,255,.28);border-radius:18px;z-index:2;pointer-events:none}
-.frame-guide::after{content:"keep your whole body in frame";position:absolute;bottom:-26px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.6)}
+.frame-guide{position:absolute;inset:3% 4%;border:2px dashed rgba(255,255,255,.28);border-radius:18px;z-index:2;pointer-events:none}
+.frame-guide::after{content:"keep your whole body in frame";position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.6)}
+/* zoom toggle (0.5x ultrawide / 1x), black and white like the rest of the stage */
+.zoom-btn{border:1px solid rgba(255,255,255,.5);background:rgba(0,0,0,.55);color:#fff;border-radius:18px;padding:7px 12px;font-size:13px;font-weight:700;font-family:inherit;position:absolute;right:14px;top:calc(var(--safe-top) + 14px);z-index:5;backdrop-filter:blur(8px)}
+.zoom-btn.on{background:#fff;color:#000;border-color:#fff}
 
 .rec-hud{position:absolute;top:calc(var(--safe-top) + 14px);left:50%;transform:translateX(-50%);
   z-index:4;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.55);

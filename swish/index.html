@@ -12,7 +12,7 @@
 <link rel="manifest" href="manifest.webmanifest" />
 <link rel="icon" href="icons/icon.svg?v=7" type="image/svg+xml" />
 <link rel="apple-touch-icon" href="icons/icon-180.png?v=7" />
-<link rel="stylesheet" href="css/app.css?v=7" />
+<link rel="stylesheet" href="css/app.css?v=8" />
 </head>
 <body>
 
@@ -68,6 +68,7 @@
 
       <!-- framing guide -->
       <div class="frame-guide" id="frameGuide" hidden></div>
+      <button class="zoom-btn" id="zoomBtn" hidden aria-label="Toggle wide lens">0.5×</button>
     </div>
 
     <div class="shoot-controls" id="shootControls" hidden>
@@ -379,7 +380,7 @@
   <div id="toast" class="toast" hidden></div>
 </div>
 
-<script type="module" src="js/app.js?v=7"></script>
+<script type="module" src="js/app.js?v=8"></script>
 <script>
   // Register the offline service worker in production only — skip on localhost so
   // dev edits to CSS/JS aren't served from a stale cache.
