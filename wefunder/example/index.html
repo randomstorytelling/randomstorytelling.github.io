@@ -38,7 +38,7 @@ h1{font-size:34px;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:
 .tabs i{font-style:normal;background:#f3f4f6;border-radius:4px;padding:1px 6px;margin-left:5px;font-size:11px;color:var(--mute)}
 .side{border:1px solid var(--hair);border-radius:10px;padding:18px;position:sticky;top:16px}
 .side .goal{font-size:12px;color:#15803d;font-weight:600;padding-bottom:12px;border-bottom:2px solid #22c55e;letter-spacing:.02em}
-.side .amt{font-size:32px;font-weight:600;margin-top:16px;letter-spacing:-.02em;color:#9ca3af}
+.side .amt{font-size:32px;font-weight:600;margin-top:16px;letter-spacing:-.02em}.bar{height:6px;background:#e5e7eb;border-radius:3px;margin-top:12px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:#22c55e}.side .goalt{font-size:12px;color:var(--mute);margin-top:6px}.ladder{border:1px solid var(--hair);border-radius:10px;overflow:hidden}.ladder div{display:grid;grid-template-columns:90px 1fr;gap:14px;padding:14px 18px;border-top:1px solid var(--hair);font-size:14px}.ladder div:first-child{border-top:0}.ladder b{font-weight:600}
 .side .sub{font-size:13px;color:var(--mute)}
 .side .inv{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
 .side .inv b{font-size:15px;font-weight:600;display:block}.side .inv small{color:var(--mute);font-size:12px}
@@ -90,6 +90,19 @@ h2{font-size:26px;font-weight:600;letter-spacing:-.02em;margin:44px 0 18px}
 body.locked{overflow:hidden}body.locked .site{display:none}
 body:not(.locked) #gate{display:none}
 @media(max-width:1000px){.cols{grid-template-columns:1fr}.side{position:static}.nav .search,.nav .lnk{display:none}h1{font-size:26px}.deck{grid-template-columns:1fr}}
+
+.cover{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/9;background:#000}
+.cover img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.cover .t{position:absolute;left:24px;bottom:22px;color:#fff;font-family:"Elza",sans-serif;font-weight:700;font-size:clamp(22px,4vw,40px);letter-spacing:-.03em;line-height:1;text-shadow:0 2px 18px rgba(0,0,0,.35)}
+.cover .t small{display:block;font-size:11px;letter-spacing:.16em;font-weight:500;margin-bottom:8px}
+.tile.photo{padding:0;position:relative;overflow:hidden}.tile.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile.photo .cap{position:absolute;left:18px;bottom:16px;color:#fff;font-weight:700;font-size:clamp(16px,2.2vw,22px);letter-spacing:-.03em;text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.tile .l{margin-top:auto;font-size:13px;line-height:1.7;letter-spacing:0}
+.tile .l b{font-weight:700}
+.memo{font-size:17px;line-height:1.6;color:#1f2937;max-width:640px}.memo p{margin-bottom:16px}
+.memo .sig{font-style:normal;color:var(--mute);font-size:14px}
+.tm img{width:66px;height:66px;border-radius:50%;object-fit:cover;display:block}
+.terms2{font-size:14px;color:#374151;border:1px solid var(--hair);border-radius:10px;padding:16px 18px;margin-top:8px}
 </style>
 </head>
 <body class="locked">
@@ -104,7 +117,7 @@ body:not(.locked) #gate{display:none}
 </form></div>
 
 <div class="site">
-<div class="note"><b>Sample page by VYB LABS.</b> Concept work for Vybrance Labs™. Not a live offering, not an offer to invest. Numbers in grey are placeholders.</div>
+<div class="note"><b>Sample page by VYB LABS.</b> Concept work for Vybrance Labs™. Not a live offering, not an offer to invest. Raise figures, investor counts and the run cost are illustrative estimates.</div>
 <div class="nav"><span class="logo">wefunder<small>INVEST</small></span><span class="search">Search</span><span class="lnk">Explore</span><span class="lnk">Vault</span><span class="lnk">Learn</span><span class="sp"></span><span class="raise">Raise Capital</span><span class="lnk">Log in or Sign Up</span></div>
 
 <div class="wrap">
@@ -121,10 +134,21 @@ body:not(.locked) #gate{display:none}
       <div class="badge"><b>Clinicians' Choice</b>621 clinicians share Watermelon on FrontrowMD without compensation</div>
       <ul class="hl">
         <li><span>1</span><span>5 g of creatine in every serving of four gummies. 120 gummies, 30 servings a bag.</span></li>
-        <li><span>2</span><span>Every lot third-party tested.</span></li>
-        <li><span>3</span><span>Vegan, sugar-free, gluten-free, non-GMO.</span></li>
-        <li><span>4</span><span>Three flavors on sale today. This round funds one more run of Watermelon.</span></li>
+        <li><span>2</span><span>Every lot third-party tested. Vegan, sugar-free, gluten-free, non-GMO.</span></li>
+        <li><span>3</span><span>Three flavors on sale today at vybrancelabs.co, Amazon, TikTok Shop and Target.com.</span></li>
+        <li><span>4</span><span>Wholesale $25 a bag, $49.99 on the shelf, 12 to a case. A 50% margin for the retailer.</span></li>
+        <li><span>5</span><span>$70,000 funds one 5,000 bag run of Watermelon, stickering, freight and the launch. Nothing else.</span></li>
+        <li><span>6</span><span>Investors get the first bags off the line.</span></li>
       </ul>
+
+      <h2>The pitch</h2>
+      <div class="memo">
+        <p>We make creatine gummies. Four gummies a day, five grams of creatine, and the taste comes first. Three flavors are on the shelf today. Watermelon is the one 621 clinicians share on FrontrowMD, so Watermelon is the one we are making more of.</p>
+        <p>This round pays for one 5,000 bag run of Watermelon, the freight to bring it in, and the launch. That is it. No new flavor, no new category. More of the thing that already works. The goal is $70,000, and most of it is the run itself.</p>
+        <p>We are a design led science company in Austin. Every lot is third-party tested. The gummies are vegan, sugar-free, gluten-free and non-GMO. They sell on vybrancelabs.co, Amazon, TikTok Shop and Target.com, and to stores at $25 a bag, $49.99 on the shelf, 12 to a case.</p>
+        <p>Invest and you get the first bags off the line. Thank you for reading.</p>
+        <p class="sig">Lawrence Whitaker III, Co-Founder</p>
+      </div>
 
       <h2>Clinician proof</h2>
       <div class="card">
@@ -138,45 +162,67 @@ body:not(.locked) #gate{display:none}
       <p class="fine">† This clinician wants to clarify that larger-scale research to support their product claims is still developing. Clinicians can receive product samples and are never compensated to submit evaluations. These statements have not been reviewed by the FDA and are not intended to be medical advice. Reviews by FrontrowMD, read 2026-09-29. <a href="https://vybrancelabs.co/products/creatine-gummies-watermelon" style="text-decoration:underline">Read them in full.</a></p>
 
       <h2>Team</h2>
-      <div class="tm"><div class="av">LW</div><div><b>Lawrence Whitaker III</b><em>Co-Founder</em><p>Brand, film and design. Runs VYB LABS, the production and lifestyle arm.</p></div></div>
-      <div class="tm"><div class="av">MC</div><div><b>Martin Crowley</b><em>Co-Founder</em><p>Operations and finance.</p></div></div>
+      <div class="tm"><img src="lawrence-head.jpg" alt="Lawrence Whitaker III"><div><b>Lawrence Whitaker III</b><em>Co-Founder &amp; CEO</em><p>Sets the direction and the brand. Runs VYB LABS, the production and lifestyle arm, and is the face of the films.</p></div></div>
+      <div class="tm"><img src="martin-head.jpg" alt="Martin Crowley"><div><b>Martin Crowley</b><em>Co-Founder &amp; Head of R&amp;D</em><p>Leads the formulations, from the creatine dose to the taste.</p></div></div>
 
       <h2>Pitch Deck</h2>
       <div class="deck">
-        <div class="tile red"><div class="k">Thesis</div><div class="b">More bags of the one clinicians share.</div></div>
+        <div class="cover" style="grid-column:1/-1"><img src="cover.jpg" alt="Watermelon gummies on a chrome tray"><div class="t"><small>Vybrance Labs™</small>Watermelon, one more run.</div></div>
+        <div class="tile red"><div class="k">01 Thesis</div><div class="b">More bags of the one clinicians share.</div></div>
         <div class="tile pic"><img src="watermelon-bag.jpg" alt="Vybrance Labs Creatine Monohydrate Gummies, Watermelon"></div>
-        <div class="tile blush"><div class="k">Product</div><div class="num"><div><strong>5 g</strong>creatine per serving</div><div><strong>4</strong>gummies per serving</div><div><strong>30</strong>servings per bag</div></div></div>
-        <div class="tile deep"><div class="k">Proof</div><div class="big">621</div><div class="s">clinicians share this on FrontrowMD without compensation.</div></div>
-        <div class="tile ink"><div class="k">Use of funds</div><div class="b">One run.<br>Freight.<br>Launch.</div></div>
-        <div class="tile leaf"><div class="k">Perks</div><div class="b">Investors get the first bags off the line.</div></div>
+        <div class="tile blush"><div class="k">02 Product</div><div class="num"><div><strong>5 g</strong>creatine per serving</div><div><strong>4</strong>gummies per serving</div><div><strong>30</strong>servings per bag</div></div></div>
+        <div class="tile ink"><div class="k">03 What is inside, per serving</div><div class="l"><b>5 g</b> creatine monohydrate<br><b>500 mg</b> taurine<br><b>120 mcg</b> vitamin B12<br>Vegan · Sugar-free · Gluten-free · Non-GMO</div></div>
+        <div class="tile deep"><div class="k">04 Proof</div><div class="big">621</div><div class="s">clinicians share this on FrontrowMD without compensation.</div></div>
+        <div class="tile blush"><div class="k">05 In their words</div><div class="b" style="font-size:clamp(15px,2vw,19px)">“a smart option for those looking to simplify their creatine routine”</div><div class="s">Robert Wren, NP · Family medicine, 13 years†</div></div>
+        <div class="tile photo"><img src="hero-tray.jpg" alt="Watermelon gummies"><div class="cap">06 Taste comes first.</div></div>
+        <div class="tile leaf"><div class="k">07 Where it sells</div><div class="l">vybrancelabs.co<br>Amazon<br>TikTok Shop<br>Target.com</div></div>
+        <div class="tile ink"><div class="k">08 Wholesale</div><div class="num"><div><strong>$25</strong>a bag, wholesale</div><div><strong>$49.99</strong>on the shelf</div><div><strong>12</strong>to a case</div></div><div class="s">Net 30. A 50% margin for the retailer.</div></div>
+        <div class="tile photo"><img src="community.jpg" alt="The Vybrance community on set"><div class="cap">09 A community, not a customer list.</div></div>
+        <div class="tile red"><div class="k">10 Made right</div><div class="b">Every lot third-party tested.</div></div>
+        <div class="tile photo"><img src="games.jpg" alt="Movement on set"><div class="cap">11 Movement is life.</div></div>
+        <div class="tile ink"><div class="k">12 Use of funds, $70,000</div><div class="l"><b>~$63,000</b> the run, 5,000 bags<br><b>~$1,300</b> stickering<br><b>~$5,700</b> freight and launch</div></div>
+        <div class="tile leaf"><div class="k">13 Perks</div><div class="l"><b>$100</b> first bags off the line<br><b>$250</b> a 90 day supply<br><b>$1,000</b> A Day of Vybrance, every year<br><b>$5,000</b> founder call and a year of gummies</div></div>
+        <div class="tile deep"><div class="k">14 The close</div><div class="b">Own a piece of the next run.</div></div>
       </div>
 
       <h2>Perks</h2>
-      <div class="perk"><b>First bags</b>The first bags off the new run, before it reaches the shelf.</div>
-      <div class="perk"><b>Founder call</b>A call with the founders on the day the run is released.</div>
+      <div class="ladder">
+        <div><b>$100</b><span>The first bags off the new run, before it reaches the shelf.</span></div>
+        <div><b>$250</b><span>A 90 day supply of Watermelon, three bags, plus the first bags.</span></div>
+        <div><b>$500</b><span>Your name in the release post for this run, plus everything above.</span></div>
+        <div><b>$1,000</b><span>Free entry to A Day of Vybrance, our yearly activation in Austin, every year, plus everything above.</span></div>
+        <div><b>$5,000</b><span>A founder call and a year of gummies, plus everything above.</span></div>
+        <div><b>$10,000</b><span>A day on set at the next brand shoot, plus everything above.</span></div>
+      </div>
 
       <h2>FAQ</h2>
       <dl class="faq">
+        <dt>What exactly does the money do?</dt><dd>One 5,000 bag run of Watermelon, plus stickering, freight and the launch. $70,000 total, most of it the run.</dd><dt>Why 5,000 bags?</dt><dd>It is the smallest run that makes sense at our manufacturer.</dd>
         <dt>Is it tested?</dt><dd>Every lot, by a third party.</dd>
-        <dt>Where is it sold today?</dt><dd>vybrancelabs.co and Amazon.</dd>
-        <dt>What does the money do?</dt><dd>One production run of Watermelon, the freight to bring it in, and the launch.</dd>
+        <dt>Where is it sold today?</dt><dd>vybrancelabs.co, Amazon, TikTok Shop and Target.com.</dd>
+        <dt>What is a serving?</dt><dd>Four gummies. 5 g creatine, 500 mg taurine, 120 mcg B12. A bag is 120 gummies, 30 servings.</dd>
+        <dt>Who makes it?</dt><dd>A US manufacturer under contract to Vybrance Labs LLC. Every lot is third-party tested.</dd>
+        <dt>What are the terms?</dt><dd>Set with Wefunder and shown in the box on the right when the round opens.</dd>
+        <dt>When do I get my perks?</dt><dd>The first bags ship the week the run is released.</dd>
       </dl>
     </div>
 
     <aside class="side">
-      <div class="goal">🏆 FIRST GOAL (placeholder)</div>
-      <div class="amt">$000,000</div>
-      <div class="sub">raised from 000 investors</div>
+      <div class="goal">🏆 OVERSUBSCRIBED (You can still invest)</div>
+      <div class="amt">$87,500</div>
+      <div class="sub">raised from 248 investors</div>
+      <div class="bar"><i></i></div>
+      <div class="goalt">125% of the $70,000 goal</div>
       <div class="inv"><div><b>INVEST</b><small>min $100</small></div><div class="box"><span>$</span><span>0</span></div></div>
       <span class="btn">INVEST</span>
       <span class="btn o">WATCH FOR UPDATES</span>
       <div class="terms">Investment terms</div>
       <div class="t"><b>Set with Wefunder</b></div>
-      <div class="t">Investor perks: first bags off the line, founder call</div>
+      <div class="t">Investor perks: $100, $250, $500, $1K, $5K, $10K</div>
     </aside>
   </div>
 
-  <div class="made"><div><img src="vyblabs.png" alt="VYB LABS"></div><div>Want yours? <a href="/wefunder/Wefunder_Page_and_Film.pdf">Choose your adventure →</a><a href="https://calendly.com/randomstorytelling/free-intro-call?a2=Wefunder">Free 15 minute call →</a></div></div>
+  <div class="made"><div><img src="vyblabs.png" alt="VYB LABS"></div><div>This is package D, all of it: every graphic, every word, the film. <a href="/wefunder/Wefunder_Page_and_Film.pdf">Choose your adventure →</a><a href="https://calendly.com/randomstorytelling/free-intro-call?a2=Wefunder">Free 15 minute call →</a></div></div>
 </div>
 </div>
 <script>
