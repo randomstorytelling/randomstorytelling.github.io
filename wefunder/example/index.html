@@ -68,7 +68,7 @@ h2{font-size:24px;font-weight:500;letter-spacing:0;margin:44px 0 18px;color:#162
 .tile .b{margin-top:auto;font-size:clamp(18px,2.6vw,24px);font-weight:700;line-height:1.08}
 .tile .s{font-size:12px;margin-top:6px;letter-spacing:0}
 .red{background:var(--wm);color:#fff}.deep{background:var(--wmd);color:#fdecec}.blush{background:var(--blush);color:var(--wmd)}.leaf{background:var(--leaf);color:#eaf6ea}.ink{background:#111;color:#fff}
-.pic{background:#fff;border:1px solid var(--hair);padding:0;overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pic{background:#fff;border:1px solid var(--hair);padding:0;overflow:hidden}.pic img{width:100%;height:100%;object-fit:contain;display:block}
 .num{display:flex;gap:22px;margin-top:auto}.num div{font-size:11px;letter-spacing:0;line-height:1.3}.num strong{display:block;font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
 .big{font-size:clamp(44px,7vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-top:auto}
 .fine{font-size:12px;color:var(--mute);margin-top:14px;line-height:1.5}
@@ -172,9 +172,11 @@ body:not(.locked) #gate{display:none}
         <p>Vybrance means what it sounds like. We would rather have a thousand people who take four gummies a day and show up to a hike than one investor who never opens the bag.</p>
 
         <h3>Growing Momentum</h3>
-        <p>Three flavors on sale today. Green Apple on Target.com since April 2025. Amazon and TikTok Shop live. Single serves on the shelf at Royal Blue Grocery in Austin. A national subscription box confirmed a first order of all three flavors this fall. Wholesale open at the line sheet price to any store that wants it.</p>
-        <p>And the retail conversations that matter to a supplement brand, QVC among them, started this summer with the same three bags.</p>
-        <div class="tile photo" style="aspect-ratio:16/9;margin:8px 0 24px"><img src="hero-tray.jpg" alt="Watermelon gummies"><div class="cap">Taste comes first.</div></div>
+        <p>Here is where we are. Three flavors on the shelf, four places to buy them, and single serves at a grocer down the street from us in Austin. That is the base. What is moving is the next ring out.</p>
+        <p>This year we brought on a retail team whose whole job is walking us into the buyers we could not reach on our own. They have opened doors we are working through now: a national subscription box that has already placed its first order of all three flavors, an online supplement retailer building us into their catalog, and a TV shopping network whose buyer tasted all three and picked Watermelon. None of that is a promise. All of it is a conversation that started because the product is good and the story is easy to tell.</p>
+        <p>The story is simple. Creatine works, most people will never scoop a powder, and we made the version you keep on the counter. The people it attracts are the ones we built it for: busy parents, people on calls all day, women over 40 hearing about creatine for the first time, and the athletes who were always going to take it anyway. They find us on a hike, at a pilates class, at the pool, and then they find the bag.</p>
+        <p>That is why the environment matters as much as the shelf. We ran Floor Work all spring at the Carpenter Hotel in Austin, yoga and pilates and games on the deck, with a DJ and a bowl of gummies. We staged A Day of Vybrance there, the sauna, the cold plunge, the long table. The photos on this page are from that day. The next conversation with that hotel is the rooms, and it is the model for every property after it.</p>
+        <p>So the momentum is not one number. It is a shelf that keeps getting longer, a team opening doors, a community that shows up in person, and a product that sells itself once it is in someone's hand. This run puts more of it in more hands.</p>
 
         <h3>Why Customers Love Us</h3>
         <p>It tastes like candy and works like creatine. Four gummies, no scoop, no shaker, no chalk. People keep the bag on the counter, which is the whole point: the best supplement is the one you actually take. The clinician reviews below say the same thing in their own words.</p>
@@ -244,16 +246,18 @@ body:not(.locked) #gate{display:none}
         <div class="tile deep"><div class="k">04 Proof</div><div class="big">621</div><div class="s">clinicians share this on FrontrowMD without compensation.</div></div>
         <div class="tile blush"><div class="k">05 In their words</div><div class="b" style="font-size:clamp(15px,2vw,19px)">“a smart option for those looking to simplify their creatine routine”</div><div class="s">Robert Wren, NP · Family medicine, 13 years†</div></div>
         <div class="tile photo"><img src="hero-tray.jpg" alt="Watermelon gummies"><div class="cap">06 Taste comes first.</div></div>
-        <div class="tile leaf"><div class="k">07 Where it sells</div><div class="l">vybrancelabs.co<br>Amazon<br>TikTok Shop<br>Target.com</div></div>
-        <div class="tile ink"><div class="k">08 Wholesale</div><div class="num"><div><strong>$25</strong>a bag, wholesale</div><div><strong>$49.99</strong>on the shelf</div><div><strong>12</strong>to a case</div></div><div class="s">Net 30. A 50% margin for the retailer.</div></div>
-        <div class="tile photo"><img src="community.jpg" alt="The Vybrance community on set"><div class="cap">09 A community, not a customer list.</div></div>
-        <div class="tile red"><div class="k">10 Made right</div><div class="b">Every lot third-party tested.</div></div>
-        <div class="tile photo"><img src="games.jpg" alt="Movement on set"><div class="cap">11 Movement is life.</div></div>
-        <div class="tile ink"><div class="k">12 Use of funds, $70,000</div><div class="l"><b>~$63,000</b> the run, 5,000 bags<br><b>~$1,300</b> stickering<br><b>~$5,700</b> freight and launch</div></div>
-        <div class="tile leaf"><div class="k">13 Perks</div><div class="l"><b>$100</b> first bags off the line<br><b>$250</b> a 90 day supply<br><b>$1,000</b> A Day of Vybrance, every year<br><b>$5,000</b> founder call and a year of gummies</div></div>
-        <div class="tile deep"><div class="k">14 The close</div><div class="b">Own a piece of the next run.</div></div>
+        <div class="tile leaf"><div class="k">07 Where it sells</div><div class="l" style="display:grid;grid-template-columns:1fr 1fr;gap:0 18px"><span>vybrancelabs.co<br>Amazon<br>TikTok Shop<br>Target.com<br>Royal Blue Grocery</span><span style="opacity:.75">Coming<br>Walmart.com<br>A national subscription box<br>An online supplement retailer</span></div></div>
+        <div class="tile ink"><div class="k">08 Wholesale</div><div class="num"><div><strong>$25</strong>a bag, wholesale</div><div><strong>$49.99</strong>on the shelf</div><div><strong>12</strong>to a case</div></div><div class="s">Net 30.</div></div>
+        <div class="tile photo"><img src="adov-sauna.jpg" alt="A Day of Vybrance, the sauna"><div class="cap">09 A Day of Vybrance.</div></div>
+        <div class="tile photo"><img src="adov-icebath.jpg" alt="A Day of Vybrance, the ice bath"><div class="cap">10 A community, not a customer list.</div></div>
+        <div class="tile photo"><img src="adov-table.jpg" alt="A Day of Vybrance, the table"><div class="cap">11 Show up. Bring a friend.</div></div>
+        <div class="tile red"><div class="k">12 Made right</div><div class="b">Every lot third-party tested.</div></div>
+        <div class="tile photo"><img src="games.jpg" alt="Movement on set"><div class="cap">13 Movement is life.</div></div>
+        <div class="tile ink"><div class="k">14 Use of funds, $70,000</div><div class="l"><b>~$63,000</b> the run, 5,000 bags<br><b>~$1,300</b> stickering<br><b>~$5,700</b> freight and launch</div></div>
+        <div class="tile leaf"><div class="k">15 Perks</div><div class="l" style="line-height:1.55"><b>$100</b> first bags off the line, name on the thank you wall<br><b>$250</b> 90 day supply, early access to every new flavor<br><b>$500</b> name in the release post, a bag for a friend<br><b>$1,000</b> A Day of Vybrance every year, plus 90 days<br><b>$5,000</b> founder call, a year of gummies, dinner in Austin<br><b>$10,000</b> a day on set, and your name in the film credits</div></div>
+        <div class="tile deep"><div class="k">16 The close</div><div class="b">Own a piece of the next run.</div></div>
       </div>
-      <div class="carn">Swipe. 16 slides.</div>
+      <div class="carn">Swipe. 18 slides.</div>
 
       <h2>Updates</h2>
       <div class="post"><small>Sample post · the day the run is released</small><b>Run day: the first pallet is in Austin.</b>5,000 bags of Watermelon, lot tested, stickered, on the dock. Investor bags ship this week, first bags first. Thank you for making more of it.</div>
@@ -263,12 +267,12 @@ body:not(.locked) #gate{display:none}
 
       <h2>Perks</h2>
       <div class="ladder">
-        <div><b>$100</b><span>The first bags off the new run, before it reaches the shelf.</span></div>
-        <div><b>$250</b><span>A 90 day supply of Watermelon, three bags, plus the first bags.</span></div>
-        <div><b>$500</b><span>Your name in the release post for this run, plus everything above.</span></div>
-        <div><b>$1,000</b><span>Free entry to A Day of Vybrance, our yearly activation in Austin, every year, plus everything above.</span></div>
-        <div><b>$5,000</b><span>A founder call and a year of gummies, plus everything above.</span></div>
-        <div><b>$10,000</b><span>A day on set at the next brand shoot, plus everything above.</span></div>
+        <div><b>$100</b><span>The first bags off the new run, before it reaches the shelf, and your name on the thank you wall at vybrancelabs.co.</span></div>
+        <div><b>$250</b><span>A 90 day supply of Watermelon, three bags, early access to every new flavor, plus everything above.</span></div>
+        <div><b>$500</b><span>Your name in the release post for this run, a bag for a friend, plus everything above.</span></div>
+        <div><b>$1,000</b><span>Free entry to A Day of Vybrance, our yearly activation in Austin, every year, a 90 day supply every year, plus everything above.</span></div>
+        <div><b>$5,000</b><span>A founder call, a year of gummies, dinner with the founders in Austin, plus everything above.</span></div>
+        <div><b>$10,000</b><span>A day on set at the next brand shoot, your name in the film credits, plus everything above.</span></div>
       </div>
 
       <h2>FAQ</h2>
