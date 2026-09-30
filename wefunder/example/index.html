@@ -89,7 +89,7 @@ h2{font-size:24px;font-weight:500;letter-spacing:0;margin:44px 0 18px;color:#162
 #err{color:var(--wmd);min-height:18px}
 body.locked{overflow:hidden}body.locked .site{display:none}
 body:not(.locked) #gate{display:none}
-@media(max-width:1000px){.cols{grid-template-columns:1fr}.side{position:static}.nav .search,.nav .lnk,.nav .raise{display:none}h1{font-size:26px}.deck{grid-template-columns:1fr}}
+.nav{white-space:nowrap}.nav .lnk,.nav .raise,.nav .logo small{white-space:nowrap}@media(max-width:1180px){.nav .search{display:none}}@media(max-width:1000px){.cols{grid-template-columns:1fr}.side{position:static}.nav .search,.nav .lnk,.nav .raise{display:none}h1{font-size:26px}.deck{grid-template-columns:1fr}}
 
 .cover{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/9;background:#000}
 .cover img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
@@ -102,7 +102,7 @@ body:not(.locked) #gate{display:none}
 .memo{font-size:17px;line-height:1.6;color:#1f2937;max-width:640px}.memo p{margin-bottom:16px}.memo h3{font-size:20px;font-weight:500;color:#16263d;margin:30px 0 12px}.memo b{font-weight:600;color:#16263d}
 .memo .sig{font-style:normal;color:var(--mute);font-size:14px}
 .tm img{width:66px;height:66px;border-radius:50%;object-fit:cover;display:block}
-.terms2{font-size:14px;color:#374151;border:1px solid var(--hair);border-radius:10px;padding:16px 18px;margin-top:8px}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 18px;font-size:14px;color:#374151}.wall div{padding:8px 0;border-top:1px solid var(--hair)}.wall b{display:block;color:#16263d;font-weight:500}.wall small{color:var(--mute)}.press{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:center;border:1px solid var(--hair);border-radius:10px;padding:16px 18px}.press .o{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:500}.press b{display:block;font-size:17px;font-weight:500;color:#16263d;margin:4px 0}.press a{font-size:13px;text-decoration:underline}.doors{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.door{border:1px solid var(--hair);border-radius:10px;padding:16px 18px;font-size:14px;color:#374151}.door b{display:block;font-size:16px;font-weight:500;color:#16263d}.car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;-webkit-overflow-scrolling:touch}.car>*{flex:0 0 86%;scroll-snap-align:start;aspect-ratio:16/9;min-height:0}.car .tile{height:auto}.carn{font-size:12px;color:var(--mute);margin-top:6px}.post{border:1px solid var(--hair);border-radius:10px;padding:18px 20px;font-size:15px;color:#374151}.post b{display:block;font-size:17px;font-weight:500;color:#16263d}.post small{color:var(--mute);display:block;margin-bottom:8px}@media(max-width:640px){.wall{grid-template-columns:1fr 1fr}.doors{grid-template-columns:1fr}}.terms2{font-size:14px;color:#374151;border:1px solid var(--hair);border-radius:10px;padding:16px 18px;margin-top:8px}
 </style>
 </head>
 <body class="locked">
@@ -163,7 +163,7 @@ body:not(.locked) #gate{display:none}
         <h3>Why We'll Succeed</h3>
         <p><b>It already sells, in four places.</b> vybrancelabs.co, Amazon, TikTok Shop and Target.com. Stores buy it at $25 a bag, sell it at $49.99, 12 to a case, Net 30. That is a 50% margin for the retailer, the number buyers ask for first.</p>
         <p><b>The proof is independent.</b> FrontrowMD clinicians can receive samples and are never paid to write an evaluation. 621 of them share Watermelon. Two of their full reviews are below.</p>
-        <p><b>It is a community, not a customer list.</b> Adventure Hike, CityWalk and Floor Work run in Austin every month, in person, and A Day of Vybrance is our yearly activation. The films on this page came out of those days.</p>
+        <p><b>It is a community, not a customer list.</b> Adventure Hike, CityWalk and Floor Work run in Austin every month, in person, and A Day of Vybrance is our yearly activation. Beyond Austin, 53 communities in 19 states have run their events on our gummies, hike clubs, pilates studios, run clubs and book clubs. The films on this page came out of those days.</p>
         <p><b>The team has done the hard part.</b> Martin leads the formulation, from the creatine dose to the taste. I lead the brand, the films and the design through VYB LABS. Josh Walker designed the packaging you are looking at, and Moyo Oyelola directs the films.</p>
 
         <h3>How You Grow With Us</h3>
@@ -172,7 +172,7 @@ body:not(.locked) #gate{display:none}
         <p>Vybrance means what it sounds like. We would rather have a thousand people who take four gummies a day and show up to a hike than one investor who never opens the bag.</p>
 
         <h3>Growing Momentum</h3>
-        <p>Three flavors on sale today. Green Apple on Target.com since April 2025. Amazon and TikTok Shop live. A national subscription box confirmed a first order of all three flavors this fall. Wholesale open at the line sheet price to any store that wants it.</p>
+        <p>Three flavors on sale today. Green Apple on Target.com since April 2025. Amazon and TikTok Shop live. Single serves on the shelf at Royal Blue Grocery in Austin. A national subscription box confirmed a first order of all three flavors this fall. Wholesale open at the line sheet price to any store that wants it.</p>
         <p>And the retail conversations that matter to a supplement brand, QVC among them, started this summer with the same three bags.</p>
         <div class="tile photo" style="aspect-ratio:16/9;margin:8px 0 24px"><img src="hero-tray.jpg" alt="Watermelon gummies"><div class="cap">Taste comes first.</div></div>
 
@@ -184,6 +184,39 @@ body:not(.locked) #gate{display:none}
         <p>Thank you for reading this far. Movement is life. Let's make more of it.</p>
         <p class="sig">Lawrence Whitaker III, Co-Founder &amp; CEO, Vybrance Labs™, Austin, Texas</p>
       </div>
+
+      <h2>Where you'll find us</h2>
+      <div class="doors">
+        <div class="door"><b>Royal Blue Grocery, Austin</b>Single serves on the shelf today.</div>
+        <div class="door"><b>Target.com</b>Green Apple, since April 2025.</div>
+        <div class="door"><b>Amazon and TikTok Shop</b>All three flavors.</div>
+        <div class="door"><b>A national subscription box</b>First order of all three flavors, shipping this fall.</div>
+      </div>
+
+      <h2>On TV</h2>
+      <div class="press"><div class="o">KXAN, NBC Austin<br>Studio 512</div><div><b>Austin Wellness Brand Vybrance Labs Blends Community, Creatine, and Culture</b><a href="https://www.kxan.com/studio-512/austin-wellness-brand-vybrance-labs-blends-community-creatine-and-culture/" target="_blank" rel="noopener">Watch the daytime interview</a></div></div>
+
+      <h2>The lifestyle</h2>
+      <div class="memo"><p>We are a lifestyle brand with a product inside it. Every month in Austin: Adventure Hike, CityWalk on the Lady Bird Lake trail, and Floor Work at the Carpenter Hotel. Every year: A Day of Vybrance. Every film on this page came out of those days, produced by VYB LABS. And across the country, communities run their own events on our gummies. The biggest so far, ranked by bags sent:</p></div>
+      <div class="wall">
+        <div><b>Chi Dream Mercadito</b><small>Chicago and Turlock, CA · 375 bags</small></div>
+        <div><b>Seattle Hike Club</b><small>Seattle, WA · 200 bags</small></div>
+        <div><b>Run Down A Dream</b><small>San Antonio, TX · 200 bags</small></div>
+        <div><b>The Hike Crew</b><small>Arlington, VA · 150 bags</small></div>
+        <div><b>I Love You Girlhood</b><small>Simi Valley, CA · 130 bags</small></div>
+        <div><b>Hibiscus Pilates</b><small>Palm Coast, FL · 120 bags</small></div>
+        <div><b>Hiker Babes DFW</b><small>Allen, TX · 100 bags</small></div>
+        <div><b>Big Time Motion</b><small>Denver, CO · 100 bags</small></div>
+        <div><b>Dallas Book &amp; Sip Club</b><small>Dallas, TX · 80 bags</small></div>
+        <div><b>Commune and Bloom</b><small>Liberty Hill, TX · 75 bags</small></div>
+        <div><b>Rancho Moonrise</b><small>Austin, TX · 70 bags</small></div>
+        <div><b>With Love Wellness Club</b><small>West Palm Beach, FL · 70 bags</small></div>
+      </div>
+      <p class="fine">Plus 41 more, in 19 states. Our own Austin community lives on SweatPals.</p>
+      <div class="tile photo" style="aspect-ratio:16/9;margin:18px 0 0"><img src="games.jpg" alt="Movement on set"><div class="cap">Movement is life.</div></div>
+
+      <h2>The science shelf</h2>
+      <div class="memo"><p>We publish what the research says about our own three compounds, and nothing else. The Lab, three articles a week, and Studies, one entry a week rotating creatine, taurine and B12, both on vybrancelabs.co. If we cannot source it, we do not say it.</p></div>
 
       <h2>Clinician proof</h2>
       <div class="card">
@@ -201,8 +234,8 @@ body:not(.locked) #gate{display:none}
       <div class="tm"><img src="martin-head.jpg" alt="Martin Crowley"><div><b>Martin Crowley</b><em>Co-Founder &amp; Head of R&amp;D</em><p>Leads the formulations, from the creatine dose to the taste.</p></div></div>
 
       <h2>Pitch Deck</h2>
-      <div class="deck">
-        <div class="cover" style="grid-column:1/-1"><img src="cover.jpg" alt="Watermelon gummies on a chrome tray"><div class="t"><small>Vybrance Labs™</small>Watermelon, one more run.</div></div>
+      <div class="deck car">
+        <div class="cover"><img src="cover.jpg" alt="Watermelon gummies on a chrome tray"><div class="t"><small>Vybrance Labs™</small>Watermelon, one more run.</div></div>
         <div class="tile red"><div class="k">01 Thesis</div><div class="b">More bags of the one clinicians share.</div></div>
         <div class="tile pic"><img src="watermelon-bag.jpg" alt="Vybrance Labs Creatine Monohydrate Gummies, Watermelon"></div>
         <div class="tile blush"><div class="k">02 Product</div><div class="num"><div><strong>5 g</strong>creatine per serving</div><div><strong>4</strong>gummies per serving</div><div><strong>30</strong>servings per bag</div></div></div>
@@ -219,6 +252,13 @@ body:not(.locked) #gate{display:none}
         <div class="tile leaf"><div class="k">13 Perks</div><div class="l"><b>$100</b> first bags off the line<br><b>$250</b> a 90 day supply<br><b>$1,000</b> A Day of Vybrance, every year<br><b>$5,000</b> founder call and a year of gummies</div></div>
         <div class="tile deep"><div class="k">14 The close</div><div class="b">Own a piece of the next run.</div></div>
       </div>
+      <div class="carn">Swipe. 16 slides.</div>
+
+      <h2>Updates</h2>
+      <div class="post"><small>Sample post · the day the run is released</small><b>Run day: the first pallet is in Austin.</b>5,000 bags of Watermelon, lot tested, stickered, on the dock. Investor bags ship this week, first bags first. Thank you for making more of it.</div>
+
+      <h2>What investors say</h2>
+      <div class="card"><div class="who"><div class="av">?</div><div><b>Your name here</b><small>First investor · this fills the day the round opens</small></div></div>Wefunder shows every investor's note here. The first ones come from the people who already take four gummies a day.</div>
 
       <h2>Perks</h2>
       <div class="ladder">
