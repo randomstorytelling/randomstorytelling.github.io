@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sample Wefunder page · VYB LABS</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="A sample Wefunder page, built by VYB LABS for Vybrance Labs. Concept work, not a live offering.">
+<style>
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+:root{--ink:#141516;--mute:#6b6f6d;--hair:#dcddd9;--wm:#e8434f;--wmd:#7d1420;--blush:#fdecec;--leaf:#1f5a33}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Elza",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.w{max-width:860px;margin:0 auto;padding:0 24px}
+.lh{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0 18px;border-bottom:1px solid #000}
+.lh img{height:42px;display:block}
+.lh span,.cap{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:500}
+h1{font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin:40px 0 12px}
+.intro{color:#4a4e4c;max-width:520px;margin-bottom:34px}
+.cap{display:block;margin:0 0 12px}
+.film{position:relative;padding-top:56.25%;background:#000}
+.film iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.tag{font-size:clamp(26px,5vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin:0 0 22px;max-width:640px}
+section{padding-top:52px}
+.hl{list-style:none}
+.hl li{display:grid;grid-template-columns:40px 1fr;padding:13px 0;border-top:1px solid var(--hair)}
+.hl li:last-child{border-bottom:1px solid var(--hair)}
+.hl b{font-weight:500;color:var(--mute)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tile{min-height:260px;padding:28px;display:flex;flex-direction:column;letter-spacing:-.03em}
+.tile .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.tile .b{margin-top:auto;font-size:clamp(22px,3.4vw,28px);font-weight:700;line-height:1.08}
+.tile .s{font-size:13px;margin-top:10px;letter-spacing:0}
+.red{background:var(--wm);color:#fff}.deep{background:var(--wmd);color:#fdecec}.blush{background:var(--blush);color:var(--wmd)}.leaf{background:var(--leaf);color:#eaf6ea}.ink{background:var(--ink);color:#fff}
+.pic{background:#fff;border:1px solid var(--hair);padding:0;overflow:hidden}
+.pic img{width:100%;height:100%;object-fit:contain;display:block}
+.num{display:flex;gap:28px;margin-top:auto}
+.num div{font-size:12px;letter-spacing:0;line-height:1.35}
+.num strong{display:block;font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.big{font-size:clamp(56px,11vw,96px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-top:auto}
+.doc{border-top:1px solid var(--hair);padding:22px 0;display:grid;grid-template-columns:1fr 1.6fr;gap:24px}
+.doc:last-of-type{border-bottom:1px solid var(--hair)}
+.doc .n{font-weight:500;font-size:18px}
+.doc .m{font-size:13px;color:var(--mute);margin-top:4px}
+.doc p{font-size:17px}
+.fine{font-size:12px;color:var(--mute);margin-top:14px;max-width:640px;letter-spacing:0}
+.cta{display:inline-block;margin:6px 26px 0 0;font-size:12.5px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;padding-bottom:5px;border-bottom:2px solid #000;text-decoration:none}
+.foot{margin:64px 0 40px;padding-top:16px;border-top:1px solid #000;text-align:right;font-size:13px;color:var(--mute)}
+.foot b{color:#000;font-weight:500}
+#gate{position:fixed;inset:0;background:#fff;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .g{max-width:420px;width:100%}
+#gate img{height:42px;margin-bottom:36px}
+#gate h2{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+#gate p{color:var(--mute);margin-bottom:26px}
+#gate input{width:100%;font:inherit;font-size:17px;padding:14px 0;border:0;border-bottom:1px solid #000;outline:0;border-radius:0;background:transparent}
+#gate button{margin-top:22px;width:100%;font:inherit;font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:18px;background:#000;color:#fff;border:0;cursor:pointer}
+#gate small{display:block;margin-top:14px;color:var(--mute);font-size:12px;letter-spacing:0}
+#err{color:var(--wmd);min-height:18px}
+body.locked{overflow:hidden}body.locked main{display:none}
+body:not(.locked) #gate{display:none}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.doc{grid-template-columns:1fr;gap:10px}.tile{min-height:220px}}
+</style>
+</head>
+<body class="locked">
+
+<div id="gate"><form class="g" id="gf" novalidate>
+  <img src="vyblabs.png" alt="VYB LABS">
+  <h2>See the example.</h2>
+  <p>A finished Wefunder page, film and all. Enter your email to open it.</p>
+  <input type="email" id="em" name="email" placeholder="Email" autocomplete="email" required>
+  <button type="submit">Open the page</button>
+  <small id="err"></small>
+  <small>We will email you about Wefunder page work. Unsubscribe any time.</small>
+</form></div>
+
+<main class="w">
+  <div class="lh"><img src="vyblabs.png" alt="VYB LABS"><span>Sample page</span></div>
+
+  <h1>Sample page</h1>
+  <p class="intro">What a finished Wefunder page looks like. We built this one for our own company, Vybrance Labs™, around the next production run of Watermelon.</p>
+
+  <span class="cap">Cover film</span>
+  <div class="film"><iframe src="https://player.vimeo.com/video/1230389107?title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Movement Is Life"></iframe></div>
+
+  <section>
+    <span class="cap">Tagline and highlights</span>
+    <div class="tag">Watermelon, one more run.</div>
+    <ul class="hl">
+      <li><b>1</b><span>621 clinicians share Watermelon on FrontrowMD, without compensation.</span></li>
+      <li><b>2</b><span>5 g of creatine in every serving of four gummies.</span></li>
+      <li><b>3</b><span>Every lot third-party tested.</span></li>
+      <li><b>4</b><span>Vegan, sugar-free, born in Austin, Texas.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="cap">Pitch graphics</span>
+    <div class="grid">
+      <div class="tile red"><div class="k">Thesis</div><div class="b">More bags of the one clinicians share.</div></div>
+      <div class="tile pic"><img src="watermelon-bag.jpg" alt="Vybrance Labs Creatine Monohydrate Gummies, Watermelon"></div>
+      <div class="tile blush"><div class="k">Product</div>
+        <div class="num"><div><strong>5 g</strong>creatine per serving</div><div><strong>4</strong>gummies per serving</div><div><strong>30</strong>servings per bag</div></div></div>
+      <div class="tile deep"><div class="k">Proof</div><div class="big">621</div><div class="s">clinicians share this on FrontrowMD without compensation.</div></div>
+      <div class="tile ink"><div class="k">Use of funds</div><div class="b">One run.<br>Freight.<br>Launch.</div></div>
+      <div class="tile leaf"><div class="k">Perks</div><div class="b">Investors get the first bags off the line.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="cap">Clinician proof</span>
+    <div class="doc"><div><div class="n">Robert Wren, NP</div><div class="m">Family medicine · 13 years in practice · Verified clinician</div></div>
+      <p>“a smart option for those looking to simplify their creatine routine”†</p></div>
+    <div class="doc"><div><div class="n">Dr. Adeeba Akhtar, MD</div><div class="m">Primary care · 21 years in practice · Verified clinician</div></div>
+      <p>Her highlights: muscle recovery, active routine, stomach friendly.†</p></div>
+    <p class="fine">† This clinician wants to clarify that larger-scale research to support their product claims is still developing. Clinicians can receive product samples and are never compensated to submit evaluations. These statements have not been reviewed by the FDA and are not intended to be medical advice. Reviews by FrontrowMD, read 2026-09-29. <a href="https://vybrancelabs.co/products/creatine-gummies-watermelon">Read them in full.</a></p>
+  </section>
+
+  <section>
+    <span class="cap">Want yours</span>
+    <a class="cta" href="/wefunder/Wefunder_Page_and_Film.pdf">Choose your adventure &rarr;</a>
+    <a class="cta" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Wefunder">Free 15 minute call &rarr;</a>
+    <a class="cta" href="https://vybrancelabs.co/films">More films &rarr;</a>
+  </section>
+
+  <div class="foot">Concept work. Not a live offering, not an offer to invest.<br><b>Lawrence Whitaker III</b><br>lawrence@vybrancelabs.co</div>
+</main>
+
+<script>
+(function(){
+  var K='vyb_example_open', b=document.body;
+  try{ if(localStorage.getItem(K)) b.classList.remove('locked'); }catch(e){}
+  document.getElementById('gf').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var em=document.getElementById('em').value.trim(), err=document.getElementById('err');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ err.textContent='Enter a valid email.'; return; }
+    err.textContent='';
+    fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XaJSzL',{
+      method:'POST',
+      headers:{'content-type':'application/json','revision':'2024-10-15'},
+      body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Wefunder example gate',
+        profile:{data:{type:'profile',attributes:{email:em}}}},
+        relationships:{list:{data:{type:'list',id:'SPkZ8u'}}}}})
+    }).then(function(r){
+      if(r.status>=200&&r.status<300){ try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); window.scrollTo(0,0); }
+      else err.textContent='That did not go through. Try again.';
+    }).catch(function(){ err.textContent='That did not go through. Try again.'; });
+  });
+})();
+</script>
+</body>
+</html>
