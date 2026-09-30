@@ -114,7 +114,7 @@ body:not(.locked) #gate{display:none}
   <input type="email" id="em" name="email" placeholder="Email" autocomplete="email" required>
   <button type="submit">Open the page</button>
   <small id="err"></small>
-  <small>We will email you about Wefunder page work. Unsubscribe any time.</small>
+  <small>We will email you about Wefunder page work and introduce you to Vybrance Labs, welcome offer included. Unsubscribe any time.</small>
 </form></div>
 
 <div class="site">
@@ -353,14 +353,19 @@ body:not(.locked) #gate{display:none}
     var em=document.getElementById('em').value.trim(), err=document.getElementById('err');
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ err.textContent='Enter a valid email.'; return; }
     err.textContent='';
-    fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XaJSzL',{
-      method:'POST',
-      headers:{'content-type':'application/json','revision':'2024-10-15'},
-      body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Wefunder example gate',
-        profile:{data:{type:'profile',attributes:{email:em}}}},
-        relationships:{list:{data:{type:'list',id:'SPkZ8u'}}}}})
-    }).then(function(r){
-      if(r.status>=200&&r.status<300){ try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); window.scrollTo(0,0); }
+    function sub(list){
+      return fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XaJSzL',{
+        method:'POST',
+        headers:{'content-type':'application/json','revision':'2024-10-15'},
+        body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Wefunder example gate',
+          profile:{data:{type:'profile',attributes:{email:em}}}},
+          relationships:{list:{data:{type:'list',id:list}}}}})
+      });
+    }
+    sub('SPkZ8u').then(function(r){
+      if(r.status>=200&&r.status<300){
+        sub('XL6V4M').catch(function(){});
+        try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); window.scrollTo(0,0); }
       else err.textContent='That did not go through. Try again.';
     }).catch(function(){ err.textContent='That did not go through. Try again.'; });
   });
