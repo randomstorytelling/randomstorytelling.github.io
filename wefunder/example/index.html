@@ -10,62 +10,89 @@
 @font-face{font-family:"Elza";src:url("/fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Elza";src:url("/fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
 @font-face{font-family:"Elza";src:url("/fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
-:root{--ink:#141516;--mute:#6b6f6d;--hair:#dcddd9;--wm:#e8434f;--wmd:#7d1420;--blush:#fdecec;--leaf:#1f5a33}
+:root{--ink:#1a1a1a;--mute:#6b7280;--hair:#e5e7eb;--wm:#e8434f;--wmd:#7d1420;--blush:#fdecec;--leaf:#1f5a33;--pur:#5b3df5}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Elza",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-.w{max-width:860px;margin:0 auto;padding:0 24px}
-.lh{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:28px 0 18px;border-bottom:1px solid #000}
-.lh img{height:42px;display:block}
-.lh span,.cap{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:500}
-h1{font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin:40px 0 12px}
-.intro{color:#4a4e4c;max-width:520px;margin-bottom:34px}
-.cap{display:block;margin:0 0 12px}
-.film{position:relative;padding-top:56.25%;background:#000}
+body{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.note{background:#111;color:#fff;font-size:12px;text-align:center;padding:9px 16px;letter-spacing:.04em}
+.note b{font-weight:600}
+.nav{display:flex;align-items:center;gap:26px;padding:14px 32px;border-bottom:1px solid var(--hair);font-size:14px}
+.nav .logo{font-weight:700;font-size:20px;letter-spacing:-.02em;color:var(--pur)}
+.nav .logo small{font-weight:400;font-size:11px;color:var(--mute);letter-spacing:.14em;margin-left:6px}
+.nav .search{flex:0 0 200px;border:1px solid var(--hair);border-radius:999px;padding:7px 14px;color:var(--mute);font-size:13px}
+.nav .sp{flex:1}
+.nav .raise{background:var(--pur);color:#fff;border-radius:999px;padding:8px 18px;font-weight:500;font-size:13px}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 24px 80px}
+.kicker{font-size:15px;color:#374151;letter-spacing:.02em}
+.kicker b{font-weight:600;text-transform:uppercase}
+h1{font-size:34px;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:8px 0 22px}
+.cols{display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
+.film{position:relative;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden}
 .film iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.tag{font-size:clamp(26px,5vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.08;margin:0 0 22px;max-width:640px}
-section{padding-top:52px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:14px 0 22px;font-size:13px;color:#374151}
+.meta u{text-decoration:underline}
+.pill{background:#f3f4f6;border-radius:4px;padding:3px 9px;font-size:12px;color:#374151}
+.tabs{display:flex;gap:22px;border-bottom:1px solid var(--hair);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4b5563}
+.tabs span{padding:10px 0}
+.tabs .on{color:var(--ink);border-bottom:2px solid var(--ink)}
+.tabs i{font-style:normal;background:#f3f4f6;border-radius:4px;padding:1px 6px;margin-left:5px;font-size:11px;color:var(--mute)}
+.side{border:1px solid var(--hair);border-radius:10px;padding:18px;position:sticky;top:16px}
+.side .goal{font-size:12px;color:#15803d;font-weight:600;padding-bottom:12px;border-bottom:2px solid #22c55e;letter-spacing:.02em}
+.side .amt{font-size:32px;font-weight:600;margin-top:16px;letter-spacing:-.02em;color:#9ca3af}
+.side .sub{font-size:13px;color:var(--mute)}
+.side .inv{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.side .inv b{font-size:15px;font-weight:600;display:block}.side .inv small{color:var(--mute);font-size:12px}
+.side .box{flex:0 0 130px;border:1px solid var(--hair);border-radius:6px;padding:10px 12px;display:flex;justify-content:space-between;color:#9ca3af;font-size:16px}
+.side .btn{display:block;text-align:center;background:#111;color:#fff;font-weight:600;font-size:13px;letter-spacing:.06em;padding:14px;border-radius:6px;margin-top:14px}
+.side .btn.o{background:#fff;color:#111;border:1px solid #111;margin-top:10px}
+.side .terms{border-top:1px solid var(--hair);margin-top:20px;padding-top:14px;font-size:12px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.side .t{font-size:13px;margin-top:10px;color:#374151}
+.side .t b{font-weight:600}
+h2{font-size:26px;font-weight:600;letter-spacing:-.02em;margin:44px 0 18px}
 .hl{list-style:none}
-.hl li{display:grid;grid-template-columns:40px 1fr;padding:13px 0;border-top:1px solid var(--hair)}
-.hl li:last-child{border-bottom:1px solid var(--hair)}
-.hl b{font-weight:500;color:var(--mute)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.tile{min-height:260px;padding:28px;display:flex;flex-direction:column;letter-spacing:-.03em}
-.tile .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
-.tile .b{margin-top:auto;font-size:clamp(22px,3.4vw,28px);font-weight:700;line-height:1.08}
-.tile .s{font-size:13px;margin-top:10px;letter-spacing:0}
-.red{background:var(--wm);color:#fff}.deep{background:var(--wmd);color:#fdecec}.blush{background:var(--blush);color:var(--wmd)}.leaf{background:var(--leaf);color:#eaf6ea}.ink{background:var(--ink);color:#fff}
-.pic{background:#fff;border:1px solid var(--hair);padding:0;overflow:hidden}
-.pic img{width:100%;height:100%;object-fit:contain;display:block}
-.num{display:flex;gap:28px;margin-top:auto}
-.num div{font-size:12px;letter-spacing:0;line-height:1.35}
-.num strong{display:block;font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1}
-.big{font-size:clamp(56px,11vw,96px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-top:auto}
-.doc{border-top:1px solid var(--hair);padding:22px 0;display:grid;grid-template-columns:1fr 1.6fr;gap:24px}
-.doc:last-of-type{border-bottom:1px solid var(--hair)}
-.doc .n{font-weight:500;font-size:18px}
-.doc .m{font-size:13px;color:var(--mute);margin-top:4px}
-.doc p{font-size:17px}
-.fine{font-size:12px;color:var(--mute);margin-top:14px;max-width:640px;letter-spacing:0}
-.cta{display:inline-block;margin:6px 26px 0 0;font-size:12.5px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;padding-bottom:5px;border-bottom:2px solid #000;text-decoration:none}
-.foot{margin:64px 0 40px;padding-top:16px;border-top:1px solid #000;text-align:right;font-size:13px;color:var(--mute)}
-.foot b{color:#000;font-weight:500}
-#gate{position:fixed;inset:0;background:#fff;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px}
+.hl li{display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;margin:0 0 20px;font-size:16px;line-height:1.45}
+.hl li span:first-child{width:32px;height:32px;border:1px solid #111;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px}
+.badge{display:inline-block;background:#e9e3ff;border-radius:8px;padding:14px 16px;max-width:190px;margin-bottom:24px;font-size:12px;line-height:1.4}
+.badge b{display:block;font-size:15px;font-weight:600;margin-bottom:4px}
+.card{border:1px solid var(--hair);border-radius:10px;padding:20px;font-size:14px;line-height:1.55;color:#374151}
+.card .who{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.card .who b{font-size:15px;color:var(--ink);font-weight:600;display:block}.card .who small{color:#92400e;font-size:12px}
+.av{width:44px;height:44px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:#374151;flex:0 0 44px}
+.av.w{background:var(--blush);color:var(--wmd)}
+.tm{display:grid;grid-template-columns:70px 1fr;gap:18px;margin-bottom:28px;font-size:14px;color:#374151}
+.tm .av{width:66px;height:66px;flex-basis:66px}
+.tm b{font-size:16px;font-weight:600;color:var(--ink)}.tm em{font-style:normal;color:var(--mute);margin-left:8px}
+.deck{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{aspect-ratio:16/9;padding:22px;display:flex;flex-direction:column;font-family:"Elza",sans-serif;letter-spacing:-.03em;border-radius:6px}
+.tile .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.tile .b{margin-top:auto;font-size:clamp(18px,2.6vw,24px);font-weight:700;line-height:1.08}
+.tile .s{font-size:12px;margin-top:6px;letter-spacing:0}
+.red{background:var(--wm);color:#fff}.deep{background:var(--wmd);color:#fdecec}.blush{background:var(--blush);color:var(--wmd)}.leaf{background:var(--leaf);color:#eaf6ea}.ink{background:#111;color:#fff}
+.pic{background:#fff;border:1px solid var(--hair);padding:0;overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.num{display:flex;gap:22px;margin-top:auto}.num div{font-size:11px;letter-spacing:0;line-height:1.3}.num strong{display:block;font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.big{font-size:clamp(44px,7vw,64px);font-weight:700;letter-spacing:-.04em;line-height:.95;margin-top:auto}
+.fine{font-size:12px;color:var(--mute);margin-top:14px;line-height:1.5}
+.faq dt{font-weight:600;margin-top:16px}.faq dd{color:#374151;font-size:15px}
+.perk{border:1px solid var(--hair);border-radius:10px;padding:16px 18px;margin-bottom:10px;font-size:14px}
+.perk b{display:block;font-size:16px;font-weight:600}
+.made{margin-top:64px;border-top:1px solid #111;padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
+.made img{height:36px}
+.made a{border-bottom:2px solid #111;color:#111;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding-bottom:4px;margin-left:18px}
+#gate{position:fixed;inset:0;background:#fff;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px;font-family:"Elza",sans-serif;letter-spacing:-.02em}
 #gate .g{max-width:420px;width:100%}
 #gate img{height:42px;margin-bottom:36px}
-#gate h2{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+#gate h2{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:0 0 10px}
 #gate p{color:var(--mute);margin-bottom:26px}
 #gate input{width:100%;font:inherit;font-size:17px;padding:14px 0;border:0;border-bottom:1px solid #000;outline:0;border-radius:0;background:transparent}
 #gate button{margin-top:22px;width:100%;font:inherit;font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:18px;background:#000;color:#fff;border:0;cursor:pointer}
 #gate small{display:block;margin-top:14px;color:var(--mute);font-size:12px;letter-spacing:0}
 #err{color:var(--wmd);min-height:18px}
-body.locked{overflow:hidden}body.locked main{display:none}
+body.locked{overflow:hidden}body.locked .site{display:none}
 body:not(.locked) #gate{display:none}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.doc{grid-template-columns:1fr;gap:10px}.tile{min-height:220px}}
+@media(max-width:1000px){.cols{grid-template-columns:1fr}.side{position:static}.nav .search,.nav .lnk{display:none}h1{font-size:26px}.deck{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="locked">
-
 <div id="gate"><form class="g" id="gf" novalidate>
   <img src="vyblabs.png" alt="VYB LABS">
   <h2>See the example.</h2>
@@ -76,58 +103,82 @@ body:not(.locked) #gate{display:none}
   <small>We will email you about Wefunder page work. Unsubscribe any time.</small>
 </form></div>
 
-<main class="w">
-  <div class="lh"><img src="vyblabs.png" alt="VYB LABS"><span>Sample page</span></div>
+<div class="site">
+<div class="note"><b>Sample page by VYB LABS.</b> Concept work for Vybrance Labs™. Not a live offering, not an offer to invest. Numbers in grey are placeholders.</div>
+<div class="nav"><span class="logo">wefunder<small>INVEST</small></span><span class="search">Search</span><span class="lnk">Explore</span><span class="lnk">Vault</span><span class="lnk">Learn</span><span class="sp"></span><span class="raise">Raise Capital</span><span class="lnk">Log in or Sign Up</span></div>
 
-  <h1>Sample page</h1>
-  <p class="intro">What a finished Wefunder page looks like. We built this one for our own company, Vybrance Labs™, around the next production run of Watermelon.</p>
+<div class="wrap">
+  <div class="kicker">INVEST IN <b>Vybrance Labs™</b></div>
+  <h1>Watermelon, one more run.</h1>
 
-  <span class="cap">Cover film</span>
-  <div class="film"><iframe src="https://player.vimeo.com/video/1230389107?title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Movement Is Life"></iframe></div>
+  <div class="cols">
+    <div>
+      <div class="film"><iframe src="https://player.vimeo.com/video/1230389107?title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Movement Is Life"></iframe></div>
+      <div class="meta"><u>vybrancelabs.co</u><span>Austin, TX</span><span class="pill">Food &amp; Beverage</span><span class="pill">Consumer Goods</span><span class="pill">Health &amp; Fitness</span><span class="pill">B2C</span></div>
+      <div class="tabs"><span class="on">Overview</span><span>Details</span><span>Posts<i>0</i></span><span>What investors say<i>0</i></span><span>Ask a question</span></div>
 
-  <section>
-    <span class="cap">Tagline and highlights</span>
-    <div class="tag">Watermelon, one more run.</div>
-    <ul class="hl">
-      <li><b>1</b><span>621 clinicians share Watermelon on FrontrowMD, without compensation.</span></li>
-      <li><b>2</b><span>5 g of creatine in every serving of four gummies.</span></li>
-      <li><b>3</b><span>Every lot third-party tested.</span></li>
-      <li><b>4</b><span>Vegan, sugar-free, born in Austin, Texas.</span></li>
-    </ul>
-  </section>
+      <h2>Highlights</h2>
+      <div class="badge"><b>Clinicians' Choice</b>621 clinicians share Watermelon on FrontrowMD without compensation</div>
+      <ul class="hl">
+        <li><span>1</span><span>5 g of creatine in every serving of four gummies. 120 gummies, 30 servings a bag.</span></li>
+        <li><span>2</span><span>Every lot third-party tested.</span></li>
+        <li><span>3</span><span>Vegan, sugar-free, gluten-free, non-GMO.</span></li>
+        <li><span>4</span><span>Three flavors on sale today. This round funds one more run of Watermelon.</span></li>
+      </ul>
 
-  <section>
-    <span class="cap">Pitch graphics</span>
-    <div class="grid">
-      <div class="tile red"><div class="k">Thesis</div><div class="b">More bags of the one clinicians share.</div></div>
-      <div class="tile pic"><img src="watermelon-bag.jpg" alt="Vybrance Labs Creatine Monohydrate Gummies, Watermelon"></div>
-      <div class="tile blush"><div class="k">Product</div>
-        <div class="num"><div><strong>5 g</strong>creatine per serving</div><div><strong>4</strong>gummies per serving</div><div><strong>30</strong>servings per bag</div></div></div>
-      <div class="tile deep"><div class="k">Proof</div><div class="big">621</div><div class="s">clinicians share this on FrontrowMD without compensation.</div></div>
-      <div class="tile ink"><div class="k">Use of funds</div><div class="b">One run.<br>Freight.<br>Launch.</div></div>
-      <div class="tile leaf"><div class="k">Perks</div><div class="b">Investors get the first bags off the line.</div></div>
+      <h2>Clinician proof</h2>
+      <div class="card">
+        <div class="who"><div class="av w">RW</div><div><b>Robert Wren, NP</b><small>Family medicine · 13 years · Verified clinician</small></div></div>
+        “a smart option for those looking to simplify their creatine routine”†
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="who"><div class="av w">AA</div><div><b>Dr. Adeeba Akhtar, MD</b><small>Primary care · 21 years · Verified clinician</small></div></div>
+        Her highlights: muscle recovery, active routine, stomach friendly.†
+      </div>
+      <p class="fine">† This clinician wants to clarify that larger-scale research to support their product claims is still developing. Clinicians can receive product samples and are never compensated to submit evaluations. These statements have not been reviewed by the FDA and are not intended to be medical advice. Reviews by FrontrowMD, read 2026-09-29. <a href="https://vybrancelabs.co/products/creatine-gummies-watermelon" style="text-decoration:underline">Read them in full.</a></p>
+
+      <h2>Team</h2>
+      <div class="tm"><div class="av">LW</div><div><b>Lawrence Whitaker III</b><em>Co-Founder</em><p>Brand, film and design. Runs VYB LABS, the production and lifestyle arm.</p></div></div>
+      <div class="tm"><div class="av">MC</div><div><b>Martin Crowley</b><em>Co-Founder</em><p>Operations and finance.</p></div></div>
+
+      <h2>Pitch Deck</h2>
+      <div class="deck">
+        <div class="tile red"><div class="k">Thesis</div><div class="b">More bags of the one clinicians share.</div></div>
+        <div class="tile pic"><img src="watermelon-bag.jpg" alt="Vybrance Labs Creatine Monohydrate Gummies, Watermelon"></div>
+        <div class="tile blush"><div class="k">Product</div><div class="num"><div><strong>5 g</strong>creatine per serving</div><div><strong>4</strong>gummies per serving</div><div><strong>30</strong>servings per bag</div></div></div>
+        <div class="tile deep"><div class="k">Proof</div><div class="big">621</div><div class="s">clinicians share this on FrontrowMD without compensation.</div></div>
+        <div class="tile ink"><div class="k">Use of funds</div><div class="b">One run.<br>Freight.<br>Launch.</div></div>
+        <div class="tile leaf"><div class="k">Perks</div><div class="b">Investors get the first bags off the line.</div></div>
+      </div>
+
+      <h2>Perks</h2>
+      <div class="perk"><b>First bags</b>The first bags off the new run, before it reaches the shelf.</div>
+      <div class="perk"><b>Founder call</b>A call with the founders on the day the run is released.</div>
+
+      <h2>FAQ</h2>
+      <dl class="faq">
+        <dt>Is it tested?</dt><dd>Every lot, by a third party.</dd>
+        <dt>Where is it sold today?</dt><dd>vybrancelabs.co and Amazon.</dd>
+        <dt>What does the money do?</dt><dd>One production run of Watermelon, the freight to bring it in, and the launch.</dd>
+      </dl>
     </div>
-  </section>
 
-  <section>
-    <span class="cap">Clinician proof</span>
-    <div class="doc"><div><div class="n">Robert Wren, NP</div><div class="m">Family medicine · 13 years in practice · Verified clinician</div></div>
-      <p>“a smart option for those looking to simplify their creatine routine”†</p></div>
-    <div class="doc"><div><div class="n">Dr. Adeeba Akhtar, MD</div><div class="m">Primary care · 21 years in practice · Verified clinician</div></div>
-      <p>Her highlights: muscle recovery, active routine, stomach friendly.†</p></div>
-    <p class="fine">† This clinician wants to clarify that larger-scale research to support their product claims is still developing. Clinicians can receive product samples and are never compensated to submit evaluations. These statements have not been reviewed by the FDA and are not intended to be medical advice. Reviews by FrontrowMD, read 2026-09-29. <a href="https://vybrancelabs.co/products/creatine-gummies-watermelon">Read them in full.</a></p>
-  </section>
+    <aside class="side">
+      <div class="goal">🏆 FIRST GOAL (placeholder)</div>
+      <div class="amt">$000,000</div>
+      <div class="sub">raised from 000 investors</div>
+      <div class="inv"><div><b>INVEST</b><small>min $100</small></div><div class="box"><span>$</span><span>0</span></div></div>
+      <span class="btn">INVEST</span>
+      <span class="btn o">WATCH FOR UPDATES</span>
+      <div class="terms">Investment terms</div>
+      <div class="t"><b>Set with Wefunder</b></div>
+      <div class="t">Investor perks: first bags off the line, founder call</div>
+    </aside>
+  </div>
 
-  <section>
-    <span class="cap">Want yours</span>
-    <a class="cta" href="/wefunder/Wefunder_Page_and_Film.pdf">Choose your adventure &rarr;</a>
-    <a class="cta" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Wefunder">Free 15 minute call &rarr;</a>
-    <a class="cta" href="https://vybrancelabs.co/films">More films &rarr;</a>
-  </section>
-
-  <div class="foot">Concept work. Not a live offering, not an offer to invest.<br><b>Lawrence Whitaker III</b><br>lawrence@vybrancelabs.co</div>
-</main>
-
+  <div class="made"><div><img src="vyblabs.png" alt="VYB LABS"></div><div>Want yours? <a href="/wefunder/Wefunder_Page_and_Film.pdf">Choose your adventure →</a><a href="https://calendly.com/randomstorytelling/free-intro-call?a2=Wefunder">Free 15 minute call →</a></div></div>
+</div>
+</div>
 <script>
 (function(){
   var K='vyb_example_open', b=document.body;
