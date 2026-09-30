@@ -12,7 +12,7 @@
 @font-face{font-family:"Elza";src:url("/fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
 :root{--ink:#1a1a1a;--mute:#6b7280;--hair:#e5e7eb;--wm:#e8434f;--wmd:#7d1420;--blush:#fdecec;--leaf:#1f5a33;--pur:#5b3df5}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;-webkit-font-smoothing:antialiased}
+html,body{max-width:100%;overflow-x:hidden}body{font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 .note{background:#111;color:#fff;font-size:12px;text-align:center;padding:9px 16px;letter-spacing:.04em}
 .note b{font-weight:600}
@@ -26,13 +26,13 @@ a{color:inherit;text-decoration:none}
 .kicker{font-size:15px;color:#374151;letter-spacing:.02em}
 .kicker b{font-weight:600;text-transform:uppercase}
 h1{font-size:34px;font-weight:600;letter-spacing:-.02em;line-height:1.15;margin:8px 0 22px}
-.cols{display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:32px;align-items:start}.cols>*{min-width:0}
 .film{position:relative;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden}
 .film iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .meta{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:14px 0 22px;font-size:13px;color:#374151}
 .meta u{text-decoration:underline}
 .pill{background:#f3f4f6;border-radius:4px;padding:3px 9px;font-size:12px;color:#374151}
-.tabs{display:flex;gap:22px;border-bottom:1px solid var(--hair);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4b5563}
+.tabs{display:flex;gap:22px;overflow-x:auto;white-space:nowrap;border-bottom:1px solid var(--hair);font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4b5563}
 .tabs span{padding:10px 0}
 .tabs .on{color:var(--ink);border-bottom:2px solid var(--ink)}
 .tabs i{font-style:normal;background:#f3f4f6;border-radius:4px;padding:1px 6px;margin-left:5px;font-size:11px;color:var(--mute)}
