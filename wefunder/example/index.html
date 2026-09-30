@@ -89,7 +89,7 @@ h2{font-size:24px;font-weight:500;letter-spacing:0;margin:44px 0 18px;color:#162
 #err{color:var(--wmd);min-height:18px}
 body.locked{overflow:hidden}body.locked .site{display:none}
 body:not(.locked) #gate{display:none}
-.nav{white-space:nowrap}.nav .lnk,.nav .raise,.nav .logo small{white-space:nowrap}@media(max-width:1180px){.nav .search{display:none}}@media(max-width:1000px){.cols{grid-template-columns:1fr}.side{position:static}.nav .search,.nav .lnk,.nav .raise{display:none}h1{font-size:26px}.deck{grid-template-columns:1fr}}
+.nav{white-space:nowrap}.nav .lnk,.nav .raise,.nav .logo small{white-space:nowrap}@media(max-width:1180px){.nav .search{display:none}}.sidem{display:none}@media(max-width:1000px){.cols{grid-template-columns:1fr}.side{position:static}.cols>aside.side:not(.sidem){display:none}.sidem{display:block;margin:0 0 22px}.made{flex-direction:column;align-items:flex-start}.made a{margin:12px 18px 0 0;display:inline-block}.press{grid-template-columns:1fr;gap:8px}.nav .search,.nav .lnk,.nav .raise{display:none}h1{font-size:26px}.deck{grid-template-columns:1fr}}
 
 .cover{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/9;background:#000}
 .cover img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
@@ -103,6 +103,7 @@ body:not(.locked) #gate{display:none}
 .memo .sig{font-style:normal;color:var(--mute);font-size:14px}
 .tm img{width:66px;height:66px;border-radius:50%;object-fit:cover;display:block}
 .wall{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 18px;font-size:14px;color:#374151}.wall div{padding:8px 0;border-top:1px solid var(--hair)}.wall b{display:block;color:#16263d;font-weight:500}.wall small{color:var(--mute)}.press{display:grid;grid-template-columns:110px 1fr;gap:18px;align-items:center;border:1px solid var(--hair);border-radius:10px;padding:16px 18px}.press .o{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:500}.press b{display:block;font-size:17px;font-weight:500;color:#16263d;margin:4px 0}.press a{font-size:13px;text-decoration:underline}.doors{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.door{border:1px solid var(--hair);border-radius:10px;padding:16px 18px;font-size:14px;color:#374151}.door b{display:block;font-size:16px;font-weight:500;color:#16263d}.car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;-webkit-overflow-scrolling:touch}.car>*{flex:0 0 86%;scroll-snap-align:start;aspect-ratio:16/9;min-height:0}.car .tile{height:auto}.carn{font-size:12px;color:var(--mute);margin-top:6px}.post{border:1px solid var(--hair);border-radius:10px;padding:18px 20px;font-size:15px;color:#374151}.post b{display:block;font-size:17px;font-weight:500;color:#16263d}.post small{color:var(--mute);display:block;margin-bottom:8px}@media(max-width:640px){.wall{grid-template-columns:1fr 1fr}.doors{grid-template-columns:1fr}}.vwrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}.vert{width:100%;aspect-ratio:9/16;background:#000;border-radius:8px;display:block;object-fit:cover}@media(max-width:640px){.vwrap{grid-template-columns:1fr}}.films{display:grid;grid-template-columns:1fr 1fr;gap:14px}.films .f{position:relative;padding-top:56.25%;background:#000;border-radius:8px;overflow:hidden}.films .f iframe{position:absolute;inset:0;width:100%;height:100%;border:0}.films .t{font-size:14px;font-weight:500;color:#16263d;margin:8px 0 2px}.films .d{font-size:13px;color:var(--mute)}@media(max-width:640px){.films{grid-template-columns:1fr}}.terms2{font-size:14px;color:#374151;border:1px solid var(--hair);border-radius:10px;padding:16px 18px;margin-top:8px}
+@media(max-width:640px){.press{grid-template-columns:1fr;gap:8px}.made{flex-direction:column;align-items:flex-start}.made a{margin:12px 18px 0 0;display:inline-block}}
 </style>
 </head>
 <body class="locked">
@@ -128,6 +129,19 @@ body:not(.locked) #gate{display:none}
     <div>
       <div class="film"><iframe src="https://player.vimeo.com/video/1230389107?title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Movement Is Life"></iframe></div>
       <div class="meta"><u>vybrancelabs.co</u><span>Austin, TX</span><span class="pill">Food &amp; Beverage</span><span class="pill">Consumer Goods</span><span class="pill">Health &amp; Fitness</span><span class="pill">B2C</span></div>
+      <aside class="side sidem">
+      <div class="goal">🏆 OVERSUBSCRIBED (You can still invest)</div>
+      <div class="amt">$87,500</div>
+      <div class="sub">raised from 248 investors</div>
+      <div class="bar"><i></i></div>
+      <div class="goalt">125% of the $70,000 goal</div>
+      <div class="inv"><div><b>INVEST</b><small>min $100</small></div><div class="box"><span>$</span><span>0</span></div></div>
+      <span class="btn">INVEST</span>
+      <span class="btn o">WATCH FOR UPDATES</span>
+      <div class="terms">Investment terms</div>
+      <div class="t"><b>Set with Wefunder</b></div>
+      <div class="t">Investor perks: $100, $250, $500, $1K, $5K, $10K</div>
+    </aside>
       <div class="tabs"><span class="on">Overview</span><span>Details</span><span>Posts<i>0</i></span><span>What investors say<i>0</i></span><span>Ask a question</span></div>
 
       <h2>Highlights</h2>
@@ -146,7 +160,7 @@ body:not(.locked) #gate{display:none}
         <h3>Summary</h3>
         <p><b>Why now.</b> Creatine is one of the most studied ingredients in nutrition science, and for decades it lived in the gym. It is leaving the gym now. The people asking us about it are busy parents, people on calls all day, and women over 40 hearing about creatine for the first time. We built the gummy for them: four gummies, the full 5 g the research uses, and a flavor you look forward to.</p>
         <p><b>Why we will succeed.</b> The product already sells, in three flavors, on vybrancelabs.co, Amazon, TikTok Shop and Target.com, and to stores at a 50% margin. 621 clinicians share the Watermelon on FrontrowMD without being paid to. This round is not a bet on a new idea. It is more of the one that works.</p>
-        <p><b>How you grow with us.</b> Back the round and you own a piece of the next run. The terms are set with Wefunder and shown in the box on the right. Every investor gets the first bags off the line, and the perks climb from there.</p>
+        <p><b>How you grow with us.</b> Back the round and you own a piece of the next run. The terms are set with Wefunder and shown in the invest box. Every investor gets the first bags off the line, and the perks climb from there.</p>
         <p><b>The product.</b> Creatine Monohydrate Gummies. 5 g creatine, 500 mg taurine and 120 mcg vitamin B12 in every serving of four. Vegan, sugar-free, gluten-free, non-GMO, no artificial dyes. Watermelon, Citrus Mango and Green Apple, colored naturally.</p>
 
         <h3>The Opportunity</h3>
@@ -167,7 +181,7 @@ body:not(.locked) #gate{display:none}
         <p><b>Two founders, both still here.</b> Martin leads the formulation, from the creatine dose to the taste. I lead the brand, the films and the design through VYB LABS. Everything on this page, we made.</p>
 
         <h3>How You Grow With Us</h3>
-        <p>This is a community round. Anyone can invest, from $100. The investment terms are set with Wefunder and live in the box on the right when the round opens. What we control is the perks, and we made them real:</p>
+        <p>This is a community round. Anyone can invest, from $100. The investment terms are set with Wefunder and live in the invest box when the round opens. What we control is the perks, and we made them real:</p>
         <p>$100 gets the first bags off the new run. $250 gets a 90 day supply, three bags. $500 puts your name in the release post. $1,000 gets you into A Day of Vybrance, our New Year's Day event in Austin, every year. $5,000 gets a founder call and a year of gummies. $10,000 gets a day on set at the next brand shoot.</p>
         <p>Vybrance means what it sounds like. We would rather have a thousand people who take four gummies a day and show up to a hike than one investor who never opens the bag.</p>
 
@@ -216,7 +230,7 @@ body:not(.locked) #gate{display:none}
         <div><b>Commune and Bloom</b><small>Liberty Hill, TX · 5K</small></div>
       </div>
       <p class="fine">Instagram following. Plus 41 more communities in 19 states. Our own Austin community lives on SweatPals.</p>
-      <div class="vwrap"><div class="vcol"><video class="vert" src="movement-is-life-vertical.mp4" controls playsinline preload="metadata" poster="cover.jpg"></video><div class="fine" style="margin-top:8px">The vertical cut, for social. Same film, reframed for the phone.</div></div><div class="tile photo" style="aspect-ratio:9/16"><img src="hike-walk.jpg" alt="Adventure Hike"><div class="cap">Movement is life.</div></div></div>
+      <div class="vwrap"><div class="vcol"><video class="vert" src="movement-is-life-vertical.mp4" controls playsinline preload="metadata" poster="vertical-poster.jpg"></video><div class="fine" style="margin-top:8px">The vertical cut, for social. Same film, reframed for the phone.</div></div><div class="tile photo" style="aspect-ratio:9/16"><img src="hike-walk.jpg" alt="Adventure Hike"><div class="cap">Movement is life.</div></div></div>
 
       <h2>VYB LABS, the production and lifestyle arm</h2>
       <div class="memo">
@@ -293,7 +307,7 @@ body:not(.locked) #gate{display:none}
         <dt>What is Vybrance Labs and what makes it different?</dt><dd>A design led science company in Austin, Texas. We make creatine monohydrate gummies: 5 g of creatine, 500 mg taurine and 120 mcg B12 in four gummies, vegan, sugar-free, and good enough to look forward to. Athletes have trusted creatine for decades. We made it for everyone else too.</dd>
         <dt>What exactly does the money do?</dt><dd>One 5,000 bag run of Watermelon, plus stickering, freight and the launch. $70,000 total, most of it the run.</dd>
         <dt>Why Watermelon, and why 5,000 bags?</dt><dd>Watermelon is the flavor clinicians share most and the one buyers name first. 5,000 bags is the smallest run that makes sense at our manufacturer.</dd>
-        <dt>What type of investment is this?</dt><dd>The terms are set with Wefunder and shown in the box on the right when the round opens. This sample page does not state them.</dd>
+        <dt>What type of investment is this?</dt><dd>The terms are set with Wefunder and shown in the invest box when the round opens. This sample page does not state them.</dd>
         <dt>What is the minimum investment and who can invest?</dt><dd>Wefunder community rounds are open to everyone, from $100.</dd>
         <dt>Is it tested?</dt><dd>Every lot, by a third party. Made in a cGMP facility in the USA.</dd>
         <dt>Where is it sold today?</dt><dd>vybrancelabs.co, Amazon, TikTok Shop and Target.com, and wholesale to stores at $25 a bag.</dd>
