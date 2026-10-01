@@ -51,10 +51,30 @@ h2{font-size:clamp(32px,5vw,68px);font-weight:700;letter-spacing:-.04em;line-hei
 .cta.q{color:var(--mute);border-bottom-color:var(--hair)}
 .dark{background:var(--ink);color:#fff;border-bottom:0}.dark .k,.dark .top{color:#9a9e9c}.dark .p{color:#c9ccca}.dark .cta{border-bottom-color:#fff}.dark .top img{filter:invert(1)}
 .bot{font-size:12px;color:var(--mute);display:flex;justify-content:space-between;letter-spacing:0}
+#gate{position:fixed;inset:0;background:#fff;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px;letter-spacing:-.02em}
+#gate .g{max-width:420px;width:100%}
+#gate img{height:42px;margin-bottom:36px;display:block}
+#gate h2{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:0 0 10px}
+#gate p{color:var(--mute);margin-bottom:26px}
+#gate input{width:100%;font:inherit;font-size:17px;padding:14px 0;border:0;border-bottom:1px solid #000;outline:0;border-radius:0;background:transparent}
+#gate button{margin-top:22px;width:100%;font:inherit;font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:18px;background:#000;color:#fff;border:0;cursor:pointer}
+#gate small{display:block;margin-top:14px;color:var(--mute);font-size:12px;letter-spacing:0}
+body.locked{overflow:hidden}
+body:not(.locked) #gate{display:none}
+
 @media(max-width:820px){.s{padding:5vh 22px;min-height:auto}.mid{grid-template-columns:minmax(0,1fr);gap:28px}.shot,.spread{max-height:none}.spread{height:62vw}html{scroll-snap-type:none}}
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate"><form class="g" id="gf" novalidate>
+  <img src="vyblabs.png" alt="VYB LABS">
+  <h2>Bring this to your building.</h2>
+  <p>A Day of Vybrance, the three ways to book it, and the film. Enter your email to open it.</p>
+  <input type="email" id="em" name="email" placeholder="Work email" autocomplete="email" required>
+  <button type="submit">Open the deck</button>
+  <small id="err"></small>
+  <small>We will email you about bringing A Day of Vybrance to your building and introduce you to Vybrance Labs. Unsubscribe any time.</small>
+</form></div>
 
 <section class="s">
   <div class="top"><img src="vyblabs.png" alt="VYB LABS"><span>Buildings</span></div>
@@ -150,5 +170,33 @@ h2{font-size:clamp(32px,5vw,68px);font-weight:700;letter-spacing:-.04em;line-hei
   <div class="bot"><span>Lawrence Whitaker III · lawrence@vybrancelabs.co</span><span>08 / 08</span></div>
 </section>
 
+<script>
+(function(){
+  var K='vyb_buildings_open', b=document.body;
+  try{ if(localStorage.getItem(K)) b.classList.remove('locked'); }catch(e){}
+  document.getElementById('gf').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var em=document.getElementById('em').value.trim(), err=document.getElementById('err');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ err.textContent='Enter a valid email.'; return; }
+    err.textContent='';
+    var src=(location.search.match(/utm_source=([^&]+)/)||[])[1]||'direct';
+    function sub(list){
+      return fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XaJSzL',{
+        method:'POST',
+        headers:{'content-type':'application/json','revision':'2024-10-15'},
+        body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'Buildings deck gate · '+src,
+          profile:{data:{type:'profile',attributes:{email:em}}}},
+          relationships:{list:{data:{type:'list',id:list}}}}})
+      });
+    }
+    sub('R5zeVC').then(function(r){
+      if(r.status>=200&&r.status<300){
+        sub('XL6V4M').catch(function(){});
+        try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); window.scrollTo(0,0); }
+      else err.textContent='That did not go through. Try again.';
+    }).catch(function(){ err.textContent='That did not go through. Try again.'; });
+  });
+})();
+</script>
 </body>
 </html>
