@@ -11,3 +11,4 @@ logs/
 build_basecamp.py
 patch_denim_row.py
 .claude/
+.heavy-bak/
