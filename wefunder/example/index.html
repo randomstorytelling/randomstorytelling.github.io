@@ -115,7 +115,7 @@ body:not(.locked) #gate{display:none}
   <input type="email" id="em" name="email" placeholder="Email" autocomplete="email" required>
   <button type="submit">Open the page</button>
   <small id="err"></small>
-  <small>We will email you about Wefunder page work and introduce you to Vybrance Labs, welcome offer included. Unsubscribe any time.</small>
+  <small>We will email you about Wefunder page work. You choose whether to hear from Vybrance Labs beyond that. Unsubscribe any time.</small>
 </form></div>
 
 <div class="site">
@@ -369,7 +369,6 @@ body:not(.locked) #gate{display:none}
     }
     sub('SPkZ8u').then(function(r){
       if(r.status>=200&&r.status<300){
-        sub('XL6V4M').catch(function(){});
         try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); window.scrollTo(0,0); }
       else err.textContent='That did not go through. Try again.';
     }).catch(function(){ err.textContent='That did not go through. Try again.'; });
