@@ -2139,6 +2139,25 @@ URL:https://do512.com/events/2026/10/14/first-gasp-dracula-1931-frankenste
  in-1931-tickets
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:The Frame Up Film Fest @ Buda Arts Festival
+DTSTART;TZID=America/Chicago:20261014T180000
+DTEND;TZID=America/Chicago:20261014T200000
+DTSTAMP:20261005T140919Z
+UID:frame-up-film-fest-buda-arts-festival-2026-10-14@randomstorytelling.co
+ m
+SEQUENCE:0
+CATEGORIES:showcase
+DESCRIPTION:Free.\nEvening of film\, puppetry\, photography and animation
+ \, celebrating visual storytelling\, with a 16mm short film program. Free.
+ \nSource: Austin Chronicle calendar listing read 2026-10-05 (Wed.\, Oct. 1
+ 4\, 6-8 p.m.\, free) and Buda Arts Festival page inspiredminds.art/budarts
+ festival read 2026-10-05\nhttps://www.inspiredminds.art/budartsfestival
+LAST-MODIFIED:20261005T140919Z
+LOCATION:Inspired Minds Art Center (The Chambers Theatre)\, 121 Main St\, 
+ Buda\, TX
+URL:https://www.inspiredminds.art/budartsfestival
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:Fallout Theater: Sketch 101\, Sketch Writing Basics
 DTSTART;TZID=America/Chicago:20261014T183000
 DTSTAMP:20260928T151415Z
@@ -4280,6 +4299,29 @@ TRANSP:TRANSPARENT
 URL:https://hideouttheatre.com/austin-improv-classes/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Julio Torres (Fantasmas\, Los Espookys)\, The Perfect Gift book si
+ gning at BookPeople
+DTSTART;TZID=America/Chicago:20261104T180000
+DTEND;TZID=America/Chicago:20261104T200000
+DTSTAMP:20261005T140919Z
+UID:julio-torres-the-perfect-gift-book-signing-2026-11-04@randomstorytelli
+ ng.com
+SEQUENCE:0
+CATEGORIES:talk
+DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
+ \, which publishes Nov 3. BookPeople's own event page says Wed 11/4\, 6:00
+ pm. A ticket is required and includes a copy of the book\, which is needed
+  to get it signed\; the price was not shown.\nSource: BookPeople event pag
+ e bookpeople.com/events/2026/11\, read 2026-10-05 (Wed 11/4/2026 6:00pm). 
+ Its Eventbrite still reads Thu 11/5\; Lawrence chose the BookPeople page o
+ n 2026-10-05\nhttps://www.eventbrite.com/e/bookpeople-presents-julio-torre
+ s-the-perfect-gift-tickets-2002080487633
+LAST-MODIFIED:20261005T140919Z
+LOCATION:BookPeople\, 603 N Lamar Blvd\, Austin\, TX
+URL:https://www.eventbrite.com/e/bookpeople-presents-julio-torres-the-perf
+ ect-gift-tickets-2002080487633
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:UCB at ColdTowne: Improv 101\, Improv Basics (Wednesday)
 DTSTART;TZID=America/Chicago:20261104T183000
 DTEND;TZID=America/Chicago:20261104T213000
@@ -4328,33 +4370,6 @@ DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nOUTSIDE AUSTIN
 LAST-MODIFIED:20260928T133845Z
 TRANSP:TRANSPARENT
 URL:https://www.orangefilmandartsfestival.com/
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:Julio Torres (Fantasmas\, Los Espookys)\, The Perfect Gift book si
- gning at BookPeople (ticket page says Thu 11.5\, BookPeople's site says We
- d 11.4)
-DTSTART;TZID=America/Chicago:20261105T180000
-DTEND;TZID=America/Chicago:20261105T200000
-DTSTAMP:20260928T162623Z
-UID:julio-torres-the-perfect-gift-book-signing-2026-11-05@randomstorytelli
- ng.com
-SEQUENCE:0
-CATEGORIES:talk
-DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
- \, which publishes Nov 3. BookPeople's own event page says Wed 11/4 at 6:0
- 0pm\; its Eventbrite ticket page says Thu 11/5\, 6 to 8 PM with check in a
- t 5:30 PM. The two disagree and no third source settles it\, so confirm wi
- th BookPeople. A ticket is required and includes a copy of the book\, whic
- h is needed to get it signed\; the price was not shown.\nSource: BookPeopl
- e event page (Wed 11/4) and BookPeople's Eventbrite ticket page (Thu 11/5
- \, JSON-LD 2026-11-05T18:00-06:00)\, both read 2026-09-28\; three independ
- ent readers could not settle the date. Julio Torres credits from the BookP
- eople page and Wikipedia\nhttps://www.eventbrite.com/e/bookpeople-presents
- -julio-torres-the-perfect-gift-tickets-2002080487633
-LAST-MODIFIED:20260928T162623Z
-LOCATION:BookPeople\, 603 N Lamar Blvd\, Austin\, TX
-URL:https://www.eventbrite.com/e/bookpeople-presents-julio-torres-the-perf
- ect-gift-tickets-2002080487633
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Actor’s School\, Acting Fundamentals starts (Thursdays\, Sim
