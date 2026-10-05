@@ -66,13 +66,13 @@ body:not(.locked) #gate{display:none}
 @media(max-width:820px){.s{padding:5vh 22px;height:auto;min-height:auto;overflow:visible}.mid{grid-template-columns:minmax(0,1fr);gap:28px}.shot,.spread{max-height:none}.spread{height:62vw}html{scroll-snap-type:none}}
 </style>
 </head>
-<body class="locked">
+<body>
 <div id="gate"><form class="g" id="gf" novalidate>
   <img src="vyblabs.png" alt="VYB LABS">
   <h2>Bring this to your building.</h2>
-  <p>A Day of Vybrance, the three ways to book it, and the film. Enter your email to open it.</p>
+  <p>One email and we start: your building, a neighbor if you have one, and the month. Enter your work email to continue.</p>
   <input type="email" id="em" name="email" placeholder="Work email" autocomplete="email" required>
-  <button type="submit">Open the deck</button>
+  <button type="submit">Continue</button><button type="button" id="gx" style="background:transparent;color:#000;border:1px solid #000;margin-top:10px">Not now</button>
   <small id="err"></small>
   <small>We will email you about bringing A Day of Vybrance to your building. You choose whether to hear from Vybrance Labs&trade; beyond that. Unsubscribe any time.</small>
 </form></div>
@@ -187,8 +187,13 @@ body:not(.locked) #gate{display:none}
 
 <script>
 (function(){
-  var K='vyb_buildings_open', b=document.body;
-  try{ if(localStorage.getItem(K)) b.classList.remove('locked'); }catch(e){}
+  var K='vyb_buildings_open', b=document.body, pend=null;
+  function opened(){ try{return !!localStorage.getItem(K)}catch(e){return false} }
+  function go(){ if(!pend) return; var a=pend; pend=null; if(a.getAttribute('download')!==null||/\.pdf$/.test(a.href)){ window.open(a.href,'_blank'); } else { location.href=a.href; } }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="mailto:"],a[href$=".pdf"]'),function(a){
+    a.addEventListener('click',function(ev){ if(opened()) return; ev.preventDefault(); pend=a; b.classList.add('locked'); document.getElementById('em').focus(); });
+  });
+  document.getElementById('gx').addEventListener('click',function(){ b.classList.remove('locked'); go(); });
   document.getElementById('gf').addEventListener('submit',function(ev){
     ev.preventDefault();
     var em=document.getElementById('em').value.trim(), err=document.getElementById('err');
@@ -206,7 +211,7 @@ body:not(.locked) #gate{display:none}
     }
     sub('R5zeVC').then(function(r){
       if(r.status>=200&&r.status<300){
-        try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); window.scrollTo(0,0); }
+        try{localStorage.setItem(K,'1')}catch(e){} b.classList.remove('locked'); go(); }
       else err.textContent='That did not go through. Try again.';
     }).catch(function(){ err.textContent='That did not go through. Try again.'; });
   });
