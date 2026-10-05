@@ -4303,10 +4303,10 @@ SUMMARY:Julio Torres (Fantasmas\, Los Espookys)\, The Perfect Gift book si
  gning at BookPeople
 DTSTART;TZID=America/Chicago:20261104T180000
 DTEND;TZID=America/Chicago:20261104T200000
-DTSTAMP:20261005T140919Z
+DTSTAMP:20261005T142334Z
 UID:julio-torres-the-perfect-gift-book-signing-2026-11-04@randomstorytelli
  ng.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:talk
 DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
  \, which publishes Nov 3. BookPeople's own event page says Wed 11/4\, 6:00
@@ -4314,12 +4314,11 @@ DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
   to get it signed\; the price was not shown.\nSource: BookPeople event pag
  e bookpeople.com/events/2026/11\, read 2026-10-05 (Wed 11/4/2026 6:00pm). 
  Its Eventbrite still reads Thu 11/5\; Lawrence chose the BookPeople page o
- n 2026-10-05\nhttps://www.eventbrite.com/e/bookpeople-presents-julio-torre
- s-the-perfect-gift-tickets-2002080487633
-LAST-MODIFIED:20261005T140919Z
+ n 2026-10-05\nhttps://bookpeople.com/event/2026-11-04/julio-torres-perfect
+ -gift
+LAST-MODIFIED:20261005T142334Z
 LOCATION:BookPeople\, 603 N Lamar Blvd\, Austin\, TX
-URL:https://www.eventbrite.com/e/bookpeople-presents-julio-torres-the-perf
- ect-gift-tickets-2002080487633
+URL:https://bookpeople.com/event/2026-11-04/julio-torres-perfect-gift
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB at ColdTowne: Improv 101\, Improv Basics (Wednesday)
