@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>22 Levels · RandomStorytelling</title>
+<style>
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Elza";src:url("/fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+:root{--ink:#000;--hair:#000}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y proximity;scroll-behavior:smooth}
+html,body{max-width:100%;overflow-x:hidden}
+body{font-family:"Elza","Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+.s{min-height:100vh;scroll-snap-align:start;padding:3.6vh 6vw;display:flex;flex-direction:column;border-bottom:1px solid var(--hair)}
+.top,.bot{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.bot{font-size:12px;letter-spacing:0;text-transform:none}
+.mid{flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:5vw;align-items:center;padding:4vh 0}
+.mid.one{grid-template-columns:minmax(0,1fr)}
+.k{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:clamp(8px,1.8vh,18px)}
+h1{font-size:clamp(40px,min(9vw,15vh),150px);font-weight:700;letter-spacing:-.05em;line-height:.92}
+h2{font-size:clamp(28px,min(4.7vw,7.2vh),68px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.p{font-size:clamp(16px,min(1.8vw,2.6vh),23px);margin-top:clamp(12px,2.2vh,22px);max-width:min(620px,100%)}
+.big{font-size:clamp(24px,min(3.6vw,5.4vh),52px);font-weight:500;letter-spacing:-.035em;line-height:1.15;max-width:22ch}
+.board{width:100%;max-width:960px}
+.board>div{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px;align-items:baseline;padding:clamp(10px,1.9vh,20px) 0;border-top:1px solid var(--hair);font-size:clamp(15px,min(2vw,2.8vh),24px)}
+.board>div:last-child{border-bottom:1px solid var(--hair)}
+.board b{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-top:.4em}
+.ladder{display:grid;grid-template-columns:repeat(22,1fr);gap:4px;align-items:end;height:min(38vh,320px);width:100%}
+.ladder i{display:block;border:1px solid #000;background:#fff}
+.ladder i.lit{background:#000}
+.lcap{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-top:10px}
+.beat{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:20px;padding:clamp(8px,1.4vh,14px) 0;border-top:1px solid var(--hair);font-size:clamp(15px,min(1.7vw,2.4vh),21px)}
+.beat b{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding-top:.35em}
+.slug{font-family:"Courier New",Courier,monospace;font-weight:700;letter-spacing:0;text-transform:uppercase;font-size:14px;margin-bottom:12px}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:22px}
+.tiers div{border:1px solid #000;padding:18px;display:grid;gap:6px}
+.tiers b{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.dark{background:#000;color:#fff}.dark .board>div,.dark .s{border-color:#fff}
+.rev{opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease}
+.js .rev{opacity:0;transform:translateY(18px)}
+.js .rev.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js .rev{opacity:1;transform:none;transition:none}}
+#gate{position:fixed;inset:0;background:#fff;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .g{max-width:420px;width:100%}
+#gate .mark{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;margin-bottom:36px}
+#gate h2{font-size:30px;margin:0 0 10px}
+#gate p{margin-bottom:22px}
+#gate input{width:100%;font:inherit;font-size:17px;padding:14px 0;border:0;border-bottom:1px solid #000;outline:0;border-radius:0;background:transparent;color:#000;margin-top:6px}
+#gate button{margin-top:26px;width:100%;font:inherit;font-weight:500;font-size:13px;letter-spacing:.16em;text-transform:uppercase;padding:18px;background:#000;color:#fff;border:0;cursor:pointer}
+#gate button:focus-visible,#gate input:focus-visible{outline:2px solid #000;outline-offset:3px}
+#gate small{display:block;margin-top:14px;font-size:12px;letter-spacing:0;min-height:1em}
+body:not(.locked) #gate{display:none}
+@media(max-width:820px){.s{padding:5vh 22px}.mid{grid-template-columns:minmax(0,1fr);gap:28px}html{scroll-snap-type:none}.board>div,.beat{grid-template-columns:minmax(0,1fr);gap:4px}.tiers{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body class="locked">
+
+<div id="gate"><form class="g" id="gf" novalidate>
+  <div class="mark">RandomStorytelling</div>
+  <h2>Untitled project</h2>
+  <p>This treatment is private. Enter your email and the password you were given.</p>
+  <label for="em" class="k" style="margin:0">Email</label>
+  <input id="em" type="email" autocomplete="email" required>
+  <label for="pw" class="k" style="margin:18px 0 0;display:block">Password</label>
+  <input id="pw" type="password" autocomplete="current-password" required>
+  <button type="submit">Open</button>
+  <small id="err" role="alert"></small>
+</form></div>
+
+<main>
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Series treatment</span></div>
+  <div class="mid one"><div class="rev">
+    <div class="k">An original comedy series</div>
+    <h1>22 Levels</h1>
+    <p class="p">Created by Lawrence Whitaker III.<br>Starring and produced by Lawrence Whitaker III &amp; Natalie Howard.</p>
+  </div></div>
+  <div class="bot"><span>Austin, Texas · Draft 2 · October 2026</span><span>01 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Logline</span></div>
+  <div class="mid one"><p class="big rev">A man in Austin tries to feel better one notch at a time, and every attempt to climb goes a little too far.</p></div>
+  <div class="bot"><span>22 Levels</span><span>02 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>At a glance</span></div>
+  <div class="mid one"><div class="board rev">
+    <div><b>Format</b><span>Single-camera comedy, 6 to 10 minute episodes</span></div>
+    <div><b>Season</b><span>22 episodes, one per step of the emotional scale</span></div>
+    <div><b>Style</b><span>Outlined, then improvised</span></div>
+    <div><b>Setting</b><span>Austin, Texas, present day</span></div>
+    <div><b>Tone</b><span><i>Curb Your Enthusiasm</i> meets <i>The Vince Staples Show</i> by way of <i>Atlanta</i></span></div>
+    <div><b>Platform</b><span>Digital first, with vertical cuts built for social</span></div>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>03 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>The engine</span></div>
+  <div class="mid"><div class="rev">
+    <h2>One step up. Every episode.</h2>
+    <p class="p">There is a well-known 22-step emotional scale. Despair sits at the bottom, joy at the top, and you can only ever move up one step at a time.</p>
+    <p class="p">Lawrence believes this completely. Every episode starts him on one step and ends him exactly one step higher. He reaches for gratitude and lands in a feud. He tries forgiveness and ends up holding a laminated sign. Against all evidence, he climbs.</p>
+  </div><div class="rev">
+    <div class="ladder" aria-label="22 steps, step 10 marked as the pilot">
+      <i style="height:100%"></i><i style="height:96%"></i><i style="height:92%"></i><i style="height:87%"></i><i style="height:83%"></i><i style="height:79%"></i><i style="height:74%"></i><i style="height:70%"></i><i style="height:66%"></i><i class="lit" style="height:62%"></i><i style="height:57%"></i><i style="height:53%"></i><i style="height:49%"></i><i style="height:45%"></i><i style="height:40%"></i><i style="height:36%"></i><i style="height:32%"></i><i style="height:27%"></i><i style="height:23%"></i><i style="height:19%"></i><i style="height:14%"></i><i style="height:10%"></i>
+    </div>
+    <div class="lcap"><span>1 · Joy</span><span>Pilot · 10</span><span>22 · Despair</span></div>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>04 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Tone</span></div>
+  <div class="mid one"><div class="board rev">
+    <div><b>Small rules</b><span>A tiny unwritten social rule, argued with total commitment, until the argument is bigger than the offense.</span></div>
+    <div><b>Deadpan surreal</b><span>One impossible thing happens and nobody treats it as strange.</span></div>
+    <div><b>Mood and place</b><span>Mood over plot. Austin plays a character and gets quiet beats of its own.</span></div>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>05 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Characters</span></div>
+  <div class="mid"><div class="rev">
+    <div class="k">Played by Lawrence Whitaker III</div>
+    <h2>Lawrence</h2>
+    <p class="p">Means well. Reads every self-help idea as an instruction and carries it out too hard. Shy until he isn't. Every better-feeling thought overshoots, and he lands one step up looking like he won something.</p>
+  </div><div class="rev">
+    <div class="k">Played by Natalie Howard</div>
+    <h2>Natalie</h2>
+    <p class="p">The honest grader. Where Lawrence overshoots, Natalie sees the actual step he is on and says so. She has her own ladder, and some episodes her climb drives the story while Lawrence gets in the way. In the pilot, she is the neighbor who believes the building rules are written in stone.</p>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>06 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Pilot</span></div>
+  <div class="mid one"><div class="rev">
+    <div class="k">Level 10 · Frustration</div>
+    <p class="slug">Int. Sky lounge, 16th floor · Austin · Day</p>
+    <div class="beat"><b>Cold open</b><span>Lawrence has booked the residents' sky lounge for one hour. Natalie is already there, at the window, with a binder.</span></div>
+    <div class="beat"><b>Act one</b><span>The window is reserved. Not the lounge. The window. A polite, escalating argument over the building rules, clause by clause. Nobody raises their voice. Both invent new rules as they go.</span></div>
+    <div class="beat"><b>Act two</b><span>Gratitude, forgiveness, generosity. Each attempt climbs too high and slides back. A sign on the glass reads "The view is currently occupied," above a brass plaque with Natalie's name. Neither mentions it. The skyline does the talking.</span></div>
+    <div class="beat"><b>Act three</b><span>Lawrence lands somewhere new: people are like this, and that is fine. Pessimism, one full step above frustration, played as total relief.</span></div>
+    <div class="beat"><b>Tag</b><span>He books the rooftop grill for a slot years from now and tapes up a laminated sign. Natalie reads it, nods, and adds it to her binder.</span></div>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>07 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Season one</span></div>
+  <div class="mid one"><div class="board rev">
+    <div><b>Steps 22 to 17</b><span>He hits bottom over something tiny. His first real climb is a grudge he plans in loving detail.</span></div>
+    <div><b>Steps 16 to 11</b><span>Anger turns into a list. The list gets him somewhere, then the list becomes the problem.</span></div>
+    <div><b>Steps 10 to 6</b><span>Small wins in public places. The pilot lives here.</span></div>
+    <div><b>Steps 5 to 1</b><span>The hardest stretch. Feeling good is where he is clumsiest, and joy, when it arrives, is small and real.</span></div>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>08 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Why Austin, how we make it</span></div>
+  <div class="mid"><div class="rev">
+    <h2>Why Austin</h2>
+    <p class="p">A city of people working on themselves: cold plunges, breathwork, gratitude journals, a wellness studio on every corner. The perfect place for a man who takes all of it literally, with a deep bench of local actors and filmmakers ready to make something that looks like home.</p>
+  </div><div class="rev">
+    <h2>How we make it</h2>
+    <p class="p">Each episode is built from a one-page outline and improvised on set. One shoot day makes one episode plus three vertical cuts. One shoot day every two weeks with a consistent Austin crew.</p>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>09 / 11</span></div>
+</section>
+
+<section class="s">
+  <div class="top"><span>RandomStorytelling</span><span>Brand partnerships</span></div>
+  <div class="mid one"><div class="rev">
+    <h2>Austin brands, inside the story.</h2>
+    <p class="p">A brand never sits on a wall. Its product is what knocks Lawrence down a step, or what lifts him up one.</p>
+    <div class="tiers">
+      <div><b>Background</b><span>Present in the world of the scene</span></div>
+      <div><b>Featured</b><span>Handled and named on screen</span></div>
+      <div><b>Story</b><span>The product sets off the episode or resolves it</span></div>
+    </div>
+    <p class="p">Natural fits: breakfast tacos, coffee, local drinks, fitness studios, apartment communities, food trucks. Every paid placement on social carries a clear disclosure, and no brand ever breaks the joke.</p>
+  </div></div>
+  <div class="bot"><span>22 Levels</span><span>10 / 11</span></div>
+</section>
+
+<section class="s dark">
+  <div class="top"><span>RandomStorytelling</span><span>Next</span></div>
+  <div class="mid one"><div class="board rev">
+    <div><b>01</b><span>Shoot the pilot in Austin.</span></div>
+    <div><b>02</b><span>Screen it for local actors and filmmakers.</span></div>
+    <div><b>03</b><span>Open brand partnerships with the pilot in hand.</span></div>
+    <div><b>04</b><span>Produce the first six episodes.</span></div>
+  </div></div>
+  <div class="bot"><span>Lawrence Whitaker III · RandomStorytelling · Austin, Texas</span><span>11 / 11</span></div>
+</section>
+</main>
+
+<script>
+(function(){
+  var K='rs_untitled_open', H='4ecfcb9d02a100d818b0353a994089ae58dcbd69149c2cb41aab3ec9c947eaeb', b=document.body;
+  document.documentElement.classList.add('js');
+  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.15}):null;
+  Array.prototype.forEach.call(document.querySelectorAll('.rev'),function(el){ io?io.observe(el):el.classList.add('in'); });
+  function open(){ b.classList.remove('locked'); window.scrollTo(0,0); }
+  try{ if(localStorage.getItem(K)) open(); }catch(e){}
+  function sha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(buf){ return Array.prototype.map.call(new Uint8Array(buf),function(x){return ('0'+x.toString(16)).slice(-2)}).join(''); }); }
+  document.getElementById('gf').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var em=document.getElementById('em').value.trim(), pw=document.getElementById('pw').value.trim().toLowerCase(), err=document.getElementById('err');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ err.textContent='Enter a valid email.'; return; }
+    sha(pw).then(function(h){
+      if(h!==H){ err.textContent='That password is not right. Check the one you were sent.'; return; }
+      err.textContent='';
+      var src=(location.search.match(/utm_source=([^&]+)/)||[])[1]||'direct';
+      fetch('https://a.klaviyo.com/client/subscriptions/?company_id=XaJSzL',{
+        method:'POST',
+        headers:{'content-type':'application/json','revision':'2024-10-15'},
+        body:JSON.stringify({data:{type:'subscription',attributes:{custom_source:'22 Levels treatment gate · '+src,
+          profile:{data:{type:'profile',attributes:{email:em}}}},
+          relationships:{list:{data:{type:'list',id:'WdHjQR'}}}}})
+      }).then(function(r){
+        if(r.status>=200&&r.status<300){ try{localStorage.setItem(K,'1')}catch(e){} open(); }
+        else err.textContent='That did not go through. Try again.';
+      }).catch(function(){ err.textContent='That did not go through. Try again.'; });
+    });
+  });
+})();
+</script>
+</body>
+</html>
