@@ -2757,24 +2757,6 @@ LOCATION:We Luv Video\, 100 N Loop Blvd E\, Austin\, TX
 URL:https://store.weluvvideo.org/events/mubi-camp-miasma-vhs-screening
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Big Texas Little Film Tour\, Austin stop
-DTSTART;VALUE=DATE:20261018
-DTEND;VALUE=DATE:20261019
-DTSTAMP:20260928T133845Z
-UID:big-texas-little-film-tour-austin-stop-2026-10-18@randomstorytelling.c
- om
-SEQUENCE:0
-CATEGORIES:showcase
-DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\n90 min
- ute block of Texas made shorts. Page gives the date only\, follow @bigtexa
- slittlefilm for venue. Other stops: Dallas Oct 11 and 12\, Houston Oct 14
- \, Lockhart Nov 7.\nSource: Texas Film Commission event page\, read 2026-0
- 9-28\nhttps://gov.texas.gov/film/event/the-big-texas-little-film-tour
-LAST-MODIFIED:20260928T133845Z
-TRANSP:TRANSPARENT
-URL:https://gov.texas.gov/film/event/the-big-texas-little-film-tour
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:Lost Chapters (Best of the Fests)\, Venezuelan film in Spanish
 DTSTART;VALUE=DATE:20261018
 DTEND;VALUE=DATE:20261022
@@ -3529,6 +3511,27 @@ DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
 LAST-MODIFIED:20260928T151415Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:GROUNDSWELL: Hill Country Premiere (documentary\, filmmaker panel)
+DTSTART;TZID=America/Chicago:20261024T173000
+DTEND;TZID=America/Chicago:20261024T210000
+DTSTAMP:20261019T140710Z
+UID:groundswell-hill-country-premiere-vista-brewing-2026-10-24@randomstory
+ telling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:Free.\nNew documentary from the filmmakers behind Kiss the Gro
+ und and Common Ground\, on regenerative agriculture in the Texas Hill Coun
+ try. Panel conversation follows the screening. Free\, RSVP via Eventvesta.
+ \nSource: Austin Chronicle film calendar event page\, read 2026-10-19\nhtt
+ ps://calendar.austinchronicle.com/event/groundswell-hill-country-premiere-
+ at-vista-brewing-14435932
+LAST-MODIFIED:20261019T140710Z
+LOCATION:Vista Brewing\, 13551 FM 150\, Driftwood\, Driftwood (Hill Countr
+ y\, outside Austin)\, TX
+URL:https://calendar.austinchronicle.com/event/groundswell-hill-country-pr
+ emiere-at-vista-brewing-14435932
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Hyperreal: HFC Presents Short Film Showcase
@@ -4299,28 +4302,6 @@ TRANSP:TRANSPARENT
 URL:https://hideouttheatre.com/austin-improv-classes/
 END:VEVENT
 BEGIN:VEVENT
-SUMMARY:Julio Torres (Fantasmas\, Los Espookys)\, The Perfect Gift book si
- gning at BookPeople
-DTSTART;TZID=America/Chicago:20261104T180000
-DTEND;TZID=America/Chicago:20261104T200000
-DTSTAMP:20261005T142334Z
-UID:julio-torres-the-perfect-gift-book-signing-2026-11-04@randomstorytelli
- ng.com
-SEQUENCE:1
-CATEGORIES:talk
-DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
- \, which publishes Nov 3. BookPeople's own event page says Wed 11/4\, 6:00
- pm. A ticket is required and includes a copy of the book\, which is needed
-  to get it signed\; the price was not shown.\nSource: BookPeople event pag
- e bookpeople.com/events/2026/11\, read 2026-10-05 (Wed 11/4/2026 6:00pm). 
- Its Eventbrite still reads Thu 11/5\; Lawrence chose the BookPeople page o
- n 2026-10-05\nhttps://bookpeople.com/event/2026-11-04/julio-torres-perfect
- -gift
-LAST-MODIFIED:20261005T142334Z
-LOCATION:BookPeople\, 603 N Lamar Blvd\, Austin\, TX
-URL:https://bookpeople.com/event/2026-11-04/julio-torres-perfect-gift
-END:VEVENT
-BEGIN:VEVENT
 SUMMARY:UCB at ColdTowne: Improv 101\, Improv Basics (Wednesday)
 DTSTART;TZID=America/Chicago:20261104T183000
 DTEND;TZID=America/Chicago:20261104T213000
@@ -4369,6 +4350,28 @@ DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nOUTSIDE AUSTIN
 LAST-MODIFIED:20260928T133845Z
 TRANSP:TRANSPARENT
 URL:https://www.orangefilmandartsfestival.com/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Julio Torres (Fantasmas\, Los Espookys)\, The Perfect Gift book si
+ gning at BookPeople
+DTSTART;TZID=America/Chicago:20261105T180000
+DTEND;TZID=America/Chicago:20261105T200000
+DTSTAMP:20261019T140733Z
+UID:julio-torres-the-perfect-gift-book-signing-2026-11-04@randomstorytelli
+ ng.com
+SEQUENCE:3
+CATEGORIES:talk
+DESCRIPTION:Price not listed.\nIn person book signing for The Perfect Gift
+ \, which publishes Nov 3. Both BookPeople own page and Eventbrite now read
+  Thu 11/5\, 6:00pm. A ticket is required and includes a copy of the book\,
+  which is needed to get it signed\; the price was not shown.\nSource: Book
+ People own Nov events page + Eventbrite\, both read 2026-10-19. BookPeople
+  changed its own listing from 11/4 to 11/5\, now matching Eventbrite. Conf
+ lict from 9/28-10/5 logs is RESOLVED as 11/5\nhttps://bookpeople.com/event
+ /2026-11-05/julio-torres-perfect-gift
+LAST-MODIFIED:20261019T140733Z
+LOCATION:BookPeople\, 603 N Lamar Blvd\, Austin\, TX
+URL:https://bookpeople.com/event/2026-11-05/julio-torres-perfect-gift
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Actor’s School\, Acting Fundamentals starts (Thursdays\, Sim
