@@ -4708,6 +4708,25 @@ URL:https://calendar.austinchronicle.com/event/round-top-film-festival-142
  88513
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Private Premiere of Jimmy with Screenwriter Justin Strawhand (Lean
+ der Film Festival kickoff)
+DTSTART;TZID=America/Chicago:20261112T163000
+DTSTAMP:20261026T140643Z
+UID:private-premiere-of-jimmy-leander-film-festival-2026-11-12@randomstory
+ telling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:$25.\nRed carpet 4:30pm\, photocall\, official festival welcom
+ e\, screening 5pm\, Q&A with screenwriter Justin Strawhand. Kicks off the 
+ Leander Film Festival.\nSource: Austin Chronicle film calendar\, read 2026
+ -10-26\nhttps://calendar.austinchronicle.com/event/private-premiere-of-jim
+ my-with-screenwriter-justin-strawhand-14456898
+LAST-MODIFIED:20261026T140643Z
+LOCATION:Alamo Drafthouse Lakeline\, 14028 Hwy. 183 N.\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/private-premiere-of-jimmy-w
+ ith-screenwriter-justin-strawhand-14456898
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261112T190000
 DTSTAMP:20260928T151415Z
@@ -4966,6 +4985,23 @@ LOCATION:Zach Downtown Campus\, 202 South Lamar Blvd\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://www.zachtheater.org/zach-youth/adult-acting-classes/acting-for
  -film/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:DMT Quest 2 IMAX Premiere
+DTSTART;TZID=America/Chicago:20261117T173000
+DTSTAMP:20261026T140643Z
+UID:dmt-quest-2-imax-premiere-2026-11-17@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:$25.\nSequel to the 2021 DMT Quest documentary on naturally oc
+ curring DMT in the mammalian brain\; subjects include Dr. Jon Dean\, Dr. D
+ ennis McKenna\, Wim Hof\, Dr. Nic Glynos\, Dr. Steven Barker.\nSource: Aus
+ tin Chronicle film calendar\, read 2026-10-26\nhttps://calendar.austinchro
+ nicle.com/event/dmt-quest-2-imax-premiere-14445219
+LAST-MODIFIED:20261026T140643Z
+LOCATION:Bullock Museum IMAX Theatre\, 1800 N. Congress Ave.\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/dmt-quest-2-imax-premiere-1
+ 4445219
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:AFS: Studio 2 Training & Control Room Training
