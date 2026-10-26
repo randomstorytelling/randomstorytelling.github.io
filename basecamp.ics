@@ -4010,6 +4010,21 @@ TRANSP:TRANSPARENT
 URL:https://austinfilmfestival.com/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Austin Film Social: Halloween Party
+DTSTART;TZID=America/Chicago:20261029T190000
+DTSTAMP:20261026T140926Z
+UID:austin-film-social-halloween-party-2026-10-29@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:meetup
+DESCRIPTION:Price not listed.\nMonthly meetup for actors\, writers\, produ
+ cers\, directors\, gaffers and boom ops. Annual Halloween party\, costume 
+ encouraged.\nSource: Austin Film Social Meetup\, read 2026-10-26\nhttps://
+ www.meetup.com/austin-film-social/events/317077349/
+LAST-MODIFIED:20261026T140926Z
+LOCATION:The Wheel South\, 3116 S Congress Ave\, Austin\, TX
+URL:https://www.meetup.com/austin-film-social/events/317077349/
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261029T190000
 DTSTAMP:20260928T151415Z
