@@ -4248,6 +4248,25 @@ URL:https://www.eventbrite.com/e/austin-film-meet-open-mic-mixer-film-vide
  o-entertainment-industry-tickets-1435001099919
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Brother Save Us Film Screening + Q&A (Galaxy Theatre)
+DTSTART;TZID=America/Chicago:20261102T204500
+DTEND;TZID=America/Chicago:20261102T230000
+DTSTAMP:20261102T150807Z
+UID:brother-save-us-2026-11-02@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:$20 GA at the door\; Film Pass/Badge prices vary.\nAustin Film
+  Festival screening of indie feature Brother Save Us\, starring Deacon Phi
+ llippe\, Thomas Murphy Molony and Chandler Riggs\, followed by Q&A with Wr
+ iter/Director Jesse Behrenwald.\nSource: Austin Chronicle film calendar\, 
+ read 2026-11-02\nhttps://calendar.austinchronicle.com/event/brother-save-u
+ s-film-screening-qanda-galaxy-theatre-14459859
+LAST-MODIFIED:20261102T150807Z
+LOCATION:Galaxy Theaters Austin\, 6700 Middle Fiskville Rd\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/brother-save-us-film-screen
+ ing-qanda-galaxy-theatre-14459859
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:The Actor's School: Audition Monologue Workout (Tuesday\, Northrid
  ge)
 DTSTART;VALUE=DATE:20261103
