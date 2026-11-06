@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<link rel="preconnect" href="https://player.vimeo.com">
+<link rel="preconnect" href="https://i.vimeocdn.com">
+<link rel="preconnect" href="https://f.vimeocdn.com">
+<link rel="preconnect" href="https://vod-adaptive-ak.vimeocdn.com" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RANDOM STORYTELLING</title>
 <link rel="icon" href="brand/icon-globe.svg" type="image/svg+xml">
@@ -296,7 +300,7 @@
 </div>
 <script src="brand/localtime.js" defer></script>
 <script>
-document.querySelectorAll('.hv').forEach(function(r){var h=r.querySelector('.hvid');r.addEventListener('mouseenter',function(){h.style.setProperty('--hvh',h.getBoundingClientRect().height+'px');var p=r.querySelector('.pr');if(p){h.style.right=(r.getBoundingClientRect().right-p.getBoundingClientRect().left+28)+'px';}if(!h.dataset.vimeo||h.querySelector('iframe'))return;var f=document.createElement('iframe');f.allow='autoplay';f.title='film';f.src='https://player.vimeo.com/video/'+h.dataset.vimeo+'?background=1&muted=1&loop=1&autoplay=1';h.appendChild(f);});});
+document.querySelectorAll('.hv').forEach(function(r){var h=r.querySelector('.hvid');r.addEventListener('mouseenter',function(){h.style.setProperty('--hvh',h.getBoundingClientRect().height+'px');var p=r.querySelector('.pr');if(p){h.style.right=(r.getBoundingClientRect().right-p.getBoundingClientRect().left+28)+'px';}window.__rsFilm&&window.__rsFilm(h);});});
 </script>
 <script>
 (function(){
@@ -310,6 +314,15 @@ document.querySelectorAll('.hv').forEach(function(r){var h=r.querySelector('.hvi
     r.querySelector('.hvid').style.right=(rb.right-pb.left+28)+'px';
   });}
   size();addEventListener('resize',size);
+})();
+</script>
+<script>
+(function(){
+  function load(h){if(!h||!h.dataset.vimeo||h.querySelector('iframe'))return;var f=document.createElement('iframe');f.allow='autoplay';f.title='film';f.setAttribute('tabindex','-1');f.src='https://player.vimeo.com/video/'+h.dataset.vimeo+'?background=1&muted=1&loop=1&autoplay=1&quality=540p';h.appendChild(f);}
+  window.__rsFilm=load;
+  if(!matchMedia('(hover:hover)').matches||!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){load(e.target);io.unobserve(e.target);}});},{rootMargin:'400px 0px'});
+  document.querySelectorAll('.hvid[data-vimeo]').forEach(function(h){io.observe(h);});
 })();
 </script>
 </body>
