@@ -3,7 +3,8 @@
    The controller owns ONE state per block: the class "is-on". CSS reacts only to that class.
    Mode, set on <html data-film-mode>:
      hover — fine pointer + hover (desktop): mouse enter/leave flips it.
-     off   — touch screens: no films, the page stays text (Lawrence 2026-11-05: phones read cleaner without them).
+     touch — touch screens: the row the finger lands on (the phone's own hover moment) plays its film behind the words;
+             at rest the page is plain text (Lawrence 2026-11-05: "from the surface it's looking like nothing").
    prefers-reduced-motion: films never load; posters stay.
    2026-11-05, Lawrence: "architectural build, not a patch". */
 (function () {
@@ -87,13 +88,25 @@
     observe('400px 0px', function (e) { if (e.isIntersecting) load(film(e.target)); });
   }
 
+  function startTouch() {
+    var down = function (e) {
+      var b = e.target.closest && e.target.closest('.hv');
+      blocks.forEach(function (x) { if (x !== b) off(x); });
+      if (b) on(b);
+    };
+    document.addEventListener('touchstart', down, { passive: true });
+    cleanup.push(function () { document.removeEventListener('touchstart', down); });
+    /* warm the player before the finger arrives, so the poster and film are instant */
+    observe('400px 0px', function (e) { if (e.isIntersecting) load(film(e.target)); });
+  }
+
   function apply() {
     cleanup.splice(0).forEach(function (fn) { fn(); });
     blocks.forEach(off);
-    var mode = hoverMQ.matches ? 'hover' : 'off';
+    var mode = hoverMQ.matches ? 'hover' : 'touch';
     root.setAttribute('data-film-mode', mode);
     if (calmMQ.matches) return;
-    if (mode === 'hover') startHover();
+    mode === 'hover' ? startHover() : startTouch();
   }
 
   [hoverMQ, calmMQ].forEach(function (mq) {
