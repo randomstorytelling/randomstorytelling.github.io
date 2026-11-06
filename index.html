@@ -84,18 +84,35 @@
   .ben{font-size:16.5px;color:var(--mute);font-weight:400}
   .ben b{color:var(--ink);font-weight:500}
   .topnav{margin-left:auto;display:flex;gap:22px;letter-spacing:.06em}
-  .topnav a{color:var(--ink);border-bottom:1px solid var(--red);padding-bottom:3px}
+  .topnav a{color:var(--ink);border-bottom:1px solid var(--red);padding-bottom:3px;white-space:nowrap}
+  @media(max-width:520px){.lt-city{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}.topnav{gap:14px;flex:none}}
   .topnav a:hover{color:var(--red)}
+  /* films: state lives in .is-on (set by brand/films.js); the mode lives on <html data-film-mode> */
   .hv{position:relative}
-  @media(hover:hover){.row.hv{min-height:var(--filmh,0px)}.row.hv .pr{display:flex;flex-direction:column;justify-content:space-between;min-height:calc(var(--filmh,0px) - 2 * var(--rowpad,0px))}}
-  .hv:not(.row):hover{background:rgba(0,0,0,.035)}
-  .hv > *:not(.hvid):not(.pr){transition:opacity .35s ease}
-  .hvid{position:absolute;top:0;bottom:0;left:0;right:0;opacity:0;transition:opacity .35s ease;pointer-events:none;overflow:hidden;background:#000}
+  .hvid{overflow:hidden;background:#000;pointer-events:none}
   .hvid img,.hvid iframe{position:absolute;top:50%;left:50%;width:100%;aspect-ratio:16/9;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;border:0}
-  @media(hover:hover){.hv:hover > *:not(.hvid):not(.pr){opacity:0}.hv:hover .hvid{opacity:1}}
-  .vid{grid-column:3;position:relative;aspect-ratio:16/9;overflow:hidden;background:#000;align-self:start}
-  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
-  @media(max-width:760px){.vid{grid-column:2}}
+  .hvid iframe{opacity:0;transition:opacity .5s ease}
+  .hvid.is-ready iframe{opacity:1}
+  /* hover mode: the film covers the block, the words step back, the details column stays */
+  [data-film-mode=hover] .hvid{position:absolute;inset:0;opacity:0;transition:opacity .35s ease}
+  [data-film-mode=hover] .hv > *:not(.hvid):not(.pr){transition:opacity .35s ease}
+  [data-film-mode=hover] .hv.is-on > *:not(.hvid):not(.pr){opacity:0}
+  [data-film-mode=hover] .hv.is-on .hvid{opacity:1}
+  [data-film-mode=hover] .hv:not(.row).is-on{background:rgba(0,0,0,.035)}
+  [data-film-mode=hover] .row.hv{min-height:var(--filmh,0px)}
+  [data-film-mode=hover] .row.hv .pr{display:flex;flex-direction:column;justify-content:space-between;min-height:calc(var(--filmh,0px) - 2 * var(--rowpad,0px))}
+  /* scroll mode: the film sits in the flow under the name, poster first, motion while centred */
+  [data-film-mode=scroll] .hvid{position:relative;width:100%;aspect-ratio:16/9;order:1}
+  [data-film-mode=scroll] .hvid iframe{opacity:0}
+  [data-film-mode=scroll] .hv.is-on .hvid.is-ready iframe{opacity:1}
+  [data-film-mode=scroll] .row.hv .hvid{grid-column:2/-1;margin:6px 0 4px}
+  [data-film-mode=scroll] .row.hv .pr{order:2}
+  [data-film-mode=scroll] .hero.hv,[data-film-mode=scroll] .fhv.hv{display:flex;flex-direction:column}
+  [data-film-mode=scroll] .hero.hv .hvid{margin-top:28px}
+  [data-film-mode=scroll] .fhv.hv .fgap{order:2}
+  [data-film-mode=scroll] .fhv.hv .hvid{margin-top:28px}
+  /* no script, or motion turned down: posters only, in the flow */
+  html:not([data-film-mode]) .hvid{display:none}
   .pr{grid-column:4;text-align:right;font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.25}
   .pr small{display:block;font-size:12.5px;font-weight:400;color:var(--mute);letter-spacing:-.01em;margin-top:5px}
   .pr small a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}
@@ -299,31 +316,6 @@
 
 </div>
 <script src="brand/localtime.js" defer></script>
-<script>
-document.querySelectorAll('.hv').forEach(function(r){var h=r.querySelector('.hvid');r.addEventListener('mouseenter',function(){h.style.setProperty('--hvh',h.getBoundingClientRect().height+'px');var p=r.querySelector('.pr');if(p){h.style.right=(r.getBoundingClientRect().right-p.getBoundingClientRect().left+28)+'px';}window.__rsFilm&&window.__rsFilm(h);});});
-</script>
-<script>
-(function(){
-  if(!matchMedia('(hover:hover)').matches)return;
-  function size(){document.querySelectorAll('.row.hv').forEach(function(r){
-    var p=r.querySelector('.pr');if(!p)return;
-    r.style.minHeight='';var rb=r.getBoundingClientRect(),pb=p.getBoundingClientRect();
-    var w=pb.left-28-rb.left, cs=getComputedStyle(r);
-    r.style.setProperty('--rowpad',cs.paddingTop);
-    r.style.setProperty('--filmh',Math.round(w*9/16)+'px');
-    r.querySelector('.hvid').style.right=(rb.right-pb.left+28)+'px';
-  });}
-  size();addEventListener('resize',size);
-})();
-</script>
-<script>
-(function(){
-  function load(h){if(!h||!h.dataset.vimeo||h.querySelector('iframe'))return;var f=document.createElement('iframe');f.allow='autoplay';f.title='film';f.setAttribute('tabindex','-1');f.src='https://player.vimeo.com/video/'+h.dataset.vimeo+'?background=1&muted=1&loop=1&autoplay=1&quality=540p';h.appendChild(f);}
-  window.__rsFilm=load;
-  if(!matchMedia('(hover:hover)').matches||!('IntersectionObserver' in window))return;
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){load(e.target);io.unobserve(e.target);}});},{rootMargin:'400px 0px'});
-  document.querySelectorAll('.hvid[data-vimeo]').forEach(function(h){io.observe(h);});
-})();
-</script>
+<script src="/brand/films.js" defer></script>
 </body>
 </html>
