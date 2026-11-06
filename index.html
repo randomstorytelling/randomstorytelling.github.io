@@ -79,6 +79,19 @@
   .for{font-size:12.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;font-weight:500;margin-top:16px;line-height:1.5}
   .ben{font-size:16.5px;color:var(--mute);font-weight:400}
   .ben b{color:var(--ink);font-weight:500}
+  .topnav{margin-left:auto;display:flex;gap:22px;letter-spacing:.06em}
+  .topnav a{color:var(--ink);border-bottom:1px solid var(--red);padding-bottom:3px}
+  .topnav a:hover{color:var(--red)}
+  .hv{position:relative}
+  @media(hover:hover){.row.hv{min-height:var(--filmh,0px)}.row.hv .pr{display:flex;flex-direction:column;justify-content:space-between;min-height:calc(var(--filmh,0px) - 2 * var(--rowpad,0px))}}
+  .hv:not(.row):hover{background:rgba(0,0,0,.035)}
+  .hv > *:not(.hvid):not(.pr){transition:opacity .35s ease}
+  .hvid{position:absolute;top:0;bottom:0;left:0;right:0;opacity:0;transition:opacity .35s ease;pointer-events:none;overflow:hidden;background:#000}
+  .hvid img,.hvid iframe{position:absolute;top:50%;left:50%;width:100%;aspect-ratio:16/9;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;border:0}
+  @media(hover:hover){.hv:hover > *:not(.hvid):not(.pr){opacity:0}.hv:hover .hvid{opacity:1}}
+  .vid{grid-column:3;position:relative;aspect-ratio:16/9;overflow:hidden;background:#000;align-self:start}
+  .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+  @media(max-width:760px){.vid{grid-column:2}}
   .pr{grid-column:4;text-align:right;font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.25}
   .pr small{display:block;font-size:12.5px;font-weight:400;color:var(--mute);letter-spacing:-.01em;margin-top:5px}
   .pr small a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}
@@ -168,29 +181,27 @@
   <div class="lt" data-localtime data-localtime-rotate="8" hidden>
     <span class="lt-clock" data-localtime-clock></span>
     <span class="lt-city" data-localtime-city></span>
+    <nav class="topnav"><a href="#index">Portfolio</a><a href="/hire/">Let&#x27;s partner</a></nav>
   </div>
 
-  <div class="hero">
+  <div class="hero hv">
+    <div class="hvid" data-vimeo="1231034831"><img src="https://i.vimeocdn.com/video/2206097443-efbd64a435fedd7050e378301baf12c38893893a0f2578819e1824502279280f-d_1280?region=us" alt=""></div>
     <!-- Hero wordmark taken off the page on Lawrence's order 2026-09-29; it lives in the foot. Kept for screen readers and search. -->
     <h1 class="sr">Random Storytelling</h1>
     <!-- Name and title line taken off the top on Lawrence's order 2026-09-29; both live in the foot. -->
     <p class="pmark">Lawrence Whitaker III</p>
-    <div class="sub">
-      <div class="go">
-        <a href="#index">Work</a>
-        <a href="/hire/">Work with me</a>
-      </div>
-    </div>
   </div>
 
   <div id="index">
-    <div class="row">
+    <div class="row hv">
+      <div class="hvid" data-vimeo="1230387024"><img src="https://i.vimeocdn.com/video/2205283196-1a6cc2a140341e315b81c51511314a9b5e0e48bcdb9faa08afbdca39d1d8bf81-d_1280?region=us" alt=""></div>
       <div class="n">01</div>
       <div><div class="nm"><a href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=watermelon" target="_blank" rel="noopener">Vybrance Labs&trade;</a></div></div>
       <div class="pr"><span class="kv"><em>Product</em>Lifestyle Brand</span><span class="kv"><em>Industry</em>Supplements</span><span class="kv"><em>Role</em>Cofounder · CEO</span>
         <a class="cta" href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=cta" target="_blank" rel="noopener">Explore &rarr;</a></div>
     </div>
-    <div class="row">
+    <div class="row hv">
+      <div class="hvid" data-vimeo="1214357528"><img src="https://i.vimeocdn.com/video/2185266942-491a6492e801fe861cf86dfcd0961a3fbb64edd1db6ee46264d2286fe354b2f6-d_1280?region=us" alt=""></div>
       <div class="n">02</div>
       <div><div class="nm"><a href="https://vimeo.com/showcase/12426485" target="_blank" rel="noopener">VYB<br>Labs</a></div><div class="for"></div></div>
       <div class="pr"><span class="kv"><em>Product</em>Team Events · Video</span><span class="kv"><em>Industry</em>Corporate Wellness</span><span class="kv"><em>Role</em>EP · Creative Director</span>
@@ -198,7 +209,8 @@
         <a class="cta" href="https://vybrancelabs.co/programming" target="_blank" rel="noopener">Bring it to your team &rarr;</a>
         <a class="cta" href="/wefunder/deck/">Crowdfunding films &rarr;</a></div>
     </div>
-    <div class="row">
+    <div class="row hv">
+      <div class="hvid" data-vimeo="1204322756"><img src="https://i.vimeocdn.com/video/2172622960-ff6fcd24349504ce2f6d4070128e90b5b3076b0a7df46427ffe10844f1fe68e7-d_1280?region=us" alt=""></div>
       <div class="n">03</div>
       <div><div class="nm"><a href="/hire/">Consulting</a></div><div class="for"></div></div>
       <div class="pr"><span class="kv"><em>Product</em>Go to market · PM · Site · Systems</span><span class="kv"><em>Industry</em>CPG · Wellness · Lifestyle</span><span class="kv"><em>Role</em>Project lead · Business development</span>
@@ -260,8 +272,11 @@
   </div>
 
   <footer>
-    <div class="fmark"><span>Random</span><span>Storytelling</span></div>
-    <div class="fgap"></div>
+    <div class="fhv hv">
+      <div class="hvid" data-vimeo="1230389107"><img src="https://i.vimeocdn.com/video/2205285478-d5fd53f506509325eba0c4df53e9a0a2c2860829bdc5aab2a6b747b8a38bcff8-d_1280?region=us" alt=""></div>
+      <div class="fmark"><span>Random</span><span>Storytelling</span></div>
+      <div class="fgap"></div>
+    </div>
     <div class="fbar">
       <div class="fclock">
         <div class="fc"><span class="k">Founder + Artist</span>
@@ -280,5 +295,22 @@
 
 </div>
 <script src="brand/localtime.js" defer></script>
+<script>
+document.querySelectorAll('.hv').forEach(function(r){var h=r.querySelector('.hvid');r.addEventListener('mouseenter',function(){h.style.setProperty('--hvh',h.getBoundingClientRect().height+'px');var p=r.querySelector('.pr');if(p){h.style.right=(r.getBoundingClientRect().right-p.getBoundingClientRect().left+28)+'px';}if(!h.dataset.vimeo||h.querySelector('iframe'))return;var f=document.createElement('iframe');f.allow='autoplay';f.title='film';f.src='https://player.vimeo.com/video/'+h.dataset.vimeo+'?background=1&muted=1&loop=1&autoplay=1';h.appendChild(f);});});
+</script>
+<script>
+(function(){
+  if(!matchMedia('(hover:hover)').matches)return;
+  function size(){document.querySelectorAll('.row.hv').forEach(function(r){
+    var p=r.querySelector('.pr');if(!p)return;
+    r.style.minHeight='';var rb=r.getBoundingClientRect(),pb=p.getBoundingClientRect();
+    var w=pb.left-28-rb.left, cs=getComputedStyle(r);
+    r.style.setProperty('--rowpad',cs.paddingTop);
+    r.style.setProperty('--filmh',Math.round(w*9/16)+'px');
+    r.querySelector('.hvid').style.right=(rb.right-pb.left+28)+'px';
+  });}
+  size();addEventListener('resize',size);
+})();
+</script>
 </body>
 </html>
