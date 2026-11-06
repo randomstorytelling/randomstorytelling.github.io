@@ -90,7 +90,9 @@
   /* films: state lives in .is-on (set by brand/films.js); the mode lives on <html data-film-mode> */
   .hv{position:relative}
   .hvid{overflow:hidden;background:#000;pointer-events:none}
-  .hvid img,.hvid iframe{position:absolute;top:50%;left:50%;width:100%;aspect-ratio:16/9;min-height:100%;transform:translate(-50%,-50%);object-fit:cover;border:0}
+  /* every film fills its box edge to edge at 16:9: never letterboxed, the overflow is cropped */
+  .hvid{container-type:size}
+  .hvid img,.hvid iframe{position:absolute;top:50%;left:50%;width:max(100cqw,177.78cqh);height:max(100cqh,56.25cqw);transform:translate(-50%,-50%);object-fit:cover;border:0}
   .hvid iframe{opacity:0;transition:opacity .5s ease}
   .hvid.is-ready iframe{opacity:1}
   /* hover mode: the film covers the block, the words step back, the details column stays */
