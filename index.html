@@ -109,6 +109,11 @@
   [data-film-mode=touch] .hv.is-on .hvid{opacity:1}
   [data-film-mode=touch] .hv > *:not(.hvid){position:relative;z-index:1;transition:color .35s ease}
   [data-film-mode=touch] .hv.is-on{--ink:#FFFFFF;--mute:rgba(255,255,255,.8);--red:#FFFFFF;color:#FFFFFF;background:transparent}
+  /* upright phones: the film takes the row; only the calls to action stay (Lawrence 2026-11-05) */
+  @media(max-width:760px){
+    [data-film-mode=touch] .hv > *:not(.hvid),[data-film-mode=touch] .hv .pr > *{transition:opacity .35s ease,color .35s ease}
+    [data-film-mode=touch] .hv.is-on > *:not(.hvid):not(.pr),[data-film-mode=touch] .hv.is-on .pr > *:not(a){opacity:0}
+  }
   /* no script: no films */
   html:not([data-film-mode]) .hvid{display:none}
   .pr{grid-column:4;text-align:right;font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.25}
