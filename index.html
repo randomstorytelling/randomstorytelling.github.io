@@ -101,18 +101,8 @@
   [data-film-mode=hover] .hv:not(.row).is-on{background:rgba(0,0,0,.035)}
   [data-film-mode=hover] .row.hv{min-height:var(--filmh,0px)}
   [data-film-mode=hover] .row.hv .pr{display:flex;flex-direction:column;justify-content:space-between;min-height:calc(var(--filmh,0px) - 2 * var(--rowpad,0px))}
-  /* scroll mode: the film sits in the flow under the name, poster first, motion while centred */
-  [data-film-mode=scroll] .hvid{position:relative;width:100%;aspect-ratio:16/9;order:1}
-  [data-film-mode=scroll] .hvid iframe{opacity:0}
-  [data-film-mode=scroll] .hv.is-on .hvid.is-ready iframe{opacity:1}
-  [data-film-mode=scroll] .row.hv .hvid{grid-column:2/-1;margin:6px 0 4px}
-  [data-film-mode=scroll] .row.hv .pr{order:2}
-  [data-film-mode=scroll] .hero.hv,[data-film-mode=scroll] .fhv.hv{display:flex;flex-direction:column}
-  [data-film-mode=scroll] .hero.hv .hvid{margin-top:28px}
-  [data-film-mode=scroll] .fhv.hv .fgap{order:2}
-  [data-film-mode=scroll] .fhv.hv .hvid{margin-top:28px}
-  /* no script, or motion turned down: posters only, in the flow */
-  html:not([data-film-mode]) .hvid{display:none}
+  /* touch screens, no script: no films */
+  html:not([data-film-mode=hover]) .hvid{display:none}
   .pr{grid-column:4;text-align:right;font-size:18px;font-weight:500;letter-spacing:-.02em;line-height:1.25}
   .pr small{display:block;font-size:12.5px;font-weight:400;color:var(--mute);letter-spacing:-.01em;margin-top:5px}
   .pr small a{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-skip-ink:none}

@@ -1,9 +1,9 @@
 /* films.js — one controller for every film block on the page.
    Markup contract: a container with class "hv" holds one ".hvid[data-vimeo]" (poster <img> inside).
    The controller owns ONE state per block: the class "is-on". CSS reacts only to that class.
-   Two input modes decide who flips it, set on <html data-film-mode>:
-     hover  — fine pointer + hover (desktop): mouse enter/leave.
-     scroll — everything else (phones, tablets): the block crossing the middle band of the screen.
+   Mode, set on <html data-film-mode>:
+     hover — fine pointer + hover (desktop): mouse enter/leave flips it.
+     off   — touch screens: no films, the page stays text (Lawrence 2026-11-05: phones read cleaner without them).
    prefers-reduced-motion: films never load; posters stay.
    2026-11-05, Lawrence: "architectural build, not a patch". */
 (function () {
@@ -87,35 +87,13 @@
     observe('400px 0px', function (e) { if (e.isIntersecting) load(film(e.target)); });
   }
 
-  function startScroll() {
-    clearRows();
-    /* load just before a block arrives, play only while it sits in the middle band */
-    observe('50% 0px', function (e) { if (e.isIntersecting) load(film(e.target)); });
-    /* candidates = blocks inside the middle band; exactly one plays: the one nearest the centre */
-    var band = [];
-    function pick() {
-      var mid = innerHeight / 2, best = null, bestD = Infinity;
-      band.forEach(function (b) { var r = b.getBoundingClientRect(), d = Math.abs((r.top + r.bottom) / 2 - mid); if (d < bestD) { bestD = d; best = b; } });
-      blocks.forEach(function (b) { b === best ? on(b) : off(b); });
-    }
-    observe('-35% 0px -35% 0px', function (e) {
-      var i = band.indexOf(e.target);
-      if (e.isIntersecting && i < 0) band.push(e.target);
-      if (!e.isIntersecting && i > -1) band.splice(i, 1);
-      pick();
-    });
-    var onScroll = function () { if (band.length > 1) pick(); };
-    addEventListener('scroll', onScroll, { passive: true });
-    cleanup.push(function () { removeEventListener('scroll', onScroll); band = []; });
-  }
-
   function apply() {
     cleanup.splice(0).forEach(function (fn) { fn(); });
     blocks.forEach(off);
-    var mode = hoverMQ.matches ? 'hover' : 'scroll';
+    var mode = hoverMQ.matches ? 'hover' : 'off';
     root.setAttribute('data-film-mode', mode);
     if (calmMQ.matches) return;
-    mode === 'hover' ? startHover() : startScroll();
+    if (mode === 'hover') startHover();
   }
 
   [hoverMQ, calmMQ].forEach(function (mq) {
