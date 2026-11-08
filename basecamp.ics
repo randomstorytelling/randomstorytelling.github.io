@@ -4763,14 +4763,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261112T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261112T210000
+DTSTAMP:20261108T164542Z
 UID:ucb-harold-night-2026-11-12@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
 DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
  not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
  ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+LAST-MODIFIED:20261108T164542Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5058,14 +5059,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261119T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261119T210000
+DTSTAMP:20261108T164542Z
 UID:ucb-harold-night-2026-11-19@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
 DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
  not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
  ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+LAST-MODIFIED:20261108T164542Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5355,14 +5357,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261203T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261203T210000
+DTSTAMP:20261108T164542Z
 UID:ucb-harold-night-2026-12-03@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
 DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
  not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
  ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+LAST-MODIFIED:20261108T164542Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5552,14 +5555,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261210T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261210T210000
+DTSTAMP:20261108T164542Z
 UID:ucb-harold-night-2026-12-10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
 DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
  not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
  ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+LAST-MODIFIED:20261108T164542Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5726,14 +5730,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261217T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261217T210000
+DTSTAMP:20261108T164542Z
 UID:ucb-harold-night-2026-12-17@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
 DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
  not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
  ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+LAST-MODIFIED:20261108T164542Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
