@@ -68,14 +68,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Queer Film Theory 101: The Birdcage
 DTSTART;TZID=America/Chicago:20260929T152000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20260929T172000
+DTSTAMP:20261108T164847Z
 UID:queer-film-theory-101-the-birdcage-2026-09-29@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nSource: Alamo Drafthouse Austin schedule fe
- ed\, read 2026-09-28\nhttps://drafthouse.com/austin/show/queer-film-theory
- -101-the-birdcage
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSource: Alamo Drafthou
+ se Austin schedule feed\, read 2026-09-28\nhttps://drafthouse.com/austin/s
+ how/queer-film-theory-101-the-birdcage
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Alamo Drafthouse Village\, Austin\, TX
 URL:https://drafthouse.com/austin/show/queer-film-theory-101-the-birdcage
 END:VEVENT
@@ -151,16 +152,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:A Poet (Cinema de la Cultura)
 DTSTART;TZID=America/Chicago:20260929T193000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20260929T213000
+DTSTAMP:20261108T164847Z
 UID:a-poet-cinema-de-la-cultura-2026-09-29@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nHispanic Heritage Month entry\, Cannes 2025
-  Un Certain Regard jury prize winner. Ticket price not on the page.\nSourc
- e: hyperrealfilm.club events feed and Austin Chronicle film calendar\, rea
- d 2026-09-28\nhttps://hyperrealfilm.club/events/9-29/a-poet-movie-screenin
- g
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nHispanic Heritage Mont
+ h entry\, Cannes 2025 Un Certain Regard jury prize winner. Ticket price no
+ t on the page.\nSource: hyperrealfilm.club events feed and Austin Chronicl
+ e film calendar\, read 2026-09-28\nhttps://hyperrealfilm.club/events/9-29/
+ a-poet-movie-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/9-29/a-poet-movie-screening
 END:VEVENT
@@ -256,15 +258,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Rebel With a Clause
 DTSTART;TZID=America/Chicago:20260930T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20260930T210000
+DTSTAMP:20261108T164847Z
 UID:rebel-with-a-clause-2026-09-30@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:$14 AFS members / $16 Non-members.\nSpecial Event with a live 
- Grammar Table in the lobby\; Chronicle says Ellen Jovin and Brandt Johnson
-  attend. AFS page lists no Q&A.\nSource: austinfilm.org screening page\, r
- ead 2026-09-28\nhttps://www.austinfilm.org/screening/rebel-with-a-clause/
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$14 AFS members / $16 Non-members.\nEnd time estimated.\nSpeci
+ al Event with a live Grammar Table in the lobby\; Chronicle says Ellen Jov
+ in and Brandt Johnson attend. AFS page lists no Q&A.\nSource: austinfilm.o
+ rg screening page\, read 2026-09-28\nhttps://www.austinfilm.org/screening/
+ rebel-with-a-clause/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6406 N I-35\, Austin\, TX
 URL:https://www.austinfilm.org/screening/rebel-with-a-clause/
 END:VEVENT
@@ -428,15 +432,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261001T190000
-DTSTAMP:20260921T104648Z
+DTEND;TZID=America/Chicago:20261001T210000
+DTSTAMP:20261108T164847Z
 UID:ucb-harold-night-2026-10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nThursdays. The UCB house long form room. UC
- B owns ColdTowne now. Price not shown on the listing.\nSource: meet_show_l
- evelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://co
- ldtownetheater.com/live-shows/
-LAST-MODIFIED:20260921T104648Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nThursdays. The UCB hou
+ se long form room. UCB owns ColdTowne now. Price not shown on the listing.
+ \nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 20
+ 26-09-21)\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -512,16 +517,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Slasher Bloodlines: FRIDAY THE 13TH + A BAY OF BLOOD
 DTSTART;TZID=America/Chicago:20261002T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261002T200000
+DTSTAMP:20261108T164847Z
 UID:slasher-bloodlines-friday-the-13th-a-bay-of-blood-2026-10-02@randomsto
  rytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:00 PM\; films 7:00 PM and 8:50 PM. 
- Panic at the Paramount double feature.\nSource: Do512 event page\, read 20
- 26-09-28\nhttps://do512.com/events/2026/10/2/slasher-bloodlines-friday-the
- -13th-a-bay-of-blood-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:00 PM\; films 
+ 7:00 PM and 8:50 PM. Panic at the Paramount double feature.\nSource: Do512
+  event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/2/slasher-
+ bloodlines-friday-the-13th-a-bay-of-blood-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/2/slasher-bloodlines-friday-the-13th-
  a-bay-of-blood-tickets
@@ -694,17 +700,18 @@ BEGIN:VEVENT
 SUMMARY:Austin Acting Studio: The Nigh Technique\, one day script analysis
   workshop
 DTSTART;TZID=America/Chicago:20261003T100000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261003T124500
+DTSTAMP:20261108T164847Z
 UID:austin-acting-studio-the-nigh-technique-one-day-script-analysis-worksh
  -2026-10-03@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:workshop
-DESCRIPTION:$205.\nSat Oct 3\, 10:00 am (4 hr). Craig Nigh's one day works
- hop. Only Oct 3 slot shown in the 7 day booking view. Later dates were not
-  visible.\nSource: austinactingstudio.com booking calendar\, read 2026-09-
- 28\nhttps://www.austinactingstudio.com/booking-calendar/the-nigh-technique
- -1
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$205.\nEnd time estimated.\nSat Oct 3\, 10:00 am (4 hr). Craig
+  Nigh's one day workshop. Only Oct 3 slot shown in the 7 day booking view.
+  Later dates were not visible.\nSource: austinactingstudio.com booking cal
+ endar\, read 2026-09-28\nhttps://www.austinactingstudio.com/booking-calend
+ ar/the-nigh-technique-1
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Austin Acting Studio\, 321 W Ben White Blvd #106\, Austin\, TX
 URL:https://www.austinactingstudio.com/booking-calendar/the-nigh-technique
  -1
@@ -730,17 +737,18 @@ BEGIN:VEVENT
 SUMMARY:The Highball Retro Market with Allen Danziger of Texas Chainsaw Ma
  ssacre
 DTSTART;TZID=America/Chicago:20261003T120000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261003T133000
+DTSTAMP:20261108T164847Z
 UID:the-highball-retro-market-with-allen-danziger-of-texas-chainsaw-massac
  -2026-10-03@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:talk
-DESCRIPTION:Free.\nMarket 12:00 PM to 6:00 PM\; Q&A 12:30 PM to 1:00 PM. Q
- &A and autographs with a cast member of the 1974 film\; autographs 1:30 PM
-  to 4:00 PM.\nSource: Visit Austin event listing\, read 2026-09-28\nhttps:
- //www.austintexas.org/event/the-highball-retro-market-w-allen-danziger-of-
- texas-chainsaw-massacre/397949/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Free.\nEnd time estimated.\nMarket 12:00 PM to 6:00 PM\; Q&A 1
+ 2:30 PM to 1:00 PM. Q&A and autographs with a cast member of the 1974 film
+ \; autographs 1:30 PM to 4:00 PM.\nSource: Visit Austin event listing\, re
+ ad 2026-09-28\nhttps://www.austintexas.org/event/the-highball-retro-market
+ -w-allen-danziger-of-texas-chainsaw-massacre/397949/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Highball\, 1120 S. Lamar Blvd\, Austin\, TX
 URL:https://www.austintexas.org/event/the-highball-retro-market-w-allen-da
  nziger-of-texas-chainsaw-massacre/397949/
@@ -763,32 +771,35 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, Improv 201 and 401
 DTSTART;TZID=America/Chicago:20261003T150000
-DTSTAMP:20260921T104648Z
+DTEND;TZID=America/Chicago:20261003T170000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-2026-10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nSaturdays\, 3pm (201) and 5pm (401). The st
- udents’ first audience. Ticket price not shown.\nSource: meet_show_level
- up_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://coldto
- wnetheater.com/live-shows/
-LAST-MODIFIED:20260921T104648Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSaturdays\, 3pm (201) 
+ and 5pm (401). The students’ first audience. Ticket price not shown.\nSo
+ urce: meet_show_levelup_oct_dec_2026.md (room hunt\, each page read 2026-0
+ 9-21)\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:AIA Austin LGBTQIA+ Alliance presents URINAL\, with panel
 DTSTART;TZID=America/Chicago:20261003T153000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261003T173000
+DTSTAMP:20261108T164847Z
 UID:aia-austin-lgbtqia-alliance-presents-urinal-with-panel-2026-10-03@rand
  omstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
 DESCRIPTION:$15 evening / $12 matinee (available M-F for shows before 5 PM
- ).\nQueer Cinema: Lost and Found. Panel after the film with AIA Austin LGB
- TQIA+ Alliance and aGLIFF leadership\, moderated by a queer film historian
- .\nSource: austinfilm.org screening page\, read 2026-09-28\nhttps://www.au
- stinfilm.org/screening/aia-austin-lgbtqia-alliance-presents-urinal/
-LAST-MODIFIED:20260928T133845Z
+ ).\nEnd time estimated.\nQueer Cinema: Lost and Found. Panel after the fil
+ m with AIA Austin LGBTQIA+ Alliance and aGLIFF leadership\, moderated by a
+  queer film historian.\nSource: austinfilm.org screening page\, read 2026-
+ 09-28\nhttps://www.austinfilm.org/screening/aia-austin-lgbtqia-alliance-pr
+ esents-urinal/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6406 N I-35\, Austin\, TX
 URL:https://www.austinfilm.org/screening/aia-austin-lgbtqia-alliance-prese
  nts-urinal/
@@ -796,16 +807,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Coming-of-Rage: CARRIE (1976) + JENNIFER'S BODY
 DTSTART;TZID=America/Chicago:20261003T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261003T200000
+DTSTAMP:20261108T164847Z
 UID:coming-of-rage-carrie-1976-jennifer-s-body-2026-10-03@randomstorytelli
  ng.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:00 PM\; films 7:00 PM and 8:55 PM. 
- Panic at the Paramount double feature\; Carrie 50th anniversary.\nSource: 
- Do512 event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/3/com
- ing-of-rage-carrie-1976-jennifers-body-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:00 PM\; films 
+ 7:00 PM and 8:55 PM. Panic at the Paramount double feature\; Carrie 50th a
+ nniversary.\nSource: Do512 event page\, read 2026-09-28\nhttps://do512.com
+ /events/2026/10/3/coming-of-rage-carrie-1976-jennifers-body-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/3/coming-of-rage-carrie-1976-jennifer
  s-body-tickets
@@ -813,30 +825,33 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Avant-garde Cinema Meetup outing: The History of Concrete
 DTSTART;TZID=America/Chicago:20261003T191500
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261003T214500
+DTSTAMP:20261108T164847Z
 UID:avant-garde-cinema-meetup-outing-the-history-of-concrete-2026-10-03@ra
  ndomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\nMeetup group outing to the AFS screening.\n
- Source: Meetup group event list\, read 2026-09-28\nhttps://www.meetup.com/
- austin-cinematalk/events/316715095/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nMeetup group outing to
+  the AFS screening.\nSource: Meetup group event list\, read 2026-09-28\nht
+ tps://www.meetup.com/austin-cinematalk/events/316715095/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6406 N I-35\, Austin\, TX
 URL:https://www.meetup.com/austin-cinematalk/events/316715095/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Maestro\, standing Saturday improv show
 DTSTART;TZID=America/Chicago:20261003T213000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261003T233000
+DTSTAMP:20261108T164847Z
 UID:maestro-standing-saturday-improv-show-2026-10-03@randomstorytelling.co
  m
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:$12 to $20.\nEvery Saturday per the page\; only Oct 3 is dated
-  because the show calendar posts about a week ahead.\nSource: Hideout show
-  calendar\, read 2026-09-28\nhttps://hideouttheatre.com/calendar/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$12 to $20.\nEnd time estimated.\nEvery Saturday per the page
+ \; only Oct 3 is dated because the show calendar posts about a week ahead.
+ \nSource: Hideout show calendar\, read 2026-09-28\nhttps://hideouttheatre.
+ com/calendar/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hideout Annex\, Austin\, TX
 URL:https://hideouttheatre.com/calendar/
 END:VEVENT
@@ -912,15 +927,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Jane Austin Improv
 DTSTART;TZID=America/Chicago:20261004T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261004T200000
+DTSTAMP:20261108T164847Z
 UID:jane-austin-improv-2026-10-04@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nMonthly first Sunday improv show\; group pa
- ge also lists Nov 1 and Dec 6 at 6:00 PM. Price not on Meetup page.\nSourc
- e: Meetup group events page\, read 2026-09-28\nhttps://www.meetup.com/we-l
- ove-austen-in-austin/events/313809919/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nMonthly first Sunday i
+ mprov show\; group page also lists Nov 1 and Dec 6 at 6:00 PM. Price not o
+ n Meetup page.\nSource: Meetup group events page\, read 2026-09-28\nhttps:
+ //www.meetup.com/we-love-austen-in-austin/events/313809919/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://www.meetup.com/we-love-austen-in-austin/events/313809919/
 END:VEVENT
@@ -959,31 +975,34 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Haxan with live heavy metal score
 DTSTART;TZID=America/Chicago:20261004T193000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261004T213000
+DTSTAMP:20261108T164847Z
 UID:haxan-with-live-heavy-metal-score-2026-10-04@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:$8.\n7:30 PM (doors 7:00 PM). 1921 Swedish witchcraft document
- ary\, live score by David DiDonato\, narration by Kelli Bland.\nSource: st
- ore.weluvvideo.org event page\, read 2026-09-28\nhttps://store.weluvvideo.
- org/events/haxan-w-live-score
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$8.\nEnd time estimated.\n7:30 PM (doors 7:00 PM). 1921 Swedis
+ h witchcraft documentary\, live score by David DiDonato\, narration by Kel
+ li Bland.\nSource: store.weluvvideo.org event page\, read 2026-09-28\nhttp
+ s://store.weluvvideo.org/events/haxan-w-live-score
+LAST-MODIFIED:20261108T164847Z
 LOCATION:We Luv Video\, 100 N Loop Blvd E\, Austin\, TX
 URL:https://store.weluvvideo.org/events/haxan-w-live-score
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Video Rodeo
 DTSTART;TZID=America/Chicago:20261004T193000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261004T213000
+DTSTAMP:20261108T164847Z
 UID:video-rodeo-2026-10-04@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:$8 (Eventbrite listing price\, fees included).\n7:30 PM to 9:0
- 0 PM (doors 7:00 PM). Experimental short film program\, 31 films of 1 to 1
- 0 minutes\, live filmmaker Q&A. Visit Austin lists two screenings that day
- .\nSource: Eventbrite event page (structured listing data)\, read 2026-09-
- 28\nhttps://www.eventbrite.com/e/video-rodeo-tickets-2001911359767
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:$8 (Eventbrite listing price\, fees included).\nEnd time estim
+ ated.\n7:30 PM to 9:00 PM (doors 7:00 PM). Experimental short film program
+ \, 31 films of 1 to 10 minutes\, live filmmaker Q&A. Visit Austin lists tw
+ o screenings that day.\nSource: Eventbrite event page (structured listing 
+ data)\, read 2026-09-28\nhttps://www.eventbrite.com/e/video-rodeo-tickets-
+ 2001911359767
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6259 Middle Fiskville Rd\, Austin\, TX
 URL:https://www.eventbrite.com/e/video-rodeo-tickets-2001911359767
 END:VEVENT
@@ -1057,16 +1076,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Free Intro to Improv Class
 DTSTART;TZID=America/Chicago:20261005T183000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261005T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-free-intro-to-improv-class-2026-10-05@randomstorytelli
  ng.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:class
-DESCRIPTION:Free.\nMondays 6:30 pm. Page says every Monday at 6:30pm and l
- ists Sep 28 as next date. Taught by Kristen Drenning.\nSource: crowdwork.c
- om Fallout classes page\, read 2026-09-28\nhttps://www.crowdwork.com/e/fre
- e-intro-to-improv-class-9ab1067f-d35f-4699-a27d-57f2a511b606
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Free.\nEnd time estimated.\nMondays 6:30 pm. Page says every M
+ onday at 6:30pm and lists Sep 28 as next date. Taught by Kristen Drenning.
+ \nSource: crowdwork.com Fallout classes page\, read 2026-09-28\nhttps://ww
+ w.crowdwork.com/e/free-intro-to-improv-class-9ab1067f-d35f-4699-a27d-57f2a
+ 511b606
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://www.crowdwork.com/e/free-intro-to-improv-class-9ab1067f-d35f-4
  699-a27d-57f2a511b606
@@ -1074,17 +1095,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin Film Meet Open Mic Mixer
 DTSTART;TZID=America/Chicago:20261005T190000
-DTSTAMP:20260921T104648Z
+DTEND;TZID=America/Chicago:20261005T213000
+DTSTAMP:20261108T164847Z
 UID:austin-film-meet-open-mic-mixer-2026-10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Free with RSVP.\nSixty seconds on the mic to say who you are a
- nd what you need\, then the room. Filmmakers\, actors\, writers\, camera\,
-  sound\, art department.\nSource: meet_show_levelup_oct_dec_2026.md (room 
- hunt\, each page read 2026-09-21)\nhttps://www.eventbrite.com/e/austin-fil
- m-meet-open-mic-mixer-film-video-entertainment-industry-tickets-1435001099
- 919
-LAST-MODIFIED:20260921T104648Z
+DESCRIPTION:Free with RSVP.\nEnd time estimated.\nSixty seconds on the mic
+  to say who you are and what you need\, then the room. Filmmakers\, actors
+ \, writers\, camera\, sound\, art department.\nSource: meet_show_levelup_o
+ ct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps://www.eventb
+ rite.com/e/austin-film-meet-open-mic-mixer-film-video-entertainment-indust
+ ry-tickets-1435001099919
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Ani’s Day and Night\, 7107 E Riverside Dr\, Austin\, TX
 URL:https://www.eventbrite.com/e/austin-film-meet-open-mic-mixer-film-vide
  o-entertainment-industry-tickets-1435001099919
@@ -1239,31 +1261,34 @@ BEGIN:VEVENT
 SUMMARY:First Tuesday SMTX Film Series: What Was Ours\, with director Mat 
  Hames
 DTSTART;TZID=America/Chicago:20261006T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261006T210000
+DTSTAMP:20261108T164847Z
 UID:first-tuesday-smtx-film-series-what-was-ours-with-director-mat-hames-2
  026-10-06@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nOUTSIDE AUSTIN. Documentary with the direct
- or in person\, then Q and A with Tammy Gonzales of TXST. Doors 6:15pm. Not
- hing listed yet for November.\nSource: First Tuesday SMTX site\, read 2026
- -09-28\nhttps://firsttuesdaysmtx.com/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nOUTSIDE AUSTIN. Docume
+ ntary with the director in person\, then Q and A with Tammy Gonzales of TX
+ ST. Doors 6:15pm. Nothing listed yet for November.\nSource: First Tuesday 
+ SMTX site\, read 2026-09-28\nhttps://firsttuesdaysmtx.com/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Price Center\, 222 W San Antonio St\, San Marcos\, TX
 URL:https://firsttuesdaysmtx.com/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Cinema de la Cultura: Problemista
 DTSTART;TZID=America/Chicago:20261006T193000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261006T213000
+DTSTAMP:20261108T164847Z
 UID:cinema-de-la-cultura-problemista-2026-10-06@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\n7:30 PM (doors 7:00 PM). Latino and immigra
- nt audiences\; proceeds go to American Gateways (immigration legal service
- s)\; ticket price not stated.\nSource: Hyperreal event page\, read 2026-09
- -28\nhttps://hyperrealfilm.club/events/10-6/problemista-movie-screening
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\n7:30 PM (doors 7:00 PM
+ ). Latino and immigrant audiences\; proceeds go to American Gateways (immi
+ gration legal services)\; ticket price not stated.\nSource: Hyperreal even
+ t page\, read 2026-09-28\nhttps://hyperrealfilm.club/events/10-6/problemis
+ ta-movie-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-6/problemista-movie-screening
 END:VEVENT
@@ -1344,15 +1369,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:TRAIN TO BUSAN 10th Anniversary
 DTSTART;TZID=America/Chicago:20261007T183000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261007T203000
+DTSTAMP:20261108T164847Z
 UID:train-to-busan-10th-anniversary-2026-10-07@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:30 PM\; film 7:30 PM. Panic at the 
- Paramount\; Korean with English subtitles.\nSource: Do512 event page\, rea
- d 2026-09-28\nhttps://do512.com/events/2026/10/7/train-to-busan-10th-anniv
- ersary-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:30 PM\; film 7
+ :30 PM. Panic at the Paramount\; Korean with English subtitles.\nSource: D
+ o512 event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/7/trai
+ n-to-busan-10th-anniversary-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/7/train-to-busan-10th-anniversary-tic
  kets
@@ -1451,14 +1477,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261008T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261008T210000
+DTSTAMP:20261108T164847Z
 UID:ucb-harold-night-2026-10-08@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
- not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
- ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nWeekly Thursday show. 
+ Nov 5 and Nov 26 are not on the page.\nSource: ColdTowne live-shows page\,
+  read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -1522,17 +1549,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Trick 'r Treat + Filmmaker Q&A with Michael Dougherty
 DTSTART;TZID=America/Chicago:20261009T190000
-DTSTAMP:20260921T173136Z
+DTEND;TZID=America/Chicago:20261009T210000
+DTSTAMP:20261108T164847Z
 UID:trick-r-treat-filmmaker-qa-texas-theatre-2026@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDallas. Director Michael Dougherty in atten
- dance\; his 1996 short Season's Greetings in 4K first\, then Trick 'r Trea
- t with a moderated Q&A. Doors 6pm.\nSource: thetexastheatre.com event page
- \, read 2026-09-21 (Monday station run). Ticket price not stated on the pa
- ge\nhttps://thetexastheatre.com/films-and-events/trick-r-treat-filmmaker-q
- a
-LAST-MODIFIED:20260921T173136Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDallas. Director Micha
+ el Dougherty in attendance\; his 1996 short Season's Greetings in 4K first
+ \, then Trick 'r Treat with a moderated Q&A. Doors 6pm.\nSource: thetexast
+ heatre.com event page\, read 2026-09-21 (Monday station run). Ticket price
+  not stated on the page\nhttps://thetexastheatre.com/films-and-events/tric
+ k-r-treat-filmmaker-qa
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Texas Theatre\, Dallas\, TX
 URL:https://thetexastheatre.com/films-and-events/trick-r-treat-filmmaker-q
  a
@@ -1614,16 +1642,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Precision Camera: Shooting High Quality Video with Abram Cerda
 DTSTART;TZID=America/Chicago:20261010T120000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261010T150000
+DTSTAMP:20261108T164847Z
 UID:precision-camera-shooting-high-quality-video-with-abram-cerda-2026-10-
  10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$99.\nACC RTF professor Abram Cerda. Page says 12 to 3pm\; the
-  calendar feed says 12 to 2:30pm.\nSource: Precision Camera class page\, r
- ead 2026-09-28\nhttps://www.precision-camera.com/video-bootcamp-learn-vide
- o
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$99.\nEnd time estimated.\nACC RTF professor Abram Cerda. Page
+  says 12 to 3pm\; the calendar feed says 12 to 2:30pm.\nSource: Precision 
+ Camera class page\, read 2026-09-28\nhttps://www.precision-camera.com/vide
+ o-bootcamp-learn-video
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Precision Camera\, 2438 W Anderson Ln\, Austin\, TX
 URL:https://www.precision-camera.com/video-bootcamp-learn-video
 END:VEVENT
@@ -1646,16 +1675,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Hyperreal: Leave a Comment with filmmaker Q&A (Michael Burns)
 DTSTART;TZID=America/Chicago:20261010T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261010T210000
+DTSTAMP:20261108T164847Z
 UID:hyperreal-leave-a-comment-with-filmmaker-q-and-a-michael-burns-2026-10
  -10@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 7:00 PM\, film 7:30 PM\, Q&A 9:00 PM.
-  Video essayist Michael Burns (ex Wisecrack) with his first film. Price be
- hind ticket link.\nSource: hyperrealfilm.club event page\, read 2026-09-28
- \nhttps://hyperrealfilm.club/events/10-10-leave-a-comment
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 7:00 PM\, film 7
+ :30 PM\, Q&A 9:00 PM. Video essayist Michael Burns (ex Wisecrack) with his
+  first film. Price behind ticket link.\nSource: hyperrealfilm.club event p
+ age\, read 2026-09-28\nhttps://hyperrealfilm.club/events/10-10-leave-a-com
+ ment
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-10-leave-a-comment
 END:VEVENT
@@ -1712,92 +1743,100 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Dread Beat an Blood
 DTSTART;TZID=America/Chicago:20261011T140000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261011T160000
+DTSTAMP:20261108T164847Z
 UID:dread-beat-an-blood-2026-10-11@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
 DESCRIPTION:$15 evening\, $12 matinee (M to F before 5 PM)\; $4 off for MA
- KE & WATCH members\; free for LOVE & Impact Circle members.\nBlack and Car
- ibbean British history\; 1979 documentary on dub poet Linton Kwesi Johnson
- \, first US release per page.\nSource: AFS event page\, read 2026-09-28\nh
- ttps://www.austinfilm.org/screening/dread-beat-an-blood/
-LAST-MODIFIED:20260928T133845Z
+ KE & WATCH members\; free for LOVE & Impact Circle members.\nEnd time esti
+ mated.\nBlack and Caribbean British history\; 1979 documentary on dub poet
+  Linton Kwesi Johnson\, first US release per page.\nSource: AFS event page
+ \, read 2026-09-28\nhttps://www.austinfilm.org/screening/dread-beat-an-blo
+ od/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6406 N I-35 Suite 3100\, Austin\, TX
 URL:https://www.austinfilm.org/screening/dread-beat-an-blood/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:What's the Story\, Wishbone? screening and Q&A
 DTSTART;TZID=America/Chicago:20261011T160000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261011T180000
+DTSTAMP:20261108T164847Z
 UID:what-s-the-story-wishbone-screening-and-q-and-a-2026-10-11@randomstory
  telling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
 DESCRIPTION:$15 evening / $12 matinee (available M-F for shows before 5 PM
- ).\nQ&A with director Joey Stewart and producers Larry Brantley and Betty 
- Buckley. Texas Film Commission on site with archive materials.\nSource: au
- stinfilm.org screening page and calendar\, read 2026-09-28\nhttps://www.au
- stinfilm.org/screening/whats-the-story-wishbone/
-LAST-MODIFIED:20260928T133845Z
+ ).\nEnd time estimated.\nQ&A with director Joey Stewart and producers Larr
+ y Brantley and Betty Buckley. Texas Film Commission on site with archive m
+ aterials.\nSource: austinfilm.org screening page and calendar\, read 2026-
+ 09-28\nhttps://www.austinfilm.org/screening/whats-the-story-wishbone/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6406 N I-35\, Austin\, TX
 URL:https://www.austinfilm.org/screening/whats-the-story-wishbone/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Bubba Ho-tep + Author Q&A with Joe R. Lansdale
 DTSTART;TZID=America/Chicago:20261011T170000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261011T190000
+DTSTAMP:20261108T164847Z
 UID:bubba-ho-tep-author-q-and-a-with-joe-r-lansdale-2026-10-11@randomstory
  telling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nOUTSIDE AUSTIN\, Dallas top event. East Tex
- as author Lansdale in attendance.\nSource: thetexastheatre.com event page
- \, read 2026-09-28\nhttps://thetexastheatre.com/films-and-events/bubba-ho-
- tep-author-qa
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nOUTSIDE AUSTIN\, Dalla
+ s top event. East Texas author Lansdale in attendance.\nSource: thetexasth
+ eatre.com event page\, read 2026-09-28\nhttps://thetexastheatre.com/films-
+ and-events/bubba-ho-tep-author-qa
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Texas Theatre\, Dallas\, TX
 URL:https://thetexastheatre.com/films-and-events/bubba-ho-tep-author-qa
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261011T170000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261011T190000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-10-11@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:On A String\, Discovery Zone Roadshow
 DTSTART;TZID=America/Chicago:20261011T193000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261011T213000
+DTSTAMP:20261108T164847Z
 UID:on-a-string-discovery-zone-roadshow-2026-10-11@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nFestival circuit new film in the Discovery 
- Zone Roadshow series. Doors 7pm. Ticket price not on the page.\nSource: Hy
- perreal event page\, read 2026-09-28\nhttps://hyperrealfilm.club/events/10
- -11/on-a-string
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nFestival circuit new f
+ ilm in the Discovery Zone Roadshow series. Doors 7pm. Ticket price not on 
+ the page.\nSource: Hyperreal event page\, read 2026-09-28\nhttps://hyperre
+ alfilm.club/events/10-11/on-a-string
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-11/on-a-string
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Lloyd Night
 DTSTART;TZID=America/Chicago:20261011T203000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261011T223000
+DTSTAMP:20261108T164847Z
 UID:ucb-lloyd-night-2026-10-11@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nPage says every other Sunday\; the four dat
- es listed do not alternate cleanly\, so use the page.\nSource: ColdTowne l
- ive-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nPage says every other 
+ Sunday\; the four dates listed do not alternate cleanly\, so use the page.
+ \nSource: ColdTowne live-shows page\, read 2026-09-28\nhttps://coldtowneth
+ eater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -1874,17 +1913,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Improv 201\, Playing the Scene (Mondays)
 DTSTART;TZID=America/Chicago:20261012T183000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261012T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-improv-201-playing-the-scene-mondays-2026-10-12@random
  storytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$313.39 including fees.\nMondays 6:30 pm. Next date listed as 
- Oct 12. Last session not read. Improv 401 Harold Mondays also starts Oct 1
- 2.\nSource: crowdwork.com Fallout classes page\, read 2026-09-28\nhttps://
- www.crowdwork.com/e/improv-201-playing-the-scene-mondays-d5f9b6e6-9f3e-4b8
- 1-946b-290cebaef73a
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$313.39 including fees.\nEnd time estimated.\nMondays 6:30 pm.
+  Next date listed as Oct 12. Last session not read. Improv 401 Harold Mond
+ ays also starts Oct 12.\nSource: crowdwork.com Fallout classes page\, read
+  2026-09-28\nhttps://www.crowdwork.com/e/improv-201-playing-the-scene-mond
+ ays-d5f9b6e6-9f3e-4b81-946b-290cebaef73a
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://www.crowdwork.com/e/improv-201-playing-the-scene-mondays-d5f9b
  6e6-9f3e-4b81-946b-290cebaef73a
@@ -1892,30 +1932,32 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Improv 401\, The Harold
 DTSTART;TZID=America/Chicago:20261012T183000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261012T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-improv-401-the-harold-2026-10-12@randomstorytelling.co
  m
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$313.39 including fees.\nFirst date shown on the classes page.
- \nSource: Fallout classes page (crowdwork)\, read 2026-09-28\nhttps://crow
- dwork.com/v/fallouttheater/classes
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$313.39 including fees.\nEnd time estimated.\nFirst date shown
+  on the classes page.\nSource: Fallout classes page (crowdwork)\, read 202
+ 6-09-28\nhttps://crowdwork.com/v/fallouttheater/classes
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://crowdwork.com/v/fallouttheater/classes
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Sketch 201\, Writers Room
 DTSTART;TZID=America/Chicago:20261012T183000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261012T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-sketch-201-writers-room-2026-10-12@randomstorytelling.
  com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$313.39 including fees.\nFirst date shown on the classes page.
- \nSource: Fallout classes page (crowdwork)\, read 2026-09-28\nhttps://crow
- dwork.com/v/fallouttheater/classes
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$313.39 including fees.\nEnd time estimated.\nFirst date shown
+  on the classes page.\nSource: Fallout classes page (crowdwork)\, read 202
+ 6-09-28\nhttps://crowdwork.com/v/fallouttheater/classes
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://crowdwork.com/v/fallouttheater/classes
 END:VEVENT
@@ -1959,16 +2001,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:ATX Short Film Showcase
 DTSTART;TZID=America/Chicago:20261012T193000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261012T221500
+DTSTAMP:20261108T164847Z
 UID:atx-short-film-showcase-2026-10@randomstorytelling.com
-SEQUENCE:2
+SEQUENCE:3
 CATEGORIES:showcase
-DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8. Eight Texas short
- s\, filmmaker Q and A\, audience vote. Submit on FilmFreeway: under 25 min
- utes\, a local filmmaker in the room.\nSource: meet_show_levelup_oct_dec_2
- 026.md (room hunt\, each page read 2026-09-21)\nhttps://www.tickettailor.c
- om/events/atxshortfilmshowcase/819561
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$12 online\, $15 door.\nEnd time estimated.\nDoors 7:30\, show
+  8. Eight Texas shorts\, filmmaker Q and A\, audience vote. Submit on Film
+ Freeway: under 25 minutes\, a local filmmaker in the room.\nSource: meet_s
+ how_levelup_oct_dec_2026.md (room hunt\, each page read 2026-09-21)\nhttps
+ ://www.tickettailor.com/events/atxshortfilmshowcase/819561
+LAST-MODIFIED:20261108T164847Z
 LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
 URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
 END:VEVENT
@@ -1993,17 +2036,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Improv 101\, Long-Form Basics (Tuesdays)
 DTSTART;TZID=America/Chicago:20261013T183000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261013T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-improv-101-long-form-basics-tuesdays-2026-10-13@random
  storytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$313.39 including fees.\nTuesdays 6:30 pm. Next date listed as
-  Oct 13. Improv 301 Tuesdays also starts Oct 13. Last session not read.\nS
- ource: crowdwork.com Fallout classes page\, read 2026-09-28\nhttps://www.c
- rowdwork.com/e/improv-101-long-form-basics-tuesdays-2960a958-2243-4d87-994
- c-5ebee0fb794c
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$313.39 including fees.\nEnd time estimated.\nTuesdays 6:30 pm
+ . Next date listed as Oct 13. Improv 301 Tuesdays also starts Oct 13. Last
+  session not read.\nSource: crowdwork.com Fallout classes page\, read 2026
+ -09-28\nhttps://www.crowdwork.com/e/improv-101-long-form-basics-tuesdays-2
+ 960a958-2243-4d87-994c-5ebee0fb794c
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://www.crowdwork.com/e/improv-101-long-form-basics-tuesdays-2960a
  958-2243-4d87-994c-5ebee0fb794c
@@ -2011,15 +2055,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Improv 301\, Group Mind
 DTSTART;TZID=America/Chicago:20261013T183000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261013T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-improv-301-group-mind-2026-10-13@randomstorytelling.co
  m
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$313.39 including fees.\nFirst date shown on the classes page.
- \nSource: Fallout classes page (crowdwork)\, read 2026-09-28\nhttps://crow
- dwork.com/v/fallouttheater/classes
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$313.39 including fees.\nEnd time estimated.\nFirst date shown
+  on the classes page.\nSource: Fallout classes page (crowdwork)\, read 202
+ 6-09-28\nhttps://crowdwork.com/v/fallouttheater/classes
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://crowdwork.com/v/fallouttheater/classes
 END:VEVENT
@@ -2124,16 +2169,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:First Gasp: DRACULA (1931) + FRANKENSTEIN (1931)
 DTSTART;TZID=America/Chicago:20261014T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261014T200000
+DTSTAMP:20261108T164847Z
 UID:first-gasp-dracula-1931-frankenstein-1931-2026-10-14@randomstorytellin
  g.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:00 PM\; films 7:00 PM and 8:30 PM. 
- Panic at the Paramount double feature.\nSource: Do512 event page\, read 20
- 26-09-28\nhttps://do512.com/events/2026/10/14/first-gasp-dracula-1931-fran
- kenstein-1931-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:00 PM\; films 
+ 7:00 PM and 8:30 PM. Panic at the Paramount double feature.\nSource: Do512
+  event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/14/first-g
+ asp-dracula-1931-frankenstein-1931-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/14/first-gasp-dracula-1931-frankenste
  in-1931-tickets
@@ -2160,15 +2206,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Fallout Theater: Sketch 101\, Sketch Writing Basics
 DTSTART;TZID=America/Chicago:20261014T183000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261014T213000
+DTSTAMP:20261108T164847Z
 UID:fallout-theater-sketch-101-sketch-writing-basics-2026-10-14@randomstor
  ytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:$313.39 including fees.\nFirst date shown on the classes page.
- \nSource: Fallout classes page (crowdwork)\, read 2026-09-28\nhttps://crow
- dwork.com/v/fallouttheater/classes
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$313.39 including fees.\nEnd time estimated.\nFirst date shown
+  on the classes page.\nSource: Fallout classes page (crowdwork)\, read 202
+ 6-09-28\nhttps://crowdwork.com/v/fallouttheater/classes
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Fallout Theater\, 616 Lavaca St\, Austin\, TX
 URL:https://crowdwork.com/v/fallouttheater/classes
 END:VEVENT
@@ -2228,16 +2275,18 @@ BEGIN:VEVENT
 SUMMARY:Cinema de la Cultura x Feminist Horror Week: Huesera: The Bone Wom
  an
 DTSTART;TZID=America/Chicago:20261014T193000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261014T213000
+DTSTAMP:20261108T164847Z
 UID:cinema-de-la-cultura-x-feminist-horror-week-huesera-the-bone-woman-202
  6-10-14@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\n7:30 PM (doors 7:00 PM). Latino cinema seri
- es joined with Feminist Horror Week\; serves Latino and women horror fans
- \; price not stated.\nSource: Hyperreal event page\, read 2026-09-28\nhttp
- s://hyperrealfilm.club/events/10-14/huesera-the-bone-woman-movie-screening
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\n7:30 PM (doors 7:00 PM
+ ). Latino cinema series joined with Feminist Horror Week\; serves Latino a
+ nd women horror fans\; price not stated.\nSource: Hyperreal event page\, r
+ ead 2026-09-28\nhttps://hyperrealfilm.club/events/10-14/huesera-the-bone-w
+ oman-movie-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-14/huesera-the-bone-woman-movie-s
  creening
@@ -2245,16 +2294,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Perfect Blue (GKIDS)\, Films & Media late night movie
 DTSTART;TZID=America/Chicago:20261014T193000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261014T213000
+DTSTAMP:20261108T164847Z
 UID:perfect-blue-gkids-films-and-media-late-night-movie-2026-10-14@randoms
  torytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Free for UT students plus a guest with UT ID.\nDoors 7:30 PM\,
-  showing 8:00 PM. Anime fans and UT students\; open to UT Austin students 
- per the page.\nSource: UT Austin calendar event page\, read 2026-09-28\nht
- tps://calendar.utexas.edu/event/perfect-blue-gkids
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Free for UT students plus a guest with UT ID.\nEnd time estima
+ ted.\nDoors 7:30 PM\, showing 8:00 PM. Anime fans and UT students\; open t
+ o UT Austin students per the page.\nSource: UT Austin calendar event page
+ \, read 2026-09-28\nhttps://calendar.utexas.edu/event/perfect-blue-gkids
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Texas Union Theatre\, UT Austin\, Austin\, TX
 URL:https://calendar.utexas.edu/event/perfect-blue-gkids
 END:VEVENT
@@ -2420,14 +2470,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:MASTER PANCAKE vs. THE LOST BOYS
 DTSTART;TZID=America/Chicago:20261015T183000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261015T203000
+DTSTAMP:20261108T164847Z
 UID:master-pancake-vs-the-lost-boys-2026-10-15@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nDoors 6:30 PM. Master Pancake Theater live 
- movie riffing.\nSource: Do512 event page\, read 2026-09-28\nhttps://do512.
- com/events/2026/10/15/master-pancake-vs-the-lost-boys-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:30 PM. Master 
+ Pancake Theater live movie riffing.\nSource: Do512 event page\, read 2026-
+ 09-28\nhttps://do512.com/events/2026/10/15/master-pancake-vs-the-lost-boys
+ -tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/15/master-pancake-vs-the-lost-boys-ti
  ckets
@@ -2435,30 +2487,32 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Hyperreal: Feminist Horror Week\, Four Short Films
 DTSTART;TZID=America/Chicago:20261015T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261015T214500
+DTSTAMP:20261108T164847Z
 UID:hyperreal-feminist-horror-week-four-short-films-2026-10-15@randomstory
  telling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
-DESCRIPTION:Price not listed.\nDoors 7:00 PM\, show 7:30 PM. Short film pr
- ogram in a collaboration week. Price behind ticket link.\nSource: hyperrea
- lfilm.club event page\, read 2026-09-28\nhttps://hyperrealfilm.club/events
- /10-15/short-films-screening
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 7:00 PM\, show 7
+ :30 PM. Short film program in a collaboration week. Price behind ticket li
+ nk.\nSource: hyperrealfilm.club event page\, read 2026-09-28\nhttps://hype
+ rrealfilm.club/events/10-15/short-films-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-15/short-films-screening
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261015T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261015T210000
+DTSTAMP:20261108T164847Z
 UID:ucb-harold-night-2026-10-15@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
- not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
- ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nWeekly Thursday show. 
+ Nov 5 and Nov 26 are not on the page.\nSource: ColdTowne live-shows page\,
+  read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -2712,47 +2766,51 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Hyperreal: The Dead Keep Dying with director Q&A
 DTSTART;TZID=America/Chicago:20261017T150000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261017T170000
+DTSTAMP:20261108T164847Z
 UID:hyperreal-the-dead-keep-dying-with-director-q-and-a-2026-10-17@randoms
  torytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:FREE.\nDoors 3:00 PM\, film 3:30 PM\, Q&A 4:50 PM. Austin made
-  miniDV dark comedy\, free screening and live Q&A with the director.\nSour
- ce: hyperrealfilm.club event page\, read 2026-09-28\nhttps://hyperrealfilm
- .club/events/10-17-the-dead-keep-dying
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:FREE.\nEnd time estimated.\nDoors 3:00 PM\, film 3:30 PM\, Q&A
+  4:50 PM. Austin made miniDV dark comedy\, free screening and live Q&A wit
+ h the director.\nSource: hyperrealfilm.club event page\, read 2026-09-28\n
+ https://hyperrealfilm.club/events/10-17-the-dead-keep-dying
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-17-the-dead-keep-dying
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:THE DEVILS (Avant-garde Cinema Meetup outing)
 DTSTART;TZID=America/Chicago:20261017T183000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261017T210000
+DTSTAMP:20261108T164847Z
 UID:the-devils-avant-garde-cinema-meetup-outing-2026-10-17@randomstorytell
  ing.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\nGroup meetup around the Ken Russell film\; 
- price not on the Meetup page.\nSource: Meetup group events page\, read 202
- 6-09-28\nhttps://www.meetup.com/austin-cinematalk/events/316715268/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nGroup meetup around th
+ e Ken Russell film\; price not on the Meetup page.\nSource: Meetup group e
+ vents page\, read 2026-09-28\nhttps://www.meetup.com/austin-cinematalk/eve
+ nts/316715268/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6226 Middle Fiskville Rd\, Austin\, TX
 URL:https://www.meetup.com/austin-cinematalk/events/316715268/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Teenage Sex and Death at Camp Miasma: The VHS Tour
 DTSTART;TZID=America/Chicago:20261017T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261017T210000
+DTSTAMP:20261108T164847Z
 UID:teenage-sex-and-death-at-camp-miasma-the-vhs-tour-2026-10-17@randomsto
  rytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:$10.\n7:00 PM to 10:00 PM and 10:00 PM to 12:00 AM. Jane Schoe
- nbrun film on a pan and scan VHS. Both sessions read Sold out.\nSource: st
- ore.weluvvideo.org event pages\, read 2026-09-28\nhttps://store.weluvvideo
- .org/events/mubi-camp-miasma-vhs-screening
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$10.\nEnd time estimated.\n7:00 PM to 10:00 PM and 10:00 PM to
+  12:00 AM. Jane Schoenbrun film on a pan and scan VHS. Both sessions read 
+ Sold out.\nSource: store.weluvvideo.org event pages\, read 2026-09-28\nhtt
+ ps://store.weluvvideo.org/events/mubi-camp-miasma-vhs-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:We Luv Video\, 100 N Loop Blvd E\, Austin\, TX
 URL:https://store.weluvvideo.org/events/mubi-camp-miasma-vhs-screening
 END:VEVENT
@@ -2851,45 +2909,49 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:THE DECAMERON (Avant-garde Cinema Meetup outing)
 DTSTART;TZID=America/Chicago:20261018T153000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261018T180000
+DTSTAMP:20261108T164847Z
 UID:the-decameron-avant-garde-cinema-meetup-outing-2026-10-18@randomstoryt
  elling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\nGroup meetup around the Pasolini film\; pri
- ce not on the Meetup page.\nSource: Meetup group events page\, read 2026-0
- 9-28\nhttps://www.meetup.com/austin-cinematalk/events/316410828/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nGroup meetup around th
+ e Pasolini film\; price not on the Meetup page.\nSource: Meetup group even
+ ts page\, read 2026-09-28\nhttps://www.meetup.com/austin-cinematalk/events
+ /316410828/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6226 Middle Fiskville Rd\, Austin\, TX
 URL:https://www.meetup.com/austin-cinematalk/events/316410828/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261018T170000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261018T190000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-10-18@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Medical Malpractice: THE ABOMINABLE DR. PHIBES + MALIGNANT
 DTSTART;TZID=America/Chicago:20261018T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261018T200000
+DTSTAMP:20261108T164847Z
 UID:medical-malpractice-the-abominable-dr-phibes-malignant-2026-10-18@rand
  omstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:00 PM\; films 7:00 PM and 8:50 PM. 
- Panic at the Paramount double feature.\nSource: Do512 event page\, read 20
- 26-09-28\nhttps://do512.com/events/2026/10/18/medical-malpractice-the-abom
- inable-dr-phibes-malignant-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:00 PM\; films 
+ 7:00 PM and 8:50 PM. Panic at the Paramount double feature.\nSource: Do512
+  event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/18/medical
+ -malpractice-the-abominable-dr-phibes-malignant-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/18/medical-malpractice-the-abominable
  -dr-phibes-malignant-tickets
@@ -2933,15 +2995,16 @@ BEGIN:VEVENT
 SUMMARY:Crunchyroll Anime Nights: Yuri!!! on Ice (subtitled\, 10th anniver
  sary)
 DTSTART;TZID=America/Chicago:20261019T190000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261019T210000
+DTSTAMP:20261108T164847Z
 UID:crunchyroll-anime-nights-yuri-on-ice-subtitled-10th-anniversary-2026-1
  0-19@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nSource: Alamo Drafthouse Austin schedule fe
- ed\, read 2026-09-28\nhttps://drafthouse.com/austin/show/crunchyroll-anime
- -nights-yuri-on-ice-subtitled-10th-anniversary
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSource: Alamo Drafthou
+ se Austin schedule feed\, read 2026-09-28\nhttps://drafthouse.com/austin/s
+ how/crunchyroll-anime-nights-yuri-on-ice-subtitled-10th-anniversary
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Alamo Drafthouse Lakeline\, Mueller and Slaughter Lane\, Austin\,
   TX
 URL:https://drafthouse.com/austin/show/crunchyroll-anime-nights-yuri-on-ic
@@ -3060,16 +3123,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Gregg Allman: The Music of My Soul\, screening and conversation
 DTSTART;TZID=America/Chicago:20261020T200000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261020T220000
+DTSTAMP:20261108T164847Z
 UID:gregg-allman-the-music-of-my-soul-screening-and-conversation-2026-10-2
  0@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nProducer Michael Lehman and director James 
- Keach in conversation after the documentary.\nSource: Do512 event page\, r
- ead 2026-09-28\nhttps://do512.com/events/2026/10/20/gregg-allman-the-music
- -of-my-soul-screening-tickets
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nProducer Michael Lehma
+ n and director James Keach in conversation after the documentary.\nSource:
+  Do512 event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/20/g
+ regg-allman-the-music-of-my-soul-screening-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ACL Live at the Moody Theater\, Austin\, TX
 URL:https://do512.com/events/2026/10/20/gregg-allman-the-music-of-my-soul-
  screening-tickets
@@ -3096,15 +3160,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:MY BROTHER'S WEDDING (Avant-garde Cinema Meetup outing)
 DTSTART;TZID=America/Chicago:20261021T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261021T203000
+DTSTAMP:20261108T164847Z
 UID:my-brother-s-wedding-avant-garde-cinema-meetup-outing-2026-10-21@rando
  mstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\nGroup meetup around the Charles Burnett fil
- m\; price not on the Meetup page.\nSource: Meetup group events page\, read
-  2026-09-28\nhttps://www.meetup.com/austin-cinematalk/events/316715446/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nGroup meetup around th
+ e Charles Burnett film\; price not on the Meetup page.\nSource: Meetup gro
+ up events page\, read 2026-09-28\nhttps://www.meetup.com/austin-cinematalk
+ /events/316715446/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:AFS Cinema\, 6226 Middle Fiskville Rd\, Austin\, TX
 URL:https://www.meetup.com/austin-cinematalk/events/316715446/
 END:VEVENT
@@ -3144,15 +3210,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:LITTLE SHOP OF HORRORS: THE DIRECTOR'S CUT
 DTSTART;TZID=America/Chicago:20261021T183000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261021T203000
+DTSTAMP:20261108T164847Z
 UID:little-shop-of-horrors-the-director-s-cut-2026-10-21@randomstorytellin
  g.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:30 PM. Panic at the Paramount.\nSou
- rce: Do512 event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/
- 21/little-shop-of-horrors-the-directors-cut-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:30 PM. Panic a
+ t the Paramount.\nSource: Do512 event page\, read 2026-09-28\nhttps://do51
+ 2.com/events/2026/10/21/little-shop-of-horrors-the-directors-cut-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/21/little-shop-of-horrors-the-directo
  rs-cut-tickets
@@ -3250,16 +3317,18 @@ BEGIN:VEVENT
 SUMMARY:Hyperreal: Steven Soderbergh's Psychos presented by Andrew Bujalsk
  i
 DTSTART;TZID=America/Chicago:20261022T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261022T210000
+DTSTAMP:20261108T164847Z
 UID:hyperreal-steven-soderbergh-s-psychos-presented-by-andrew-bujalski-202
  6-10-22@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 7:00 PM\, show 7:30 PM. Austin filmma
- ker Andrew Bujalski presents the Psycho mashup. Price behind ticket link.
- \nSource: hyperrealfilm.club event page\, read 2026-09-28\nhttps://hyperre
- alfilm.club/events/10-22/steven-soderbergs-psychos-movie-screening
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 7:00 PM\, show 7
+ :30 PM. Austin filmmaker Andrew Bujalski presents the Psycho mashup. Price
+  behind ticket link.\nSource: hyperrealfilm.club event page\, read 2026-09
+ -28\nhttps://hyperrealfilm.club/events/10-22/steven-soderbergs-psychos-mov
+ ie-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-22/steven-soderbergs-psychos-movi
  e-screening
@@ -3267,14 +3336,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261022T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261022T210000
+DTSTAMP:20261108T164847Z
 UID:ucb-harold-night-2026-10-22@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
- not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
- ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nWeekly Thursday show. 
+ Nov 5 and Nov 26 are not on the page.\nSource: ColdTowne live-shows page\,
+  read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -3353,16 +3423,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:It's All for You: THE FIRST OMEN + THE OMEN (1976)
 DTSTART;TZID=America/Chicago:20261023T180000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261023T200000
+DTSTAMP:20261108T164847Z
 UID:it-s-all-for-you-the-first-omen-the-omen-1976-2026-10-23@randomstoryte
  lling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nDoors 6:00 PM\; films 7:00 PM and 9:15 PM. 
- Panic at the Paramount double feature.\nSource: Do512 event page\, read 20
- 26-09-28\nhttps://do512.com/events/2026/10/23/its-all-for-you-the-first-om
- en-the-omen-1976-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 6:00 PM\; films 
+ 7:00 PM and 9:15 PM. Panic at the Paramount double feature.\nSource: Do512
+  event page\, read 2026-09-28\nhttps://do512.com/events/2026/10/23/its-all
+ -for-you-the-first-omen-the-omen-1976-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Paramount and Stateside Theatres\, Austin\, TX
 URL:https://do512.com/events/2026/10/23/its-all-for-you-the-first-omen-the
  -omen-1976-tickets
@@ -3501,14 +3572,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261024T150000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261024T170000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-10-24@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -3536,16 +3608,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Hyperreal: HFC Presents Short Film Showcase
 DTSTART;TZID=America/Chicago:20261024T173000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261024T201500
+DTSTAMP:20261108T164847Z
 UID:hyperreal-hfc-presents-short-film-showcase-2026-10-24@randomstorytelli
  ng.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
-DESCRIPTION:Price not listed.\nDoors 5:30 PM\, show 6:00 PM\, filmmaker mi
- xer 7:30 PM. Post show filmmaker mixer at Yellow Jacket Social Club. Price
-  behind ticket link.\nSource: hyperrealfilm.club event page\, read 2026-09
- -28\nhttps://hyperrealfilm.club/events/10-24/short-film-showcase
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nDoors 5:30 PM\, show 6
+ :00 PM\, filmmaker mixer 7:30 PM. Post show filmmaker mixer at Yellow Jack
+ et Social Club. Price behind ticket link.\nSource: hyperrealfilm.club even
+ t page\, read 2026-09-28\nhttps://hyperrealfilm.club/events/10-24/short-fi
+ lm-showcase
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\; mixer at Yellow Jacket Soci
  al Club\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-24/short-film-showcase
@@ -3628,14 +3702,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Bi-monthly Beta Readers (Writers of Austin North)
 DTSTART;TZID=America/Chicago:20261025T140000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261025T163000
+DTSTAMP:20261108T164847Z
 UID:bi-monthly-beta-readers-writers-of-austin-north-2026-10-25@randomstory
  telling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\nSource: Meetup group events data\, read 202
- 6-09-28\nhttps://www.meetup.com/writers-of-austin/events/316743949/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSource: Meetup group e
+ vents data\, read 2026-09-28\nhttps://www.meetup.com/writers-of-austin/eve
+ nts/316743949/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Violet Crown Wine Bar & Coffee Shop\, 7100 Woodrow Ave Ste 10
  0\, Austin\, TX
 URL:https://www.meetup.com/writers-of-austin/events/316743949/
@@ -3677,14 +3753,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Lloyd Night
 DTSTART;TZID=America/Chicago:20261025T203000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261025T223000
+DTSTAMP:20261108T164847Z
 UID:ucb-lloyd-night-2026-10-25@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nPage says every other Sunday\; the four dat
- es listed do not alternate cleanly\, so use the page.\nSource: ColdTowne l
- ive-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nPage says every other 
+ Sunday\; the four dates listed do not alternate cleanly\, so use the page.
+ \nSource: ColdTowne live-shows page\, read 2026-09-28\nhttps://coldtowneth
+ eater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -3742,16 +3820,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Queer Film Theory 101: Daughters of Darkness
 DTSTART;TZID=America/Chicago:20261026T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261026T210000
+DTSTAMP:20261108T164847Z
 UID:queer-film-theory-101-daughters-of-darkness-2026-10-26@randomstorytell
  ing.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nSeries screening at four Austin locations. 
- No guest listed.\nSource: Alamo schedule API for Austin market\, read 2026
- -09-28\nhttps://drafthouse.com/event/queer-film-theory-101-daughters-of-da
- rkness
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSeries screening at fo
+ ur Austin locations. No guest listed.\nSource: Alamo schedule API for Aust
+ in market\, read 2026-09-28\nhttps://drafthouse.com/event/queer-film-theor
+ y-101-daughters-of-darkness
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Alamo Drafthouse Village\, Mueller\, Lakeline and South Lamar\, A
  ustin\, TX
 URL:https://drafthouse.com/event/queer-film-theory-101-daughters-of-darkne
@@ -3832,16 +3911,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Alamo: Scary Movie (1991) with director Daniel Erickson\, live Q&A
 DTSTART;TZID=America/Chicago:20261027T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261027T210000
+DTSTAMP:20261108T164847Z
 UID:alamo-scary-movie-1991-with-director-daniel-erickson-live-q-and-a-2026
  -10-27@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nAlamo describes it as the theater where it 
- premiered in 1991. Session read SOLDOUT.\nSource: Alamo schedule API for A
- ustin market\, read 2026-09-28\nhttps://drafthouse.com/event/live-q-a-scar
- y-movie-1991
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nAlamo describes it as 
+ the theater where it premiered in 1991. Session read SOLDOUT.\nSource: Ala
+ mo schedule API for Austin market\, read 2026-09-28\nhttps://drafthouse.co
+ m/event/live-q-a-scary-movie-1991
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Alamo Drafthouse Village\, Austin\, TX
 URL:https://drafthouse.com/event/live-q-a-scary-movie-1991
 END:VEVENT
@@ -3900,45 +3980,48 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Behind the Scream with David Arquette
 DTSTART;TZID=America/Chicago:20261028T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261028T210000
+DTSTAMP:20261108T164847Z
 UID:behind-the-scream-with-david-arquette-2026@randomstorytelling.com
-SEQUENCE:2
+SEQUENCE:3
 CATEGORIES:other
-DESCRIPTION:$44.40 to $198.60.\nLive conversation after a 30th anniversary
-  screening of Scream. Doors 5:30pm.\nSource: Austin Chronicle film calenda
- r\, read 2026-09-21\; Paramount ticket page\, read 2026-09-28\nhttps://tic
- kets.austintheatre.org/14118/14119
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$44.40 to $198.60.\nEnd time estimated.\nLive conversation aft
+ er a 30th anniversary screening of Scream. Doors 5:30pm.\nSource: Austin C
+ hronicle film calendar\, read 2026-09-21\; Paramount ticket page\, read 20
+ 26-09-28\nhttps://tickets.austintheatre.org/14118/14119
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Bass Concert Hall\, Austin\, TX
 URL:https://tickets.austintheatre.org/14118/14119
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Black Is Not a Genre presents: NOPE
 DTSTART;TZID=America/Chicago:20261028T193000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261028T213000
+DTSTAMP:20261108T164847Z
 UID:black-is-not-a-genre-presents-nope-2026-10-28@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\n7:30 PM (doors 7:00 PM). Black cinema serie
- s (a September installment\, SIGN O' THE TIMES\, ran 9/9)\; price not stat
- ed.\nSource: Hyperreal event page\, read 2026-09-28\nhttps://hyperrealfilm
- .club/events/10-28/nope-movie-screening
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\n7:30 PM (doors 7:00 PM
+ ). Black cinema series (a September installment\, SIGN O' THE TIMES\, ran 
+ 9/9)\; price not stated.\nSource: Hyperreal event page\, read 2026-09-28\n
+ https://hyperrealfilm.club/events/10-28/nope-movie-screening
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
 URL:https://hyperrealfilm.club/events/10-28/nope-movie-screening
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Goonies 40th Anniversary Screening + Q&A
 DTSTART;TZID=America/Chicago:20261028T200000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261028T220000
+DTSTAMP:20261108T164847Z
 UID:the-goonies-40th-anniversary-screening-q-and-a-2026-10-28@randomstoryt
  elling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nSource: Do512 event page\, read 2026-09-28
- \nhttps://do512.com/events/2026/10/28/the-goonies-40th-anniversary-screeni
- ng-qa-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSource: Do512 event pa
+ ge\, read 2026-09-28\nhttps://do512.com/events/2026/10/28/the-goonies-40th
+ -anniversary-screening-qa-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ACL Live at the Moody Theater\, Austin\, TX
 URL:https://do512.com/events/2026/10/28/the-goonies-40th-anniversary-scree
  ning-qa-tickets
@@ -4012,29 +4095,31 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin Film Social: Halloween Party
 DTSTART;TZID=America/Chicago:20261029T190000
-DTSTAMP:20261026T140926Z
+DTEND;TZID=America/Chicago:20261029T213000
+DTSTAMP:20261108T164847Z
 UID:austin-film-social-halloween-party-2026-10-29@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\nMonthly meetup for actors\, writers\, produ
- cers\, directors\, gaffers and boom ops. Annual Halloween party\, costume 
- encouraged.\nSource: Austin Film Social Meetup\, read 2026-10-26\nhttps://
- www.meetup.com/austin-film-social/events/317077349/
-LAST-MODIFIED:20261026T140926Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nMonthly meetup for act
+ ors\, writers\, producers\, directors\, gaffers and boom ops. Annual Hallo
+ ween party\, costume encouraged.\nSource: Austin Film Social Meetup\, read
+  2026-10-26\nhttps://www.meetup.com/austin-film-social/events/317077349/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Wheel South\, 3116 S Congress Ave\, Austin\, TX
 URL:https://www.meetup.com/austin-film-social/events/317077349/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
 DTSTART;TZID=America/Chicago:20261029T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261029T210000
+DTSTAMP:20261108T164847Z
 UID:ucb-harold-night-2026-10-29@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nWeekly Thursday show. Nov 5 and Nov 26 are 
- not on the page.\nSource: ColdTowne live-shows page\, read 2026-09-28\nhtt
- ps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nWeekly Thursday show. 
+ Nov 5 and Nov 26 are not on the page.\nSource: ColdTowne live-shows page\,
+  read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -4134,30 +4219,33 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261031T130000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261031T150000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-10-31@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Joe Bob's Halloween Spooktacular 2026
 DTSTART;TZID=America/Chicago:20261031T190000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261031T210000
+DTSTAMP:20261108T164847Z
 UID:joe-bob-s-halloween-spooktacular-2026-2026-10-31@randomstorytelling.co
  m
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\n7:00pm (Doors 6:00pm). OUTSIDE AUSTIN\, Dal
- las top event. Dusk to dawn\, 5 features plus shorts\, Mac King and Boo-le
- sque.\nSource: thetexastheatre.com event page\, read 2026-09-28\nhttps://t
- hetexastheatre.com/films-and-events/joe-bobs-halloween-spooktacular-2026
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\n7:00pm (Doors 6:00pm).
+  OUTSIDE AUSTIN\, Dallas top event. Dusk to dawn\, 5 features plus shorts
+ \, Mac King and Boo-lesque.\nSource: thetexastheatre.com event page\, read
+  2026-09-28\nhttps://thetexastheatre.com/films-and-events/joe-bobs-hallowe
+ en-spooktacular-2026
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Texas Theatre\, Dallas\, TX
 URL:https://thetexastheatre.com/films-and-events/joe-bobs-halloween-spookt
  acular-2026
@@ -4183,14 +4271,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Lloyd Night
 DTSTART;TZID=America/Chicago:20261101T203000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261101T223000
+DTSTAMP:20261108T164847Z
 UID:ucb-lloyd-night-2026-11-01@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nPage says every other Sunday\; the four dat
- es listed do not alternate cleanly\, so use the page.\nSource: ColdTowne l
- ive-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nPage says every other 
+ Sunday\; the four dates listed do not alternate cleanly\, so use the page.
+ \nSource: ColdTowne live-shows page\, read 2026-09-28\nhttps://coldtowneth
+ eater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -4233,16 +4323,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin Film Meet Open-Mic Mixer
 DTSTART;TZID=America/Chicago:20261102T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261102T213000
+DTSTAMP:20261108T164847Z
 UID:austin-film-meet-open-mic-mixer-2026-11-02@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Free.\nFirst Monday of the month. Film\, video and entertainme
- nt industry open mic mixer.\nSource: Eventbrite date picker (Oct 5\, Nov 2
- \, Dec 7\, all 7pm)\, read 2026-09-28\nhttps://www.eventbrite.com/e/austin
- -film-meet-open-mic-mixer-film-video-entertainment-industry-tickets-143500
- 1099919
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Free.\nEnd time estimated.\nFirst Monday of the month. Film\, 
+ video and entertainment industry open mic mixer.\nSource: Eventbrite date 
+ picker (Oct 5\, Nov 2\, Dec 7\, all 7pm)\, read 2026-09-28\nhttps://www.ev
+ entbrite.com/e/austin-film-meet-open-mic-mixer-film-video-entertainment-in
+ dustry-tickets-1435001099919
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Ani's Day and Night\, 7107 E Riverside Dr #6709\, Austin\, TX
 URL:https://www.eventbrite.com/e/austin-film-meet-open-mic-mixer-film-vide
  o-entertainment-industry-tickets-1435001099919
@@ -4525,18 +4616,19 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Beware! The Devil's Wrath\, Austin screening and filmmaker Q and A
 DTSTART;TZID=America/Chicago:20261107T193000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261107T213000
+DTSTAMP:20261108T164847Z
 UID:beware-the-devil-s-wrath-austin-screening-and-filmmaker-q-and-a-2026-1
  1-07@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nTexas made occult feature\, 92 minutes\, wi
- th director Craig Meinhart and cast. Doors 7pm\, Q and A about 9pm. Price 
- not stated. The page calls this the second stop after a hometown premiere 
- the night before (place not stated).\nSource: Eventbrite event page\, read
-  2026-09-28\nhttps://www.eventbrite.com/e/beware-the-devils-wrath-austin-s
- creening-qa-tickets-2001032427858
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nTexas made occult feat
+ ure\, 92 minutes\, with director Craig Meinhart and cast. Doors 7pm\, Q an
+ d A about 9pm. Price not stated. The page calls this the second stop after
+  a hometown premiere the night before (place not stated).\nSource: Eventbr
+ ite event page\, read 2026-09-28\nhttps://www.eventbrite.com/e/beware-the-
+ devils-wrath-austin-screening-qa-tickets-2001032427858
+LAST-MODIFIED:20261108T164847Z
 LOCATION:The Eastside Movie Theater at the Millennium\, 1156 Hargrave St\,
   Austin\, TX
 URL:https://www.eventbrite.com/e/beware-the-devils-wrath-austin-screening-
@@ -4545,14 +4637,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261108T170000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261108T190000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-11-08@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -4577,15 +4670,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:ATX Short Film Showcase
 DTSTART;TZID=America/Chicago:20261109T193000
-DTSTAMP:20260921T104648Z
+DTEND;TZID=America/Chicago:20261109T221500
+DTSTAMP:20261108T164847Z
 UID:atx-short-film-showcase-2026-11@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
-DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8. The Q and A after
-  is the room.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each
-  page read 2026-09-21)\nhttps://www.tickettailor.com/events/atxshortfilmsh
- owcase/819561
-LAST-MODIFIED:20260921T104648Z
+DESCRIPTION:$12 online\, $15 door.\nEnd time estimated.\nDoors 7:30\, show
+  8. The Q and A after is the room.\nSource: meet_show_levelup_oct_dec_2026
+ .md (room hunt\, each page read 2026-09-21)\nhttps://www.tickettailor.com/
+ events/atxshortfilmshowcase/819561
+LAST-MODIFIED:20261108T164847Z
 LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
 URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
 END:VEVENT
@@ -4679,15 +4773,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Writing Sprints: Thankless (South Austin Writers)
 DTSTART;TZID=America/Chicago:20261111T190000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261111T213000
+DTSTAMP:20261108T164847Z
 UID:writing-sprints-thankless-south-austin-writers-2026-11-11@randomstoryt
  elling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\n7:00 PM CST.\nSource: Meetup group events d
- ata\, read 2026-09-28\nhttps://www.meetup.com/south-austin-writers/events/
- 316365117/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\n7:00 PM CST.\nSource: 
+ Meetup group events data\, read 2026-09-28\nhttps://www.meetup.com/south-a
+ ustin-writers/events/316365117/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Central Market Cafe South\, 4477 S Lamar Blvd\, Austin\, TX
 URL:https://www.meetup.com/south-austin-writers/events/316365117/
 END:VEVENT
@@ -4695,15 +4790,16 @@ BEGIN:VEVENT
 SUMMARY:The Minotaur staged reading (The Zahir\, directed by Elizabeth V. 
  Newman of Filigree Theatre)
 DTSTART;TZID=America/Chicago:20261111T193000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261111T221500
+DTSTAMP:20261108T164847Z
 UID:the-minotaur-staged-reading-the-zahir-directed-by-elizabeth-v-newman-o
  -2026-11-11@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:showcase
-DESCRIPTION:Free.\nNew play by L.B. Deyo in development\; full run Mar 11 
- to 27\, 2027.\nSource: minotaur-play.com\, read 2026-09-28\nhttps://www.mi
- notaur-play.com
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Free.\nEnd time estimated.\nNew play by L.B. Deyo in developme
+ nt\; full run Mar 11 to 27\, 2027.\nSource: minotaur-play.com\, read 2026-
+ 09-28\nhttps://www.minotaur-play.com
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Found Sound ATX\, 305 Victor Street\, Austin\, TX
 URL:https://www.minotaur-play.com
 END:VEVENT
@@ -4745,17 +4841,18 @@ BEGIN:VEVENT
 SUMMARY:Private Premiere of Jimmy with Screenwriter Justin Strawhand (Lean
  der Film Festival kickoff)
 DTSTART;TZID=America/Chicago:20261112T163000
-DTSTAMP:20261026T140643Z
+DTEND;TZID=America/Chicago:20261112T193000
+DTSTAMP:20261108T164847Z
 UID:private-premiere-of-jimmy-leander-film-festival-2026-11-12@randomstory
  telling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:$25.\nRed carpet 4:30pm\, photocall\, official festival welcom
- e\, screening 5pm\, Q&A with screenwriter Justin Strawhand. Kicks off the 
- Leander Film Festival.\nSource: Austin Chronicle film calendar\, read 2026
- -10-26\nhttps://calendar.austinchronicle.com/event/private-premiere-of-jim
- my-with-screenwriter-justin-strawhand-14456898
-LAST-MODIFIED:20261026T140643Z
+DESCRIPTION:$25.\nEnd time estimated.\nRed carpet 4:30pm\, photocall\, off
+ icial festival welcome\, screening 5pm\, Q&A with screenwriter Justin Stra
+ whand. Kicks off the Leander Film Festival.\nSource: Austin Chronicle film
+  calendar\, read 2026-10-26\nhttps://calendar.austinchronicle.com/event/pr
+ ivate-premiere-of-jimmy-with-screenwriter-justin-strawhand-14456898
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Alamo Drafthouse Lakeline\, 14028 Hwy. 183 N.\, Austin\, TX
 URL:https://calendar.austinchronicle.com/event/private-premiere-of-jimmy-w
  ith-screenwriter-justin-strawhand-14456898
@@ -4778,17 +4875,18 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:The Road of Sadness official premiere\, cast and crew Q and A
 DTSTART;TZID=America/Chicago:20261113T183000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261113T210000
+DTSTAMP:20261108T164847Z
 UID:the-road-of-sadness-official-premiere-cast-and-crew-q-and-a-2026-11-13
  @randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:Price not listed.\nOUTSIDE AUSTIN. Short film premiere with di
- rector Tomas Vasquez\, cast and crew Q and A at 8:30pm. Price not stated.
- \nSource: Eventbrite event page\, read 2026-09-28\nhttps://www.eventbrite.
- com/e/the-road-of-sadness-official-premiere-director-tomas-vasquez-tickets
- -1995251186008
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nOUTSIDE AUSTIN. Short 
+ film premiere with director Tomas Vasquez\, cast and crew Q and A at 8:30p
+ m. Price not stated.\nSource: Eventbrite event page\, read 2026-09-28\nhtt
+ ps://www.eventbrite.com/e/the-road-of-sadness-official-premiere-director-t
+ omas-vasquez-tickets-1995251186008
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Blue Star Brewing Co.\, 1414 S Alamo St\, San Antonio\, TX
 URL:https://www.eventbrite.com/e/the-road-of-sadness-official-premiere-dir
  ector-tomas-vasquez-tickets-1995251186008
@@ -4851,14 +4949,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261114T130000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261114T150000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-11-14@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -4966,15 +5065,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:On Cinema Live!
 DTSTART;TZID=America/Chicago:20261116T200000
-DTSTAMP:20260928T133845Z
+DTEND;TZID=America/Chicago:20261116T220000
+DTSTAMP:20261108T164847Z
 UID:on-cinema-live-2026@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:other
-DESCRIPTION:$42.00 to $78.00.\nSource: Austin Chronicle film calendar\, re
- ad 2026-09-21\; Austin Chronicle listing\, read 2026-09-28\nhttps://calend
- ar.austinchronicle.com/austin/EventSearch?eventSection=12198199&sortType=d
- ate&v=g
-LAST-MODIFIED:20260928T133845Z
+DESCRIPTION:$42.00 to $78.00.\nEnd time estimated.\nSource: Austin Chronic
+ le film calendar\, read 2026-09-21\; Austin Chronicle listing\, read 2026-
+ 09-28\nhttps://calendar.austinchronicle.com/austin/EventSearch?eventSectio
+ n=12198199&sortType=date&v=g
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Bass Concert Hall\, Austin\, TX
 URL:https://calendar.austinchronicle.com/austin/EventSearch?eventSection=1
  2198199&sortType=date&v=g
@@ -5024,16 +5124,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:DMT Quest 2 IMAX Premiere
 DTSTART;TZID=America/Chicago:20261117T173000
-DTSTAMP:20261026T140643Z
+DTEND;TZID=America/Chicago:20261117T193000
+DTSTAMP:20261108T164847Z
 UID:dmt-quest-2-imax-premiere-2026-11-17@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:screening
-DESCRIPTION:$25.\nSequel to the 2021 DMT Quest documentary on naturally oc
- curring DMT in the mammalian brain\; subjects include Dr. Jon Dean\, Dr. D
- ennis McKenna\, Wim Hof\, Dr. Nic Glynos\, Dr. Steven Barker.\nSource: Aus
- tin Chronicle film calendar\, read 2026-10-26\nhttps://calendar.austinchro
- nicle.com/event/dmt-quest-2-imax-premiere-14445219
-LAST-MODIFIED:20261026T140643Z
+DESCRIPTION:$25.\nEnd time estimated.\nSequel to the 2021 DMT Quest docume
+ ntary on naturally occurring DMT in the mammalian brain\; subjects include
+  Dr. Jon Dean\, Dr. Dennis McKenna\, Wim Hof\, Dr. Nic Glynos\, Dr. Steven
+  Barker.\nSource: Austin Chronicle film calendar\, read 2026-10-26\nhttps:
+ //calendar.austinchronicle.com/event/dmt-quest-2-imax-premiere-14445219
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Bullock Museum IMAX Theatre\, 1800 N. Congress Ave.\, Austin\, TX
 URL:https://calendar.austinchronicle.com/event/dmt-quest-2-imax-premiere-1
  4445219
@@ -5180,14 +5281,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261121T130000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261121T150000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-11-21@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5211,14 +5313,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Lloyd Night
 DTSTART;TZID=America/Chicago:20261122T203000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261122T223000
+DTSTAMP:20261108T164847Z
 UID:ucb-lloyd-night-2026-11-22@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nPage says every other Sunday\; the four dat
- es listed do not alternate cleanly\, so use the page.\nSource: ColdTowne l
- ive-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nPage says every other 
+ Sunday\; the four dates listed do not alternate cleanly\, so use the page.
+ \nSource: ColdTowne live-shows page\, read 2026-09-28\nhttps://coldtowneth
+ eater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5308,13 +5412,14 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Off Book: A Half-Scripted Performance
 DTSTART;TZID=America/Chicago:20261129T203000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261129T223000
+DTSTAMP:20261108T164847Z
 UID:off-book-a-half-scripted-performance-2026-11-29@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nSource: ColdTowne live-shows page\, read 20
- 26-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nSource: ColdTowne live
+ -shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5457,29 +5562,32 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261205T170000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261205T190000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-12-05@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Austin Film Meet Open-Mic Mixer
 DTSTART;TZID=America/Chicago:20261207T190000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261207T213000
+DTSTAMP:20261108T164847Z
 UID:austin-film-meet-open-mic-mixer-2026-12-07@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Free.\nFirst Monday of the month. Last date in the series on t
- he page.\nSource: Eventbrite date picker (Oct 5\, Nov 2\, Dec 7\, all 7pm)
- \, read 2026-09-28\nhttps://www.eventbrite.com/e/austin-film-meet-open-mic
- -mixer-film-video-entertainment-industry-tickets-1435001099919
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Free.\nEnd time estimated.\nFirst Monday of the month. Last da
+ te in the series on the page.\nSource: Eventbrite date picker (Oct 5\, Nov
+  2\, Dec 7\, all 7pm)\, read 2026-09-28\nhttps://www.eventbrite.com/e/aust
+ in-film-meet-open-mic-mixer-film-video-entertainment-industry-tickets-1435
+ 001099919
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Ani's Day and Night\, 7107 E Riverside Dr #6709\, Austin\, TX
 URL:https://www.eventbrite.com/e/austin-film-meet-open-mic-mixer-film-vide
  o-entertainment-industry-tickets-1435001099919
@@ -5506,15 +5614,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:WIFT Table Read: Holiday Scenes
 DTSTART;TZID=America/Chicago:20261208T183000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261208T210000
+DTSTAMP:20261108T164847Z
 UID:wift-table-read-holiday-scenes-2026-12-08@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:meetup
-DESCRIPTION:Free.\nTable read of holiday scenes\, Women in Film and Televi
- sion Austin.\nSource: WIFT Austin Neon event list (detail page needs login
- )\, read 2026-09-28\nhttps://wiftaustin.app.neoncrm.com/np/clients/wiftaus
- tin/eventList.jsp
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Free.\nEnd time estimated.\nTable read of holiday scenes\, Wom
+ en in Film and Television Austin.\nSource: WIFT Austin Neon event list (de
+ tail page needs login)\, read 2026-09-28\nhttps://wiftaustin.app.neoncrm.c
+ om/np/clients/wiftaustin/eventList.jsp
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ATX Theatre Rehearsal Space\, Sanctuary Artist Enclave\, 1110 Gua
  dalupe St\, Room 220\, Austin\, TX
 URL:https://wiftaustin.app.neoncrm.com/np/clients/wiftaustin/eventList.jsp
@@ -5523,16 +5632,17 @@ BEGIN:VEVENT
 SUMMARY:A Live Conversation with Chevy Chase following National Lampoon's 
  Christmas Vacation
 DTSTART;TZID=America/Chicago:20261208T193000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261208T223000
+DTSTAMP:20261108T164847Z
 UID:a-live-conversation-with-chevy-chase-following-national-lampoon-s-chri
  -2026-12-08@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:talk
-DESCRIPTION:Price not listed.\nScreening plus live conversation\; price no
- t stated.\nSource: Do512 event page\, read 2026-09-28\nhttps://do512.com/e
- vents/2026/12/8/a-live-conversation-with-chevy-chase-following-national-la
- mpoons-christmas-vacation-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nScreening plus live co
+ nversation\; price not stated.\nSource: Do512 event page\, read 2026-09-28
+ \nhttps://do512.com/events/2026/12/8/a-live-conversation-with-chevy-chase-
+ following-national-lampoons-christmas-vacation-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ACL Live at the Moody Theater\, Austin\, TX
 URL:https://do512.com/events/2026/12/8/a-live-conversation-with-chevy-chas
  e-following-national-lampoons-christmas-vacation-tickets
@@ -5540,15 +5650,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Writing Sprints: Whiteout (South Austin Writers)
 DTSTART;TZID=America/Chicago:20261209T190000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261209T213000
+DTSTAMP:20261108T164847Z
 UID:writing-sprints-whiteout-south-austin-writers-2026-12-09@randomstoryte
  lling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:meetup
-DESCRIPTION:Price not listed.\n7:00 PM CST.\nSource: Meetup group events d
- ata\, read 2026-09-28\nhttps://www.meetup.com/south-austin-writers/events/
- 316365165/
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\n7:00 PM CST.\nSource: 
+ Meetup group events data\, read 2026-09-28\nhttps://www.meetup.com/south-a
+ ustin-writers/events/316365165/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Central Market Cafe South\, 4477 S Lamar Blvd\, Austin\, TX
 URL:https://www.meetup.com/south-austin-writers/events/316365165/
 END:VEVENT
@@ -5622,14 +5733,15 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
 DTSTART;TZID=America/Chicago:20261213T170000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261213T190000
+DTSTAMP:20261108T164847Z
 UID:ucb-class-shows-student-showcases-2026-12-13@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:comedy
-DESCRIPTION:Price not listed.\nStudent showcase. More than one show some d
- ays\; first listed time shown.\nSource: ColdTowne live-shows page\, read 2
- 026-09-28\nhttps://coldtownetheater.com/live-shows/
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:Price not listed.\nEnd time estimated.\nStudent showcase. More
+  than one show some days\; first listed time shown.\nSource: ColdTowne liv
+ e-shows page\, read 2026-09-28\nhttps://coldtownetheater.com/live-shows/
+LAST-MODIFIED:20261108T164847Z
 LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/live-shows/
 END:VEVENT
@@ -5668,15 +5780,16 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:ATX Short Film Showcase
 DTSTART;TZID=America/Chicago:20261214T193000
-DTSTAMP:20260928T151415Z
+DTEND;TZID=America/Chicago:20261214T221500
+DTSTAMP:20261108T164847Z
 UID:atx-short-film-showcase-2026-12@randomstorytelling.com
-SEQUENCE:1
+SEQUENCE:2
 CATEGORIES:showcase
-DESCRIPTION:$12 online\, $15 door.\nDoors 7:30\, show 8.  runs to the awar
- ds in August.\nSource: meet_show_levelup_oct_dec_2026.md (room hunt\, each
-  page read 2026-09-21)\nhttps://www.tickettailor.com/events/atxshortfilmsh
- owcase/819561
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$12 online\, $15 door.\nEnd time estimated.\nDoors 7:30\, show
+  8.  runs to the awards in August.\nSource: meet_show_levelup_oct_dec_2026
+ .md (room hunt\, each page read 2026-09-21)\nhttps://www.tickettailor.com/
+ events/atxshortfilmshowcase/819561
+LAST-MODIFIED:20261108T164847Z
 LOCATION:29th St. Ballroom\, 2906 Fruth St\, Austin\, TX
 URL:https://www.tickettailor.com/events/atxshortfilmshowcase/819561
 END:VEVENT
@@ -5715,15 +5828,17 @@ END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Storytelling for Creatives (Dec 15 session)
 DTSTART;TZID=America/Chicago:20261215T183000
-DTSTAMP:20260928T134057Z
+DTEND;TZID=America/Chicago:20261215T213000
+DTSTAMP:20261108T164847Z
 UID:storytelling-for-creatives-dec-15-session-2026-12-15@randomstorytellin
  g.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:class
-DESCRIPTION:Free.\nDo512 lists Free\; the Sep 29 session of this series sh
- owed SoldOut on Eventbrite.\nSource: Do512 event page\, read 2026-09-28\nh
- ttps://do512.com/events/2026/12/15/storytelling-for-creatives-tickets
-LAST-MODIFIED:20260928T134057Z
+DESCRIPTION:Free.\nEnd time estimated.\nDo512 lists Free\; the Sep 29 sess
+ ion of this series showed SoldOut on Eventbrite.\nSource: Do512 event page
+ \, read 2026-09-28\nhttps://do512.com/events/2026/12/15/storytelling-for-c
+ reatives-tickets
+LAST-MODIFIED:20261108T164847Z
 LOCATION:Dougherty Arts Center\, 1110 Barton Springs Rd\, Austin\, TX
 URL:https://do512.com/events/2026/12/15/storytelling-for-creatives-tickets
 END:VEVENT
