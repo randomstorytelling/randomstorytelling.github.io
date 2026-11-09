@@ -4427,6 +4427,23 @@ TRANSP:TRANSPARENT
 URL:https://hideouttheatre.com/austin-improv-classes/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:AFS: Media Policy for the Producer Program
+DTSTART;TZID=America/Chicago:20261104T180000
+DTEND;TZID=America/Chicago:20261104T213000
+DTSTAMP:20261109T151153Z
+UID:afs-media-policy-producer-program-2026-11-04@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$12 AFS Member & General Cost.\nThe one required class to beco
+ me a Producer at Austin Public: public access TV history and the seven Uni
+ versal Representations & Warranties governing what content can be submitte
+ d for playback/streaming.\nSource: AFS class page\, read 2026-11-09\nhttps
+ ://www.austinfilm.org/event/media-policy_nov4/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/media-policy_nov4/
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:UCB at ColdTowne: Improv 101\, Improv Basics (Wednesday)
 DTSTART;TZID=America/Chicago:20261104T183000
 DTEND;TZID=America/Chicago:20261104T213000
@@ -4513,6 +4530,23 @@ DESCRIPTION:$245.\nThursdays\, six weeks\, Sims Holland.\nSource: meet_sho
 LAST-MODIFIED:20260928T164540Z
 LOCATION:The Actor’s School\, Austin\, TX
 URL:https://theactorsschool.org/index.php/fall2026/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Field Audio
+DTSTART;TZID=America/Chicago:20261105T183000
+DTEND;TZID=America/Chicago:20261105T213000
+DTSTAMP:20261109T151153Z
+UID:afs-intro-to-field-audio-2026-11-05@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$45 AFS Member | $50 Regular Price.\nResource certification cl
+ ass on field audio gear (shotgun mics\, lavaliers\, handheld mics\, small 
+ digital recorders).\nSource: AFS class page\, read 2026-11-09\nhttps://www
+ .austinfilm.org/event/intro-to-field-audio-nov5/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, Conference Room\, 1143 Northwestern Ave\, Austin
+ \, TX
+URL:https://www.austinfilm.org/event/intro-to-field-audio-nov5/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:American Black Film Festival Houston Pop Up
@@ -4668,6 +4702,23 @@ TRANSP:TRANSPARENT
 URL:https://austinfilmschool.org/classes/p/intro-to-audio-post-production
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:AFS: Intro to Sony FX Camera Line: Functions and Fundamentals
+DTSTART;TZID=America/Chicago:20261109T180000
+DTEND;TZID=America/Chicago:20261109T213000
+DTSTAMP:20261109T151153Z
+UID:afs-intro-to-sony-fx-line-2026-11-09@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$50 AFS Member | $55 Regular Price.\nCamera fundamentals and r
+ esource certification on Austin Public's Sony FX3\, FX6 and FX9 cameras.\n
+ Source: AFS class page\, read 2026-11-09\nhttps://www.austinfilm.org/event
+ /intro-to-sony-fx-line-nov9/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, Conference Room\, 1143 Northwestern Ave\, Austin
+ \, TX
+URL:https://www.austinfilm.org/event/intro-to-sony-fx-line-nov9/
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:ATX Short Film Showcase
 DTSTART;TZID=America/Chicago:20261109T193000
 DTEND;TZID=America/Chicago:20261109T221500
@@ -4738,6 +4789,29 @@ LOCATION:The Actor’s School\, Austin\, TX
 URL:https://theactorsschool.org/index.php/fall2026/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Leander Film Festival
+DTSTART;VALUE=DATE:20261111
+DTEND;VALUE=DATE:20261116
+DTSTAMP:20261109T151153Z
+UID:leander-film-festival-2026-11-11@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:festival
+DESCRIPTION:Day passes start at $65. Tickets as low as $5.\nInaugural five
+ -day independent film festival from the Leander Arts and Film Alliance: sh
+ orts and features from Texas and around the world\, a student film showcas
+ e\, a live screenplay pitch session\, industry panels\, filmmaker mixers\,
+  country dancing\, and a closing Awards Gala. The Jimmy premiere (11/12\, 
+ Alamo Lakeline) is this festival's kickoff event.\nSource: Austin Chronicl
+ e film calendar\, read 2026-11-09\nhttps://calendar.austinchronicle.com/ev
+ ent/leander-film-festival-14463489
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Various locations (Leander\, Cedar Park\, Georgetown)\, Leander\,
+  TX
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/event/leander-film-festival-14463
+ 489
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:REEL East Texas Film Festival
 DTSTART;VALUE=DATE:20261111
 DTEND;VALUE=DATE:20261115
@@ -4769,6 +4843,23 @@ LAST-MODIFIED:20260928T134057Z
 LOCATION:Harry Ransom Center\, 300 W 21st St\, Austin\, TX
 URL:https://www.eventbrite.com/e/film-screening-to-wong-foo-thanks-for-eve
  rything-julie-newmar-tickets-1993016321468
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intermediate Hands-On Lighting Workshop
+DTSTART;TZID=America/Chicago:20261111T183000
+DTEND;TZID=America/Chicago:20261111T213000
+DTSTAMP:20261109T151153Z
+UID:afs-lighting-workshop-2026-11-11@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$40 AFS Members | $45 Regular Price.\n3-hour hands-on intermed
+ iate lighting workshop: terminology\, lighting techniques\, scene breakdow
+ ns\, lab time recreating a film scene. Taught by Brian Blake\, former AFS 
+ Station Engineer.\nSource: AFS class page\, read 2026-11-09\nhttps://www.a
+ ustinfilm.org/event/lightingworkshop_nov11/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, Studio 1\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/lightingworkshop_nov11/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Writing Sprints: Thankless (South Austin Writers)
@@ -4821,6 +4912,28 @@ TRANSP:TRANSPARENT
 URL:https://austinjff.org/festival/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:New French Cinema Week
+DTSTART;VALUE=DATE:20261112
+DTEND;VALUE=DATE:20261116
+DTSTAMP:20261109T151153Z
+UID:new-french-cinema-week-2026-11-12@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:Time and price not listed.\nAFS\, with 400 Coups Cinema\, Prem
+ iers Plans Festival of Angers\, Villa Albertine and the French Embassy's C
+ ultural Services\, spotlights up-and-coming French directors. Opening nigh
+ t is Wild Foxes\, a feature debut about a champion female boxer at a Frenc
+ h boarding school\, with writer/director Valéry Carnoy in attendance\, fo
+ llowed by a slate of 2026 Cannes prize winners through Sunday.\nSource: Au
+ stin Chronicle film calendar\, read 2026-11-09\nhttps://calendar.austinchr
+ onicle.com/event/new-french-cinema-week-14487175
+LAST-MODIFIED:20261109T151153Z
+LOCATION:AFS Cinema\, 6406 N. I-35 Ste. 3100\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://calendar.austinchronicle.com/event/new-french-cinema-week-1448
+ 7175
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:Round Top Film Festival
 DTSTART;VALUE=DATE:20261112
 DTEND;VALUE=DATE:20261116
@@ -4856,6 +4969,20 @@ LAST-MODIFIED:20261108T164847Z
 LOCATION:Alamo Drafthouse Lakeline\, 14028 Hwy. 183 N.\, Austin\, TX
 URL:https://calendar.austinchronicle.com/event/private-premiere-of-jimmy-w
  ith-screenwriter-justin-strawhand-14456898
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Camera Rigs and Stabilizers
+DTSTART;TZID=America/Chicago:20261112T183000
+DTEND;TZID=America/Chicago:20261112T213000
+DTSTAMP:20261109T151153Z
+UID:afs-camera-rigs-stabilizers-2026-11-12@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Price not listed.\nVenue TBD per the listing.\nSource: AFS cla
+ sses & events listing page\, read 2026-11-09\nhttps://www.austinfilm.org/c
+ lasses-events/
+LAST-MODIFIED:20261109T151153Z
+URL:https://www.austinfilm.org/classes-events/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
@@ -5011,6 +5138,26 @@ LOCATION:ColdTowne Theater\, 1700 E 2nd St\, Austin\, TX
 URL:https://coldtownetheater.com/ucb/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:AFS: Intro to 3D Animation
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261119
+DTSTAMP:20261109T151153Z
+UID:afs-intro-to-3d-animation-2026-11-16@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$55 AFS Members | $65 regular price.\n6-hour Blender software 
+ class: interface\, hard surface modeling\, materials/shaders\, keyframe an
+ imation\, Cycles/EEVEE render engines\, export settings. Taught by Cesar G
+ uevara\, founding director of Tren Géminis\, Independent Filmmaking. Two 
+ sessions\, 6:30pm to 9:30pm each: Mon 11/16 and Wed 11/18.\nSource: AFS cl
+ ass page\, read 2026-11-09\nhttps://www.austinfilm.org/event/intro-to-3d-a
+ nimation-nov1618/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, Edit Lab\, 1143 Northwestern Ave\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://www.austinfilm.org/event/intro-to-3d-animation-nov1618/
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:Zach Theater: Improv (November session\, Monday Downtown)
 DTSTART;VALUE=DATE:20261116
 DTEND;VALUE=DATE:20261215
@@ -5045,6 +5192,23 @@ DESCRIPTION:Free.\nTalk on the creator economy. Page says free and open to
 LAST-MODIFIED:20260928T164540Z
 LOCATION:DMC 2.106 (Auditorium)\, UT Austin\, Austin\, TX
 URL:https://rtf.utexas.edu/mic
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Producing
+DTSTART;TZID=America/Chicago:20261116T180000
+DTEND;TZID=America/Chicago:20261116T200000
+DTSTAMP:20261109T151153Z
+UID:afs-intro-to-producing-2026-11-16@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$35 general / $30 AFS Member.\nFoundational overview of what i
+ t means to be a producer: project types\, producing roles\, creative/logis
+ tical/emotional aspects\, collaborator selection\, the director-producer r
+ elationship.\nSource: AFS class page\, read 2026-11-09\nhttps://www.austin
+ film.org/event/intro-to-producing-nov16/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Virtual via Zoom (link sent 24h before class)
+URL:https://www.austinfilm.org/event/intro-to-producing-nov16/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB at ColdTowne: Improv 301\, Harold Structure (Monday)
@@ -5156,6 +5320,39 @@ LAST-MODIFIED:20260928T133845Z
 LOCATION:Austin Public Studio 2\, 1143 Northwestern Ave\, Austin\, TX
 TRANSP:TRANSPARENT
 URL:https://www.austinfilm.org/event/austin-public-studio2-nov1819/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Audio Production Suite Lab
+DTSTART;TZID=America/Chicago:20261118T190000
+DTEND;TZID=America/Chicago:20261118T210000
+DTSTAMP:20261109T151153Z
+UID:afs-audio-suite-lab-2026-11-18@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$15 General Cost.\nBeginner fundamentals for Austin Public's A
+ udio Production Suite: Allen & Heath SQ5 board\, Pro Tools session setup\,
+  ADR/voiceover/audiobook/small music recording.\nSource: AFS class page\, 
+ read 2026-11-09\nhttps://www.austinfilm.org/event/audio-suite-lab-nov18/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public Audio Suite\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/audio-suite-lab-nov18/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intermediate Field Audio Production Techniques
+DTSTART;TZID=America/Chicago:20261119T183000
+DTEND;TZID=America/Chicago:20261119T213000
+DTSTAMP:20261109T151153Z
+UID:afs-audio-techniques-2026-11-19@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$50 AFS Member | $55 Regular Price.\nIn-depth audio techniques
+ : Zoom F8/audio board/podcasting kit certification\, lavalier interview au
+ dio\, boom operation\, what to own as an audio technician.\nSource: AFS cl
+ ass page\, read 2026-11-09\nhttps://www.austinfilm.org/event/audio-techniq
+ ues-nov19/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/audio-techniques-nov19/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
@@ -5357,6 +5554,22 @@ LOCATION:Radio Rosewood\, 1115 E 11th St\, Austin\, TX
 URL:https://writersleague.org/calendar/writers-happy-hour-3/
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:AFS: Blackmagic Design Multi-Camera Production
+DTSTART;TZID=America/Chicago:20261123T183000
+DTEND;TZID=America/Chicago:20261123T213000
+DTSTAMP:20261109T151153Z
+UID:afs-bmd-multicamera-2026-11-23@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$55 AFS Members | $60 General Public.\nIntermediate resource c
+ ertification on BMD multi-camera kits for field production and live events
+ .\nSource: AFS class page\, read 2026-11-09\nhttps://www.austinfilm.org/ev
+ ent/bmd-multicamera-nov23/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, Edit Lab\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/bmd-multicamera-nov23/
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:AFS: Studio 3 Training
 DTSTART;TZID=America/Chicago:20261124T180000
 DTEND;TZID=America/Chicago:20261124T213000
@@ -5391,6 +5604,22 @@ LOCATION:Milwood Branch\, Austin Public Library\, 12500 Amherst Dr\, Austi
  n\, TX
 URL:https://www.eventbrite.com/e/the-sunshine-boys-milwood-movie-night-tic
  kets-2000656306870
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Producer Program Info Session
+DTSTART;TZID=America/Chicago:20261124T183000
+DTEND;TZID=America/Chicago:20261124T193000
+DTSTAMP:20261109T151153Z
+UID:afs-producer-info-session-2026-11-24@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Free.\nFree\, public\, online info session on the AFS Producer
+  Program: how to start\, sign up for classes\, submit projects\, explore C
+ rew Connect.\nSource: AFS class page\, read 2026-11-09\nhttps://www.austin
+ film.org/event/producer-info-session-nov24/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Google Meet (meet.google.com/rxj-ccrt-dnk)
+URL:https://www.austinfilm.org/event/producer-info-session-nov24/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Precision Camera: Mastering Video\, A Beginner's Guide to Better V
@@ -5458,6 +5687,42 @@ DESCRIPTION:Time and price not listed.\nVenue TBD per the listing.\nStep 1
 LAST-MODIFIED:20260928T151415Z
 TRANSP:TRANSPARENT
 URL:https://austinfilmschool.org/whats-coming-up
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Intro to Sony FX Camera Line: Functions and Fundamentals
+DTSTART;TZID=America/Chicago:20261130T180000
+DTEND;TZID=America/Chicago:20261130T213000
+DTSTAMP:20261109T151153Z
+UID:afs-intro-to-sony-fx-line-2026-11-30@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$50 AFS Member | $55 Regular Price.\nCamera fundamentals and r
+ esource certification on Austin Public's Sony FX3\, FX6 and FX9 cameras.\n
+ Source: AFS classes & events listing page\, read 2026-11-09\; price/venue 
+ per its confirmed 11/9 twin instance read the same run\nhttps://www.austin
+ film.org/event/intro-to-sony-fx-line-nov30/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, Conference Room\, 1143 Northwestern Ave\, Austin
+ \, TX
+URL:https://www.austinfilm.org/event/intro-to-sony-fx-line-nov30/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Media Policy for the Producer Program
+DTSTART;TZID=America/Chicago:20261130T180000
+DTEND;TZID=America/Chicago:20261130T213000
+DTSTAMP:20261109T151153Z
+UID:afs-media-policy-producer-program-2026-11-30@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$12 AFS Member & General Cost.\nThe one required class to beco
+ me a Producer at Austin Public: public access TV history and the seven Uni
+ versal Representations & Warranties governing what content can be submitte
+ d for playback/streaming.\nSource: AFS classes & events listing page\, rea
+ d 2026-11-09\; price/venue per its confirmed 11/4 twin instance read the s
+ ame run\nhttps://www.austinfilm.org/event/media-policy_nov30/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/media-policy_nov30/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
@@ -5612,6 +5877,24 @@ URL:https://www.eventbrite.com/e/hot-monthlies-periforming-arts-showcase-h
  ot-for-the-holidays-tickets-1997094378045
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:AFS: Media Policy for the Producer Program
+DTSTART;TZID=America/Chicago:20261208T180000
+DTEND;TZID=America/Chicago:20261208T213000
+DTSTAMP:20261109T151153Z
+UID:afs-media-policy-producer-program-2026-12-08@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$12 AFS Member & General Cost.\nThe one required class to beco
+ me a Producer at Austin Public: public access TV history and the seven Uni
+ versal Representations & Warranties governing what content can be submitte
+ d for playback/streaming.\nSource: AFS classes & events listing page\, rea
+ d 2026-11-09\; price/venue per its confirmed 11/4 twin instance read the s
+ ame run\nhttps://www.austinfilm.org/event/media-policy_dec8/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/media-policy_dec8/
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:WIFT Table Read: Holiday Scenes
 DTSTART;TZID=America/Chicago:20261208T183000
 DTEND;TZID=America/Chicago:20261208T210000
@@ -5760,6 +6043,25 @@ LAST-MODIFIED:20260928T133845Z
 URL:https://atxfestival.com/pitch
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Film Social: Austin School of Film Open House and Film Meetup
+DTSTART;TZID=America/Chicago:20261214T180000
+DTEND;TZID=America/Chicago:20261214T210000
+DTSTAMP:20261109T151153Z
+UID:film-social-austin-school-of-film-open-house-2026-12-14@randomstorytel
+ ling.com
+SEQUENCE:0
+CATEGORIES:meetup
+DESCRIPTION:Free\, RSVP required.\nFree open house and film meetup at Aust
+ in School of Film's Black Box (Building 4\, Studio 110) at The Canopy. Dri
+ nks\, light bites\, and people who make things.\nSource: Austin Chronicle 
+ film calendar\, read 2026-11-09\nhttps://calendar.austinchronicle.com/even
+ t/film-social-austin-school-of-film-open-house-and-film-meetup-14487051
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Canopy\, 916 Springdale Rd\, Building 4 Studio 110\, Austin\, TX
+URL:https://calendar.austinchronicle.com/event/film-social-austin-school-o
+ f-film-open-house-and-film-meetup-14487051
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:Holiday Film Social and Open House\, Motion Media Arts Center
 DTSTART;TZID=America/Chicago:20261214T180000
 DTEND;TZID=America/Chicago:20261214T210000
@@ -5776,6 +6078,22 @@ LAST-MODIFIED:20260928T151415Z
 LOCATION:Cinemaker Black Box Studio\, The Canopy\, 916 Springdale Rd\, Aus
  tin\, TX
 URL:https://austinfilmschool.org/whats-coming-up
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Producer Program Info Session
+DTSTART;TZID=America/Chicago:20261214T183000
+DTEND;TZID=America/Chicago:20261214T193000
+DTSTAMP:20261109T151153Z
+UID:afs-producer-info-session-2026-12-14@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Free.\nFree\, public\, online info session on the AFS Producer
+  Program: how to start\, sign up for classes\, submit projects\, explore C
+ rew Connect.\nSource: AFS class page\, read 2026-11-09\nhttps://www.austin
+ film.org/event/producer-info-session-dec14/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Google Meet (meet.google.com/pnn-fzqe-mds)
+URL:https://www.austinfilm.org/event/producer-info-session-dec14/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:ATX Short Film Showcase
@@ -5841,6 +6159,24 @@ DESCRIPTION:Free.\nEnd time estimated.\nDo512 lists Free\; the Sep 29 sess
 LAST-MODIFIED:20261108T164847Z
 LOCATION:Dougherty Arts Center\, 1110 Barton Springs Rd\, Austin\, TX
 URL:https://do512.com/events/2026/12/15/storytelling-for-creatives-tickets
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Media Policy for the Producer Program
+DTSTART;TZID=America/Chicago:20261216T180000
+DTEND;TZID=America/Chicago:20261216T213000
+DTSTAMP:20261109T151153Z
+UID:afs-media-policy-producer-program-2026-12-16@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$12 AFS Member & General Cost.\nThe one required class to beco
+ me a Producer at Austin Public: public access TV history and the seven Uni
+ versal Representations & Warranties governing what content can be submitte
+ d for playback/streaming.\nSource: AFS classes & events listing page\, rea
+ d 2026-11-09\; price/venue per its confirmed 11/4 twin instance read the s
+ ame run\nhttps://www.austinfilm.org/event/media-policy_dec16/
+LAST-MODIFIED:20261109T151153Z
+LOCATION:Austin Public\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/media-policy_dec16/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Harold Night
