@@ -7,8 +7,11 @@
      hover — fine pointer + hover (desktop): mouse enter/leave flips it.
      touch — touch screens: the row the finger lands on (the phone's own hover moment) plays its film behind the words;
              at rest the page is plain text (Lawrence 2026-11-05: "from the surface it's looking like nothing").
-   Warm-up: a block within 400px of the screen gets its <video> early and is primed (muted play, then pause),
-     so the first frames are decoded before the mouse or finger arrives. Data saver / 2g: no warm-up.
+   Warm-up: a block within 400px of the screen gets its <video> early (preload metadata), so its opening frame is
+     decoded before the mouse or finger arrives; browsers that ignore preload get a muted play-then-pause instead. Data saver / 2g: no warm-up.
+   Bandwidth: an idle film holds only its opening buffer (preload "metadata"); the film that is on gets "auto",
+     so the one being watched owns the connection. 2026-11-10: with every warmed film on "auto", a slow-4G tap on the
+     footer film waited 4.4 s live behind the four films above it, and plain scrolling pulled 15.4 MB.
    The film is revealed (.is-ready) only once the browser has a real frame; a failed file leaves the poster.
    prefers-reduced-motion: films never load; posters stay.
    2026-11-05, Lawrence: "architectural build, not a patch".
@@ -36,7 +39,7 @@
     v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
     v.playsInline = true; v.setAttribute('playsinline', '');
     v.loop = true;
-    v.preload = lean ? 'metadata' : 'auto';
+    v.preload = 'metadata';
     v.disablePictureInPicture = true;
     v.setAttribute('aria-hidden', 'true');
     v.tabIndex = -1;
@@ -50,19 +53,24 @@
 
   function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); return p; }
 
-  /* muted play then pause: forces the browser (iOS included, which ignores preload) to buffer and decode the opening frames */
+  /* warm = load with preload "metadata" (opening frame + a small buffer, no more). A browser that ignores preload
+     (iPhone Safari) shows it by still having no frame after 1.5 s; only then prime it with a muted play, then pause.
+     Priming everywhere made Chrome keep downloading each idle film nearly in full (14 MB on one scroll, 11/10). */
   function warm(h) {
     if (lean) return;
     var v = load(h);
-    if (!v || v.dataset.primed) return;
-    v.dataset.primed = '1';
-    var p = play(v);
-    var settle = function () { if (!block(h).classList.contains('is-on')) v.pause(); };
-    if (p && p.then) p.then(settle, function () {}); else settle();
+    if (!v || v.dataset.warm) return;
+    v.dataset.warm = '1';
+    setTimeout(function () {
+      if (v.readyState >= 2 || block(h).classList.contains('is-on')) return;
+      var p = play(v);
+      var settle = function () { if (!block(h).classList.contains('is-on')) v.pause(); };
+      if (p && p.then) p.then(settle, function () {}); else settle();
+    }, 1500);
   }
 
-  function on(b) { if (b.classList.contains('is-on')) return; b.classList.add('is-on'); var v = load(film(b)); if (v) play(v); }
-  function off(b) { if (!b.classList.contains('is-on')) return; b.classList.remove('is-on'); var h = film(b), v = h && h.querySelector('video'); if (v) v.pause(); }
+  function on(b) { if (b.classList.contains('is-on')) return; b.classList.add('is-on'); var v = load(film(b)); if (v) { v.preload = 'auto'; play(v); } }
+  function off(b) { if (!b.classList.contains('is-on')) return; b.classList.remove('is-on'); var h = film(b), v = h && h.querySelector('video'); if (v) { v.pause(); v.preload = 'metadata'; } }
 
   /* Desktop: the film fills everything left of the details column, sized to a true 16:9. */
   function sizeRows() {
