@@ -1,12 +1,19 @@
 /* films.js — one controller for every film block on the page.
-   Markup contract: a container with class "hv" holds one ".hvid[data-vimeo]" (poster <img> inside).
+   Markup contract: a container with class "hv" holds one ".hvid[data-film]" (poster <img> inside).
+     data-film  = the hover film, served from this site (brand/films/*.mp4: 540p, no audio, faststart).
+     data-vimeo = the Vimeo ID the file was encoded from (provenance only; the controller never loads Vimeo).
    The controller owns ONE state per block: the class "is-on". CSS reacts only to that class.
    Mode, set on <html data-film-mode>:
      hover — fine pointer + hover (desktop): mouse enter/leave flips it.
      touch — touch screens: the row the finger lands on (the phone's own hover moment) plays its film behind the words;
              at rest the page is plain text (Lawrence 2026-11-05: "from the surface it's looking like nothing").
+   Warm-up: a block within 400px of the screen gets its <video> early and is primed (muted play, then pause),
+     so the first frames are decoded before the mouse or finger arrives. Data saver / 2g: no warm-up.
+   The film is revealed (.is-ready) only once the browser has a real frame; a failed file leaves the poster.
    prefers-reduced-motion: films never load; posters stay.
-   2026-11-05, Lawrence: "architectural build, not a patch". */
+   2026-11-05, Lawrence: "architectural build, not a patch".
+   2026-11-10: Vimeo iframes replaced by native video. Vimeo's player now runs a Cloudflare check plus its own
+     player boot before a single frame, which is the wait Lawrence still felt ("still taking a little too long"). */
 (function () {
   var root = document.documentElement;
   var blocks = [].slice.call(document.querySelectorAll('.hv'));
@@ -14,40 +21,48 @@
 
   var hoverMQ = matchMedia('(hover: hover) and (pointer: fine)');
   var calmMQ = matchMedia('(prefers-reduced-motion: reduce)');
+  var net = navigator.connection || {};
+  var lean = !!net.saveData || /(^|-)2g$/.test(net.effectiveType || '');
   var cleanup = [];
 
-  function film(b) { return b.querySelector('.hvid[data-vimeo]'); }
+  function film(b) { return b.querySelector('.hvid[data-film]'); }
+  function block(h) { return h.closest('.hv'); }
 
   function load(h) {
-    if (!h || calmMQ.matches || h.querySelector('iframe')) return;
-    var f = document.createElement('iframe');
-    f.allow = 'autoplay; fullscreen';
-    f.title = 'film';
-    f.setAttribute('tabindex', '-1');
-    f.src = 'https://player.vimeo.com/video/' + h.dataset.vimeo +
-      '?background=1&muted=1&loop=1&autoplay=1&quality=540p';
-    /* reveal only once the player reports real playback; a blocked or failed player leaves the poster showing */
-    f.addEventListener('load', function () {
-      ['play', 'playProgress'].forEach(function (ev) { send(h, 'addEventListener', ev); });
-      if (!h.closest('.is-on')) send(h, 'pause');
-    });
-    h.appendChild(f);
+    if (!h || calmMQ.matches) return null;
+    var v = h.querySelector('video');
+    if (v) return v;
+    v = document.createElement('video');
+    v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
+    v.playsInline = true; v.setAttribute('playsinline', '');
+    v.loop = true;
+    v.preload = lean ? 'metadata' : 'auto';
+    v.disablePictureInPicture = true;
+    v.setAttribute('aria-hidden', 'true');
+    v.tabIndex = -1;
+    var ready = function () { h.classList.add('is-ready'); };
+    v.addEventListener('loadeddata', ready);
+    v.addEventListener('playing', ready);
+    v.src = h.dataset.film;
+    h.appendChild(v);
+    return v;
   }
 
-  function send(h, method, value) {
-    var f = h && h.querySelector('iframe');
-    if (f && f.contentWindow) f.contentWindow.postMessage(JSON.stringify(value === undefined ? { method: method } : { method: method, value: value }), 'https://player.vimeo.com');
+  function play(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); return p; }
+
+  /* muted play then pause: forces the browser (iOS included, which ignores preload) to buffer and decode the opening frames */
+  function warm(h) {
+    if (lean) return;
+    var v = load(h);
+    if (!v || v.dataset.primed) return;
+    v.dataset.primed = '1';
+    var p = play(v);
+    var settle = function () { if (!block(h).classList.contains('is-on')) v.pause(); };
+    if (p && p.then) p.then(settle, function () {}); else settle();
   }
 
-  addEventListener('message', function (m) {
-    if (m.origin !== 'https://player.vimeo.com') return;
-    var d; try { d = typeof m.data === 'string' ? JSON.parse(m.data) : m.data; } catch (x) { return; }
-    if (!d || (d.event !== 'play' && d.event !== 'playProgress')) return;
-    [].forEach.call(document.querySelectorAll('.hvid iframe'), function (f) { if (f.contentWindow === m.source) f.parentNode.classList.add('is-ready'); });
-  });
-
-  function on(b) { if (b.classList.contains('is-on')) return; b.classList.add('is-on'); var h = film(b); load(h); send(h, 'play'); }
-  function off(b) { if (!b.classList.contains('is-on')) return; b.classList.remove('is-on'); send(film(b), 'pause'); }
+  function on(b) { if (b.classList.contains('is-on')) return; b.classList.add('is-on'); var v = load(film(b)); if (v) play(v); }
+  function off(b) { if (!b.classList.contains('is-on')) return; b.classList.remove('is-on'); var h = film(b), v = h && h.querySelector('video'); if (v) v.pause(); }
 
   /* Desktop: the film fills everything left of the details column, sized to a true 16:9. */
   function sizeRows() {
@@ -66,26 +81,28 @@
     blocks.forEach(function (b) { b.style.removeProperty('--filmh'); b.style.removeProperty('--rowpad'); var h = film(b); if (h) h.style.right = ''; });
   }
 
-  function observe(margin, cb) {
-    if (!('IntersectionObserver' in window)) return null;
-    var io = new IntersectionObserver(function (es) { es.forEach(cb); }, { rootMargin: margin });
+  /* warm each film as its block comes within 400px of the screen; without IntersectionObserver, warm them all */
+  function warmNearView() {
+    if (lean) return;
+    if (!('IntersectionObserver' in window)) { blocks.forEach(function (b) { warm(film(b)); }); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { warm(film(e.target)); io.unobserve(e.target); } });
+    }, { rootMargin: '400px 0px' });
     blocks.forEach(function (b) { io.observe(b); });
     cleanup.push(function () { io.disconnect(); });
-    return io;
   }
 
   function startHover() {
     sizeRows();
     var onResize = function () { sizeRows(); };
     addEventListener('resize', onResize);
-    cleanup.push(function () { removeEventListener('resize', onResize); });
+    cleanup.push(function () { removeEventListener('resize', onResize); clearRows(); });
     blocks.forEach(function (b) {
       var en = function () { on(b); }, lv = function () { off(b); };
       b.addEventListener('mouseenter', en); b.addEventListener('mouseleave', lv);
       cleanup.push(function () { b.removeEventListener('mouseenter', en); b.removeEventListener('mouseleave', lv); });
     });
-    /* warm the player before the mouse arrives */
-    observe('400px 0px', function (e) { if (e.isIntersecting) load(film(e.target)); });
+    warmNearView();
   }
 
   function startTouch() {
@@ -94,10 +111,17 @@
       blocks.forEach(function (x) { if (x !== b) off(x); });
       if (b) on(b);
     };
+    /* finger lifts = a real user activation: retry play for a film the browser held back
+       (iPhone Low Power Mode blocks muted play until then, and blocks the warm-up entirely) */
+    var up = function (e) {
+      var b = e.target.closest && e.target.closest('.hv.is-on');
+      var h = b && film(b), v = h && h.querySelector('video');
+      if (v && v.paused) play(v);
+    };
     document.addEventListener('touchstart', down, { passive: true });
-    cleanup.push(function () { document.removeEventListener('touchstart', down); });
-    /* warm the player before the finger arrives, so the poster and film are instant */
-    observe('400px 0px', function (e) { if (e.isIntersecting) load(film(e.target)); });
+    document.addEventListener('touchend', up, { passive: true });
+    cleanup.push(function () { document.removeEventListener('touchstart', down); document.removeEventListener('touchend', up); });
+    warmNearView();
   }
 
   function apply() {

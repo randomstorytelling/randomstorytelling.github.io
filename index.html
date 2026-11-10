@@ -2,10 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<link rel="preconnect" href="https://player.vimeo.com">
-<link rel="preconnect" href="https://i.vimeocdn.com">
-<link rel="preconnect" href="https://f.vimeocdn.com">
-<link rel="preconnect" href="https://vod-adaptive-ak.vimeocdn.com" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RANDOM STORYTELLING</title>
 <link rel="icon" href="brand/icon-globe.svg" type="image/svg+xml">
@@ -92,9 +88,9 @@
   .hvid{overflow:hidden;background:#000;pointer-events:none}
   /* every film fills its box edge to edge at 16:9: never letterboxed, the overflow is cropped */
   .hvid{container-type:size}
-  .hvid img,.hvid iframe{position:absolute;top:50%;left:50%;width:max(100cqw,177.78cqh);height:max(100cqh,56.25cqw);transform:translate(-50%,-50%);object-fit:cover;border:0}
-  .hvid iframe{opacity:0;transition:opacity .5s ease}
-  .hvid.is-ready iframe{opacity:1}
+  .hvid img,.hvid video{position:absolute;top:50%;left:50%;width:max(100cqw,177.78cqh);height:max(100cqh,56.25cqw);transform:translate(-50%,-50%);object-fit:cover;border:0}
+  .hvid video{opacity:0;transition:opacity .25s ease}
+  .hvid.is-ready video{opacity:1}
   /* hover mode: the film covers the block, the words step back, the details column stays */
   [data-film-mode=hover] .hvid{position:absolute;inset:0;opacity:0;transition:opacity .35s ease}
   [data-film-mode=hover] .hv > *:not(.hvid):not(.pr){transition:opacity .35s ease}
@@ -209,7 +205,7 @@
   </div>
 
   <div class="hero hv">
-    <div class="hvid" data-vimeo="1231034831"><img src="https://i.vimeocdn.com/video/2206097443-efbd64a435fedd7050e378301baf12c38893893a0f2578819e1824502279280f-d_1280?region=us" alt=""></div>
+    <div class="hvid" data-film="/brand/films/founder-factory-visit.mp4" data-vimeo="1231034831"><img src="/brand/films/founder-factory-visit.jpg" alt="" decoding="async"></div>
     <!-- Hero wordmark taken off the page on Lawrence's order 2026-09-29; it lives in the foot. Kept for screen readers and search. -->
     <h1 class="sr">Random Storytelling</h1>
     <!-- Name and title line taken off the top on Lawrence's order 2026-09-29; both live in the foot. -->
@@ -218,14 +214,14 @@
 
   <div id="index">
     <div class="row hv">
-      <div class="hvid" data-vimeo="1230387024"><img src="https://i.vimeocdn.com/video/2205283196-1a6cc2a140341e315b81c51511314a9b5e0e48bcdb9faa08afbdca39d1d8bf81-d_1280?region=us" alt=""></div>
+      <div class="hvid" data-film="/brand/films/power-your-day.mp4" data-vimeo="1230387024"><img src="/brand/films/power-your-day.jpg" alt="" decoding="async"></div>
       <div class="n">01</div>
       <div><div class="nm"><a href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=watermelon" target="_blank" rel="noopener">Vybrance Labs&trade;</a></div></div>
       <div class="pr"><span class="kv"><em>Product</em>Lifestyle Brand</span><span class="kv"><em>Industry</em>CPG · Wellness</span><span class="kv"><em>Role</em>Cofounder · CEO</span>
         <a class="cta" href="https://vybrancelabs.co/?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=studio_index&amp;utm_content=cta" target="_blank" rel="noopener">Explore &rarr;</a></div>
     </div>
     <div class="row hv">
-      <div class="hvid" data-vimeo="1214357528"><img src="https://i.vimeocdn.com/video/2185266942-491a6492e801fe861cf86dfcd0961a3fbb64edd1db6ee46264d2286fe354b2f6-d_1280?region=us" alt=""></div>
+      <div class="hvid" data-film="/brand/films/a-day-of-vybrance.mp4" data-vimeo="1214357528"><img src="/brand/films/a-day-of-vybrance.jpg" alt="" decoding="async"></div>
       <div class="n">02</div>
       <div><div class="nm"><a href="https://vimeo.com/showcase/12426485" target="_blank" rel="noopener">VYB<br>Labs</a></div><div class="for"></div></div>
       <div class="pr"><span class="kv"><em>Product</em>Team Events · Video</span><span class="kv"><em>Industry</em>Corporate Wellness</span><span class="kv"><em>Role</em>EP · Creative Director</span>
@@ -234,7 +230,7 @@
         <a class="cta" href="/wefunder/deck/">Crowdfunding films &rarr;</a></div>
     </div>
     <div class="row hv">
-      <div class="hvid" data-vimeo="1204322756"><img src="https://i.vimeocdn.com/video/2172622960-ff6fcd24349504ce2f6d4070128e90b5b3076b0a7df46427ffe10844f1fe68e7-d_1280?region=us" alt=""></div>
+      <div class="hvid" data-film="/brand/films/clarity-in-motion.mp4" data-vimeo="1204322756"><img src="/brand/films/clarity-in-motion.jpg" alt="" decoding="async"></div>
       <div class="n">03</div>
       <div><div class="nm"><a href="/hire/">Consulting</a></div><div class="for"></div></div>
       <div class="pr"><span class="kv"><em>Product</em>Go to market · PM · Site · Systems</span><span class="kv"><em>Industry</em>CPG · Wellness · Lifestyle</span><span class="kv"><em>Role</em>Project lead · Business development</span>
@@ -297,7 +293,7 @@
 
   <footer>
     <div class="fhv hv">
-      <div class="hvid" data-vimeo="1230389107"><img src="https://i.vimeocdn.com/video/2205285478-d5fd53f506509325eba0c4df53e9a0a2c2860829bdc5aab2a6b747b8a38bcff8-d_1280?region=us" alt=""></div>
+      <div class="hvid" data-film="/brand/films/movement-is-life.mp4" data-vimeo="1230389107"><img src="/brand/films/movement-is-life.jpg" alt="" decoding="async"></div>
       <div class="fmark"><span>Random</span><span>Storytelling</span></div>
       <div class="fgap"></div>
     </div>
