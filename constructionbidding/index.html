@@ -162,6 +162,10 @@
       <button class="btn ghost" id="csv">Save the lines for Excel</button>
     </p>
 
+    <h2>Who got what<small>Every bid you print is added here, so you can see which contractor got which quote.</small></h2>
+    <div class="scroll"><table id="sentTbl"></table></div>
+    <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="sentCsv" type="button">Save the chart for Excel</button><button class="btn ghost sm" id="sentClear" type="button">Clear the chart</button></p>
+
     <h2>How did it go?<small>This is a test version. Two minutes of your notes makes it better.</small></h2>
     <div class="row">
       <div class="f s"><label for="fb_min">Minutes this takes you by hand</label><input id="fb_min" type="number" inputmode="decimal"></div>
@@ -178,7 +182,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 7, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 8, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -628,7 +632,23 @@ function buildPrint(){
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
   $("print").innerHTML=h;
 }
-$("doprint").addEventListener("click",function(){buildPrint();window.print()});
+var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
+function logSent(to){
+  var q=quotes[cur],T=totals(q,mult());
+  sent.unshift({when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:to||"(no name typed)",markup:$("mk").value+"%",total:T.sell});
+  sent=sent.slice(0,500);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}renderSent();
+}
+function renderSent(){
+  $("sentTbl").innerHTML=sent.length?"<tr><th>When</th><th>Project</th><th>Supplier</th><th>Went to</th><th class=\"num\">Markup</th><th class=\"num\">Bid total</th></tr>"+sent.map(function(x){return'<tr><td class="ro">'+esc(x.when)+'</td><td class="ro" style="white-space:normal">'+esc(x.project)+'</td><td class="ro">'+esc(x.supplier)+'</td><td class="ro" style="white-space:normal">'+esc(x.to)+'</td><td class="num ro">'+esc(x.markup)+'</td><td class="num ro">'+money(x.total)+"</td></tr>"}).join(""):'<tr><td class="ro" style="color:var(--mute)">Nothing printed yet.</td></tr>';
+}
+renderSent();
+$("sentCsv").addEventListener("click",function(){
+  var c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'},out=["when,project,supplier,went_to,markup,bid_total"];
+  sent.forEach(function(x){out.push([c(x.when),c(x.project),c(x.supplier),c(x.to),c(x.markup),x.total].join(","))});
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="who-got-what.csv";a.click();
+});
+$("sentClear").addEventListener("click",function(){if(confirm("Clear the whole chart? This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
+$("doprint").addEventListener("click",function(){buildPrint();logSent($("p_to").value.trim());window.print()});
 function renderHolders(){
   var el=$("hold");if(!holders){el.innerHTML='<div class="sub" style="font-size:15px">Sending the same bid to several contractors? Add the plan holders list (PDF) in Step 1 and they will show up here.</div>';return}
   var gcs=holders.list.filter(function(h){return h.gc}),others=holders.list.length-gcs.length;
@@ -640,7 +660,7 @@ $("hold").addEventListener("change",function(e){var i=e.target.getAttribute("dat
 $("hold").addEventListener("click",function(e){
   if(e.target.id!=="printall"||!quotes.length)return;
   var picks=holders.list.filter(function(h){return h.gc&&h.on}),keep=$("p_to").value,html="";
-  picks.forEach(function(h,i){$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
+  picks.forEach(function(h,i){$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();logSent(h.company);html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
   $("p_to").value=keep;if(!picks.length)return;$("print").innerHTML=html;window.print();
 });
 renderHolders();
