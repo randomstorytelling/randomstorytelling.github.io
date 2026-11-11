@@ -105,8 +105,8 @@
   <p class="sub" style="font-size:19px">Drop in your supplier's quote. Get your bid back, with your markup, ready to print.</p>
 
   <h2>Step 1. Add your supplier's quote</h2>
-  <div class="drop" id="drop" tabindex="0">Tap here to choose the quote<small>or drag the PDF onto this box. You can add several at once.<br>Your file stays on this computer. It is not sent anywhere.</small></div>
-  <input type="file" id="file" accept="application/pdf" multiple class="hide">
+  <div class="drop" id="drop" tabindex="0">Tap here to choose the quote<small>A PDF, a photo or screenshot, or an Excel file. You can add several at once.<br>Your file stays on this computer. It is not sent anywhere.</small></div>
+  <input type="file" id="file" accept="application/pdf,image/*,.xlsx,.xls,.csv" multiple class="hide">
   <div id="msg" class="flag hide"></div>
 
   <div id="work" class="hide">
@@ -170,7 +170,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 3, November 11, 2026. Reads any quote PDF that has text in it by finding the lines where quantity times price equals the total. Scans and photos of quotes are not read yet. Random Storytelling.</p>
+  <p class="foot">Test version 4, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -191,7 +191,7 @@ var quotes=[],cur=0;
 
 /* ---------- reading the PDF into lines ---------- */
 async function pdfLines(buf){
-  var doc=await pdfjsLib.getDocument({data:buf}).promise,out=[];out.blank=[];
+  var doc=await pdfjsLib.getDocument({data:buf}).promise,out=[];out.blank=[];out.ocr=[];
   for(var p=1;p<=doc.numPages;p++){
     var page=await doc.getPage(p),tc=await page.getTextContent(),rows=[];
     tc.items.forEach(function(it){
@@ -201,7 +201,16 @@ async function pdfLines(buf){
       if(!row){row={y:y,items:[]};rows.push(row)}
       row.items.push({x:x,s:it.str});
     });
-    if(!rows.length)out.blank.push(p);
+    if(!rows.length){
+      var got=null;
+      if(!window.CB_NO_OCR){try{
+        var vp=page.getViewport({scale:3}),cv=document.createElement("canvas");cv.width=vp.width;cv.height=vp.height;
+        await page.render({canvasContext:cv.getContext("2d"),viewport:vp}).promise;
+        got=wordsToLines(await ocrWords(cv),p);
+      }catch(e){got=null}}
+      if(got&&got.length){got.forEach(function(l){out.push(l)});out.ocr.push(p)}else out.blank.push(p);
+      continue;
+    }
     rows.sort(function(a,b){return b.y-a.y});
     rows.forEach(function(r){
       r.items.sort(function(a,b){return a.x-b.x});
@@ -209,6 +218,56 @@ async function pdfLines(buf){
     });
   }
   return out;
+}
+
+/* ---------- pictures, scans and spreadsheets ---------- */
+function loadScript(src){return new Promise(function(ok,no){var el=document.createElement("script");el.src=src;el.onload=ok;el.onerror=function(){no(new Error("could not load "+src))};document.head.appendChild(el)})}
+async function ocrWords(src){
+  if(!window.Tesseract)await loadScript("https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/5.1.1/tesseract.min.js");
+  var res=await Tesseract.recognize(src,"eng");
+  return(res.data.words||[]).map(function(w){return{text:w.text,x0:w.bbox.x0,y0:w.bbox.y0,x1:w.bbox.x1,y1:w.bbox.y1}});
+}
+function wordsToLines(words,page){
+  words=words.filter(function(w){return w.text&&w.text.trim()});
+  if(!words.length)return[];
+  var hs=words.map(function(w){return w.y1-w.y0}).sort(function(a,b){return a-b}),h=hs[Math.floor(hs.length/2)]||10,rows=[];
+  words.forEach(function(w){
+    var yc=(w.y0+w.y1)/2,row=null;
+    for(var i=0;i<rows.length;i++){if(Math.abs(rows[i].y-yc)<h*0.55){row=rows[i];break}}
+    if(!row){row={y:yc,items:[]};rows.push(row)}
+    row.items.push(w);
+  });
+  rows.sort(function(a,b){return a.y-b.y});
+  return rows.map(function(r){
+    r.items.sort(function(a,b){return a.x0-b.x0});
+    var t=r.items.map(function(w){return w.text}).join(" ").replace(/[|\[\]{}]/g," ").replace(/\s+/g," ").trim();
+    t=t.replace(/(\d)\s*,\s*(\d{3})(?!\d)/g,"$1,$2").replace(/\$\s+(\d)/g,"$$$1").replace(/(\d),(\d{2})(?=\s|$)/g,"$1.$2");
+    return{page:page,x:r.items[0].x0,text:t};
+  }).filter(function(l){return l.text});
+}
+async function bigger(file){ /* small screenshots read far better enlarged */
+  var bmp=await createImageBitmap(file),k=Math.max(1,Math.min(3,2600/bmp.width)),cv=document.createElement("canvas");
+  cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
+  var cx=cv.getContext("2d");cx.imageSmoothingQuality="high";cx.drawImage(bmp,0,0,cv.width,cv.height);return cv;
+}
+async function imageLines(file){var src=file;try{src=await bigger(file)}catch(e){}
+  var L=wordsToLines(await ocrWords(src),1);L.blank=[];L.ocr=L.length?[1]:[];return L}
+function sheetToLines(wb){
+  var L=[];L.blank=[];L.ocr=[];
+  wb.SheetNames.forEach(function(n,si){
+    XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:""}).forEach(function(row){
+      var cells=row.map(function(c){
+        if(typeof c==="number"){var d=Math.abs(c*100-Math.round(c*100))<1e-6?2:4;return c.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d})}
+        return String(c).trim();
+      }).filter(function(c){return c!==""});
+      if(cells.length)L.push({page:si+1,x:0,text:cells.join(" ").replace(/\s+/g," ")});
+    });
+  });
+  return L;
+}
+async function sheetLines(buf){
+  if(!window.XLSX)await loadScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
+  return sheetToLines(XLSX.read(buf,{type:"array"}));
 }
 
 /* ---------- three layouts ---------- */
@@ -285,7 +344,7 @@ function parseQtyList(L){
 var UOM="LF|EA|SF|SY|GAL|GALS|TON|TONS|LB|LBS|CY|YD|YD³|YD3|FT|LS|CWT|EACH|BAG|BAGS|PC|PCS|SQFT|SQ FT|WF|HR|HRS|LOAD|LOADS|KIT|KITS|BOX|ROLL|ROLLS|SHEET|SHEETS|M|MT|GL";
 var RE_TOK=/(?:^|[\s$(])\$?\s?(\d[\d,]*(?:\.\d+)?)(?=$|[\s),;]|\s*\/\s*[A-Za-z])/g;
 var RE_B=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*([A-Za-z][A-Za-z³.]{0,5})\\s+\\$?\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*[A-Za-z]+)?$","i");
-var RE_P=new RegExp("^(.*?\\S)\\s+\\$\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*)?("+UOM+")?$","i");
+var RE_P=new RegExp("^(.*?\\S)\\s+\\$\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*)?([A-Za-z][A-Za-z0-9³²?.']{0,5})?$","i");
 var RE_D=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*("+UOM+")$","i");
 function toks(t){var out=[],m;RE_TOK.lastIndex=0;while((m=RE_TOK.exec(t))){var s=m[1];out.push({v:num(s),raw:s,at:m.index+m[0].indexOf(s),dec:(s.split(".")[1]||"").length});if(m[0].length===0)RE_TOK.lastIndex++}return out}
 function near(a,b){return Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.00002)}
@@ -351,14 +410,16 @@ function sell(r,mult){
   var u2=r2((r.price||0)*mult),c={pcs:r.pcs,len:r.len,wt:r.wt,price:u2,basis:r.basis};
   return{unit:u2,ext:calcExt(c),txt:plain(u2,2)};
 }
-async function parseBuffer(buf,name){
-  var t0=performance.now(),L=await pdfLines(buf);
+async function parseBuffer(buf,name){return fromLines(await pdfLines(buf),name,performance.now())}
+function fromLines(L,name,t0){
+  L.blank=L.blank||[];L.ocr=L.ocr||[];
   var all=[parseNucor(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
   all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
-  var q={name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.pdf$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
-  if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" with no text. Nothing was read from "+(L.blank.length>1?"them":"it")+". Add those lines by hand.");
-  if(!L.length)q.flags.push("This PDF is a scan or a photo: there is no text in it to read. This version cannot read scans. Add the lines by hand below.");
+  var q={name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.[a-z0-9]+$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
+  if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
+  if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
   else if(!q.rows.length)q.flags.push("No priced lines were found in this file. Add the lines by hand below; the checks and the proposal still work.");
   if(q.rows.some(function(r){return r.opt}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   return q;
@@ -442,13 +503,22 @@ async function take(files){
   var msg=$("msg");msg.classList.add("hide");
   if(!window.pdfjsLib){msg.textContent="The page did not finish loading. Check your internet and refresh.";msg.classList.remove("hide");return}
   for(var i=0;i<files.length;i++){
-    var f=files[i];if(!/pdf$/i.test(f.type)&&!/\.pdf$/i.test(f.name))continue;
-    try{quotes.push(await parseBuffer(await f.arrayBuffer(),f.name));cur=quotes.length-1}
+    var f=files[i],t0=performance.now(),q=null;
+    var isPdf=/pdf$/i.test(f.type)||/\.pdf$/i.test(f.name),isImg=/^image\//i.test(f.type)||/\.(jpe?g|png|webp|heic)$/i.test(f.name),isXl=/\.(xlsx|xls|csv)$/i.test(f.name);
+    if(!isPdf&&!isImg&&!isXl){msg.textContent="We can read PDFs, pictures (JPG or PNG) and Excel files. "+f.name+" is something else.";msg.classList.remove("hide");continue}
+    busy(isImg?"Reading the picture. This takes a few seconds…":"Reading "+f.name+"…");
+    try{
+      if(isPdf)q=fromLines(await pdfLines(await f.arrayBuffer()),f.name,t0);
+      else if(isImg)q=fromLines(await imageLines(f),f.name,t0);
+      else q=fromLines(await sheetLines(await f.arrayBuffer()),f.name,t0);
+      quotes.push(q);cur=quotes.length-1;
+    }
     catch(err){msg.textContent="We could not open "+f.name+". Is it a PDF? ("+err.message+")";msg.classList.remove("hide")}
   }
-  render();
+  busy("");render();
   if(quotes.length)$("work").scrollIntoView({behavior:"smooth",block:"start"});
 }
+function busy(t){var d=$("drop");if(!d.getAttribute("data-idle"))d.setAttribute("data-idle",d.innerHTML);d.innerHTML=t?esc(t):d.getAttribute("data-idle")}
 var drop=$("drop"),file=$("file");
 drop.addEventListener("click",function(){file.click()});
 drop.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
@@ -502,7 +572,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
