@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MMMULTIPLE</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/brand/icon-globe.svg" type="image/svg+xml">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Mmmultiple. We make products, we amplify products, we tell stories. Moyo Oyelola with Lawrence Whitaker III.">
+<meta property="og:title" content="MMMULTIPLE">
+<meta property="og:description" content="We make products. We amplify products. We tell stories.">
+<meta property="og:image" content="https://randomstorytelling.com/mmmultiple/img/cecred-shelf.jpg">
+<meta property="og:url" content="https://randomstorytelling.com/mmmultiple/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face{font-family:"Elza";src:url("/fonts/Elza-Light.woff2") format("woff2");font-weight:300;font-display:swap}
+  @font-face{font-family:"Elza";src:url("/fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Elza";src:url("/fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+  @font-face{font-family:"Elza";src:url("/fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+  @font-face{font-family:"Elza";src:url("/fonts/Elza-Black.woff2") format("woff2");font-weight:900;font-display:swap}
+  :root{--paper:#FFFFFF;--ink:#000000;--mute:#6E6E6E;--hair:#EAEAEA;--night:#0B0B0B}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;font-weight:400;line-height:1.45;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img,video{display:block;max-width:100%}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .w{max-width:1240px;margin:0 auto;padding:0 28px}
+  @media(max-width:600px){.w{padding:0 16px}}
+  .cap{font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;font-weight:500}
+  .mute{color:var(--mute)}
+
+  /* the door */
+  .door{position:fixed;inset:0;z-index:50;background:var(--night);color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:28px;transition:opacity .7s ease,visibility .7s}
+  .door.gone{opacity:0;visibility:hidden}
+  .door-top{display:flex;justify-content:space-between;gap:16px}
+  .door-mid{text-align:center}
+  .door-word{font-weight:900;font-size:clamp(40px,11vw,168px);letter-spacing:.02em;line-height:1}
+  .door-word span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+  .door-word span:nth-child(2){animation-delay:.15s}.door-word span:nth-child(3){animation-delay:.3s}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-.06em)}}
+  .door-verbs{margin-top:22px;font-size:clamp(15px,1.8vw,20px);font-weight:300;color:rgba(255,255,255,.75)}
+  .enter{margin:40px auto 0;display:inline-flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:14px 26px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;transition:background .25s,color .25s}
+  .enter:hover,.enter:focus-visible{background:#fff;color:#000;outline:none}
+  .key{border:1px solid currentColor;border-radius:6px;padding:2px 8px;font-size:12px;letter-spacing:.05em}
+  .door-bot{display:flex;justify-content:space-between;gap:16px;color:rgba(255,255,255,.55)}
+  @media(max-width:600px){.door{padding:20px 16px}.door-bot{flex-direction:column;gap:6px}.key{display:none}}
+
+  /* bar */
+  .bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+  .bar .w{display:flex;align-items:center;gap:22px;height:52px}
+  .mk{font-weight:900;letter-spacing:.14em;font-size:14px}
+  .bar nav{margin-left:auto;display:flex;gap:20px}
+  .bar nav a{color:var(--mute);transition:color .2s}
+  .bar nav a:hover,.bar nav a.on{color:var(--ink)}
+  @media(max-width:600px){.bar nav{gap:12px}.bar nav .long{display:none}}
+
+  /* opening */
+  .open{padding:96px 0 40px}
+  .verbs{font-weight:900;text-transform:uppercase;font-size:clamp(30px,7.4vw,108px);line-height:1.02;letter-spacing:.01em}
+  .verbs i{font-style:normal;display:block;opacity:.12;transition:opacity .5s}
+  .verbs i.lit{opacity:1}
+  .lede{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:980px}
+  .lede p{font-size:clamp(17px,1.9vw,20px);font-weight:300;color:var(--mute)}
+  .lede p b{color:var(--ink);font-weight:500}
+  @media(max-width:760px){.lede{grid-template-columns:1fr;gap:18px}.open{padding:64px 0 24px}}
+
+  /* the three doors */
+  .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:48px 0 24px}
+  .tile{position:relative;aspect-ratio:3/4;overflow:hidden;background:#111;color:#fff;border-radius:4px;text-align:left}
+  .tile img,.tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.1s ease,opacity .6s}
+  .tile video{opacity:0}
+  .tile:hover img,.tile:focus-visible img{transform:scale(1.04)}
+  .tile.play video{opacity:1}
+  .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15) 0,rgba(0,0,0,0) 35%,rgba(0,0,0,.7) 100%)}
+  .tile-t{position:absolute;left:20px;right:20px;bottom:20px;z-index:1}
+  .tile-n,.tile-name,.tile-k{display:block}
+  .tile-n{font-size:11px;letter-spacing:.2em;font-weight:500;opacity:.8}
+  .tile-name{font-weight:900;text-transform:uppercase;font-size:clamp(22px,2.6vw,34px);letter-spacing:.02em;line-height:1.05;margin-top:6px}
+  .tile-k{font-size:13px;opacity:.85;margin-top:8px;font-weight:300}
+  .tile-go{position:absolute;top:18px;right:18px;z-index:1;width:36px;height:36px;border:1px solid rgba(255,255,255,.6);border-radius:50%;display:grid;place-items:center;font-size:16px;transition:background .25s,color .25s}
+  .tile:hover .tile-go{background:#fff;color:#000}
+  @media(max-width:760px){.doors{grid-template-columns:1fr;gap:10px}.tile{aspect-ratio:4/3}}
+
+  /* worlds */
+  .world{padding:96px 0 40px;scroll-margin-top:52px}
+  .world.dark{background:var(--night);color:#fff}
+  .world.dark .mute{color:rgba(255,255,255,.6)}
+  .wh{display:grid;grid-template-columns:44px 1.1fr 1fr;gap:28px;align-items:start}
+  .wn{font-size:11px;letter-spacing:.14em;font-weight:500;padding-top:14px}
+  .wname{font-weight:900;text-transform:uppercase;font-size:clamp(34px,6vw,84px);line-height:1;letter-spacing:.01em}
+  .wrole{margin-top:16px}
+  .wcopy p{font-size:17px;font-weight:300}
+  .wcopy p+p{margin-top:14px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .tags span{border:1px solid currentColor;border-radius:999px;padding:5px 12px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+  @media(max-width:860px){.wh{grid-template-columns:1fr;gap:14px}.wn{padding-top:0}.world{padding:64px 0 28px}}
+
+  /* film stage */
+  .stage{margin-top:48px;position:relative;aspect-ratio:16/9;background:#000;border-radius:4px;overflow:hidden}
+  .stage video{width:100%;height:100%;object-fit:cover}
+  .stage-ui{position:absolute;left:0;right:0;bottom:0;padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;background:linear-gradient(0deg,rgba(0,0,0,.65),rgba(0,0,0,0));color:#fff}
+  .stage-title{font-weight:900;text-transform:uppercase;font-size:clamp(18px,2.6vw,32px);letter-spacing:.02em}
+  .full{border:1px solid rgba(255,255,255,.7);border-radius:999px;padding:10px 18px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;white-space:nowrap;transition:background .25s,color .25s}
+  .full:hover{background:#fff;color:#000}
+  .reel{display:flex;gap:10px;margin-top:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+  .reel::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;width:180px;text-align:left;opacity:.5;transition:opacity .25s}
+  .chip.on,.chip:hover{opacity:1}
+  .chip img{aspect-ratio:16/9;object-fit:cover;width:100%;border-radius:3px}
+  .chip span{display:block;margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+  .chip.on span{text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:600px){.chip{width:140px}.stage{aspect-ratio:4/5}.stage-ui{flex-direction:column;align-items:flex-start}}
+
+  /* galleries */
+  .gal{margin-top:14px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+  .gal button{position:relative;overflow:hidden;border-radius:3px;background:#111}
+  .gal img{width:100%;height:100%;object-fit:cover;transition:transform .9s ease}
+  .gal button:hover img{transform:scale(1.03)}
+  .c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}.c3{grid-column:span 3}
+  .fit{aspect-ratio:auto!important}.fit img{position:absolute;inset:0}
+  .r1{aspect-ratio:3/4}.r2{aspect-ratio:4/3}.r3{aspect-ratio:1/1}.r4{aspect-ratio:16/5}.r5{aspect-ratio:16/9}
+  @media(max-width:760px){.gal{gap:8px}.c4,.c3{grid-column:span 6}.c8,.c6{grid-column:span 12}}
+  .chapter{margin-top:56px;display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-top:1px solid var(--hair);padding-top:16px}
+  .dark .chapter{border-color:rgba(255,255,255,.15)}
+
+  /* close */
+  .close{padding:110px 0 80px;text-align:center}
+  .close h2{font-weight:900;text-transform:uppercase;font-size:clamp(28px,5.4vw,72px);line-height:1.05}
+  .close p{margin:22px auto 0;max-width:560px;font-size:18px;font-weight:300;color:var(--mute)}
+  .ctas{margin-top:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{border:1px solid var(--ink);border-radius:999px;padding:14px 24px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;transition:background .25s,color .25s}
+  .btn.solid,.btn:hover{background:var(--ink);color:#fff}
+  .btn.solid:hover{background:#fff;color:var(--ink)}
+  .foot{border-top:1px solid var(--hair);padding:22px 0 40px}
+  .foot .w{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .foot a{border-bottom:1px solid currentColor;padding-bottom:2px}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;padding:56px 16px}
+  .lb.on{display:flex}
+  .lb img{max-height:100%;max-width:100%;object-fit:contain}
+  .lb iframe{width:min(1200px,100%);aspect-ratio:16/9;border:0}
+  .lb-x{position:absolute;top:14px;right:16px;color:#fff;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;padding:8px}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;font-size:28px;padding:14px;opacity:.7}
+  .lb-nav:hover{opacity:1}.lb-p{left:6px}.lb-n{right:6px}
+
+  .rise{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+  .rise.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rise{opacity:1;transform:none}.door-word span{animation:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="door" id="door" role="dialog" aria-label="Enter Mmmultiple">
+  <div class="door-top cap"><span>Mmmultiple</span><span>Austin, Texas</span></div>
+  <div class="door-mid">
+    <div class="door-word" aria-hidden="true"><span>M</span><span>M</span><span>M</span>ULTIPLE</div>
+    <p class="door-verbs">We make products. We amplify products. We tell stories.</p>
+    <button class="enter" id="enter" autofocus>Enter <span class="key">↵ return</span></button>
+  </div>
+  <div class="door-bot cap"><span>Three worlds inside</span><span>Vybrance Labs · Cécred · Soho House</span></div>
+</div>
+
+<header class="bar">
+  <div class="w">
+    <a class="mk" href="#top">MMMULTIPLE</a>
+    <nav class="cap">
+      <a href="#vybrance">Vybrance<span class="long"> Labs</span></a>
+      <a href="#cecred">Cécred</a>
+      <a href="#soho">Soho<span class="long"> House</span></a>
+      <a href="#talk" class="long">Talk</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="open w">
+    <h1 class="verbs" id="verbs"><i>We make products.</i><i>We amplify products.</i><i>We tell stories.</i></h1>
+    <div class="lede">
+      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it: the identity, the product photos, the films, the launch.</p>
+      <p><b>Moyo Oyelola</b> leads the creative. <b>Lawrence Whitaker III</b> leads the launch. Three worlds below, each one built from the inside.</p>
+    </div>
+  </section>
+
+  <section class="w">
+    <div class="doors">
+      <a class="tile rise" href="#vybrance" data-film="/brand/films/power-your-day.mp4">
+        <img src="/brand/films/power-your-day.jpg" alt="Vybrance Labs film still" loading="lazy">
+        <span class="tile-go" aria-hidden="true">↓</span>
+        <span class="tile-t"><span class="tile-n">01</span><span class="tile-name">Vybrance Labs</span><span class="tile-k">Creatine gummies. Five films, one world.</span></span>
+      </a>
+      <a class="tile rise" href="#cecred">
+        <img src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy">
+        <span class="tile-go" aria-hidden="true">↓</span>
+        <span class="tile-t"><span class="tile-n">02</span><span class="tile-name">Cécred</span><span class="tile-k">Pre launch to 1,400+ Ulta stores.</span></span>
+      </a>
+      <a class="tile rise" href="#soho">
+        <img src="/mmmultiple/img/soho-02.jpg" alt="Portrait from Soho House SXSW 2022" loading="lazy">
+        <span class="tile-go" aria-hidden="true">↓</span>
+        <span class="tile-t"><span class="tile-n">03</span><span class="tile-name">Soho House</span><span class="tile-k">SXSW 2022. Photography.</span></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 01 VYBRANCE -->
+  <section class="world dark" id="vybrance">
+    <div class="w">
+      <div class="wh rise">
+        <div class="wn">01</div>
+        <div>
+          <h2 class="wname">Vybrance Labs</h2>
+          <p class="wrole cap mute">Lawrence's brand · Moyo built its upgraded world, v2</p>
+        </div>
+        <div class="wcopy">
+          <p>A creatine gummy brand, built from first sale to Amazon and Target.com. For v2, the brand got a new world: new films, new photos, a new way to talk about performance, science and everyday life.</p>
+          <div class="tags"><span>Brand strategy</span><span>Creative direction</span><span>Product campaigns</span><span>Photo + film</span><span>Packaging</span><span>E-commerce</span><span>Email</span><span>Launches</span></div>
+        </div>
+      </div>
+
+      <div class="stage rise" id="stage">
+        <video id="stageVid" muted loop playsinline preload="metadata" poster="/brand/films/power-your-day.jpg" src="/brand/films/power-your-day.mp4"></video>
+        <div class="stage-ui">
+          <div><div class="cap" style="opacity:.75">Now playing</div><div class="stage-title" id="stageTitle">Power Your Day</div></div>
+          <button class="full" id="fullFilm" data-vimeo="1230387024">Watch with sound ↗</button>
+        </div>
+      </div>
+      <div class="reel" id="reel">
+        <button class="chip on" data-film="power-your-day" data-vimeo="1230387024"><img src="/brand/films/power-your-day.jpg" alt="" loading="lazy"><span>Power Your Day</span></button>
+        <button class="chip" data-film="clarity-in-motion" data-vimeo="1204322756"><img src="/brand/films/clarity-in-motion.jpg" alt="" loading="lazy"><span>Clarity in Motion</span></button>
+        <button class="chip" data-film="movement-is-life" data-vimeo="1230389107"><img src="/brand/films/movement-is-life.jpg" alt="" loading="lazy"><span>Movement is Life</span></button>
+        <button class="chip" data-film="a-day-of-vybrance" data-vimeo="1214357528"><img src="/brand/films/a-day-of-vybrance.jpg" alt="" loading="lazy"><span>A Day of Vybrance</span></button>
+        <button class="chip" data-film="founder-factory-visit" data-vimeo="1231034831"><img src="/brand/films/founder-factory-visit.jpg" alt="" loading="lazy"><span>Founder Factory Visit</span></button>
+      </div>
+
+      <div class="chapter cap mute"><span>The cast</span><span>Campaign photography</span></div>
+      <div class="gal" data-gal="vyb">
+        <button class="c12 r5 rise"><img src="/mmmultiple/img/vybrance-cast.jpg" alt="Vybrance Labs campaign cast on set" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 CECRED -->
+  <section class="world" id="cecred">
+    <div class="w">
+      <div class="wh rise">
+        <div class="wn">02</div>
+        <div>
+          <h2 class="wname">Cécred</h2>
+          <p class="wrole cap mute">Moyo · Creative Director · two years</p>
+        </div>
+        <div class="wcopy">
+          <p>From pre launch through a national retail launch in 1,400+ Ulta Beauty stores. Every touchpoint: campaigns, packaging, retail, events, the site, email and social.</p>
+          <p class="mute">The work became a system the brand could keep using as it grew into new products, channels and stores.</p>
+          <div class="tags"><span>Brand launch</span><span>National retail</span><span>Campaigns</span><span>Packaging</span><span>Experiential</span><span>Photo + film</span><span>Out of home</span><span>Social + CRM</span></div>
+        </div>
+      </div>
+
+      <div class="chapter cap mute"><span>The campaign</span><span>People first</span></div>
+      <div class="gal" data-gal="cec">
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-campaign.jpg" alt="Cécred campaign group portrait" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-motion.jpg" alt="Cécred campaign, hair in motion" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-denim.jpg" alt="Cécred campaign portrait" loading="lazy"></button>
+        <button class="c12 r4 rise"><img src="/mmmultiple/img/cecred-backstory.jpg" alt="Cécred Backstory series" loading="lazy"></button>
+      </div>
+
+      <div class="chapter cap mute"><span>The product</span><span>Still life</span></div>
+      <div class="gal" data-gal="cec">
+        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-oil.jpg" alt="Cécred oil bottle" loading="lazy"></button>
+        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-comb.jpg" alt="Cécred comb" loading="lazy"></button>
+        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-ritual.jpg" alt="Cécred dropper on braids" loading="lazy"></button>
+        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-drop.jpg" alt="Cécred dropper" loading="lazy"></button>
+      </div>
+
+      <div class="chapter cap mute"><span>The launch</span><span>Retail + events</span></div>
+      <div class="gal" data-gal="cec">
+        <button class="c8 r2 rise"><img src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/cecred-launch.jpg" alt="Cécred launch event host desk" loading="lazy"></button>
+        <button class="c6 r2 rise"><img src="/mmmultiple/img/cecred-tent.jpg" alt="Cécred launch booth" loading="lazy"></button>
+        <button class="c6 r2 rise"><img src="/mmmultiple/img/cecred-trailer.jpg" alt="Cécred mirrored trailer" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SOHO -->
+  <section class="world dark" id="soho">
+    <div class="w">
+      <div class="wh rise">
+        <div class="wn">03</div>
+        <div>
+          <h2 class="wname">Soho House</h2>
+          <p class="wrole cap mute">Moyo · SXSW 2022 · Photography</p>
+        </div>
+        <div class="wcopy">
+          <p>Portraits at Soho House during SXSW 2022. Real rooms, real light, the people who came through.</p>
+          <p class="mute">Next for hospitality: short films of lived in moments, city by city.</p>
+          <div class="tags"><span>Hospitality</span><span>Photography</span><span>Portraits</span><span>Events</span></div>
+        </div>
+      </div>
+
+      <div class="chapter cap mute"><span>The house</span><span>Austin, March 2022</span></div>
+      <div class="gal" data-gal="soho">
+        <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-01.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/soho-03.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/soho-02.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-07.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-04.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-05.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-06.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="close w" id="talk">
+    <h2 class="rise">Your first chapter<br>starts here.</h2>
+    <p class="rise">A few projects a year, each one built all the way through. Tell us what you are launching.</p>
+    <div class="ctas rise">
+      <a class="btn solid" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Mmmultiple">Book a 15 minute call</a>
+      <a class="btn" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Mmmultiple%20case%20studies">Request the case studies</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot cap mute">
+  <div class="w">
+    <span>Mmmultiple · Austin, Texas</span>
+    <span><a href="https://melements.me">Moyo Oyelola</a> &nbsp;·&nbsp; <a href="/">Lawrence Whitaker III</a></span>
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Viewer">
+  <button class="lb-x" id="lbX">Close ✕</button>
+  <button class="lb-nav lb-p" id="lbP" aria-label="Previous">‹</button>
+  <div id="lbBody"></div>
+  <button class="lb-nav lb-n" id="lbN" aria-label="Next">›</button>
+</div>
+
+<script>
+(function(){
+  var door=document.getElementById('door'),enter=document.getElementById('enter');
+  var seen=false; try{seen=sessionStorage.getItem('mmm-in')==='1'}catch(e){}
+  function open(){door.classList.add('gone');document.body.style.overflow='';try{sessionStorage.setItem('mmm-in','1')}catch(e){}lightVerbs()}
+  if(seen){door.classList.add('gone')}else{document.body.style.overflow='hidden'}
+  enter.addEventListener('click',open);
+  document.addEventListener('keydown',function(e){if(e.key==='Enter'&&!door.classList.contains('gone')){e.preventDefault();open()}});
+
+  function lightVerbs(){var v=document.querySelectorAll('#verbs i');v.forEach(function(el,i){setTimeout(function(){el.classList.add('lit')},250+i*450)})}
+  if(seen) lightVerbs();
+
+  var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'}):null;
+  document.querySelectorAll('.rise').forEach(function(el){io?io.observe(el):el.classList.add('in')});
+
+  // nav state
+  var links=[].slice.call(document.querySelectorAll('.bar nav a'));
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('.world,.close').forEach(function(s){so.observe(s)});
+  }
+
+  // Vybrance tile plays its film on hover (desktop only)
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  document.querySelectorAll('.tile[data-film]').forEach(function(t){
+    if(!fine) return; var v;
+    t.addEventListener('mouseenter',function(){if(!v){v=document.createElement('video');v.muted=true;v.loop=true;v.playsInline=true;v.preload='auto';v.src=t.dataset.film;t.insertBefore(v,t.firstChild.nextSibling)}var p=v.play();if(p&&p.catch)p.catch(function(){});t.classList.add('play')});
+    t.addEventListener('mouseleave',function(){t.classList.remove('play');if(v)v.pause()});
+  });
+
+  // stage: plays muted when on screen; chips switch films
+  var sv=document.getElementById('stageVid'),st=document.getElementById('stageTitle'),full=document.getElementById('fullFilm');
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var p=sv.play();if(p&&p.catch)p.catch(function(){})}else sv.pause()})},{threshold:.35}).observe(sv);
+  }
+  document.querySelectorAll('#reel .chip').forEach(function(c){
+    c.addEventListener('click',function(){
+      document.querySelectorAll('#reel .chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');
+      var f=c.dataset.film;sv.poster='/brand/films/'+f+'.jpg';sv.src='/brand/films/'+f+'.mp4';sv.preload='auto';
+      var p=sv.play();if(p&&p.catch)p.catch(function(){});
+      st.textContent=c.querySelector('span').textContent;full.dataset.vimeo=c.dataset.vimeo;
+    });
+  });
+
+  // lightbox: images per gallery group, films with sound via Vimeo on request
+  var lb=document.getElementById('lb'),body=document.getElementById('lbBody'),set=[],idx=0;
+  function show(){body.innerHTML='';var im=new Image();im.src=set[idx].src;im.alt=set[idx].alt;body.appendChild(im)}
+  function openLb(){lb.classList.add('on');document.body.style.overflow='hidden'}
+  function closeLb(){lb.classList.remove('on');body.innerHTML='';document.body.style.overflow=''}
+  document.querySelectorAll('.gal button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var g=b.parentNode.dataset.gal;set=[].slice.call(document.querySelectorAll('.gal[data-gal="'+g+'"] img'));
+      idx=set.indexOf(b.querySelector('img'));document.getElementById('lbP').style.display=document.getElementById('lbN').style.display=set.length>1?'':'none';show();openLb();
+    });
+  });
+  full.addEventListener('click',function(){
+    sv.pause();body.innerHTML='<iframe src="https://player.vimeo.com/video/'+full.dataset.vimeo+'?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Film"></iframe>';
+    document.getElementById('lbP').style.display=document.getElementById('lbN').style.display='none';openLb();
+  });
+  document.getElementById('lbX').addEventListener('click',closeLb);
+  document.getElementById('lbP').addEventListener('click',function(){idx=(idx-1+set.length)%set.length;show()});
+  document.getElementById('lbN').addEventListener('click',function(){idx=(idx+1)%set.length;show()});
+  lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('on'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowRight'&&set.length>1&&!body.querySelector('iframe')){idx=(idx+1)%set.length;show()}if(e.key==='ArrowLeft'&&set.length>1&&!body.querySelector('iframe')){idx=(idx-1+set.length)%set.length;show()}});
+})();
+</script>
+</body>
+</html>
