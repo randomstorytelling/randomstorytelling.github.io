@@ -335,6 +335,14 @@
     .gal button.c12{padding:0 8%}
   }
   @media(max-width:760px){.gal{column-gap:16px;row-gap:40px}.gal button.c3,.gal button.c4{grid-column:span 12}.gal button.c6:nth-of-type(2n){margin-top:0}}
+
+  .exits{margin-top:56px;display:flex;gap:12px;flex-wrap:wrap}
+  .exits .back{margin-top:0}
+  .exits .who{background:currentColor}
+  .exits .who{color:inherit}
+  .world.dark .exits .who{background:var(--cream);color:#000;border-color:var(--cream)}
+  .world:not(.dark) .exits .who{background:#000;color:var(--cream);border-color:#000}
+  .proof-lbl{padding-top:48px}
 </style>
 </head>
 <body>
@@ -366,32 +374,25 @@
 </header>
 
 <main id="top">
-  <section class="open w">
-    <h1 class="verbs" id="verbs"><i>We make products.</i><i>We amplify products.</i><i>We tell stories.</i></h1>
-    <div class="lede">
-      <p><b>Two founders, one studio.</b> <b>Lawrence Whitaker III</b> builds the brand and the launch. <b>Moyo Oyelola</b> builds the world around it. Different voices, one record.</p>
-      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it. Three worlds float just below. Click one.</p>
-    </div>
-  </section>
 
-  <section class="w proof-lbl">
-    <div class="sol-h rise"><div class="sol-n">01</div><div><h2 class="sol-t">The worlds</h2><p class="sol-sub">The worlds they played in. Each one floats until you click it. Then it opens and gets specific.</p></div></div>
+  <section class="w proof-lbl" id="worlds-top">
+    <div class="sol-h rise"><div class="sol-n">01</div><div><h2 class="sol-t">The worlds</h2><p class="sol-sub">Three worlds, floating. Click one to see how it was built and what it is made of.</p></div></div>
   </section>
 
   <section class="w worlds-stage">
     <div class="doors" id="worlds">
       <a class="tile rise" data-world="vybrance" href="#vybrance" data-film="/brand/films/power-your-day.mp4">
-        <img src="/brand/films/power-your-day.jpg" alt="Vybrance Labs film still" loading="lazy">
+        <img width="1280" height="722" src="/brand/films/power-your-day.jpg" alt="Vybrance Labs film still" loading="lazy">
         <span class="tile-go" aria-hidden="true">+</span><span class="tile-hint">Go in</span>
         <span class="tile-t"><span class="tile-n">01</span><span class="tile-name">Vybrance Labs</span><span class="tile-k">Creatine gummies. Five films, one world.</span></span>
       </a>
       <a class="tile rise" data-world="cecred" href="#cecred">
-        <img src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy">
+        <img width="1600" height="1067" src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy">
         <span class="tile-go" aria-hidden="true">+</span><span class="tile-hint">Go in</span>
         <span class="tile-t"><span class="tile-n">02</span><span class="tile-name">Cécred</span><span class="tile-k">Pre launch to 1,400+ Ulta stores.</span></span>
       </a>
       <a class="tile rise" data-world="soho" href="#soho">
-        <img src="/mmmultiple/img/soho-02.jpg" alt="Portrait from Soho House SXSW 2022" loading="lazy">
+        <img width="1067" height="1600" src="/mmmultiple/img/soho-02.jpg" alt="Portrait from Soho House SXSW 2022" loading="lazy">
         <span class="tile-go" aria-hidden="true">+</span><span class="tile-hint">Go in</span>
         <span class="tile-t"><span class="tile-n">03</span><span class="tile-name">Soho House</span><span class="tile-k">SXSW 2022. Photography.</span></span>
       </a>
@@ -422,40 +423,40 @@
 
       <div class="chapter cap mute"><span>Where it was</span><span>December 2024 · studio stock</span></div>
       <div class="gal" data-gal="vyb">
-        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-group.jpg" alt="December 2024 studio shoot, three women on mats with the bag" loading="lazy"></button>
-        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-mats.jpg" alt="December 2024 studio shoot, women lying on mats" loading="lazy"></button>
-        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-seated.jpg" alt="December 2024 studio shoot, seated pose with the bag" loading="lazy"></button>
-        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-flatlay.jpg" alt="December 2024 studio shoot, the bag and a bottle on a mat" loading="lazy"></button>
+        <button class="c6 r2 rise"><img width="1400" height="933" src="/mmmultiple/img/vyb-v0-group.jpg" alt="December 2024 studio shoot, three women on mats with the bag" loading="lazy"></button>
+        <button class="c6 r2 rise"><img width="1400" height="933" src="/mmmultiple/img/vyb-v0-mats.jpg" alt="December 2024 studio shoot, women lying on mats" loading="lazy"></button>
+        <button class="c6 r2 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-v0-seated.jpg" alt="December 2024 studio shoot, seated pose with the bag" loading="lazy"></button>
+        <button class="c6 r2 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-v0-flatlay.jpg" alt="December 2024 studio shoot, the bag and a bottle on a mat" loading="lazy"></button>
       </div>
 
       <div class="chapter cap mute"><span>The turn</span><span>January 2025 · the product on its own stage</span></div>
       <div class="gal" data-gal="vyb">
-        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-apple.jpg" alt="Vybrance Green Apple bag on white, January 2025" loading="lazy"></button>
-        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-mango.jpg" alt="Vybrance Citrus Mango bag on white, January 2025" loading="lazy"></button>
-        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-melon.jpg" alt="Vybrance Watermelon bag on white, January 2025" loading="lazy"></button>
-        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-trio.jpg" alt="All three Vybrance flavors on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img width="1050" height="1400" src="/mmmultiple/img/vyb-v1-apple.jpg" alt="Vybrance Green Apple bag on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img width="1050" height="1400" src="/mmmultiple/img/vyb-v1-mango.jpg" alt="Vybrance Citrus Mango bag on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img width="1050" height="1400" src="/mmmultiple/img/vyb-v1-melon.jpg" alt="Vybrance Watermelon bag on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img width="1400" height="1182" src="/mmmultiple/img/vyb-v1-trio.jpg" alt="All three Vybrance flavors on white, January 2025" loading="lazy"></button>
       </div>
       <div class="chapter cap mute"><span>Then into the game</span><span>September 2025 · the gummy inside the game</span></div>
       <div class="gal" data-gal="vyb">
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-tower.jpg" alt="Gummy holding up a block tower" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-slinky.jpg" alt="Gummies riding a spring toy" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-pliers.jpg" alt="Gummy held in pliers" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-tee.jpg" alt="Gummies on a tray with a golf ball and tee" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-pull.jpg" alt="A hand pulling a block from the tower" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-green.jpg" alt="Watermelon gummies on green felt" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-tower.jpg" alt="Gummy holding up a block tower" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="1050" height="1400" src="/mmmultiple/img/vyb-slinky.jpg" alt="Gummies riding a spring toy" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="1050" height="1400" src="/mmmultiple/img/vyb-pliers.jpg" alt="Gummy held in pliers" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="1050" height="1400" src="/mmmultiple/img/vyb-tee.jpg" alt="Gummies on a tray with a golf ball and tee" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-pull.jpg" alt="A hand pulling a block from the tower" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-green.jpg" alt="Watermelon gummies on green felt" loading="lazy"></button>
       </div>
 
       <div class="chapter cap mute"><span>The people</span><span>Who it is for</span></div>
       <div class="gal" data-gal="vyb">
-        <button class="c12 r5 rise"><img src="/mmmultiple/img/vybrance-cast.jpg" alt="Vybrance campaign cast on set" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-sit.jpg" alt="Cast member seated on the moss island set" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-stand.jpg" alt="Cast member standing on the moss island set" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-pose.jpg" alt="Cast member on the moss island set" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-lunge.jpg" alt="Lunge on a mat, black and white" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-kneel.jpg" alt="Kneeling stretch on a mat, black and white" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-stretch.jpg" alt="Back stretch on a mat, black and white" loading="lazy"></button>
-        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/vyb-jump.jpg" alt="A jump against a blue sky" loading="lazy"></button>
-        <button class="c8 r2 rise"><img src="/mmmultiple/img/vyb-court.jpg" alt="A Vybrance bag in a basket of tennis balls" loading="lazy"></button>
+        <button class="c12 r5 rise"><img width="1600" height="1067" src="/mmmultiple/img/vybrance-cast.jpg" alt="Vybrance campaign cast on set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-sit.jpg" alt="Cast member seated on the moss island set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-stand.jpg" alt="Cast member standing on the moss island set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-pose.jpg" alt="Cast member on the moss island set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-lunge.jpg" alt="Lunge on a mat, black and white" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-kneel.jpg" alt="Kneeling stretch on a mat, black and white" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-stretch.jpg" alt="Back stretch on a mat, black and white" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img width="933" height="1400" src="/mmmultiple/img/vyb-jump.jpg" alt="A jump against a blue sky" loading="lazy"></button>
+        <button class="c8 r2 rise"><img width="1400" height="933" src="/mmmultiple/img/vyb-court.jpg" alt="A Vybrance bag in a basket of tennis balls" loading="lazy"></button>
       </div>
 
       <div class="chapter cap mute"><span>Where it went</span><span>Five films</span></div>
@@ -467,11 +468,11 @@
         </div>
       </div>
       <div class="reel" id="reel">
-        <button class="chip on" data-film="power-your-day" data-vimeo="1230387024"><img src="/brand/films/power-your-day.jpg" alt="" loading="lazy"><span>Power Your Day</span></button>
-        <button class="chip" data-film="clarity-in-motion" data-vimeo="1204322756"><img src="/brand/films/clarity-in-motion.jpg" alt="" loading="lazy"><span>Clarity in Motion</span></button>
-        <button class="chip" data-film="movement-is-life" data-vimeo="1230389107"><img src="/brand/films/movement-is-life.jpg" alt="" loading="lazy"><span>Movement is Life</span></button>
-        <button class="chip" data-film="a-day-of-vybrance" data-vimeo="1214357528"><img src="/brand/films/a-day-of-vybrance.jpg" alt="" loading="lazy"><span>A Day of Vybrance</span></button>
-        <button class="chip" data-film="founder-factory-visit" data-vimeo="1231034831"><img src="/brand/films/founder-factory-visit.jpg" alt="" loading="lazy"><span>Founder Factory Visit</span></button>
+        <button class="chip on" data-film="power-your-day" data-vimeo="1230387024"><img width="1280" height="722" src="/brand/films/power-your-day.jpg" alt="" loading="lazy"><span>Power Your Day</span></button>
+        <button class="chip" data-film="clarity-in-motion" data-vimeo="1204322756"><img width="1280" height="720" src="/brand/films/clarity-in-motion.jpg" alt="" loading="lazy"><span>Clarity in Motion</span></button>
+        <button class="chip" data-film="movement-is-life" data-vimeo="1230389107"><img width="1280" height="720" src="/brand/films/movement-is-life.jpg" alt="" loading="lazy"><span>Movement is Life</span></button>
+        <button class="chip" data-film="a-day-of-vybrance" data-vimeo="1214357528"><img width="1280" height="720" src="/brand/films/a-day-of-vybrance.jpg" alt="" loading="lazy"><span>A Day of Vybrance</span></button>
+        <button class="chip" data-film="founder-factory-visit" data-vimeo="1231034831"><img width="1280" height="720" src="/brand/films/founder-factory-visit.jpg" alt="" loading="lazy"><span>Founder Factory Visit</span></button>
       </div>
 
       <div class="chapter cap mute"><span>Then it went off screen</span><span>New IP from real life</span></div>
@@ -483,25 +484,25 @@
         <div class="sc rise"><span class="mi" style="--m:url(/mmmultiple/brand/hat.png)" aria-hidden="true"></span><b>City Walk</b><span>Feb 2026</span><em>Through the city, on foot</em></div>
       </div>
       <div class="gal" data-gal="adov">
-        <button class="c12 r5"><img src="/mmmultiple/img/irl-adov-8.jpg" alt="A Day of Vybrance, the whole garden on mats" loading="lazy"></button>
-        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-1.jpg" alt="A Day of Vybrance, the group on mats outdoors" loading="lazy"></button>
-        <button class="c8 r2"><img src="/mmmultiple/img/irl-adov-2.jpg" alt="A Day of Vybrance, class under the arched roof" loading="lazy"></button>
-        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-6.jpg" alt="A Day of Vybrance, stretching on the deck" loading="lazy"></button>
-        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-7.jpg" alt="A Day of Vybrance, mats under string lights" loading="lazy"></button>
-        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-3.jpg" alt="A Day of Vybrance, the room from the back" loading="lazy"></button>
-        <button class="c8 r2"><img src="/mmmultiple/img/irl-adov-9.jpg" alt="A Day of Vybrance, the garden from the side" loading="lazy"></button>
-        <button class="c4 r1 fit"><img src="/mmmultiple/img/irl-adov-13.jpg" alt="A Day of Vybrance, the cold plunge" loading="lazy"></button>
-        <button class="c6 r2"><img src="/mmmultiple/img/irl-adov-10.jpg" alt="A Day of Vybrance, class under the arch" loading="lazy"></button>
-        <button class="c6 r2"><img src="/mmmultiple/img/irl-adov-12.jpg" alt="A Day of Vybrance, arms up under the arch" loading="lazy"></button>
-        <button class="c6 r2"><img src="/mmmultiple/img/irl-adov-11.jpg" alt="A Day of Vybrance, filming the cold plunge" loading="lazy"></button>
-        <button class="c3 r1"><img src="/mmmultiple/img/irl-adov-4.jpg" alt="A Day of Vybrance, the plunge with a rubber duck" loading="lazy"></button>
-        <button class="c3 r1"><img src="/mmmultiple/img/irl-adov-5.jpg" alt="A Day of Vybrance, black and white" loading="lazy"></button>
+        <button class="c12 r5"><img width="1400" height="933" src="/mmmultiple/img/irl-adov-8.jpg" alt="A Day of Vybrance, the whole garden on mats" loading="lazy"></button>
+        <button class="c4 r1"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-1.jpg" alt="A Day of Vybrance, the group on mats outdoors" loading="lazy"></button>
+        <button class="c8 r2"><img width="1400" height="933" src="/mmmultiple/img/irl-adov-2.jpg" alt="A Day of Vybrance, class under the arched roof" loading="lazy"></button>
+        <button class="c4 r1"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-6.jpg" alt="A Day of Vybrance, stretching on the deck" loading="lazy"></button>
+        <button class="c4 r1"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-7.jpg" alt="A Day of Vybrance, mats under string lights" loading="lazy"></button>
+        <button class="c4 r1"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-3.jpg" alt="A Day of Vybrance, the room from the back" loading="lazy"></button>
+        <button class="c8 r2"><img width="1400" height="933" src="/mmmultiple/img/irl-adov-9.jpg" alt="A Day of Vybrance, the garden from the side" loading="lazy"></button>
+        <button class="c4 r1 fit"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-13.jpg" alt="A Day of Vybrance, the cold plunge" loading="lazy"></button>
+        <button class="c6 r2"><img width="1400" height="933" src="/mmmultiple/img/irl-adov-10.jpg" alt="A Day of Vybrance, class under the arch" loading="lazy"></button>
+        <button class="c6 r2"><img width="1400" height="933" src="/mmmultiple/img/irl-adov-12.jpg" alt="A Day of Vybrance, arms up under the arch" loading="lazy"></button>
+        <button class="c6 r2"><img width="1400" height="933" src="/mmmultiple/img/irl-adov-11.jpg" alt="A Day of Vybrance, filming the cold plunge" loading="lazy"></button>
+        <button class="c3 r1"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-4.jpg" alt="A Day of Vybrance, the plunge with a rubber duck" loading="lazy"></button>
+        <button class="c3 r1"><img width="933" height="1400" src="/mmmultiple/img/irl-adov-5.jpg" alt="A Day of Vybrance, black and white" loading="lazy"></button>
       </div>
 
 
       <div class="chapter cap mute"><span>Then it stayed</span><span>The Vybrance Locker</span></div>
       <div class="locker">
-        <button class="lk-img rise" data-gal="locker"><img src="/mmmultiple/img/vyb-locker.jpg" alt="The Vybrance Locker in a gym: tennis balls, a speaker, a rack of single servings and a Scan to Win sign" loading="lazy"></button>
+        <button class="lk-img rise" data-gal="locker"><img width="1200" height="1600" src="/mmmultiple/img/vyb-locker.jpg" alt="The Vybrance Locker in a gym: tennis balls, a speaker, a rack of single servings and a Scan to Win sign" loading="lazy"></button>
         <div class="lk-copy rise">
           <h3>A piece of the world you can touch.</h3>
           <p>Built for the real life events, now stationed in a gym. Take a serving off the rack. Scan the sign and play a retro game with your thumb, the kind you played on an old phone. Clear a board, win a bag.</p>
@@ -518,7 +519,7 @@
           <a class="opener lk-play" href="https://www.vybrancelabs.co/pages/scan-to-win?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=mmmultiple" target="_blank" rel="noopener"><span>Play the game</span> <i>↗</i></a>
         </div>
       </div>
-      <a class="back" href="#worlds">↑ Back to the worlds</a>
+      <div class="exits"><a class="back" href="#worlds">← Other worlds</a><a class="back who" href="#founders">Who made this world? →</a></div>
     </div>
   </section>
 
@@ -546,31 +547,31 @@
       </div>
       <div class="chapter cap mute"><span>The campaign</span><span>People first</span></div>
       <div class="gal" data-gal="cec">
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-campaign.jpg" alt="Cécred campaign group portrait" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-motion.jpg" alt="Cécred campaign, hair in motion" loading="lazy"></button>
-        <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-denim.jpg" alt="Cécred campaign portrait" loading="lazy"></button>
-        <button class="c12 r4 rise"><img src="/mmmultiple/img/cecred-backstory.jpg" alt="Cécred Backstory series" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="800" height="1067" src="/mmmultiple/img/cecred-campaign.jpg" alt="Cécred campaign group portrait" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="800" height="1067" src="/mmmultiple/img/cecred-motion.jpg" alt="Cécred campaign, hair in motion" loading="lazy"></button>
+        <button class="c4 r1 rise"><img width="800" height="1067" src="/mmmultiple/img/cecred-denim.jpg" alt="Cécred campaign portrait" loading="lazy"></button>
+        <button class="c12 r4 rise"><img width="1600" height="343" src="/mmmultiple/img/cecred-backstory.jpg" alt="Cécred Backstory series" loading="lazy"></button>
       </div>
 
       <button class="opener" aria-expanded="false" aria-controls="more-cecred"><span>Open the world</span> <i>+</i></button>
       <div class="more" id="more-cecred"><div>
       <div class="chapter cap mute"><span>The product</span><span>Still life</span></div>
       <div class="gal" data-gal="cec">
-        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-oil.jpg" alt="Cécred oil bottle" loading="lazy"></button>
-        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-comb.jpg" alt="Cécred comb" loading="lazy"></button>
-        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-ritual.jpg" alt="Cécred dropper on braids" loading="lazy"></button>
-        <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-drop.jpg" alt="Cécred dropper" loading="lazy"></button>
+        <button class="c6 r3 rise"><img width="1600" height="1600" src="/mmmultiple/img/cecred-oil.jpg" alt="Cécred oil bottle" loading="lazy"></button>
+        <button class="c6 r3 rise"><img width="1600" height="1600" src="/mmmultiple/img/cecred-comb.jpg" alt="Cécred comb" loading="lazy"></button>
+        <button class="c6 r3 rise"><img width="1200" height="1200" src="/mmmultiple/img/cecred-ritual.jpg" alt="Cécred dropper on braids" loading="lazy"></button>
+        <button class="c6 r3 rise"><img width="1500" height="1500" src="/mmmultiple/img/cecred-drop.jpg" alt="Cécred dropper" loading="lazy"></button>
       </div>
 
       <div class="chapter cap mute"><span>The launch</span><span>Retail + events</span></div>
       <div class="gal" data-gal="cec">
-        <button class="c8 r2 rise"><img src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy"></button>
-        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/cecred-launch.jpg" alt="Cécred launch event host desk" loading="lazy"></button>
-        <button class="c6 r2 rise"><img src="/mmmultiple/img/cecred-tent.jpg" alt="Cécred launch booth" loading="lazy"></button>
-        <button class="c6 r2 rise"><img src="/mmmultiple/img/cecred-trailer.jpg" alt="Cécred mirrored trailer" loading="lazy"></button>
+        <button class="c8 r2 rise"><img width="1600" height="1067" src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img width="1280" height="748" src="/mmmultiple/img/cecred-launch.jpg" alt="Cécred launch event host desk" loading="lazy"></button>
+        <button class="c6 r2 rise"><img width="1600" height="1067" src="/mmmultiple/img/cecred-tent.jpg" alt="Cécred launch booth" loading="lazy"></button>
+        <button class="c6 r2 rise"><img width="1200" height="802" src="/mmmultiple/img/cecred-trailer.jpg" alt="Cécred mirrored trailer" loading="lazy"></button>
       </div>
       </div></div>
-      <a class="back" href="#worlds">↑ Back to the worlds</a>
+      <div class="exits"><a class="back" href="#worlds">← Other worlds</a><a class="back who" href="#founders">Who made this world? →</a></div>
     </div>
   </section>
 
@@ -596,23 +597,30 @@
       </div>
       <div class="chapter cap mute"><span>The house</span><span>Austin, March 2022</span></div>
       <div class="gal" data-gal="soho">
-        <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-01.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
-        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/soho-03.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c8 r2 rise"><img width="1600" height="1067" src="/mmmultiple/img/soho-01.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img width="1066" height="1600" src="/mmmultiple/img/soho-03.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
       </div>
       <button class="opener" aria-expanded="false" aria-controls="more-soho"><span>Open the world</span> <i>+</i></button>
       <div class="more" id="more-soho"><div>
       <div class="gal" data-gal="soho">
-        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/soho-02.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
-        <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-07.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
-        <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-04.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
-        <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-05.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
-        <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-06.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img width="1067" height="1600" src="/mmmultiple/img/soho-02.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c8 r2 rise"><img width="1600" height="1066" src="/mmmultiple/img/soho-07.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r2 rise"><img width="1600" height="1068" src="/mmmultiple/img/soho-04.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r2 rise"><img width="1600" height="1068" src="/mmmultiple/img/soho-05.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+        <button class="c4 r2 rise"><img width="1362" height="908" src="/mmmultiple/img/soho-06.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
       </div>
       </div></div>
-      <a class="back" href="#worlds">↑ Back to the worlds</a>
+      <div class="exits"><a class="back" href="#worlds">← Other worlds</a><a class="back who" href="#founders">Who made this world? →</a></div>
     </div>
   </section>
 
+  <section class="open w">
+    <h1 class="verbs" id="verbs"><i>We make products.</i><i>We amplify products.</i><i>We tell stories.</i></h1>
+    <div class="lede">
+      <p><b>Two founders, one studio.</b> <b>Lawrence Whitaker III</b> builds the brand and the launch. <b>Moyo Oyelola</b> builds the world around it. Different voices, one record.</p>
+      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it. These are the two people who made the worlds above.</p>
+    </div>
+  </section>
   <section class="sol w duo" id="founders">
     <div class="sol-h rise"><div class="sol-n">02</div><div><h2 class="sol-t">Two founders</h2><p class="sol-sub">The two people behind those worlds. One builds brands from zero. One gives them a world.</p></div></div>
     <div class="duo-grid">
@@ -729,7 +737,7 @@
 (function(){
   var door=document.getElementById('door'),enter=document.getElementById('enter');
   var seen=false; try{seen=sessionStorage.getItem('mmm-in')==='1'}catch(e){}
-  function open(){door.classList.add('gone');document.body.style.overflow='';try{sessionStorage.setItem('mmm-in','1')}catch(e){}lightVerbs()}
+  function open(){door.classList.add('gone');document.body.style.overflow='';try{sessionStorage.setItem('mmm-in','1')}catch(e){}lightVerbs();if(!location.hash){var t=document.getElementById('worlds-top');if(t)t.scrollIntoView({block:'start'})}}
   if(seen){door.classList.add('gone')}else{document.body.style.overflow='hidden'}
   enter.addEventListener('click',open);
   document.addEventListener('keydown',function(e){if(e.key==='Enter'&&!door.classList.contains('gone')){e.preventDefault();open()}});
@@ -800,6 +808,10 @@
     return true;
   }
   document.addEventListener('click',function(e){
+    var x=e.target.closest('.exits a'); if(x){e.preventDefault();
+      if(x.classList.contains('who')){document.getElementById('founders').scrollIntoView({behavior:'smooth',block:'start'});return}
+      document.querySelectorAll('.world').forEach(function(w){w.classList.remove('open')});document.querySelectorAll('.tile').forEach(function(t){t.classList.remove('cur')});
+      document.getElementById('worlds-top').scrollIntoView({block:'start'});try{history.replaceState(null,'',location.pathname)}catch(err){}return}
     var l=e.target.closest('a[href^="#"]'); if(!l) return;
     var id=l.getAttribute('href').slice(1);
     if(openWorld(id)){e.preventDefault();try{history.replaceState(null,'','#'+id)}catch(err){}}
