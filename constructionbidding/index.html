@@ -135,6 +135,12 @@
       <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
       <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
     </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><textarea id="v_terms" rows="6" placeholder="Paste the terms you put at the bottom of bids that use this supplier"></textarea><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div></div>
+    </div>
     <details id="co"><summary>Your company details (typed once, remembered on this computer)</summary>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_name">Your company</label><input id="c_name" data-save></div>
@@ -147,7 +153,7 @@
       <div class="f"><label for="c_logo">Your logo (shows on the printed bid)</label><input id="c_logo" type="file" accept="image/*"><div id="c_logo_prev" style="margin-top:8px"></div></div>
     </div>
     <div class="row" style="margin-top:12px">
-      <div class="f"><label for="c_terms">Notes and terms (saved on this device)</label><textarea id="c_terms" rows="5" data-save placeholder="Delivery, validity, FOB, payment terms"></textarea></div>
+      <div class="f"><label for="c_terms">Notes that go on every bid, any supplier</label><textarea id="c_terms" rows="5" data-save placeholder="Delivery, validity, FOB, payment terms"></textarea></div>
     </div>
     </details>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
@@ -171,7 +177,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 5, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 6, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -346,11 +352,12 @@ var UOM="LF|EA|SF|SY|GAL|GALS|TON|TONS|LB|LBS|CY|YD|YD³|YD3|FT|LS|CWT|EACH|BAG|
 var RE_TOK=/(?:^|[\s$(])\$?\s?(\d[\d,]*(?:\.\d+)?)(?=$|[\s),;]|\s*\/\s*[A-Za-z])/g;
 var RE_B=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*([A-Za-z][A-Za-z³.]{0,5})\\s+\\$?\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*[A-Za-z]+)?$","i");
 var RE_P=new RegExp("^(.*?\\S)\\s+\\$\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*)?([A-Za-z][A-Za-z0-9³²?.']{0,5})?$","i");
+var RE_Q=new RegExp("^(.*?)\\s*\\b([\\d,]+(?:\\.\\d+)?)\\s*(LF|SF|SY|EA|FT|TON|TONS|LB|LBS|CY|GAL)\\s+(.+?)\\s+\\$\\s*([\\d,]+\\.\\d{2,4})((?:\\s+\\$\\s*[\\d,]+\\.\\d{2,4})*)\\s*$","i");
 var RE_D=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*("+UOM+")$","i");
 function toks(t){var out=[],m;RE_TOK.lastIndex=0;while((m=RE_TOK.exec(t))){var s=m[1];out.push({v:num(s),raw:s,at:m.index+m[0].indexOf(s),dec:(s.split(".")[1]||"").length});if(m[0].length===0)RE_TOK.lastIndex++}return out}
 function near(a,b){return Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.00002)}
 function parseGeneric(L){
-  var rows=[],subs=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null;
+  var rows=[],subs=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
     if(L[i].page!==page){page=L[i].page;last=null}
@@ -380,6 +387,12 @@ function parseGeneric(L){
       last={opt:false,group:group,desc:m[1],note:"",pcs:1,len:q,wt:null,price:pr,basis:"qty",ext:r2(q*pr),um:m[3],auto:true,page:page};
       rows.push(last);continue;
     }
+    if((m=t.match(RE_Q))&&num(m[2])>0&&/[A-Za-z]/.test(m[4])){
+      var q2=num(m[2]),p2=num(m[5]),alts=(m[6].match(/[\d,]+\.\d{2,4}/g)||[]);
+      last={opt:false,group:group,desc:(m[1]+" "+m[4]).replace(/\s+/g," ").trim(),note:alts.length?"Other prices on this line for longer lengths: $"+alts.join(", $")+". Using the first.":"",pcs:1,len:q2,wt:null,price:p2,basis:"qty",ext:r2(q2*p2),um:m[3],auto:true,page:page};
+      if(alts.length)multi=true;
+      rows.push(last);continue;
+    }
     if((m=t.match(RE_P))&&num(m[2])>0&&!/increase|escalat|surcharge/i.test(t)){priceOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:null,price:num(m[2]),basis:"qty",ext:0,um:m[3]||"",auto:true,page:page});last=null;continue}
     if((m=t.match(RE_D))&&!/total/i.test(t)){qtyOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:num(m[2]),wt:null,price:0,basis:"qty",ext:0,um:m[3],auto:true,page:page});last=null;continue}
     if(last&&last.page===page&&last.note.length<120&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
@@ -394,6 +407,8 @@ function parseGeneric(L){
   }else if(!rows.length&&qtyOnly.length>=3){
     rows=qtyOnly;flags.push("This reads as a request for prices: quantities and no prices. Type your unit cost on each line.");mode="Any layout · quantities only";
   }
+  if(multi)flags.push("Some lines give more than one price, by length. The first price is used. Change the unit price on a line if your job needs the longer length.");
+  if(rows.length&&mode==="Any layout"&&priceOnly.length){var extras=priceOnly.length;priceOnly.forEach(function(r){r.opt=true;r.group="Extras priced each (tick off Leave out and type a quantity to add one)";rows.push(r)});flags.push("This quote also lists "+extras+" extra items priced each (points, splicers and the like). They are at the bottom, left out until you add a quantity.")}
   if(rows.some(function(r){return r.auto&&r.ext>0}))flags.push("The supplier prints unit prices without line totals. Line totals here are quantity times price, computed.");
   var printed=subs.length?r2(subs.reduce(function(a,b){return a+b},0)):null;
   if(subs.length>1)flags.push("The supplier prints "+subs.length+" totals in this file. The printed total shown here is their sum.");
@@ -417,12 +432,12 @@ function fromLines(L,name,t0){
   var all=[parseNucor(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
   all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
-  var q={name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.[a-z0-9]+$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  var q={text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.[a-z0-9]+$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
   else if(!q.rows.length)q.flags.push("No priced lines were found in this file. Add the lines by hand below; the checks and the proposal still work.");
-  if(q.rows.some(function(r){return r.opt}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
+  if(q.rows.some(function(r){return r.opt&&!r.auto}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt&&!r.auto}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   return q;
 }
 function totals(q,mult){
@@ -479,6 +494,7 @@ function render(){
   $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
   var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
+  vShow();
 }
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
   var q=quotes[cur],T=totals(q,mult());
@@ -535,6 +551,26 @@ document.querySelectorAll("[data-save]").forEach(function(el){
   el.addEventListener("input",function(){saved[el.id]=el.value;try{localStorage.setItem("cb_company",JSON.stringify(saved))}catch(e){}});
 });
 $("p_date").value=new Date().toLocaleDateString("en-US");
+/* ---------- supplier templates: terms saved per supplier ---------- */
+var KNOWN=["Nucor Skyline","Nucor Rebar Fabrication","Triad","Hennegan","CMC Paving","CMC","JD Fields","Votorantim","Prairie","Ozinga","Harris","ABC Coating","Shoreline","Dywidag","DSI","Williams","Adelphia","Veritas","DS Brown"];
+var vterms={};try{vterms=JSON.parse(localStorage.getItem("cb_vterms")||"{}")}catch(e){}
+function vSave(){try{localStorage.setItem("cb_vterms",JSON.stringify(vterms))}catch(e){}}
+function vList(){$("v_list").innerHTML=Object.keys(vterms).sort().map(function(n){return'<option value="'+esc(n)+'">'}).join("")}
+function guessVendor(q){
+  var names=Object.keys(vterms).sort(function(a,b){return b.length-a.length}).concat(KNOWN),t=q.text||"";
+  for(var i=0;i<names.length;i++){if(names[i]&&t.indexOf(names[i].toLowerCase())>=0)return names[i]}
+  return"";
+}
+function vShow(){
+  if(!quotes.length)return;var q=quotes[cur];
+  if(q.vendor==null)q.vendor=guessVendor(q);
+  if(document.activeElement!==$("v_name"))$("v_name").value=q.vendor;
+  if(document.activeElement!==$("v_terms"))$("v_terms").value=vterms[q.vendor]||"";
+  $("v_note").textContent=!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":vterms[q.vendor]?"Saved terms for "+q.vendor+" were filled in.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
+}
+$("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
+$("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
+vList();
 var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
 function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
 showLogo();
@@ -562,7 +598,7 @@ function buildPrint(){
     h+="<tr><td>"+esc(r.desc)+'</td><td class="num">'+c[0]+'</td><td class="num">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">'+s.txt+"</td><td>"+esc(r.um&&r.basis==="qty"?r.um.toUpperCase():UM[r.basis])+'</td><td class="num">'+plain(s.ext,2)+"</td></tr>";
   });
   h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+
-    ($("c_terms").value?'<div class="terms"><b>NOTES:</b>\n'+v("c_terms")+"</div>":"")+
+    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>NOTES:</b>\n'+[v("v_terms"),v("c_terms")].filter(Boolean).join("\n\n")+"</div>":"")+
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
   $("print").innerHTML=h;
 }
@@ -577,7 +613,7 @@ function feedback(){
   var q=quotes[cur],T=totals(q,1);
   return["Construction Bidding test feedback","From: "+$("fb_name").value,"When: "+new Date().toLocaleString("en-US"),"File: "+q.name,"Layout read as: "+q.layout,
     "Lines: "+q.rows.length+" ("+q.rows.filter(function(r){return r.opt}).length+" optional)","Add up check: "+(T.match==null?"no printed total found":T.match?"matches":"does not match"),
-    "Lines that do not recompute: "+T.off,"Read time: "+q.secs.toFixed(1)+" s","Minutes by hand today: "+$("fb_min").value,"Every line right: "+$("fb_ok").value,"","Notes:",$("fb_txt").value].join("\n");
+    "Lines that do not recompute: "+T.off,"Read time: "+q.secs.toFixed(1)+" s","Supplier: "+(q.vendor||""),"Minutes by hand today: "+$("fb_min").value,"Every line right: "+$("fb_ok").value,"","Notes:",$("fb_txt").value].join("\n");
 }
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
