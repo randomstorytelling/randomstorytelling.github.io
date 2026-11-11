@@ -297,6 +297,44 @@
   .when span{font-weight:400;font-size:17px}
   @media(max-width:600px){.w{padding-left:24px;padding-right:24px}}
   @media(max-width:480px){.verbs{font-size:30px}.sol-t{font-size:27px}.wname{font-size:34px}.close h2{font-size:30px}}
+
+  /* problem / solution / notes, the same in every world */
+  .ps{margin-top:48px;display:grid;grid-template-columns:1fr 1fr .8fr;gap:0;border-top:1px solid currentColor}
+  .ps-c{padding:18px 24px 0 0}
+  .ps-c .cap{opacity:.55}
+  .ps-c p{margin-top:10px;font-size:clamp(17px,1.6vw,20px);line-height:1.45}
+  .ps-c ul{margin-top:10px;list-style:none;display:grid;gap:8px;font-size:15px;opacity:.8}
+  .ps-c ul li::before{content:"\00d7";margin-right:10px;opacity:.6}
+  @media(max-width:760px){.ps{grid-template-columns:1fr}.ps-c{padding:16px 0 0}}
+  /* suspended worlds: each tile hangs at its own height, drifts, and its shadow breathes below it */
+  .worlds-stage{padding-top:40px;padding-bottom:110px;perspective:1200px}
+  .doors{align-items:start}
+  .doors .tile{overflow:visible;background:none;box-shadow:none;animation:float 8s ease-in-out infinite;will-change:transform}
+  .doors .tile>img,.doors .tile>video{border-radius:6px}
+  .doors .tile::after{border-radius:6px}
+  .doors .tile::before{content:"";position:absolute;left:12%;right:12%;bottom:-62px;height:26px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.32),rgba(0,0,0,0));animation:shadow 8s ease-in-out infinite;z-index:-1}
+  .doors .tile:nth-child(1){margin-top:30px}
+  .doors .tile:nth-child(2){margin-top:0;animation-delay:-2.7s}.doors .tile:nth-child(2)::before{animation-delay:-2.7s}
+  .doors .tile:nth-child(3){margin-top:56px;animation-delay:-5.3s}.doors .tile:nth-child(3)::before{animation-delay:-5.3s}
+  @keyframes float{0%,100%{transform:translate3d(0,0,0) rotateX(2deg) rotateZ(-.8deg)}50%{transform:translate3d(0,-22px,0) rotateX(-2deg) rotateZ(.8deg)}}
+  @keyframes shadow{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(.78);opacity:.5}}
+  .doors .tile:hover{animation-play-state:paused}
+  .doors .tile:hover img{transform:none}
+  @media(max-width:760px){.doors{gap:70px}.doors .tile:nth-child(n){margin-top:0}.worlds-stage{padding-bottom:90px}}
+  @media(prefers-reduced-motion:reduce){.doors .tile,.doors .tile::before{animation:none}}
+
+  /* editorial photo presentation: uncropped frames, wide margins, staggered heights, a numbered caption under each */
+  .gal{column-gap:40px;row-gap:64px;align-items:start;margin-top:28px}
+  .gal button{aspect-ratio:auto!important;background:none;border-radius:0;overflow:visible;display:flex;flex-direction:column;text-align:left}
+  .gal button img,.gal .fit img{position:static;width:100%;height:auto;object-fit:initial;border-radius:0}
+  .gal button:hover img{transform:none;opacity:.92}
+  .gal figcaption{margin-top:12px;display:flex;gap:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.55;line-height:1.5}
+  .gal figcaption b{font-weight:500;opacity:.7;flex:none}
+  @media(min-width:761px){
+    .gal button.c4:nth-of-type(3n+2),.gal button.c3:nth-of-type(2n),.gal button.c6:nth-of-type(2n){margin-top:72px}
+    .gal button.c12{padding:0 8%}
+  }
+  @media(max-width:760px){.gal{column-gap:16px;row-gap:40px}.gal button.c3,.gal button.c4{grid-column:span 12}.gal button.c6:nth-of-type(2n){margin-top:0}}
 </style>
 </head>
 <body>
@@ -319,8 +357,8 @@
   <div class="w">
     <a class="mk" href="#top"><span class="mark" style="--m:url(/mmmultiple/brand/mark.png)" aria-hidden="true"></span>Mmmultiple</a>
     <nav class="cap">
-      <a href="#founders" class="long">Who</a>
       <a href="#worlds">Worlds</a>
+      <a href="#founders" class="long">Who</a>
       <a href="#book">Book</a>
       <a href="#talk" class="long">Talk</a>
     </nav>
@@ -332,40 +370,12 @@
     <h1 class="verbs" id="verbs"><i>We make products.</i><i>We amplify products.</i><i>We tell stories.</i></h1>
     <div class="lede">
       <p><b>Two founders, one studio.</b> <b>Lawrence Whitaker III</b> builds the brand and the launch. <b>Moyo Oyelola</b> builds the world around it. Different voices, one record.</p>
-      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it. Three worlds below show how.</p>
-    </div>
-  </section>
-
-  <section class="sol w duo" id="founders">
-    <div class="sol-h rise"><div class="sol-n">01</div><div><h2 class="sol-t">Two founders</h2><p class="sol-sub">One builds brands from zero. One gives them a world. Together, the brand and the launch come from the same table.</p></div></div>
-    <div class="duo-grid">
-      <div class="fd rise">
-        <span class="cap">Creative director <span class="x-sep">×</span> artist <span class="x-sep">×</span> storyteller</span>
-        <h3>Moyo Oyelola</h3>
-        <p>Builds the world a product lives in: the idea, the look, the photos, the films, the experience.</p>
-        <ul>
-          <li><b>Cécred:</b> creative director from pre launch to 1,400+ Ulta Beauty stores, over two years</li>
-          <li><b>Amazon + Riot Games:</b> Valorant activations, creative direction and production design</li>
-          <li><b>Soho House:</b> SXSW 2022 photography</li>
-          <li><b>Vybrance Labs:</b> creative direction for its upgraded world, v2</li>
-        </ul>
-        <span class="who">Also: Abercrombie &amp; Fitch · eBay · Robinhood · Walmart · Red Bull · Herman Miller · Thompson Hotel · Fujifilm</span>
-      </div>
-      <div class="fd alt rise">
-        <span class="cap">Founder <span class="x-sep">×</span> operator <span class="x-sep">×</span> builder</span>
-        <h3>Lawrence Whitaker III</h3>
-        <p>Founded Vybrance Labs and led the brand from zero to one: the first sale, then Amazon and Target.com. Moyo partnered on the stops along the way.</p>
-        <ul>
-          <li><b>Vybrance Labs:</b> founder and brand lead, from idea to national online retail</li>
-          <li><b>Web:</b> designed and built <a href="https://vybrancelabs.co">vybrancelabs.co</a>, <a href="https://www.lantestudio.com">lantestudio.com</a> and <a href="/">randomstorytelling.com</a>, this page included</li>
-          <li><b>Launch:</b> the site, search, listings, email and the systems behind them</li>
-        </ul>
-      </div>
+      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it. Three worlds float just below. Click one.</p>
     </div>
   </section>
 
   <section class="w proof-lbl">
-    <div class="sol-h rise"><div class="sol-n">02</div><div><h2 class="sol-t">The worlds</h2><p class="sol-sub">The worlds they played in. Each one floats until you click it. Then it opens and gets specific.</p></div></div>
+    <div class="sol-h rise"><div class="sol-n">01</div><div><h2 class="sol-t">The worlds</h2><p class="sol-sub">The worlds they played in. Each one floats until you click it. Then it opens and gets specific.</p></div></div>
   </section>
 
   <section class="w worlds-stage">
@@ -404,21 +414,28 @@
         </div>
       </div>
 
-      <div class="story rise">
-        <div class="beat"><span class="cap">Before</span><p>January 2025. Three bags on white. Clean, correct, and quiet. It told you what was inside. It did not tell you who it was for.</p></div>
-        <div class="beat"><span class="cap">The turn</span><p>Keep the product, add the person who takes it. Put the gummy inside the game, the stretch, the jump, the dare.</p></div>
-        <div class="beat"><span class="cap">After</span><p>September 2025 onward. A cast, a set, a language of play, and five films that carry the brand.</p></div>
+      <div class="ps rise">
+        <div class="ps-c"><span class="cap">The problem</span><p>December 2024. A rented studio, models on mats, the bag on the floor. Clean and correct, and it could have been any wellness brand.</p></div>
+        <div class="ps-c"><span class="cap">The solution</span><p>Give the product its own stage, then put it inside the game: the stretch, the jump, the dare. Then take it off the screen and into real life.</p></div>
+        <div class="ps-c"><span class="cap">Notes</span><ul><li>January 2025: the bags on their own, on white</li><li>September 2025: the cast, the set, the props</li><li>Five films, four real life series, one locker in a gym</li></ul></div>
       </div>
 
-      <div class="chapter cap mute"><span>Where it was</span><span>January 2025 · product on white</span></div>
+      <div class="chapter cap mute"><span>Where it was</span><span>December 2024 · studio stock</span></div>
+      <div class="gal" data-gal="vyb">
+        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-group.jpg" alt="December 2024 studio shoot, three women on mats with the bag" loading="lazy"></button>
+        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-mats.jpg" alt="December 2024 studio shoot, women lying on mats" loading="lazy"></button>
+        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-seated.jpg" alt="December 2024 studio shoot, seated pose with the bag" loading="lazy"></button>
+        <button class="c6 r2 rise"><img src="/mmmultiple/img/vyb-v0-flatlay.jpg" alt="December 2024 studio shoot, the bag and a bottle on a mat" loading="lazy"></button>
+      </div>
+
+      <div class="chapter cap mute"><span>The turn</span><span>January 2025 · the product on its own stage</span></div>
       <div class="gal" data-gal="vyb">
         <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-apple.jpg" alt="Vybrance Green Apple bag on white, January 2025" loading="lazy"></button>
         <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-mango.jpg" alt="Vybrance Citrus Mango bag on white, January 2025" loading="lazy"></button>
         <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-melon.jpg" alt="Vybrance Watermelon bag on white, January 2025" loading="lazy"></button>
         <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-trio.jpg" alt="All three Vybrance flavors on white, January 2025" loading="lazy"></button>
       </div>
-
-      <div class="chapter cap mute"><span>The turn</span><span>The gummy inside the game</span></div>
+      <div class="chapter cap mute"><span>Then into the game</span><span>September 2025 · the gummy inside the game</span></div>
       <div class="gal" data-gal="vyb">
         <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-tower.jpg" alt="Gummy holding up a block tower" loading="lazy"></button>
         <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-slinky.jpg" alt="Gummies riding a spring toy" loading="lazy"></button>
@@ -522,6 +539,11 @@
         </div>
       </div>
 
+      <div class="ps rise">
+        <div class="ps-c"><span class="cap">The problem</span><p>A brand new name had to read as itself everywhere at once: the campaign, the packaging, the shelf, the events, across a national launch.</p></div>
+        <div class="ps-c"><span class="cap">The solution</span><p>One creative direction for every touchpoint, built as a system the brand could keep using as it grew into new products, channels and stores.</p></div>
+        <div class="ps-c"><span class="cap">Notes</span><ul><li>Pre launch through 1,400+ Ulta Beauty stores</li><li>Two years, Moyo as creative director</li><li>Campaign, product, retail and events below</li></ul></div>
+      </div>
       <div class="chapter cap mute"><span>The campaign</span><span>People first</span></div>
       <div class="gal" data-gal="cec">
         <button class="c4 r1 rise"><img src="/mmmultiple/img/cecred-campaign.jpg" alt="Cécred campaign group portrait" loading="lazy"></button>
@@ -567,6 +589,11 @@
         </div>
       </div>
 
+      <div class="ps rise">
+        <div class="ps-c"><span class="cap">The problem</span><p>SXSW moves fast. For one week the house was full, and the moment would be gone by Monday.</p></div>
+        <div class="ps-c"><span class="cap">The solution</span><p>Portraits in the house, in its own rooms and its own light, of the people who came through.</p></div>
+        <div class="ps-c"><span class="cap">Notes</span><ul><li>SXSW 2022, Austin</li><li>Photography by Moyo</li><li>Next door for hospitality: short films</li></ul></div>
+      </div>
       <div class="chapter cap mute"><span>The house</span><span>Austin, March 2022</span></div>
       <div class="gal" data-gal="soho">
         <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-01.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
@@ -583,6 +610,34 @@
       </div>
       </div></div>
       <a class="back" href="#worlds">↑ Back to the worlds</a>
+    </div>
+  </section>
+
+  <section class="sol w duo" id="founders">
+    <div class="sol-h rise"><div class="sol-n">02</div><div><h2 class="sol-t">Two founders</h2><p class="sol-sub">The two people behind those worlds. One builds brands from zero. One gives them a world.</p></div></div>
+    <div class="duo-grid">
+      <div class="fd rise">
+        <span class="cap">Creative director <span class="x-sep">×</span> artist <span class="x-sep">×</span> storyteller</span>
+        <h3>Moyo Oyelola</h3>
+        <p>Builds the world a product lives in: the idea, the look, the photos, the films, the experience.</p>
+        <ul>
+          <li><b>Cécred:</b> creative director from pre launch to 1,400+ Ulta Beauty stores, over two years</li>
+          <li><b>Amazon + Riot Games:</b> Valorant activations, creative direction and production design</li>
+          <li><b>Soho House:</b> SXSW 2022 photography</li>
+          <li><b>Vybrance Labs:</b> creative direction for its upgraded world, v2</li>
+        </ul>
+        <span class="who">Also: Abercrombie &amp; Fitch · eBay · Robinhood · Walmart · Red Bull · Herman Miller · Thompson Hotel · Fujifilm</span>
+      </div>
+      <div class="fd alt rise">
+        <span class="cap">Founder <span class="x-sep">×</span> operator <span class="x-sep">×</span> builder</span>
+        <h3>Lawrence Whitaker III</h3>
+        <p>Founded Vybrance Labs and led the brand from zero to one: the first sale, then Amazon and Target.com. Moyo partnered on the stops along the way.</p>
+        <ul>
+          <li><b>Vybrance Labs:</b> founder and brand lead, from idea to national online retail</li>
+          <li><b>Web:</b> designed and built <a href="https://vybrancelabs.co">vybrancelabs.co</a>, <a href="https://www.lantestudio.com">lantestudio.com</a> and <a href="/">randomstorytelling.com</a>, this page included</li>
+          <li><b>Launch:</b> the site, search, listings, email and the systems behind them</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -750,6 +805,13 @@
     if(openWorld(id)){e.preventDefault();try{history.replaceState(null,'','#'+id)}catch(err){}}
   });
   if(location.hash) openWorld(location.hash.slice(1));
+
+
+  // editorial captions: a running number and the frame's own description
+  var gc={}; document.querySelectorAll('.gal button img').forEach(function(im){
+    var w=(im.closest('.world')||{}).id||'x',fc=document.createElement('figcaption'),n=gc[w]=(gc[w]||0)+1; fc.innerHTML='<b>'+(n<10?'0':'')+n+'</b><span></span>';
+    fc.querySelector('span').textContent=(im.alt||'').replace(/^[^,]*, /,''); im.parentNode.appendChild(fc);
+  });
 
   // lightbox: images per gallery group, films with sound via Vimeo on request
   var lb=document.getElementById('lb'),body=document.getElementById('lbBody'),set=[],idx=0;
