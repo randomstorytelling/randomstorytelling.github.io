@@ -122,6 +122,10 @@
   .fit{aspect-ratio:auto!important}.fit img{position:absolute;inset:0}
   .r1{aspect-ratio:3/4}.r2{aspect-ratio:4/3}.r3{aspect-ratio:1/1}.r4{aspect-ratio:16/5}.r5{aspect-ratio:16/9}
   @media(max-width:760px){.gal{gap:8px}.c4,.c3{grid-column:span 6}.c8,.c6{grid-column:span 12}}
+  .story{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;border-top:1px solid rgba(255,255,255,.15);padding-top:22px}
+  .beat p{margin-top:10px;font-size:clamp(17px,1.7vw,20px);font-weight:300}
+  .beat .cap{opacity:.6}
+  @media(max-width:760px){.story{grid-template-columns:1fr;gap:20px}}
   .chapter{margin-top:56px;display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-top:1px solid var(--hair);padding-top:16px}
   .dark .chapter{border-color:rgba(255,255,255,.15)}
 
@@ -146,6 +150,103 @@
   .lb-nav{position:absolute;top:50%;transform:translateY(-50%);color:#fff;font-size:28px;padding:14px;opacity:.7}
   .lb-nav:hover{opacity:1}.lb-p{left:6px}.lb-n{right:6px}
 
+
+  /* solution blocks */
+  .sol{padding:72px 0 8px;border-top:1px solid var(--hair)}
+  .sol-h{display:grid;grid-template-columns:44px 1fr;gap:28px;align-items:baseline}
+  .sol-n{font-size:11px;letter-spacing:.14em;font-weight:500;color:var(--mute)}
+  .sol-t{font-weight:900;text-transform:uppercase;font-size:clamp(26px,4.2vw,56px);line-height:1.02;letter-spacing:.01em}
+  .sol-sub{margin-top:14px;font-size:clamp(16px,1.8vw,19px);font-weight:300;color:var(--mute);max-width:640px}
+  .when{margin:36px 0 0 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .when li{list-style:none;border:1px solid var(--hair);border-radius:4px;padding:20px 18px 22px}
+  .when b{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--mute)}
+  .when span{display:block;margin-top:10px;font-size:18px;font-weight:500;line-height:1.3}
+  .offers{margin:36px 0 0 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:1100px){.offers{grid-template-columns:1fr 1fr}}
+  .offer{border:1px solid var(--ink);border-radius:4px;padding:26px 22px;display:flex;flex-direction:column;gap:14px}
+  .offer.main{background:var(--ink);color:#fff}
+  .offer .cap{opacity:.6}
+  .offer h3{font-weight:900;text-transform:uppercase;font-size:clamp(20px,2.2vw,28px);line-height:1.05;letter-spacing:.01em}
+  .offer p{font-size:16px;font-weight:300}
+  .offer ul{list-style:none;font-size:15px;display:grid;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid currentColor}
+  .offer ul li{opacity:.85}
+  .note-line{margin:18px 0 0 72px;font-size:15px;color:var(--mute);max-width:760px}
+  .steps{margin:36px 0 0 72px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink)}
+  .step{padding:20px 18px 0 0}
+  .step .cap{color:var(--mute)}
+  .step h3{margin-top:8px;font-weight:900;text-transform:uppercase;font-size:22px;letter-spacing:.02em}
+  .step p{margin-top:8px;font-size:15.5px;font-weight:300;color:var(--mute)}
+  .step p b{color:var(--ink);font-weight:500}
+  .proof-lbl{padding:72px 0 0}
+  .ask{margin:30px auto 0;max-width:640px;display:grid;gap:10px;text-align:left}
+  .ask li{list-style:none;border-top:1px solid var(--hair);padding:12px 0 0;display:grid;grid-template-columns:28px 1fr;font-size:17px}
+  .ask li b{font-size:11px;letter-spacing:.14em;color:var(--mute);padding-top:5px;font-weight:500}
+  @media(max-width:900px){.when{grid-template-columns:1fr 1fr}.offers{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr;row-gap:18px}}
+  @media(max-width:760px){.sol-h{grid-template-columns:1fr;gap:6px}.when,.offers,.steps,.note-line{margin-left:0}.sol{padding:56px 0 4px}}
+  @media(max-width:480px){.when,.steps{grid-template-columns:1fr}}
+
+  .duo{padding:24px 0 8px}
+  .duo-grid{margin:36px 0 0 72px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .fd{border:1px solid var(--ink);border-radius:4px;padding:26px 24px;display:flex;flex-direction:column;gap:14px}
+  .fd.alt{background:var(--ink);color:#fff}
+  .fd .cap{opacity:.6}
+  .fd h3{font-weight:900;text-transform:uppercase;font-size:clamp(24px,2.8vw,36px);line-height:1;letter-spacing:.01em}
+  .fd p{font-size:16.5px;font-weight:300}
+  .fd ul{list-style:none;display:grid;gap:8px;font-size:15.5px;padding-top:12px;border-top:1px solid currentColor}
+  .fd ul b{font-weight:500}
+  .fd a{text-decoration:underline;text-underline-offset:3px}
+  .fd .who{font-size:13px;opacity:.7;line-height:1.5}
+  @media(max-width:760px){.duo-grid{grid-template-columns:1fr;margin-left:0}}
+
+  /* icons, reveals and the IRL series */
+  .ic{width:26px;height:26px;display:block}
+  .offer .ic,.step .ic{margin-bottom:2px}
+  .step .ic{margin-bottom:10px}
+  .opener{margin-top:22px;display:inline-flex;align-items:center;gap:12px;border:1px solid currentColor;border-radius:999px;padding:12px 20px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;transition:background .25s,color .25s}
+  .opener:hover{background:var(--ink);color:#fff}
+  .dark .opener:hover{background:#fff;color:#000}
+  .opener i{font-style:normal;display:inline-block;transition:transform .35s ease;font-size:16px;line-height:1}
+  .opener[aria-expanded=true] i{transform:rotate(45deg)}
+  .more{display:none}
+  .more.open{display:block;animation:pop .6s ease}
+  .more .rise{opacity:1;transform:none}
+  .series{margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .sc{border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:20px 18px;text-align:left;display:flex;flex-direction:column;gap:10px;transition:background .25s,color .25s,border-color .25s}
+  .sc b{font-weight:900;text-transform:uppercase;font-size:20px;letter-spacing:.02em;line-height:1.05}
+  .sc span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.65}
+  .sc em{font-style:normal;font-size:13px;opacity:.8;margin-top:auto}
+  .irl-intro{margin-top:14px;max-width:640px;font-size:17px;font-weight:300}
+  .sp{display:none;margin-top:14px}
+  .sp.on{display:block;animation:pop .5s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .sp .gal{margin-top:0}
+  @media(max-width:860px){.series{grid-template-columns:1fr 1fr}}
+
+  /* floating worlds */
+  .doors .tile{animation:hover 6s ease-in-out infinite;box-shadow:0 24px 40px -24px rgba(0,0,0,.45);transition:box-shadow .4s}
+  .doors .tile:nth-child(2){animation-delay:-2s}.doors .tile:nth-child(3){animation-delay:-4s}
+  .doors .tile:hover{box-shadow:0 36px 60px -28px rgba(0,0,0,.6)}
+  .doors .tile.cur{outline:2px solid var(--ink);outline-offset:4px}
+  @keyframes hover{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .tile-hint{position:absolute;top:22px;left:20px;z-index:1;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;opacity:0;transition:opacity .3s}
+  .tile:hover .tile-hint,.tile:focus-visible .tile-hint{opacity:.9}
+  .js .world{display:none}
+  .js .world.open{display:block;animation:pop .7s ease}
+  .world .opener{display:none}
+  .world .opener.lk-play{display:inline-flex}
+  .world .more{display:block}
+  .back{margin-top:56px;display:inline-flex;gap:10px;align-items:center;border:1px solid currentColor;border-radius:999px;padding:12px 20px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+  @media(prefers-reduced-motion:reduce){.doors .tile{animation:none}}
+
+  .locker{margin-top:14px;display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:center}
+  .lk-img{border-radius:3px;overflow:hidden;background:#111}
+  .lk-img img{width:100%;aspect-ratio:3/4;object-fit:cover}
+  .lk-copy h3{font-weight:900;text-transform:uppercase;font-size:clamp(24px,3vw,40px);line-height:1.05}
+  .lk-copy p{margin-top:16px;font-size:17px;font-weight:300;max-width:520px}
+  .lk-steps{list-style:none;margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px}
+  .lk-steps li{border-top:1px solid rgba(255,255,255,.2);padding-top:10px;display:flex;gap:12px;font-size:15px}
+  .lk-steps b{font-size:11px;letter-spacing:.14em;opacity:.6;padding-top:3px;font-weight:500}
+  @media(max-width:760px){.locker{grid-template-columns:1fr}}
   .rise{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
   .rise.in{opacity:1;transform:none}
   @media(prefers-reduced-motion:reduce){.rise{opacity:1;transform:none}.door-word span{animation:none}*{transition:none!important}}
@@ -167,9 +268,9 @@
   <div class="w">
     <a class="mk" href="#top">MMMULTIPLE</a>
     <nav class="cap">
-      <a href="#vybrance">Vybrance<span class="long"> Labs</span></a>
-      <a href="#cecred">Cécred</a>
-      <a href="#soho">Soho<span class="long"> House</span></a>
+      <a href="#book">Book</a>
+      <a href="#how" class="long">How</a>
+      <a href="#worlds">Portfolio</a>
       <a href="#talk" class="long">Talk</a>
     </nav>
   </div>
@@ -179,26 +280,113 @@
   <section class="open w">
     <h1 class="verbs" id="verbs"><i>We make products.</i><i>We amplify products.</i><i>We tell stories.</i></h1>
     <div class="lede">
-      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it: the identity, the product photos, the films, the launch.</p>
-      <p><b>Moyo Oyelola</b> leads the creative. <b>Lawrence Whitaker III</b> leads the launch. Three worlds below, each one built from the inside.</p>
+      <p><b>Two founders, one studio.</b> <b>Lawrence Whitaker III</b> builds the brand and the launch. <b>Moyo Oyelola</b> builds the world around it. Different voices, one record.</p>
+      <p><b>Mmmultiple is a product shop.</b> We help a brand make its first chapter, then the world grows from it. Three worlds below show how.</p>
     </div>
   </section>
 
+  <section class="sol w duo" id="founders">
+    <div class="sol-h rise"><div class="sol-n">00</div><div><h2 class="sol-t">Two founders</h2><p class="sol-sub">One builds brands from zero. One gives them a world. Together, the brand and the launch come from the same table.</p></div></div>
+    <div class="duo-grid">
+      <div class="fd rise">
+        <span class="cap">Creative director · artist · storyteller</span>
+        <h3>Moyo Oyelola</h3>
+        <p>Builds the world a product lives in: the idea, the look, the photos, the films, the experience.</p>
+        <ul>
+          <li><b>Cécred:</b> creative director from pre launch to 1,400+ Ulta Beauty stores, over two years</li>
+          <li><b>Amazon + Riot Games:</b> Valorant activations, creative direction and production design</li>
+          <li><b>Soho House:</b> SXSW 2022 photography</li>
+          <li><b>Vybrance Labs:</b> creative direction for its upgraded world, v2</li>
+        </ul>
+        <span class="who">Also: Abercrombie &amp; Fitch · eBay · Robinhood · Walmart · Red Bull · Herman Miller · Thompson Hotel · Fujifilm</span>
+      </div>
+      <div class="fd alt rise">
+        <span class="cap">Founder · operator · builder</span>
+        <h3>Lawrence Whitaker III</h3>
+        <p>Founded Vybrance Labs and led the brand from zero to one: the first sale, then Amazon and Target.com. Moyo partnered on the stops along the way.</p>
+        <ul>
+          <li><b>Vybrance Labs:</b> founder and brand lead, from idea to national online retail</li>
+          <li><b>Web:</b> designed and built <a href="https://vybrancelabs.co">vybrancelabs.co</a>, <a href="https://www.lantestudio.com">lantestudio.com</a> and <a href="/">randomstorytelling.com</a>, this page included</li>
+          <li><b>Launch:</b> the site, search, listings, email and the systems behind them</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sol w" id="when">
+    <div class="sol-h rise"><div class="sol-n">A</div><div><h2 class="sol-t">Call us when</h2><p class="sol-sub">Save this page. The right time to call is when the money and the date are real.</p></div></div>
+    <ul class="when">
+      <li class="rise"><b>01</b><span>You just closed a round and the budget is fresh.</span></li>
+      <li class="rise"><b>02</b><span>The product works. Now it needs a world around it.</span></li>
+      <li class="rise"><b>03</b><span>A launch has a date: a new product, a new retailer, a new market.</span></li>
+      <li class="rise"><b>04</b><span>You want the brand and the launch planned at the same table.</span></li>
+    </ul>
+  </section>
+
+  <section class="sol w" id="book">
+    <div class="sol-h rise"><div class="sol-n">B</div><div><h2 class="sol-t">What you can book</h2><p class="sol-sub">Start with one piece or the whole launch. We take the door that opens fastest and grow from there.</p></div></div>
+    <div class="offers">
+      <div class="offer rise">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <span class="cap">The first door</span>
+        <h3>Product shoot</h3>
+        <p>Your product, shot as part of its world. A set of finished images for your site, listings and launch.</p>
+        <ul><li>Concept and mood board</li><li>One shoot day</li><li>Retouched hero images</li></ul>
+      </div>
+      <div class="offer main rise">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v9H4z"/><path d="M4 10l2.5-5 3 1.2L7 10M10 10l2.5-4.5 3 1.2L13 10M16 10l2-3.7 2 .9"/></svg>
+        <span class="cap">One launch, one window</span>
+        <h3>Campaign sprint</h3>
+        <p>One brand, one launch, one set window. The idea, the shoot, the films and the rollout, built as one piece.</p>
+        <ul><li>Two concepts, one locked</li><li>Shoot, hero assets and cutdowns</li><li>Landing page or site section</li><li>A rollout calendar</li></ul>
+      </div>
+      <div class="offer rise">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.5 2.5 2.5 13.5 0 16M12 4c-2.5 2.5-2.5 13.5 0 16"/></svg>
+        <span class="cap">The whole world</span>
+        <h3>Launch sprint</h3>
+        <p>Bigger production for funded brands and hospitality groups. The same shape, built for a full launch to retail or a new market.</p>
+        <ul><li>Brand and creative direction</li><li>Photo, film and experiential</li><li>Site, email, listings and search</li><li>What comes next, planned</li></ul>
+      </div>
+      <div class="offer rise">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+        <span class="cap">Off the screen</span>
+        <h3>Real life series</h3>
+        <p>An event your brand owns and runs again: a day, a class, a hike, a walk. Each one shot and cut into photos and films.</p>
+        <ul><li>The format and the name</li><li>Venue, run of show, guests</li><li>Photo and film from every one</li><li>A built piece that stays, like a locker or a game</li></ul>
+      </div>
+    </div>
+    <p class="note-line rise">Production costs such as crew, talent, studio and travel are billed at cost. Paid ads are run by specialists we bring in. You own the product; we build the world around it.</p>
+  </section>
+
+  <section class="sol w" id="how">
+    <div class="sol-h rise"><div class="sol-n">C</div><div><h2 class="sol-t">How it works</h2><p class="sol-sub">Four steps. Two leads. Moyo on the creative, Lawrence on the launch.</p></div></div>
+    <div class="steps">
+      <div class="step rise"><span class="cap">01</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg><h3>Discover</h3><p><b>Moyo:</b> a workshop and the big idea. <b>Lawrence:</b> the channels, the date, the budget, what has to sell.</p></div>
+      <div class="step rise"><span class="cap">02</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L15.5 5.5l3 3L8 19z"/><path d="M13.5 7.5l3 3"/></svg><h3>Make</h3><p><b>Moyo:</b> films, photos, design, experiential. <b>Lawrence:</b> schedule, crew, vendors, budget.</p></div>
+      <div class="step rise"><span class="cap">03</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.5 2 5 5.5 5 9l-2.5 3h-5L7 12c0-3.5 1.5-7 5-9z"/><circle cx="12" cy="10" r="1.6"/><path d="M9.5 15L8 20l4-2 4 2-1.5-5"/></svg><h3>Launch</h3><p><b>Moyo:</b> the look across retail, out of home and social. <b>Lawrence:</b> site, search, listings, email.</p></div>
+      <div class="step rise"><span class="cap">04</span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 3-3 3"/><path d="M20 7H9a5 5 0 0 0 0 10h1"/><path d="M7 20l-3-3 3-3"/><path d="M4 17h11a5 5 0 0 0 0-10h-1"/></svg><h3>Sustain</h3><p><b>Moyo:</b> the content system and the next campaign. <b>Lawrence:</b> the calendar and the systems that keep running.</p></div>
+    </div>
+  </section>
+
+  <section class="w proof-lbl">
+    <div class="sol-h rise"><div class="sol-n">D</div><div><h2 class="sol-t">The portfolio</h2><p class="sol-sub">The details behind each offer. Three worlds, sitting there. Click one to go in.</p></div></div>
+  </section>
+
   <section class="w">
-    <div class="doors">
-      <a class="tile rise" href="#vybrance" data-film="/brand/films/power-your-day.mp4">
+    <div class="doors" id="worlds">
+      <a class="tile rise" data-world="vybrance" href="#vybrance" data-film="/brand/films/power-your-day.mp4">
         <img src="/brand/films/power-your-day.jpg" alt="Vybrance Labs film still" loading="lazy">
-        <span class="tile-go" aria-hidden="true">↓</span>
+        <span class="tile-go" aria-hidden="true">+</span><span class="tile-hint">Go in</span>
         <span class="tile-t"><span class="tile-n">01</span><span class="tile-name">Vybrance Labs</span><span class="tile-k">Creatine gummies. Five films, one world.</span></span>
       </a>
-      <a class="tile rise" href="#cecred">
+      <a class="tile rise" data-world="cecred" href="#cecred">
         <img src="/mmmultiple/img/cecred-shelf.jpg" alt="Cécred salon at a launch event" loading="lazy">
-        <span class="tile-go" aria-hidden="true">↓</span>
+        <span class="tile-go" aria-hidden="true">+</span><span class="tile-hint">Go in</span>
         <span class="tile-t"><span class="tile-n">02</span><span class="tile-name">Cécred</span><span class="tile-k">Pre launch to 1,400+ Ulta stores.</span></span>
       </a>
-      <a class="tile rise" href="#soho">
+      <a class="tile rise" data-world="soho" href="#soho">
         <img src="/mmmultiple/img/soho-02.jpg" alt="Portrait from Soho House SXSW 2022" loading="lazy">
-        <span class="tile-go" aria-hidden="true">↓</span>
+        <span class="tile-go" aria-hidden="true">+</span><span class="tile-hint">Go in</span>
         <span class="tile-t"><span class="tile-n">03</span><span class="tile-name">Soho House</span><span class="tile-k">SXSW 2022. Photography.</span></span>
       </a>
     </div>
@@ -214,11 +402,50 @@
           <p class="wrole cap mute">Lawrence's brand · Moyo built its upgraded world, v2</p>
         </div>
         <div class="wcopy">
-          <p>A creatine gummy brand, built from first sale to Amazon and Target.com. For v2, the brand got a new world: new films, new photos, a new way to talk about performance, science and everyday life.</p>
+          <p>A creatine gummy brand. Lawrence founded it and took it to Amazon and Target.com. Moyo led creative direction for its upgraded world.</p>
+          <p class="mute">Performance, science and everyday life, in one look: the campaign, the photos, the films, the packaging story, the site and the email.</p>
           <div class="tags"><span>Brand strategy</span><span>Creative direction</span><span>Product campaigns</span><span>Photo + film</span><span>Packaging</span><span>E-commerce</span><span>Email</span><span>Launches</span></div>
         </div>
       </div>
 
+      <div class="story rise">
+        <div class="beat"><span class="cap">Before</span><p>January 2025. Three bags on white. Clean, correct, and quiet. It told you what was inside. It did not tell you who it was for.</p></div>
+        <div class="beat"><span class="cap">The turn</span><p>Keep the product, add the person who takes it. Put the gummy inside the game, the stretch, the jump, the dare.</p></div>
+        <div class="beat"><span class="cap">After</span><p>September 2025 onward. A cast, a set, a language of play, and five films that carry the brand.</p></div>
+      </div>
+
+      <div class="chapter cap mute"><span>Where it was</span><span>January 2025 · product on white</span></div>
+      <div class="gal" data-gal="vyb">
+        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-apple.jpg" alt="Vybrance Green Apple bag on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-mango.jpg" alt="Vybrance Citrus Mango bag on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-melon.jpg" alt="Vybrance Watermelon bag on white, January 2025" loading="lazy"></button>
+        <button class="c3 r1 rise"><img src="/mmmultiple/img/vyb-v1-trio.jpg" alt="All three Vybrance flavors on white, January 2025" loading="lazy"></button>
+      </div>
+
+      <div class="chapter cap mute"><span>The turn</span><span>The gummy inside the game</span></div>
+      <div class="gal" data-gal="vyb">
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-tower.jpg" alt="Gummy holding up a block tower" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-slinky.jpg" alt="Gummies riding a spring toy" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-pliers.jpg" alt="Gummy held in pliers" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-tee.jpg" alt="Gummies on a tray with a golf ball and tee" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-pull.jpg" alt="A hand pulling a block from the tower" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-green.jpg" alt="Watermelon gummies on green felt" loading="lazy"></button>
+      </div>
+
+      <div class="chapter cap mute"><span>The people</span><span>Who it is for</span></div>
+      <div class="gal" data-gal="vyb">
+        <button class="c12 r5 rise"><img src="/mmmultiple/img/vybrance-cast.jpg" alt="Vybrance campaign cast on set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-sit.jpg" alt="Cast member seated on the moss island set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-stand.jpg" alt="Cast member standing on the moss island set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-pose.jpg" alt="Cast member on the moss island set" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-lunge.jpg" alt="Lunge on a mat, black and white" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-kneel.jpg" alt="Kneeling stretch on a mat, black and white" loading="lazy"></button>
+        <button class="c4 r1 rise"><img src="/mmmultiple/img/vyb-stretch.jpg" alt="Back stretch on a mat, black and white" loading="lazy"></button>
+        <button class="c4 r1 fit rise"><img src="/mmmultiple/img/vyb-jump.jpg" alt="A jump against a blue sky" loading="lazy"></button>
+        <button class="c8 r2 rise"><img src="/mmmultiple/img/vyb-court.jpg" alt="A Vybrance bag in a basket of tennis balls" loading="lazy"></button>
+      </div>
+
+      <div class="chapter cap mute"><span>Where it went</span><span>Five films</span></div>
       <div class="stage rise" id="stage">
         <video id="stageVid" muted loop playsinline preload="metadata" poster="/brand/films/power-your-day.jpg" src="/brand/films/power-your-day.mp4"></video>
         <div class="stage-ui">
@@ -234,12 +461,50 @@
         <button class="chip" data-film="founder-factory-visit" data-vimeo="1231034831"><img src="/brand/films/founder-factory-visit.jpg" alt="" loading="lazy"><span>Founder Factory Visit</span></button>
       </div>
 
-      <div class="chapter cap mute"><span>The cast</span><span>Campaign photography</span></div>
-      <div class="gal" data-gal="vyb">
-        <button class="c12 r5 rise"><img src="/mmmultiple/img/vybrance-cast.jpg" alt="Vybrance Labs campaign cast on set" loading="lazy"></button>
+      <div class="chapter cap mute"><span>Then it went off screen</span><span>New IP from real life</span></div>
+      <p class="irl-intro rise">The brand left the feed and showed up in person. Four series, each one its own IP now, shown here through A Day of Vybrance.</p>
+      <div class="series" id="series">
+        <div class="sc rise"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><b>A Day of Vybrance</b><span>A full day, in person</span><em>A full day, filmed</em></div>
+        <div class="sc rise"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16h14a4 4 0 0 0 0-8H7a4 4 0 0 0 0 8"/><circle cx="7" cy="12" r="2"/></svg><b>Floor Work</b><span>Oct 2025 · Nov 2025 · Feb 2026</span><em>Mat class, outdoors</em></div>
+        <div class="sc rise"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 19l6.5-11 4 6 2.5-3.5 6 8.5z"/><path d="M8 11.5l1 1.2 1-1.2"/></svg><b>Adventure Hike</b><span>Oct 2025 · Nov 2025 · Jan 2026 · Mar 2026</span><em>On the trail</em></div>
+        <div class="sc rise"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15c0-3 1-6 2-7l3 1c1 2 3 3 5 3l6 1c1.5.3 2 1.5 2 2.5V17H3z"/><path d="M3 17h18"/></svg><b>City Walk</b><span>Feb 2026</span><em>Through the city, on foot</em></div>
       </div>
+      <div class="gal" data-gal="adov">
+        <button class="c12 r5"><img src="/mmmultiple/img/irl-adov-8.jpg" alt="A Day of Vybrance, the whole garden on mats" loading="lazy"></button>
+        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-1.jpg" alt="A Day of Vybrance, the group on mats outdoors" loading="lazy"></button>
+        <button class="c8 r2"><img src="/mmmultiple/img/irl-adov-2.jpg" alt="A Day of Vybrance, class under the arched roof" loading="lazy"></button>
+        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-6.jpg" alt="A Day of Vybrance, stretching on the deck" loading="lazy"></button>
+        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-7.jpg" alt="A Day of Vybrance, mats under string lights" loading="lazy"></button>
+        <button class="c4 r1"><img src="/mmmultiple/img/irl-adov-3.jpg" alt="A Day of Vybrance, the room from the back" loading="lazy"></button>
+        <button class="c8 r2"><img src="/mmmultiple/img/irl-adov-9.jpg" alt="A Day of Vybrance, the garden from the side" loading="lazy"></button>
+        <button class="c4 r1 fit"><img src="/mmmultiple/img/irl-adov-13.jpg" alt="A Day of Vybrance, the cold plunge" loading="lazy"></button>
+        <button class="c6 r2"><img src="/mmmultiple/img/irl-adov-10.jpg" alt="A Day of Vybrance, class under the arch" loading="lazy"></button>
+        <button class="c6 r2"><img src="/mmmultiple/img/irl-adov-12.jpg" alt="A Day of Vybrance, arms up under the arch" loading="lazy"></button>
+        <button class="c6 r2"><img src="/mmmultiple/img/irl-adov-11.jpg" alt="A Day of Vybrance, filming the cold plunge" loading="lazy"></button>
+        <button class="c3 r1"><img src="/mmmultiple/img/irl-adov-4.jpg" alt="A Day of Vybrance, the plunge with a rubber duck" loading="lazy"></button>
+        <button class="c3 r1"><img src="/mmmultiple/img/irl-adov-5.jpg" alt="A Day of Vybrance, black and white" loading="lazy"></button>
+      </div>
+
+
+      <div class="chapter cap mute"><span>Then it stayed</span><span>The Vybrance Locker</span></div>
+      <div class="locker">
+        <button class="lk-img rise" data-gal="locker"><img src="/mmmultiple/img/vyb-locker.jpg" alt="The Vybrance Locker in a gym: tennis balls, a speaker, a rack of single servings and a Scan to Win sign" loading="lazy"></button>
+        <div class="lk-copy rise">
+          <h3>A piece of the world you can touch.</h3>
+          <p>Built for the real life events, now stationed in a gym. Take a serving off the rack. Scan the sign and play a retro game with your thumb, the kind you played on an old phone. Clear a board, win a bag.</p>
+          <ul class="lk-steps">
+            <li><b>01</b><span>See it at the gym</span></li>
+            <li><b>02</b><span>Take a serving</span></li>
+            <li><b>03</b><span>Scan, play, win</span></li>
+            <li><b>04</b><span>Come back tomorrow</span></li>
+          </ul>
+          <a class="opener lk-play" href="https://www.vybrancelabs.co/pages/scan-to-win?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=mmmultiple" target="_blank" rel="noopener"><span>Play the game</span> <i>↗</i></a>
+        </div>
+      </div>
+      <a class="back" href="#worlds">↑ Back to the worlds</a>
     </div>
   </section>
+
 
   <!-- 02 CECRED -->
   <section class="world" id="cecred">
@@ -265,6 +530,8 @@
         <button class="c12 r4 rise"><img src="/mmmultiple/img/cecred-backstory.jpg" alt="Cécred Backstory series" loading="lazy"></button>
       </div>
 
+      <button class="opener" aria-expanded="false" aria-controls="more-cecred"><span>Open the world</span> <i>+</i></button>
+      <div class="more" id="more-cecred"><div>
       <div class="chapter cap mute"><span>The product</span><span>Still life</span></div>
       <div class="gal" data-gal="cec">
         <button class="c6 r3 rise"><img src="/mmmultiple/img/cecred-oil.jpg" alt="Cécred oil bottle" loading="lazy"></button>
@@ -280,6 +547,8 @@
         <button class="c6 r2 rise"><img src="/mmmultiple/img/cecred-tent.jpg" alt="Cécred launch booth" loading="lazy"></button>
         <button class="c6 r2 rise"><img src="/mmmultiple/img/cecred-trailer.jpg" alt="Cécred mirrored trailer" loading="lazy"></button>
       </div>
+      </div></div>
+      <a class="back" href="#worlds">↑ Back to the worlds</a>
     </div>
   </section>
 
@@ -293,9 +562,8 @@
           <p class="wrole cap mute">Moyo · SXSW 2022 · Photography</p>
         </div>
         <div class="wcopy">
-          <p>Portraits at Soho House during SXSW 2022. Real rooms, real light, the people who came through.</p>
-          <p class="mute">Next for hospitality: short films of lived in moments, city by city.</p>
-          <div class="tags"><span>Hospitality</span><span>Photography</span><span>Portraits</span><span>Events</span></div>
+          <p>Portraits at Soho House during SXSW 2022.</p>
+                    <div class="tags"><span>Hospitality</span><span>Photography</span><span>Portraits</span><span>Events</span></div>
         </div>
       </div>
 
@@ -303,18 +571,29 @@
       <div class="gal" data-gal="soho">
         <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-01.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
         <button class="c4 r1 fit rise"><img src="/mmmultiple/img/soho-03.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
+      </div>
+      <button class="opener" aria-expanded="false" aria-controls="more-soho"><span>Open the world</span> <i>+</i></button>
+      <div class="more" id="more-soho"><div>
+      <div class="gal" data-gal="soho">
         <button class="c4 r1 fit rise"><img src="/mmmultiple/img/soho-02.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
         <button class="c8 r2 rise"><img src="/mmmultiple/img/soho-07.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
         <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-04.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
         <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-05.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
         <button class="c4 r2 rise"><img src="/mmmultiple/img/soho-06.jpg" alt="Soho House SXSW 2022 portrait" loading="lazy"></button>
       </div>
+      </div></div>
+      <a class="back" href="#worlds">↑ Back to the worlds</a>
     </div>
   </section>
 
   <section class="close w" id="talk">
-    <h2 class="rise">Your first chapter<br>starts here.</h2>
-    <p class="rise">A few projects a year, each one built all the way through. Tell us what you are launching.</p>
+    <h2 class="rise">Got a budget<br>and a date?</h2>
+    <p class="rise">We take a few projects a year, so each one is built all the way through. Bring three things to the call.</p>
+    <ul class="ask rise">
+      <li><b>01</b><span>What you are launching, and when.</span></li>
+      <li><b>02</b><span>Where it has to sell.</span></li>
+      <li><b>03</b><span>What you can approve without another signature.</span></li>
+    </ul>
     <div class="ctas rise">
       <a class="btn solid" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Mmmultiple">Book a 15 minute call</a>
       <a class="btn" href="https://calendly.com/randomstorytelling/free-intro-call?a2=Mmmultiple%20case%20studies">Request the case studies</a>
@@ -380,11 +659,49 @@
     });
   });
 
+
+  // reveal the rest of a world, and one IRL series at a time
+  document.querySelectorAll('.opener').forEach(function(b){
+    b.addEventListener('click',function(){
+      var m=document.getElementById(b.getAttribute('aria-controls')),on=b.getAttribute('aria-expanded')!=='true';
+      b.setAttribute('aria-expanded',on);m.classList.toggle('open',on);
+      b.querySelector('span').textContent=on?'Close the world':'Open the world';
+      if(!on) b.scrollIntoView({block:'nearest',behavior:'smooth'});
+    });
+  });
+  document.querySelectorAll('#series .sc').forEach(function(c){
+    c.addEventListener('click',function(){
+      var on=c.getAttribute('aria-expanded')!=='true';
+      document.querySelectorAll('#series .sc').forEach(function(x){x.setAttribute('aria-expanded','false')});
+      document.querySelectorAll('.sp').forEach(function(x){x.classList.remove('on')});
+      if(on){c.setAttribute('aria-expanded','true');document.getElementById(c.dataset.sp).classList.add('on')}
+    });
+  });
+
+
+  // worlds: one open at a time; tiles, nav and links all open the world they point at
+  document.documentElement.classList.add('js');
+  function openWorld(id,scroll){
+    var w=document.getElementById(id); if(!w||!w.classList.contains('world')) return false;
+    document.querySelectorAll('.world').forEach(function(x){x.classList.toggle('open',x===w)});
+    document.querySelectorAll('.tile[data-world]').forEach(function(t){t.classList.toggle('cur',t.dataset.world===id)});
+    w.querySelectorAll('.rise').forEach(function(el){el.classList.add('in')});
+    if(scroll!==false) setTimeout(function(){w.scrollIntoView({behavior:'smooth',block:'start'})},30);
+    return true;
+  }
+  document.addEventListener('click',function(e){
+    var l=e.target.closest('a[href^="#"]'); if(!l) return;
+    var id=l.getAttribute('href').slice(1);
+    if(openWorld(id)){e.preventDefault();try{history.replaceState(null,'','#'+id)}catch(err){}}
+  });
+  if(location.hash) openWorld(location.hash.slice(1));
+
   // lightbox: images per gallery group, films with sound via Vimeo on request
   var lb=document.getElementById('lb'),body=document.getElementById('lbBody'),set=[],idx=0;
   function show(){body.innerHTML='';var im=new Image();im.src=set[idx].src;im.alt=set[idx].alt;body.appendChild(im)}
   function openLb(){lb.classList.add('on');document.body.style.overflow='hidden'}
   function closeLb(){lb.classList.remove('on');body.innerHTML='';document.body.style.overflow=''}
+  var lk=document.querySelector('.lk-img'); if(lk) lk.addEventListener('click',function(){set=[lk.querySelector('img')];idx=0;document.getElementById('lbP').style.display=document.getElementById('lbN').style.display='none';show();openLb()});
   document.querySelectorAll('.gal button').forEach(function(b){
     b.addEventListener('click',function(){
       var g=b.parentNode.dataset.gal;set=[].slice.call(document.querySelectorAll('.gal[data-gal="'+g+'"] img'));
