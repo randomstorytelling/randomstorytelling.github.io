@@ -30,11 +30,15 @@ h2{font-size:clamp(26px,min(4.7vw,7.2vh),68px);font-weight:700;letter-spacing:-.
 .p{font-size:clamp(15px,min(1.7vw,2.5vh),22px);color:#3c403e;margin-top:clamp(12px,2.2vh,22px);max-width:min(520px,100%)}
 .price{font-size:clamp(28px,min(4.3vw,6.2vh),60px);font-weight:700;letter-spacing:-.04em;margin-top:clamp(14px,3vh,34px);line-height:1}
 .days{font-size:14px;color:var(--mute);margin-top:8px;letter-spacing:0}
-.shot{border:1px solid var(--hair);border-radius:8px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.10);height:100%;min-height:0;max-height:100%}
-.shot img{display:block;width:100%;height:100%;object-fit:cover}
-.spread{display:grid;min-width:0;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr) minmax(0,.78fr);grid-template-rows:repeat(3,minmax(0,1fr));gap:6px;height:100%;min-height:0;max-height:100%;border-radius:8px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.10)}
-.spread img{width:100%;height:100%;min-height:0;min-width:0;object-fit:cover;display:block}
-.spread .a{grid-column:1;grid-row:1/4;object-position:50% 85%} .spread .b{grid-column:2;grid-row:1/4;object-position:46% 40%}
+.shot{border:1px solid var(--hair);border-radius:8px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.10);width:fit-content;max-width:100%;justify-self:center;align-self:center;line-height:0}
+.shot img{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100vh - 3.6vh*2 - 38px - 2.4vh*2 - 60px)}
+.spread{display:flex;flex-direction:column;gap:6px;width:100%;max-width:calc((100vh - 3.6vh*2 - 38px - 2.4vh*2 - 60px) / var(--sh,0.78));justify-self:center;align-self:center;border-radius:8px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.10)}
+.spread .row{display:flex;gap:6px}
+.spread img{display:block;width:100%;height:auto;min-width:0}
+
+
+
+
 .film{position:relative;width:100%;background:#000;border-radius:8px;overflow:hidden;aspect-ratio:16/9}
 .film iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .filmwrap{display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.4vh,28px);align-items:stretch}
@@ -63,7 +67,7 @@ body.locked{overflow:hidden}
 body:not(.locked) #gate{display:none}
 
 @media(max-height:640px){.s{height:auto;min-height:auto;overflow:visible}html{scroll-snap-type:none}}
-@media(max-width:820px){.s{padding:5vh 22px;height:auto;min-height:auto;overflow:visible}.mid{grid-template-columns:minmax(0,1fr);gap:28px}.shot,.spread{max-height:none}.spread{height:62vw}html{scroll-snap-type:none}}
+@media(max-width:820px){.s{padding:5vh 22px;height:auto;min-height:auto;overflow:visible}.mid{grid-template-columns:minmax(0,1fr);gap:28px}.shot{width:100%}.shot img{width:100%;max-height:none}.spread{max-width:100%}html{scroll-snap-type:none}}
 </style>
 </head>
 <body>
@@ -86,7 +90,7 @@ body:not(.locked) #gate{display:none}
       <p class="p">A Day of Vybrance is a feeling. A mat pilates workout, real play, real people, no script. Indoors or out, one building or a whole portfolio, the energy is the same.</p>
       <a class="cta" href="#session">The three ways &darr;</a><a class="cta q" href="mailto:lawrence@vybrancelabs.co?subject=Vybrance%20Labs%E2%84%A2%20A%20Day%20of%20Vybrance%20Inquiry">Bring it to your building &rarr;</a>
     </div>
-    <div class="spread"><img class="a" src="shot-pilates.jpg" alt="Hannah of Lante Pilates leading the mat class at A Day of Vybrance"><img class="b" src="shot-lawrence-mic.jpg" alt="Lawrence Whitaker III on the mic for the creatine talk at A Day of Vybrance"><img src="shot-handsup.jpg" alt="Residents mid workout at Floor Work"><img src="shot-jenga.jpg" alt="A resident playing Jenga at A Day of Vybrance"><img src="shot-bag.jpg" alt="A Vybrance Labs creatine gummies pack in the plants"></div>
+    <div class="spread"><div class="row"><img style="flex:1.5000 1 0;aspect-ratio:1800/1200" src="shot-pilates.jpg" alt="Hannah of Lante Pilates leading the mat class at A Day of Vybrance"><img style="flex:0.6667 1 0;aspect-ratio:1200/1800" src="shot-lawrence-mic.jpg" alt="Lawrence Whitaker III on the mic for the creatine talk at A Day of Vybrance"></div><div class="row"><img style="flex:0.6667 1 0;aspect-ratio:1200/1800" src="shot-handsup.jpg" alt="Residents mid workout at Floor Work"><img style="flex:0.6667 1 0;aspect-ratio:1200/1800" src="shot-jenga.jpg" alt="A resident playing Jenga at A Day of Vybrance"><img style="flex:1.7769 1 0;aspect-ratio:1800/1013" src="shot-bag.jpg" alt="A Vybrance Labs creatine gummies pack in the plants"></div></div>
   </div>
   <div class="bot"><span>Lawrence Whitaker III</span><span>01 / 09</span></div>
 </section>
