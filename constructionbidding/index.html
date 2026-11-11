@@ -135,6 +135,7 @@
       <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
       <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
     </div>
+    <div id="hold" style="margin-top:14px"></div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
     </div>
@@ -177,7 +178,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 6, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 7, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -194,7 +195,7 @@ var r4=function(x){return Math.round(Number((x*10000).toFixed(6)))/10000};
 var money=function(x){return (x<0?"-":"")+"$"+Math.abs(x).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})};
 var plain=function(x,d){return x==null||x===""?"":Number(x).toLocaleString("en-US",{minimumFractionDigits:d||0,maximumFractionDigits:d==null?2:d})};
 var UM={ft:"FT",ea:"EA",ls:"LS",sqft:"SF",qty:"UNIT",cwt:"LB"};
-var quotes=[],cur=0;
+var quotes=[],cur=0,holders=null;
 
 /* ---------- reading the PDF into lines ---------- */
 async function pdfLines(buf){
@@ -221,7 +222,7 @@ async function pdfLines(buf){
     rows.sort(function(a,b){return b.y-a.y});
     rows.forEach(function(r){
       r.items.sort(function(a,b){return a.x-b.x});
-      out.push({page:p,x:r.items[0].x,text:r.items.map(function(i){return i.s}).join(" ").replace(/\s+/g," ").trim()});
+      out.push({page:p,x:r.items[0].x,cells:r.items,text:r.items.map(function(i){return i.s}).join(" ").replace(/\s+/g," ").trim()});
     });
   }
   return out;
@@ -275,6 +276,29 @@ function sheetToLines(wb){
 async function sheetLines(buf){
   if(!window.XLSX)await loadScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
   return sheetToLines(XLSX.read(buf,{type:"array"}));
+}
+
+/* ---------- plan holders list: who the bid goes to ---------- */
+function parsePlanHolders(L){
+  var txt=L.map(function(l){return l.text}).join(" ");
+  if(!/Plan Holders/i.test(txt)||!/Bid Categor/i.test(txt))return null;
+  var xs=null,out=[],cur=null,title=(L[0]&&L[0].text)||"";
+  L.forEach(function(l){
+    if(!l.cells)return;
+    var hc=l.cells.filter(function(c){return/^(Date|Company|Contact|Bid Categories)$/i.test(c.s.trim())});
+    if(hc.length>=3){xs={};hc.forEach(function(c){xs[c.s.trim().toLowerCase().split(" ")[0]]=c.x});cur=null;return}
+    if(!xs||xs.company==null||xs.contact==null)return;
+    var catX=xs.bid!=null?xs.bid:xs.contact+150,col=function(a,b){return l.cells.filter(function(c){return c.x>=a-6&&c.x<b-6}).map(function(c){return c.s}).join(" ").replace(/\s+/g," ").trim()};
+    var d=col(-999,xs.company),co=col(xs.company,xs.contact),ct=col(xs.contact,catX),cat=col(catX,99999);
+    if(/^\d{1,2}\/\d{1,2}\/\d{2}/.test(d)&&co){cur={company:co,contact:ct,cat:cat,lines:[]};out.push(cur)}
+    else if(cur){if(co)cur.lines.push(co);if(cat)cur.cat+=" "+cat;if(ct&&/^Tel:/i.test(ct))cur.tel=ct.replace(/^Tel:\s*/i,"")}
+  });
+  out.forEach(function(h){
+    var addr=h.lines.filter(function(x){return/\d/.test(x)||/Suite|Floor/i.test(x)});
+    h.lines.forEach(function(x){if(addr.indexOf(x)<0&&x.length<40&&addr.length===0)h.company+=" "+x});
+    h.address=addr.join(", ");h.gc=/General Contractor/i.test(h.cat);h.on=h.gc;
+  });
+  return out.length?{title:title,list:out}:null;
 }
 
 /* ---------- three layouts ---------- */
@@ -525,7 +549,9 @@ async function take(files){
     if(!isPdf&&!isImg&&!isXl){msg.textContent="We can read PDFs, pictures (JPG or PNG) and Excel files. "+f.name+" is something else.";msg.classList.remove("hide");continue}
     busy(isImg?"Reading the picture. This takes a few seconds…":"Reading "+f.name+"…");
     try{
-      if(isPdf)q=fromLines(await pdfLines(await f.arrayBuffer()),f.name,t0);
+      if(isPdf){var PL=await pdfLines(await f.arrayBuffer()),ph=parsePlanHolders(PL);
+        if(ph){holders=ph;busy("");renderHolders();msg.textContent="Got the plan holders list: "+ph.list.filter(function(h){return h.gc}).length+" general contractors. They are in Step 4.";msg.classList.remove("hide");continue}
+        q=fromLines(PL,f.name,t0)}
       else if(isImg)q=fromLines(await imageLines(f),f.name,t0);
       else q=fromLines(await sheetLines(await f.arrayBuffer()),f.name,t0);
       quotes.push(q);cur=quotes.length-1;
@@ -603,6 +629,21 @@ function buildPrint(){
   $("print").innerHTML=h;
 }
 $("doprint").addEventListener("click",function(){buildPrint();window.print()});
+function renderHolders(){
+  var el=$("hold");if(!holders){el.innerHTML='<div class="sub" style="font-size:15px">Sending the same bid to several contractors? Add the plan holders list (PDF) in Step 1 and they will show up here.</div>';return}
+  var gcs=holders.list.filter(function(h){return h.gc}),others=holders.list.length-gcs.length;
+  el.innerHTML='<label>Who is this bid going to? ('+esc(holders.title).slice(0,70)+')</label><div style="border:1px solid var(--rule);border-radius:12px;padding:10px 14px;margin-top:6px;max-height:300px;overflow:auto">'+
+    holders.list.map(function(h,i){return h.gc?'<label style="display:flex;gap:10px;align-items:flex-start;font-size:16px;color:var(--ink);padding:6px 0"><input type="checkbox" data-h="'+i+'"'+(h.on?" checked":"")+' style="width:22px;height:22px;flex:none;margin-top:2px"><span><b>'+esc(h.company)+"</b><br><span style=\"color:var(--mute);font-size:14px\">"+esc(h.contact)+(h.tel?" · "+esc(h.tel):"")+"</span></span></label>":""}).join("")+
+    '</div><div class="sub" style="font-size:13px;margin-top:4px">'+gcs.length+" general contractors on the list"+(others?"; "+others+" others (suppliers, agencies, plan rooms) left off":"")+'.</div><p style="margin-top:10px"><button class="btn" id="printall" type="button">Print one bid for each contractor ticked</button></p>';
+}
+$("hold").addEventListener("change",function(e){var i=e.target.getAttribute("data-h");if(i!=null)holders.list[+i].on=e.target.checked});
+$("hold").addEventListener("click",function(e){
+  if(e.target.id!=="printall"||!quotes.length)return;
+  var picks=holders.list.filter(function(h){return h.gc&&h.on}),keep=$("p_to").value,html="";
+  picks.forEach(function(h,i){$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
+  $("p_to").value=keep;if(!picks.length)return;$("print").innerHTML=html;window.print();
+});
+renderHolders();
 $("csv").addEventListener("click",function(){
   var q=quotes[cur],m=mult(),c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'};
   var out=[["group","description","optional","pieces","length_or_qty","weight_lb","unit_cost","per","supplier_total","your_price","your_total"].join(",")];
@@ -618,7 +659,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
