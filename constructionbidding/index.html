@@ -55,6 +55,35 @@
   .btn.ghost{background:none;color:var(--ink)}
   .hide{display:none}
   .foot{margin-top:40px;color:var(--mute);font-size:12px}
+  body{font-size:17px}
+  h2{font-size:22px;letter-spacing:-.02em;text-transform:none;font-weight:700;margin:44px 0 14px;padding-top:18px}
+  h2 small{display:block;font-size:15px;font-weight:400;color:var(--mute);letter-spacing:0;margin-top:4px}
+  .drop{padding:46px 16px;font-size:20px;border-radius:14px;border-width:3px}
+  .drop small{font-size:15px}
+  .verdict{border-radius:14px;padding:18px 20px;font-size:20px;font-weight:700;display:flex;gap:14px;align-items:center;margin-bottom:10px}
+  .verdict .ic{font-size:30px;line-height:1}
+  .verdict small{display:block;font-weight:400;font-size:15px;margin-top:2px}
+  .verdict.ok{background:#e9f6ee;color:#0a5a2c} .verdict.bad{background:#fdecea;color:#8c1d18} .verdict.na{background:#f3f3f3;color:#333}
+  .facts{font-size:15px;color:var(--mute);margin:0 2px 12px}
+  .flag{font-size:15px;border-left:none;background:#fff7e0;color:#5c4300;border-radius:10px;padding:10px 14px;margin:8px 0}
+  .flag b{font-weight:700}
+  table{font-size:15px} th{font-size:12px;padding:10px 8px} td input,td select{font-size:15px;padding:8px 6px}
+  td.chk{font-size:14px;padding-top:12px} td.ro{padding:11px 8px;white-space:nowrap}
+  table.simple .adv{display:none}
+  .tab{font-size:15px;padding:10px 14px;border-radius:999px}
+  .btn{font-size:18px;padding:16px 24px;border-radius:12px}
+  .btn.sm{font-size:15px;padding:10px 16px}
+  .f input,.f textarea{font-size:17px;padding:12px;border-radius:10px}
+  label{font-size:13px;text-transform:none;letter-spacing:0}
+  .quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .quick button{border:2px solid var(--ink);background:none;font:inherit;font-size:17px;font-weight:700;padding:10px 16px;border-radius:999px;cursor:pointer}
+  .quick button.on{background:var(--ink);color:var(--paper)}
+  .money3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}
+  .money3 div{border:2px solid var(--ink);border-radius:14px;padding:14px 16px}
+  .money3 .hero{background:var(--ink);color:var(--paper)}
+  .money3 .big{font-size:28px}
+  details{border:1px solid var(--rule);border-radius:12px;padding:12px 16px;margin-top:14px}
+  summary{cursor:pointer;font-weight:700}
   #print{display:none}
   @media print{
     body>.wrap{display:none} #print{display:block;padding:0;font-size:11px;color:#000}
@@ -72,35 +101,40 @@
 <body>
 <div class="wrap">
   <h1>Construction Bidding</h1>
-  <p class="sub">Supplier quote in. Your marked up bid out. You confirm every number before it leaves.</p>
+  <p class="sub" style="font-size:19px">Drop in your supplier's quote. Get your bid back, with your markup, ready to print.</p>
 
-  <h2>1 · Drop the supplier quote</h2>
-  <div class="drop" id="drop" tabindex="0">Drop quote PDFs here, or tap to choose<small>Files are read inside this browser. Nothing is uploaded or stored on a server.</small></div>
+  <h2>Step 1. Add your supplier's quote</h2>
+  <div class="drop" id="drop" tabindex="0">Tap here to choose the quote<small>or drag the PDF onto this box. You can add several at once.<br>Your file stays on this computer. It is not sent anywhere.</small></div>
   <input type="file" id="file" accept="application/pdf" multiple class="hide">
   <div id="msg" class="flag hide"></div>
 
   <div id="work" class="hide">
-    <h2>2 · Confirm the lines</h2>
+    <h2>Step 2. Check the numbers<small>We read every line and added it up for you.</small></h2>
     <div class="tabs" id="tabs"></div>
-    <div class="stats" id="stats"></div>
+    <div id="verdict"></div>
+    <div class="facts" id="stats"></div>
     <div id="flags"></div>
     <div class="scroll"><table id="tbl"></table></div>
-    <p style="margin-top:10px"><button class="btn ghost" id="add">Add a line</button></p>
+    <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="add">+ Add a line</button><button class="btn ghost sm" id="more">Show every column</button></p>
 
-    <h2>3 · Set the markup</h2>
+    <h2>Step 3. Add your markup</h2>
     <div class="row">
-      <div class="f s"><label for="mk">Markup %</label><input id="mk" type="number" step="0.01" value="4" inputmode="decimal"></div>
-      <div><label>Your bid</label><div class="big" id="sell">$0.00</div></div>
-      <div><label>Supplier cost</label><div class="big" id="cost" style="color:var(--mute)">$0.00</div></div>
-      <div><label>Spread</label><div class="big" id="spread">$0.00</div></div>
+      <div class="f s"><label for="mk">Your markup, in percent</label><input id="mk" type="number" step="0.01" value="4" inputmode="decimal" style="font-size:24px;font-weight:700"></div>
+    </div>
+    <div class="quick" id="quick"><button data-m="3">3%</button><button data-m="4">4%</button><button data-m="5">5%</button><button data-m="7">7%</button><button data-m="10">10%</button></div>
+    <div class="money3">
+      <div class="hero"><label style="color:#ccc">Your bid</label><div class="big" id="sell">$0.00</div></div>
+      <div><label>Supplier's price</label><div class="big" id="cost">$0.00</div></div>
+      <div><label>You make</label><div class="big" id="spread">$0.00</div></div>
     </div>
 
-    <h2>4 · Your proposal</h2>
+    <h2>Step 4. Print your bid</h2>
     <div class="row">
       <div class="f"><label for="p_project">Project</label><input id="p_project"></div>
       <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
       <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
     </div>
+    <details id="co"><summary>Your company details (typed once, remembered on this computer)</summary>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_name">Your company</label><input id="c_name" data-save></div>
       <div class="f"><label for="c_contact">Contact</label><input id="c_contact" data-save></div>
@@ -113,28 +147,29 @@
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_terms">Notes and terms (saved on this device)</label><textarea id="c_terms" rows="5" data-save placeholder="Delivery, validity, FOB, payment terms"></textarea></div>
     </div>
+    </details>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn" id="doprint">Print or save as PDF</button>
-      <button class="btn ghost" id="csv">Download the lines (CSV)</button>
+      <button class="btn" id="doprint">Print my bid</button>
+      <button class="btn ghost" id="csv">Save the lines for Excel</button>
     </p>
 
-    <h2>5 · Tell us what was wrong</h2>
+    <h2>How did it go?<small>This is a test version. Two minutes of your notes makes it better.</small></h2>
     <div class="row">
-      <div class="f s"><label for="fb_min">Minutes this quote takes by hand</label><input id="fb_min" type="number" inputmode="decimal"></div>
-      <div class="f s"><label for="fb_ok">Every line right?</label><input id="fb_ok" placeholder="yes / no"></div>
+      <div class="f s"><label for="fb_min">Minutes this takes you by hand</label><input id="fb_min" type="number" inputmode="decimal"></div>
+      <div class="f s"><label for="fb_ok">Was every line right?</label><input id="fb_ok" placeholder="yes or no"></div>
       <div class="f"><label for="fb_name">Your name</label><input id="fb_name" data-save></div>
     </div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="fb_txt">What was wrong, missing or slow</label><textarea id="fb_txt" rows="4" placeholder="A wrong number, a line it missed, something your proposal needs that is not here"></textarea></div>
     </div>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <button class="btn" id="fb_mail">Email the feedback</button>
-      <button class="btn ghost" id="fb_copy">Copy the feedback</button>
+      <button class="btn" id="fb_mail">Email my notes</button>
+      <button class="btn ghost" id="fb_copy">Copy my notes</button>
       <span id="fb_done" class="sub"></span>
     </p>
-    <p class="sub" style="font-size:12px">The feedback carries the file name, layout, line count and check results. It carries no prices.</p>
+    <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test build, 2026-11-11. Reads Nucor Skyline, Nucor Rebar Fabrication and CMC Paving quote layouts. Any other layout: add the lines by hand and the checks still run. Random Storytelling.</p>
+  <p class="foot">Test version 3, November 11, 2026. Reads any quote PDF that has text in it by finding the lines where quantity times price equals the total. Scans and photos of quotes are not read yet. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -155,7 +190,7 @@ var quotes=[],cur=0;
 
 /* ---------- reading the PDF into lines ---------- */
 async function pdfLines(buf){
-  var doc=await pdfjsLib.getDocument({data:buf}).promise,out=[];
+  var doc=await pdfjsLib.getDocument({data:buf}).promise,out=[];out.blank=[];
   for(var p=1;p<=doc.numPages;p++){
     var page=await doc.getPage(p),tc=await page.getTextContent(),rows=[];
     tc.items.forEach(function(it){
@@ -165,6 +200,7 @@ async function pdfLines(buf){
       if(!row){row={y:y,items:[]};rows.push(row)}
       row.items.push({x:x,s:it.str});
     });
+    if(!rows.length)out.blank.push(p);
     rows.sort(function(a,b){return b.y-a.y});
     rows.forEach(function(r){
       r.items.sort(function(a,b){return a.x-b.x});
@@ -244,6 +280,64 @@ function parseQtyList(L){
   if(subs.length>1)flags.push("The supplier prints "+subs.length+" subtotals and no grand total. The printed total shown here is their sum.");
   return{layout:"Quantity list",rows:rows,printed:printed,project:project,flags:flags};
 }
+/* ---------- any layout: rows found by their arithmetic, not their position ---------- */
+var UOM="LF|EA|SF|SY|GAL|GALS|TON|TONS|LB|LBS|CY|YD|YD³|YD3|FT|LS|CWT|EACH|BAG|BAGS|PC|PCS|SQFT|SQ FT|WF|HR|HRS|LOAD|LOADS|KIT|KITS|BOX|ROLL|ROLLS|SHEET|SHEETS|M|MT|GL";
+var RE_TOK=/(?:^|[\s$(])\$?\s?(\d[\d,]*(?:\.\d+)?)(?=$|[\s),;]|\s*\/\s*[A-Za-z])/g;
+var RE_B=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*([A-Za-z][A-Za-z³.]{0,5})\\s+\\$?\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*[A-Za-z]+)?$","i");
+var RE_P=new RegExp("^(.*?\\S)\\s+\\$\\s*([\\d,]+\\.\\d{2,4})\\s*(?:\\/\\s*)?("+UOM+")?$","i");
+var RE_D=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*("+UOM+")$","i");
+function toks(t){var out=[],m;RE_TOK.lastIndex=0;while((m=RE_TOK.exec(t))){var s=m[1];out.push({v:num(s),raw:s,at:m.index+m[0].indexOf(s),dec:(s.split(".")[1]||"").length});if(m[0].length===0)RE_TOK.lastIndex++}return out}
+function near(a,b){return Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.00002)}
+function parseGeneric(L){
+  var rows=[],subs=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null;
+  for(var i=0;i<L.length;i++){
+    var t=L[i].text,m;
+    if(L[i].page!==page){page=L[i].page;last=null}
+    if(m=t.match(/(?:Quote Number|Quotation No\.?|Quote No\.?|Quote #)\s*:?\s*(\S.*)$/i)){if(!/^(Date|Good)/i.test(m[1]))group=m[1].trim().slice(0,60)}
+    if(!project&&(m=t.match(/^(?:Project(?: Name)?|Job Name|Re|Ref)\s*:\s*(\S.+)$/i)))project=m[1].trim().slice(0,80);
+    if(m=t.match(/^(Item\s+\S+)\s*[–—-]\s*Total\b.*?\$\s*([\d,]+\.\d{2})\s*$/i)){itemTotals.push({d:t.replace(/\s*\$\s*[\d,]+\.\d{2}\s*$/,""),v:num(m[2])});last=null;continue}
+    if(/\b(sub\s?total|total)\b/i.test(t)&&(m=t.match(/\$?\s*([\d,]+\.\d{2})\s*\$?\s*$/))&&!/\d\s*(?:LF|EA|SF)\s+\$/i.test(t)){subs.push(num(m[1]));last=null;continue}
+    if(/^(notes?|terms|conditions|page \d)/i.test(t)){last=null;continue}
+    var tk=toks(t),found=null;
+    if(tk.length>=3){
+      for(var e=tk.length-1;e>=2&&!found;e--){
+        if(tk[e].dec!==2||tk[e].v<=0)continue;
+        for(var j=e-1;j>=1&&!found;j--)for(var k=j-1;k>=0&&!found;k--){
+          if(tk[j].v<=0||tk[k].v<=0)continue;
+          if(near(r2(tk[k].v*tk[j].v),tk[e].v))found={q:tk[k],p:tk[j],e:tk[e],basis:"qty"};
+          else if(near(r2(tk[k].v/100*tk[j].v),tk[e].v))found={q:tk[k],p:tk[j],e:tk[e],basis:"cwt"};
+        }
+      }
+    }
+    if(found){
+      var d=t.slice(0,found.q.at).replace(/[\s$]+$/,""),after=t.slice(found.q.at+found.q.raw.length),um=(after.match(new RegExp("^\\s*("+UOM+")\\b","i"))||[])[1]||"";
+      last={opt:false,group:group,desc:d||"(no description read)",note:"",pcs:1,len:found.basis==="cwt"?null:found.q.v,wt:found.basis==="cwt"?found.q.v:null,price:found.p.v,basis:found.basis,ext:found.e.v,um:um,page:page};
+      rows.push(last);continue;
+    }
+    if(m=t.match(RE_B)){
+      var q=num(m[2]),pr=num(m[4]);
+      last={opt:false,group:group,desc:m[1],note:"",pcs:1,len:q,wt:null,price:pr,basis:"qty",ext:r2(q*pr),um:m[3],auto:true,page:page};
+      rows.push(last);continue;
+    }
+    if((m=t.match(RE_P))&&num(m[2])>0&&!/increase|escalat|surcharge/i.test(t)){priceOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:null,price:num(m[2]),basis:"qty",ext:0,um:m[3]||"",auto:true,page:page});last=null;continue}
+    if((m=t.match(RE_D))&&!/total/i.test(t)){qtyOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:num(m[2]),wt:null,price:0,basis:"qty",ext:0,um:m[3],auto:true,page:page});last=null;continue}
+    if(last&&last.page===page&&last.note.length<120&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
+  }
+  var mode="Any layout";
+  if(itemTotals.length>=2){
+    rows=itemTotals.map(function(x){return{opt:false,group:"",desc:x.d,note:"",pcs:1,len:null,wt:null,price:x.v,basis:"ls",ext:x.v}});subs=[];
+    flags.push("This quote prices each item across several lines. It was read at the item total level: one line per item, not per length. Open the PDF to check the unit detail.");mode="Any layout · item totals";
+  }else if(!rows.length&&priceOnly.length){
+    rows=priceOnly;flags.push("This is a price list: the supplier gives unit prices and no quantities. Type a quantity on each line you are bidding, and tick Opt. on the rest.");mode="Any layout · price list";
+    rows.forEach(function(r){r.opt=true});
+  }else if(!rows.length&&qtyOnly.length>=3){
+    rows=qtyOnly;flags.push("This reads as a request for prices: quantities and no prices. Type your unit cost on each line.");mode="Any layout · quantities only";
+  }
+  if(rows.some(function(r){return r.auto&&r.ext>0}))flags.push("The supplier prints unit prices without line totals. Line totals here are quantity times price, computed.");
+  var printed=subs.length?r2(subs.reduce(function(a,b){return a+b},0)):null;
+  if(subs.length>1)flags.push("The supplier prints "+subs.length+" totals in this file. The printed total shown here is their sum.");
+  return{layout:mode,rows:rows,printed:printed,project:project,flags:flags};
+}
 function calcExt(r){
   var p=r.price||0;
   if(r.basis==="ft")return r2((r.pcs||0)*(r.len||0)*p);
@@ -258,9 +352,13 @@ function sell(r,mult){
 }
 async function parseBuffer(buf,name){
   var t0=performance.now(),L=await pdfLines(buf);
-  var c=[parseNucor(L),parseLump(L),parseQtyList(L)].sort(function(a,b){return b.rows.length-a.rows.length})[0];
+  var all=[parseNucor(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
+  all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
+  if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
   var q={name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.pdf$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
-  if(!q.rows.length)q.flags.push("This layout was not recognised. Add the lines by hand below; the checks and the proposal still work.");
+  if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" with no text. Nothing was read from "+(L.blank.length>1?"them":"it")+". Add those lines by hand.");
+  if(!L.length)q.flags.push("This PDF is a scan or a photo: there is no text in it to read. This version cannot read scans. Add the lines by hand below.");
+  else if(!q.rows.length)q.flags.push("No priced lines were found in this file. Add the lines by hand below; the checks and the proposal still work.");
   if(q.rows.some(function(r){return r.opt}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   return q;
 }
@@ -276,33 +374,47 @@ function totals(q,mult){
 
 /* ---------- screen ---------- */
 function mult(){var v=parseFloat($("mk").value);return 1+(isNaN(v)?0:v)/100}
+function qtyText(r){
+  var u=(r.um||"").toLowerCase();
+  if(r.basis==="ft")return(r.pcs>1?plain(r.pcs,0)+" × ":"")+plain(r.len,2)+" ft";
+  if(r.basis==="cwt")return plain(r.wt,2)+" lb";
+  if(r.basis==="ls")return"lump sum";
+  if(r.basis==="ea")return plain(r.pcs,0)+" ea";
+  return r.len==null?"type a quantity":plain(r.len,2)+(r.basis==="sqft"?" sq ft":u?" "+u:"");
+}
+var showAll=false;
 function render(){
   if(!quotes.length){$("work").classList.add("hide");return}
   $("work").classList.remove("hide");
-  var q=quotes[cur],T=totals(q,mult());
-  $("tabs").innerHTML=quotes.map(function(x,i){var t=totals(x,1);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
-  $("stats").innerHTML=
-    '<div class="stat"><b>'+T.n+"</b><span>Lines in the bid</span></div>"+
-    '<div class="stat"><b>'+(q.printed==null?"None found":money(q.printed))+"</b><span>Supplier's printed total</span></div>"+
-    '<div class="stat"><b>'+money(T.cost)+"</b><span>Your lines add to</span></div>"+
-    '<div class="stat '+(T.match?"ok":T.match===false?"bad":"")+'"><b>'+(T.match==null?"Check by eye":T.match?"Matches":"Off by "+money(T.diff))+"</b><span>Add up check</span></div>"+
-    '<div class="stat '+(T.off?"bad":"ok")+'"><b>'+(T.off?T.off+" to look at":"All recompute")+"</b><span>Quantity × price, each line</span></div>"+
-    '<div class="stat"><b>'+q.secs.toFixed(1)+" s</b><span>Read time · "+esc(q.layout)+"</span></div>";
-  $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag">'+esc(f)+"</div>"}).join("")+(T.match===false?'<div class="flag">The lines do not add to the supplier\'s printed total. Look for an Optional mark, a missed line or a typo before you send anything.</div>':"");
-  var h='<tr><th>Opt.</th><th>Description</th><th class="num">Pieces</th><th class="num">Length / qty</th><th class="num">Weight lb</th><th class="num">Unit cost</th><th>Per</th><th class="num">Supplier total</th><th>Check</th><th class="num">Your price</th><th class="num">Your total</th><th></th></tr>',g=null;
+  var q=quotes[cur],T=totals(q,mult()),nOpt=q.rows.filter(function(r){return r.opt}).length;
+  $("tabs").innerHTML=quotes.length<2?"":quotes.map(function(x,i){var t=totals(x,1);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
+  var v;
+  if(!q.rows.length)v='<div class="verdict na"><span class="ic">✍️</span><div>We could not read lines from this file<small>Tap "+ Add a line" and type them in. Everything else still works.</small></div></div>';
+  else if(T.match===true&&!T.off)v='<div class="verdict ok"><span class="ic">✅</span><div>All '+T.n+" lines add up to your supplier's total, "+money(q.printed)+"<small>Give the lines a quick look, then go to Step 3.</small></div></div>";
+  else if(T.match===true)v='<div class="verdict ok"><span class="ic">✅</span><div>The lines add up to your supplier\'s total, '+money(q.printed)+"<small>"+T.off+" line"+(T.off>1?"s are":" is")+" off by a few cents inside the supplier's own quote. Marked in red below.</small></div></div>";
+  else if(T.match===false)v='<div class="verdict bad"><span class="ic">⚠️</span><div>The lines do not add up to the supplier\'s total<small>Supplier says '+money(q.printed)+". The lines add to "+money(T.cost)+". That is "+money(Math.abs(T.diff))+(T.diff>0?" too much":" short")+". Look for a missed line or a line that should be left out.</small></div></div>";
+  else v='<div class="verdict na"><span class="ic">👀</span><div>'+T.n+" lines read, adding to "+money(T.cost)+"<small>This quote has no printed total to check against, so compare it to the PDF yourself.</small></div></div>";
+  $("verdict").innerHTML=v;
+  $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
+  $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("");
+  var h='<tr><th>Leave out</th><th>What it is</th><th class="num">How much</th><th class="num adv">Pieces</th><th class="num adv">Length / qty</th><th class="num adv">Weight lb</th><th class="num">Supplier\'s unit price</th><th class="adv">Per</th><th class="num">Supplier\'s total</th><th>Check</th><th class="num adv">Your price</th><th class="num">Your total</th><th class="adv"></th></tr>',g=null;
   q.rows.forEach(function(r,i){
-    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="12">'+esc(g)+"</td></tr>"}
+    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="13">'+esc(g)+"</td></tr>"}
     var calc=calcExt(r),ok=Math.abs(calc-(r.ext||0))<0.005,s=sell(r,mult());
     var inp=function(k,cls,v){return'<input class="'+cls+'" data-i="'+i+'" data-k="'+k+'" value="'+esc(v==null?"":v)+'"'+(cls==="n"?' inputmode="decimal"':"")+">"};
-    h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:auto" title="Optional: leave out of the total"></td>'+
+    var needQty=r.auto&&r.len==null&&r.basis==="qty";
+    h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
       "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+"</td>"+
-      "<td>"+inp("pcs","n",r.pcs)+"</td><td>"+inp("len","n",r.len)+"</td><td>"+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
-      '<td><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
-      "<td>"+inp("ext","n",r.ext==null?"":r.ext.toFixed(2))+'</td><td class="chk">'+(ok?"✓":"recomputes to "+money(calc))+"</td>"+
-      '<td class="num" style="padding-top:8px">'+s.txt+'</td><td class="num" style="padding-top:8px">'+(r.opt?"left out":money(s.ext))+'</td><td><button class="x" data-del="'+i+'" title="Remove line">×</button></td></tr>';
+      (needQty||(r.auto&&r.basis==="qty")?'<td>'+inp("len","n",r.len)+"</td>":'<td class="num ro">'+esc(qtyText(r))+"</td>")+
+      '<td class="adv">'+inp("pcs","n",r.pcs)+'</td><td class="adv">'+inp("len","n",r.len)+'</td><td class="adv">'+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
+      '<td class="adv"><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
+      "<td>"+inp("ext","n",r.ext==null?"":r.ext.toFixed(2))+'</td><td class="chk">'+(ok?"✓":"should be "+money(calc))+"</td>"+
+      '<td class="num ro adv">'+s.txt+'</td><td class="num ro"><b>'+(r.opt?"left out":money(s.ext))+'</b></td><td class="adv"><button class="x" data-del="'+i+'" title="Remove line">×</button></td></tr>';
   });
-  $("tbl").innerHTML=h;
+  $("tbl").innerHTML=h;$("tbl").className=showAll?"":"simple";
+  $("more").textContent=showAll?"Show fewer columns":"Show every column";
   $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
+  var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
 }
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
@@ -313,24 +425,28 @@ $("tbl").addEventListener("change",function(e){
   var t=e.target,i=t.getAttribute("data-i"),k=t.getAttribute("data-k");if(i==null)return;
   var r=quotes[cur].rows[+i];
   if(k==="opt")r.opt=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;else r[k]=num(t.value);
+  if(r.auto&&k!=="ext"&&k!=="opt"&&k!=="desc")r.ext=calcExt(r);
   render();
 });
 $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del");if(d!=null){quotes[cur].rows.splice(+d,1);render()}});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
-$("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0});render()});
+$("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true});render()});
 $("mk").addEventListener("input",function(){render()});
+$("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;render()}});
+$("more").addEventListener("click",function(){showAll=!showAll;render()});
 $("p_project").addEventListener("input",function(){quotes[cur].project=this.value});
 
 /* ---------- files ---------- */
 async function take(files){
   var msg=$("msg");msg.classList.add("hide");
-  if(!window.pdfjsLib){msg.textContent="The PDF reader did not load. Check the connection and reload.";msg.classList.remove("hide");return}
+  if(!window.pdfjsLib){msg.textContent="The page did not finish loading. Check your internet and refresh.";msg.classList.remove("hide");return}
   for(var i=0;i<files.length;i++){
     var f=files[i];if(!/pdf$/i.test(f.type)&&!/\.pdf$/i.test(f.name))continue;
     try{quotes.push(await parseBuffer(await f.arrayBuffer(),f.name));cur=quotes.length-1}
-    catch(err){msg.textContent="Could not read "+f.name+": "+err.message;msg.classList.remove("hide")}
+    catch(err){msg.textContent="We could not open "+f.name+". Is it a PDF? ("+err.message+")";msg.classList.remove("hide")}
   }
   render();
+  if(quotes.length)$("work").scrollIntoView({behavior:"smooth",block:"start"});
 }
 var drop=$("drop"),file=$("file");
 drop.addEventListener("click",function(){file.click()});
