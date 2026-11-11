@@ -135,6 +135,12 @@
       <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
       <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
     </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="p_item">Item and delivery address</label><input id="p_item" placeholder="Item #007 - M26 Eagle Harbor, MI"></div>
+      <div class="f s"><label for="p_pno">Project #</label><input id="p_pno"></div>
+      <div class="f s"><label for="p_cno">Contract #</label><input id="p_cno"></div>
+      <div class="f"><label for="p_note">Note on this bid</label><input id="p_note" placeholder="Stock, subject to prior sale"></div>
+    </div>
     <div id="hold" style="margin-top:14px"></div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
@@ -182,7 +188,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 8, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 9, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -455,12 +461,25 @@ function sell(r,mult){
   return{unit:u2,ext:calcExt(c),txt:plain(u2,2)};
 }
 async function parseBuffer(buf,name){return fromLines(await pdfLines(buf),name,performance.now())}
+function grabTerms(L){
+  var out=[],on=false,n=0;
+  for(var i=0;i<L.length;i++){
+    var t=L[i].text;
+    if(!on){if(/^(quote conditions|conditions|terms|terms\s*:|notes\s*:|\*+\s*please make note of terms)/i.test(t)&&t.length<70){on=true;continue}
+      if(/^[•\u2022·]\s*(Freight|Taxes)\b/i.test(t)){on=true}else continue}
+    if(/^(TERMS AND CONDITIONS OF SALE|Product Details|Product Name\b|Authorized Signature|Accepted by|Sign here|Signature)/i.test(t))break;
+    if(/^(Sales Rep|Phone|Email|Address):/i.test(t)||/^\d{3}[-.]\d{3}[-.]\d{4}/.test(t))continue;
+    out.push(t.replace(/^[•\u2022·]\s*/,"- "));n+=t.length;if(n>2600)break;
+  }
+  var joined=[];out.forEach(function(t){if(/^- /.test(t)||!joined.length)joined.push(t);else joined[joined.length-1]+=" "+t});
+  return joined.join("\n").trim();
+}
 function fromLines(L,name,t0){
   L.blank=L.blank||[];L.ocr=L.ocr||[];
   var all=[parseNucor(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
   all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
-  var q={text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.[a-z0-9]+$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  var q={terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.[a-z0-9]+$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
@@ -595,11 +614,12 @@ function vShow(){
   if(!quotes.length)return;var q=quotes[cur];
   if(q.vendor==null)q.vendor=guessVendor(q);
   if(document.activeElement!==$("v_name"))$("v_name").value=q.vendor;
-  if(document.activeElement!==$("v_terms"))$("v_terms").value=vterms[q.vendor]||"";
-  $("v_note").textContent=!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":vterms[q.vendor]?"Saved terms for "+q.vendor+" were filled in.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
+  var saved=vterms[q.vendor]||"",fromQuote=!saved&&q.terms&&!q.termsOff;
+  if(document.activeElement!==$("v_terms"))$("v_terms").value=saved||(fromQuote?q.terms:"");
+  $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote. Read them, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
 }
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
-$("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
+$("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
 vList();
 var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
 function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
@@ -619,22 +639,24 @@ function qtyCells(r){
 }
 function buildPrint(){
   var q=quotes[cur],m=mult(),T=totals(q,m),g=null,v=function(id){return esc($(id).value)};
-  var h='<div class="ph"><div class="co">'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block;margin-bottom:8px">':"")+'<b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+"</div></div>"+
-    "<p><b>PROJECT:</b> "+v("p_project")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>Description</th><th class="num">Qty</th><th class="num">Lgth</th><th class="num">Wgt</th><th class="num">Price ($)</th><th>UM</th><th class="num">Total ($)</th></tr>';
+  var h='<div class="ph"><div class="co">'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block;margin-bottom:8px">':"")+'<b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+($("p_pno").value?"<br>Project #: "+v("p_pno"):"")+($("p_cno").value?"<br>Contract #: "+v("p_cno"):"")+"</div></div>"+
+    "<p><b>PROJECT:</b> "+v("p_project")+($("p_item").value?"<br>"+v("p_item"):"")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>Description</th><th class="num">Qty</th><th class="num">Lgth</th><th class="num">Wgt</th><th class="num">Price ($)</th><th>UM</th><th class="num">Total ($)</th></tr>';
   q.rows.forEach(function(r){
     if(r.opt)return;
     if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="7">'+esc(g)+"</td></tr>"}
     var s=sell(r,m),c=qtyCells(r);
     h+="<tr><td>"+esc(r.desc)+'</td><td class="num">'+c[0]+'</td><td class="num">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">'+s.txt+"</td><td>"+esc(r.um&&r.basis==="qty"?r.um.toUpperCase():UM[r.basis])+'</td><td class="num">'+plain(s.ext,2)+"</td></tr>";
   });
-  h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+
-    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>NOTES:</b>\n'+[v("v_terms"),v("c_terms")].filter(Boolean).join("\n\n")+"</div>":"")+
+  var tw=q.rows.reduce(function(a,r){return a+(r.opt?0:(r.wt||0))},0);
+  h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+(tw?'<p style="margin-top:6px">TOTAL WEIGHT: '+plain(tw,2)+" lb</p>":"")+($("p_note").value?'<p style="margin-top:6px">'+v("p_note")+"</p>":"")+
+    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b>\n'+[v("v_terms"),v("c_terms")].filter(Boolean).join("\n\n")+"</div>":"")+
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
   $("print").innerHTML=h;
 }
 var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
 function logSent(to){
   var q=quotes[cur],T=totals(q,mult());
+  if(q.vendor&&$("v_terms").value.trim()&&!vterms[q.vendor]){vterms[q.vendor]=$("v_terms").value;vSave();vList()}
   sent.unshift({when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:to||"(no name typed)",markup:$("mk").value+"%",total:T.sell});
   sent=sent.slice(0,500);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}renderSent();
 }
@@ -679,7 +701,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
