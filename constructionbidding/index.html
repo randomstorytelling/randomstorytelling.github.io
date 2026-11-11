@@ -70,6 +70,7 @@
   table{font-size:15px} th{font-size:12px;padding:10px 8px} td input,td select{font-size:15px;padding:8px 6px}
   td.chk{font-size:14px;padding-top:12px} td.ro{padding:11px 8px;white-space:nowrap}
   table.simple .adv{display:none}
+  .eh{display:inline-block;min-width:30px;padding:2px 4px;border-bottom:1px dashed #999;cursor:text;outline:none} .eh:focus{background:#fff7e0;border-bottom-color:var(--ink)}
   @media(max-width:720px){td input.d{min-width:150px} td input.n{min-width:70px} table{font-size:14px} .wrap{padding:20px 12px 70px}}
   .tab{font-size:15px;padding:10px 14px;border-radius:999px}
   .btn{font-size:18px;padding:16px 24px;border-radius:12px}
@@ -116,6 +117,7 @@
     <div class="facts" id="stats"></div>
     <div id="flags"></div>
     <div class="scroll"><table id="tbl"></table></div>
+    <p class="sub" style="font-size:14px;margin-top:8px">Headings not the way you say it? Click any heading and type your own. It is remembered.</p>
     <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="add">+ Add a line</button><button class="btn ghost sm" id="more">Show every column</button></p>
 
     <h2>Step 3. Add your markup</h2>
@@ -141,6 +143,8 @@
       <div class="f s"><label for="p_cno">Contract #</label><input id="p_cno"></div>
       <div class="f"><label for="p_note">Note on this bid</label><input id="p_note" placeholder="Stock, subject to prior sale"></div>
     </div>
+    <div style="margin-top:14px"><label>Column headings on the printed bid (change any of them; remembered)</label>
+      <div id="phd" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:6px"></div></div>
     <div id="hold" style="margin-top:14px"></div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
@@ -188,7 +192,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 11, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 12, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -510,7 +514,10 @@ function qtyText(r){
   if(r.basis==="ea")return plain(r.pcs,0)+" ea";
   return r.len==null?"type a quantity":plain(r.len,2)+(r.basis==="sqft"?" sq ft":u?" "+u:"");
 }
-var showAll=false;
+var showAll=false,heads={};try{heads=JSON.parse(localStorage.getItem("cb_heads")||"{}")}catch(e){}
+var PH=[["desc","Description"],["qty","Qty"],["lgth","Lgth"],["wgt","Wgt"],["price","Price ($)"],["um","UM"],["total","Total ($)"]];
+function ph(k){for(var i=0;i<PH.length;i++)if(PH[i][0]===k)return heads["p_"+k]||PH[i][1];return k}
+function saveHeads(){try{localStorage.setItem("cb_heads",JSON.stringify(heads))}catch(e){}}
 function render(){
   if(!quotes.length){$("work").classList.add("hide");return}
   $("work").classList.remove("hide");
@@ -525,7 +532,8 @@ function render(){
   $("verdict").innerHTML=v;
   $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
   $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("");
-  var h='<tr><th>Leave out</th><th>What it is</th><th class="num">How much</th><th class="num adv">Pieces</th><th class="num adv">Length / qty</th><th class="num adv">Weight lb</th><th class="num">Supplier\'s unit price</th><th class="adv">Per</th><th class="num">Supplier\'s total</th><th>Check</th><th class="num adv">Your price</th><th class="num">Your total</th><th class="adv"></th></tr>',g=null;
+  var TH=[["opt","Leave out",""],["desc","What it is",""],["much","How much","num"],["pcs","Pieces","num adv"],["len","Length / qty","num adv"],["wt","Weight lb","num adv"],["price","Supplier's unit price","num"],["per","Per","adv"],["ext","Supplier's total","num"],["chk","Check",""],["yprice","Your price","num adv"],["ytotal","Your total","num"]];
+  var h="<tr>"+TH.map(function(c){return'<th class="'+c[2]+'"><span class="eh" contenteditable="true" spellcheck="false" data-th="'+c[0]+'" title="Click to rename this heading">'+esc(heads[c[0]]||c[1])+"</span></th>"}).join("")+'<th class="adv"></th></tr>',g=null;
   q.rows.forEach(function(r,i){
     if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="13">'+esc(g)+"</td></tr>"}
     var calc=calcExt(r),ok=Math.abs(calc-(r.ext||0))<0.005,s=sell(r,mult());
@@ -558,6 +566,8 @@ $("tbl").addEventListener("change",function(e){
   if(r.auto&&k!=="ext"&&k!=="opt"&&k!=="desc")r.ext=calcExt(r);
   render();
 });
+$("tbl").addEventListener("focusout",function(e){var k=e.target.getAttribute&&e.target.getAttribute("data-th");if(!k)return;var v=e.target.textContent.replace(/\s+/g," ").trim();if(v)heads[k]=v;else delete heads[k];saveHeads()});
+$("tbl").addEventListener("keydown",function(e){if(e.target.getAttribute&&e.target.getAttribute("data-th")&&e.key==="Enter"){e.preventDefault();e.target.blur()}});
 $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del");if(d!=null){quotes[cur].rows.splice(+d,1);render()}});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
 $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true});render()});
@@ -635,6 +645,8 @@ function vShow(){
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
 $("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
 vList();
+$("phd").innerHTML=PH.map(function(c){return'<input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'}).join("");
+$("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
 var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
 function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
 showLogo();
@@ -654,7 +666,7 @@ function qtyCells(r){
 function buildPrint(){
   var q=quotes[cur],m=mult(),T=totals(q,m),g=null,v=function(id){return esc($(id).value)};
   var h='<div class="ph"><div class="co">'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block;margin-bottom:8px">':"")+'<b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+($("p_pno").value?"<br>Project #: "+v("p_pno"):"")+($("p_cno").value?"<br>Contract #: "+v("p_cno"):"")+"</div></div>"+
-    "<p><b>PROJECT:</b> "+v("p_project")+($("p_item").value?"<br>"+v("p_item"):"")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>Description</th><th class="num">Qty</th><th class="num">Lgth</th><th class="num">Wgt</th><th class="num">Price ($)</th><th>UM</th><th class="num">Total ($)</th></tr>';
+    "<p><b>PROJECT:</b> "+v("p_project")+($("p_item").value?"<br>"+v("p_item"):"")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>'+esc(ph("desc"))+'</th><th class="num">'+esc(ph("qty"))+'</th><th class="num">'+esc(ph("lgth"))+'</th><th class="num">'+esc(ph("wgt"))+'</th><th class="num">'+esc(ph("price"))+"</th><th>"+esc(ph("um"))+'</th><th class="num">'+esc(ph("total"))+"</th></tr>";
   q.rows.forEach(function(r){
     if(r.opt)return;
     if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="7">'+esc(g)+"</td></tr>"}
