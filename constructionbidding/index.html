@@ -188,7 +188,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 10, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 11, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -468,7 +468,10 @@ function grabTerms(L){
     if(!on){if(/^(quote conditions|conditions|terms|terms\s*:|notes\s*:|\*+\s*please make note of terms)/i.test(t)&&t.length<70){on=true;continue}
       if(/^[•\u2022·]\s*(Freight|Taxes)\b/i.test(t)){on=true}else continue}
     if(/^(TERMS AND CONDITIONS OF SALE|Product Details|Product Name\b|Authorized Signature|Accepted by|Sign here|Signature)/i.test(t))break;
-    if(/^(Sales Rep|Phone|Email|Address):/i.test(t)||/^\d{3}[-.]\d{3}[-.]\d{4}/.test(t))continue;
+    if(/^(Sales Rep|Phone|Email|Address):/i.test(t)||/^\d{3}[-.]\d{3}[-.]\d{4}/.test(t)||/^validity$/i.test(t))continue;
+    if(/\b[A-Z]{2},?\s+\d{5}\b/.test(t)&&t.length<70)continue;
+    if(/^\d+\s+[A-Za-z][\w .]*\b(Way|Road|Rd|Street|St|Ave|Avenue|Drive|Dr|Blvd|Boulevard|Suite|Hwy|Highway)\b\.?$/i.test(t)&&t.length<60)continue;
+    t=t.replace(/\s+Validity$/i,"");
     out.push(t.replace(/^[•\u2022·]\s*/,"- "));n+=t.length;if(n>2600)break;
   }
   var joined=[];out.forEach(function(t){if(/^- /.test(t)||!joined.length)joined.push(t);else joined[joined.length-1]+=" "+t});
@@ -479,7 +482,7 @@ function fromLines(L,name,t0){
   var all=[parseNucor(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
   all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
-  var q={terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.[a-z0-9]+$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  var q={terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
@@ -612,13 +615,22 @@ function guessVendor(q){
   for(var i=0;i<names.length;i++){if(names[i]&&t.indexOf(names[i].toLowerCase())>=0)return names[i]}
   return"";
 }
+function scrubTerms(txt,vendor){ /* keep the supplier's name out of the bid that goes to the contractor */
+  var names=[vendor].concat(KNOWN).filter(Boolean).sort(function(a,b){return b.length-a.length}),hit=false;
+  var lines=txt.split("\n").filter(function(l){if(/^- Governing Terms/i.test(l)){hit=true;return false}return true}).map(function(l){
+    names.forEach(function(n){var re=new RegExp("\\b"+n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+Steel)?(?:,?\\s+(?:LLC|Inc\\.?|Ltd\\.?|Corp\\.?))?(?:[’']s)?\\s*","gi");if(re.test(l)){hit=true;l=l.replace(re,"")}});
+    return l.replace(/\(\s+/g,"(").replace(/\s{2,}/g," ").replace(/\s+([.,;:)])/g,"$1");
+  });
+  return{text:lines.join("\n").trim(),hit:hit};
+}
 function vShow(){
   if(!quotes.length)return;var q=quotes[cur];
   if(q.vendor==null)q.vendor=guessVendor(q);
   if(document.activeElement!==$("v_name"))$("v_name").value=q.vendor;
   var saved=vterms[q.vendor]||"",fromQuote=!saved&&q.terms&&!q.termsOff;
-  if(document.activeElement!==$("v_terms"))$("v_terms").value=saved||(fromQuote?q.terms:"");
-  $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote. Read them, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
+  var sc=fromQuote?scrubTerms(q.terms,q.vendor):null;
+  if(document.activeElement!==$("v_terms"))$("v_terms").value=saved||(sc?sc.text:"");
+  $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote"+(sc&&sc.hit?", with the supplier's name taken out":"")+". Read them once before you send, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
 }
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
 $("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
@@ -716,7 +728,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
