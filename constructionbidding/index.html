@@ -188,7 +188,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 9, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 10, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -542,6 +542,7 @@ function render(){
   var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
   vShow();
+  if(holders&&!(document.activeElement&&document.activeElement.getAttribute&&document.activeElement.getAttribute("data-hm")!=null))renderHolders();
 }
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
   var q=quotes[cur],T=totals(q,mult());
@@ -561,6 +562,7 @@ $("mk").addEventListener("input",function(){render()});
 $("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;render()}});
 $("more").addEventListener("click",function(){showAll=!showAll;render()});
 $("p_project").addEventListener("input",function(){quotes[cur].project=this.value});
+$("p_to").addEventListener("change",function(){var n=this.value.trim(),k=Object.keys(cmk).filter(function(x){return x.toLowerCase()===n.toLowerCase()})[0];if(k&&String(cmk[k])!==$("mk").value){$("mk").value=cmk[k];render();var m=$("msg");m.textContent="Used your saved markup for "+k+": "+cmk[k]+"%.";m.classList.remove("hide")}});
 
 /* ---------- files ---------- */
 async function take(files){
@@ -671,19 +673,32 @@ $("sentCsv").addEventListener("click",function(){
 });
 $("sentClear").addEventListener("click",function(){if(confirm("Clear the whole chart? This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
 $("doprint").addEventListener("click",function(){buildPrint();logSent($("p_to").value.trim());window.print()});
+var cmk={};try{cmk=JSON.parse(localStorage.getItem("cb_cmk")||"{}")}catch(e){}
+function hMk(h){var v=h.mk!=null?h.mk:cmk[h.company];return v===""||v==null||isNaN(parseFloat(v))?null:parseFloat(v)}
+function hTotal(h){if(!quotes.length)return"";var m=hMk(h),base=parseFloat($("mk").value)||0;return money(totals(quotes[cur],1+(m==null?base:m)/100).sell)}
 function renderHolders(){
-  var el=$("hold");if(!holders){el.innerHTML='<div class="sub" style="font-size:15px">Sending the same bid to several contractors? Add the plan holders list (PDF) in Step 1 and they will show up here.</div>';return}
-  var gcs=holders.list.filter(function(h){return h.gc}),others=holders.list.length-gcs.length;
-  el.innerHTML='<label>Who is this bid going to? ('+esc(holders.title).slice(0,70)+')</label><div style="border:1px solid var(--rule);border-radius:12px;padding:10px 14px;margin-top:6px;max-height:300px;overflow:auto">'+
-    holders.list.map(function(h,i){return h.gc?'<label style="display:flex;gap:10px;align-items:flex-start;font-size:16px;color:var(--ink);padding:6px 0"><input type="checkbox" data-h="'+i+'"'+(h.on?" checked":"")+' style="width:22px;height:22px;flex:none;margin-top:2px"><span><b>'+esc(h.company)+"</b><br><span style=\"color:var(--mute);font-size:14px\">"+esc(h.contact)+(h.tel?" · "+esc(h.tel):"")+"</span></span></label>":""}).join("")+
-    '</div><div class="sub" style="font-size:13px;margin-top:4px">'+gcs.length+" general contractors on the list"+(others?"; "+others+" others (suppliers, agencies, plan rooms) left off":"")+'.</div><p style="margin-top:10px"><button class="btn" id="printall" type="button">Print one bid for each contractor ticked</button></p>';
+  var el=$("hold");if(!holders){el.innerHTML='<div class="sub" style="font-size:15px">Sending the same bid to several contractors? Add the plan holders list (PDF) in Step 1 and they will show up here, each with its own markup.</div>';return}
+  var gcs=holders.list.filter(function(h){return h.gc}),others=holders.list.length-gcs.length,base=$("mk").value;
+  el.innerHTML='<label>Who is this bid going to, and at what markup? ('+esc(holders.title).slice(0,70)+')</label><div style="border:1px solid var(--rule);border-radius:12px;padding:6px 14px;margin-top:6px;max-height:380px;overflow:auto">'+
+    holders.list.map(function(h,i){if(!h.gc)return"";var m=hMk(h);
+      return'<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--hair);flex-wrap:wrap"><input type="checkbox" data-h="'+i+'"'+(h.on?" checked":"")+' style="width:22px;height:22px;flex:none" aria-label="Send to '+esc(h.company)+'">'+
+      '<span style="flex:1 1 200px;font-size:16px"><b>'+esc(h.company)+'</b><br><span style="color:var(--mute);font-size:14px">'+esc(h.contact)+(h.tel?" · "+esc(h.tel):"")+"</span></span>"+
+      '<span style="display:flex;align-items:center;gap:6px;font-size:15px"><input type="number" step="0.01" inputmode="decimal" data-hm="'+i+'" value="'+(m==null?"":m)+'" placeholder="'+esc(base)+'" aria-label="Markup percent for '+esc(h.company)+'" style="width:84px;font:inherit;font-size:17px;font-weight:700;padding:8px;border:2px solid var(--ink);border-radius:10px;text-align:right">%</span>'+
+      '<span data-ht="'+i+'" style="min-width:120px;text-align:right;font-weight:700">'+hTotal(h)+"</span></div>"}).join("")+
+    '</div><div class="sub" style="font-size:13px;margin-top:4px">Leave a box empty to use the markup from Step 3 ('+esc(base)+'%). A markup you type is remembered for that contractor. '+gcs.length+" general contractors on the list"+(others?"; "+others+" others (suppliers, agencies, plan rooms) left off":"")+'.</div><p style="margin-top:10px"><button class="btn" id="printall" type="button">Print one bid for each contractor ticked</button></p>';
 }
 $("hold").addEventListener("change",function(e){var i=e.target.getAttribute("data-h");if(i!=null)holders.list[+i].on=e.target.checked});
+$("hold").addEventListener("input",function(e){
+  var i=e.target.getAttribute("data-hm");if(i==null)return;var h=holders.list[+i],v=e.target.value.trim();
+  h.mk=v;if(v===""||isNaN(parseFloat(v)))delete cmk[h.company];else cmk[h.company]=parseFloat(v);
+  try{localStorage.setItem("cb_cmk",JSON.stringify(cmk))}catch(x){}
+  var t=$("hold").querySelector('[data-ht="'+i+'"]');if(t)t.textContent=hTotal(h);
+});
 $("hold").addEventListener("click",function(e){
   if(e.target.id!=="printall"||!quotes.length)return;
-  var picks=holders.list.filter(function(h){return h.gc&&h.on}),keep=$("p_to").value,html="";
-  picks.forEach(function(h,i){$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();logSent(h.company);html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
-  $("p_to").value=keep;if(!picks.length)return;$("print").innerHTML=html;window.print();
+  var picks=holders.list.filter(function(h){return h.gc&&h.on}),keepTo=$("p_to").value,keepMk=$("mk").value,html="";
+  picks.forEach(function(h,i){var m=hMk(h);$("mk").value=m==null?keepMk:m;$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();logSent(h.company);html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
+  $("p_to").value=keepTo;$("mk").value=keepMk;if(!picks.length)return;$("print").innerHTML=html;window.print();
 });
 renderHolders();
 $("csv").addEventListener("click",function(){
@@ -701,7 +716,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
