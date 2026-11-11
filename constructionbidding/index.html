@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Construction Bidding · Random Storytelling</title>
+<link rel="icon" href="../brand/icon-globe.svg" type="image/svg+xml">
+<style>
+  @font-face{font-family:"Elza";src:url("../fonts/Elza-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Elza";src:url("../fonts/Elza-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+  @font-face{font-family:"Elza";src:url("../fonts/Elza-Bold.woff2") format("woff2");font-weight:700;font-display:swap}
+  :root{--paper:#fff;--ink:#000;--mute:#6e6e6e;--rule:#dcdcdc;--hair:#eaeaea;--ok:#0a7a3b;--bad:#b3261e;--warn:#8a5a00}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:"Elza",Helvetica,Arial,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 16px 80px}
+  h1{font-size:clamp(30px,6vw,56px);font-weight:700;letter-spacing:-.04em;line-height:1}
+  .sub{color:var(--mute);margin-top:8px;font-size:15px}
+  h2{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:34px 0 12px;padding-top:14px;border-top:2px solid var(--ink)}
+  .drop{border:2px dashed var(--ink);padding:34px 16px;text-align:center;cursor:pointer;font-weight:500}
+  .drop.over{background:var(--ink);color:var(--paper)}
+  .drop small{display:block;color:var(--mute);font-weight:400;margin-top:6px}
+  .drop.over small{color:#ccc}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .tab{border:1px solid var(--ink);background:none;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tab.on{background:var(--ink);color:var(--paper)}
+  .tab .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--ok)}
+  .tab .dot.bad{background:var(--bad)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+  .stat{border:1px solid var(--rule);padding:10px 12px}
+  .stat b{display:block;font-size:20px;letter-spacing:-.02em}
+  .stat span{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+  .stat.ok b{color:var(--ok)} .stat.bad b{color:var(--bad)}
+  .flag{font-size:13px;color:var(--warn);border-left:3px solid var(--warn);padding:4px 10px;margin:6px 0}
+  .scroll{overflow-x:auto;border:1px solid var(--rule)}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th{font-size:10px;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:8px 6px;border-bottom:1px solid var(--ink);white-space:nowrap;background:#fafafa}
+  td{padding:3px 4px;border-bottom:1px solid var(--hair);vertical-align:top}
+  tr.grp td{font-weight:700;background:#f6f6f6;padding:6px}
+  tr.opt td{opacity:.5}
+  tr.off td.chk{color:var(--bad);font-weight:700}
+  td.chk{white-space:nowrap;color:var(--ok);font-size:12px;padding-top:8px}
+  td.num,th.num{text-align:right}
+  td input,td select{font:inherit;font-size:13px;border:1px solid transparent;background:none;padding:4px;width:100%;min-width:60px}
+  td input:focus,td select:focus{border-color:var(--ink);outline:none;background:#fff}
+  td input.d{min-width:260px} td input.n{text-align:right;min-width:86px}
+  td .note{font-size:11px;color:var(--mute);padding:0 4px 4px}
+  .x{border:none;background:none;cursor:pointer;color:var(--mute);font-size:16px;padding:4px 6px}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+  label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);display:block}
+  .f input,.f textarea{font:inherit;border:1px solid var(--ink);padding:9px 10px;width:100%;margin-top:4px;background:#fff}
+  .f{flex:1 1 200px} .f.s{flex:0 0 130px}
+  .big{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .btn{border:2px solid var(--ink);background:var(--ink);color:var(--paper);font:inherit;font-weight:700;padding:12px 18px;cursor:pointer}
+  .btn.ghost{background:none;color:var(--ink)}
+  .hide{display:none}
+  .foot{margin-top:40px;color:var(--mute);font-size:12px}
+  #print{display:none}
+  @media print{
+    body>.wrap{display:none} #print{display:block;padding:0;font-size:11px;color:#000}
+    #print .ph{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #000;padding-bottom:10px;margin-bottom:14px}
+    #print .ph h1{font-size:30px} #print .co b{font-size:15px}
+    #print table{font-size:10.5px} #print th{background:none;border-top:2px solid #000}
+    #print td{padding:5px 6px} #print tr.grp td{background:none;border-top:1px solid #000}
+    #print .tot td{font-weight:700;font-size:13px;border-top:2px solid #000;border-bottom:none}
+    #print .terms{margin-top:18px;white-space:pre-wrap} #print .sig{margin-top:44px;display:flex;gap:60px}
+    #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
+    @page{margin:14mm}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Construction Bidding</h1>
+  <p class="sub">Supplier quote in. Your marked up bid out. You confirm every number before it leaves.</p>
+
+  <h2>1 · Drop the supplier quote</h2>
+  <div class="drop" id="drop" tabindex="0">Drop quote PDFs here, or tap to choose<small>Files are read inside this browser. Nothing is uploaded or stored on a server.</small></div>
+  <input type="file" id="file" accept="application/pdf" multiple class="hide">
+  <div id="msg" class="flag hide"></div>
+
+  <div id="work" class="hide">
+    <h2>2 · Confirm the lines</h2>
+    <div class="tabs" id="tabs"></div>
+    <div class="stats" id="stats"></div>
+    <div id="flags"></div>
+    <div class="scroll"><table id="tbl"></table></div>
+    <p style="margin-top:10px"><button class="btn ghost" id="add">Add a line</button></p>
+
+    <h2>3 · Set the markup</h2>
+    <div class="row">
+      <div class="f s"><label for="mk">Markup %</label><input id="mk" type="number" step="0.01" value="4" inputmode="decimal"></div>
+      <div><label>Your bid</label><div class="big" id="sell">$0.00</div></div>
+      <div><label>Supplier cost</label><div class="big" id="cost" style="color:var(--mute)">$0.00</div></div>
+      <div><label>Spread</label><div class="big" id="spread">$0.00</div></div>
+    </div>
+
+    <h2>4 · Your proposal</h2>
+    <div class="row">
+      <div class="f"><label for="p_project">Project</label><input id="p_project"></div>
+      <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
+      <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="c_name">Your company</label><input id="c_name" data-save></div>
+      <div class="f"><label for="c_contact">Contact</label><input id="c_contact" data-save></div>
+      <div class="f"><label for="c_phone">Phone</label><input id="c_phone" data-save></div>
+      <div class="f"><label for="c_email">Email</label><input id="c_email" data-save></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="c_addr">Address</label><input id="c_addr" data-save></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="c_terms">Notes and terms (saved on this device)</label><textarea id="c_terms" rows="5" data-save placeholder="Delivery, validity, FOB, payment terms"></textarea></div>
+    </div>
+    <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" id="doprint">Print or save as PDF</button>
+      <button class="btn ghost" id="csv">Download the lines (CSV)</button>
+    </p>
+
+    <h2>5 · Tell us what was wrong</h2>
+    <div class="row">
+      <div class="f s"><label for="fb_min">Minutes this quote takes by hand</label><input id="fb_min" type="number" inputmode="decimal"></div>
+      <div class="f s"><label for="fb_ok">Every line right?</label><input id="fb_ok" placeholder="yes / no"></div>
+      <div class="f"><label for="fb_name">Your name</label><input id="fb_name" data-save></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="fb_txt">What was wrong, missing or slow</label><textarea id="fb_txt" rows="4" placeholder="A wrong number, a line it missed, something your proposal needs that is not here"></textarea></div>
+    </div>
+    <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <button class="btn" id="fb_mail">Email the feedback</button>
+      <button class="btn ghost" id="fb_copy">Copy the feedback</button>
+      <span id="fb_done" class="sub"></span>
+    </p>
+    <p class="sub" style="font-size:12px">The feedback carries the file name, layout, line count and check results. It carries no prices.</p>
+  </div>
+  <p class="foot">Test build, 2026-11-11. Reads Nucor Skyline, Nucor Rebar Fabrication and CMC Paving quote layouts. Any other layout: add the lines by hand and the checks still run. Random Storytelling.</p>
+</div>
+<div id="print"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+"use strict";
+if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+var $=function(id){return document.getElementById(id)};
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
+var num=function(s){if(s==null)return null;var v=parseFloat(String(s).replace(/[$,\s]/g,""));return isNaN(v)?null:v};
+var r2=function(x){return Math.round(Number((x*100).toFixed(6)))/100};
+var r4=function(x){return Math.round(Number((x*10000).toFixed(6)))/10000};
+var money=function(x){return (x<0?"-":"")+"$"+Math.abs(x).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2})};
+var plain=function(x,d){return x==null||x===""?"":Number(x).toLocaleString("en-US",{minimumFractionDigits:d||0,maximumFractionDigits:d==null?2:d})};
+var UM={ft:"FT",ea:"EA",ls:"LS",sqft:"SF",qty:"UNIT",cwt:"LB"};
+var quotes=[],cur=0;
+
+/* ---------- reading the PDF into lines ---------- */
+async function pdfLines(buf){
+  var doc=await pdfjsLib.getDocument({data:buf}).promise,out=[];
+  for(var p=1;p<=doc.numPages;p++){
+    var page=await doc.getPage(p),tc=await page.getTextContent(),rows=[];
+    tc.items.forEach(function(it){
+      if(!it.str||!it.str.trim())return;
+      var x=it.transform[4],y=it.transform[5],row=null;
+      for(var i=0;i<rows.length;i++){if(Math.abs(rows[i].y-y)<2.6){row=rows[i];break}}
+      if(!row){row={y:y,items:[]};rows.push(row)}
+      row.items.push({x:x,s:it.str});
+    });
+    rows.sort(function(a,b){return b.y-a.y});
+    rows.forEach(function(r){
+      r.items.sort(function(a,b){return a.x-b.x});
+      out.push({page:p,x:r.items[0].x,text:r.items.map(function(i){return i.s}).join(" ").replace(/\s+/g," ").trim()});
+    });
+  }
+  return out;
+}
+
+/* ---------- three layouts ---------- */
+var RE_N=/(\d[\d,]*)\s+(-|[\d,]+\.\d+\s*(?:sq\s*ft|ft))\s+(-|[\d,]+\.\d+\s*lb)\s+\$\s*([\d,]+\.\d+)\s*\/\s*(ft|ea|cwt|sqft)\s+\$\s*([\d,]+\.\d{2})\s*(.*)$/i;
+function parseNucor(L){
+  var rows=[],group="",printed=null,subs=[],project="",last=null;
+  for(var i=0;i<L.length;i++){
+    var t=L[i].text,m;
+    if(/^Product Name\b/.test(t)){var g=i>0?L[i-1].text:"";group=/^Product Details$/i.test(g)?"":g;last=null;continue}
+    if(/Net Weight\s+Net Tons\s+Net Amount/i.test(t)&&L[i+1]){m=L[i+1].text.match(/\$\s*([\d,]+\.\d{2})\s*$/);if(m)printed=num(m[1])}
+    if((m=t.match(/Total Price:\s*\$\s*([\d,]+\.\d{2})/i))&&printed==null)printed=num(m[1]);
+    if(m=t.match(/Subtotal:\s*\$\s*([\d,]+\.\d{2})/i)){subs.push(num(m[1]));last=null;continue}
+    if(/^Project Name\b/.test(t)&&L[i+1]&&!project)project=L[i+1].text.split(/\s+(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day\b/)[0].trim();
+    if(/^Total Weight/i.test(t)){last=null;continue}
+    m=t.match(RE_N);
+    if(m){
+      var name=t.slice(0,m.index).trim(),basis=m[5].toLowerCase(),lenTxt=m[2];
+      last={opt:!!m[7].trim(),group:group,desc:name,note:"",pcs:num(m[1]),len:lenTxt==="-"?null:num(lenTxt),wt:m[3]==="-"?null:num(m[3]),price:num(m[4]),basis:basis,ext:num(m[6]),x:L[i].x,page:L[i].page};
+      if(basis==="ea"&&last.len!=null){last.tail=", "+lenTxt.replace(/\s+/g," ");last.len=null}
+      rows.push(last);continue;
+    }
+    if(last&&L[i].page===last.page){
+      if(Math.abs(L[i].x-last.x)<4&&!/^[••]/.test(t))last.desc+=" "+t;
+      else if(L[i].x>last.x)last.note+=(last.note?" ":"")+t.replace(/^[••]\s*/,"");
+    }
+  }
+  rows.forEach(function(r){if(r.tail){r.desc+=r.tail;delete r.tail}});
+  if(printed==null&&subs.length)printed=r2(subs.reduce(function(a,b){return a+b},0));
+  return{layout:"Nucor Skyline",rows:rows,printed:printed,project:project,flags:[]};
+}
+function parseLump(L){
+  var rows=[],printed=null,project="";
+  L.forEach(function(l){
+    var t=l.text,m;
+    if(/^\d{3}\s/.test(t)&&/Lump Sum/i.test(t)){
+      var am=t.match(/\d[\d,]*\.\d{2}(?!\d)/g)||[];
+      if(!am.length)return;
+      var a=am.map(num).sort(function(x,y){return y-x})[0],item=t.slice(0,3);
+      var d=t.slice(3).replace(/Lump Sum/i,"").replace(plainMatch(am,a),"").replace(/\s+/g," ").trim();
+      rows.push({opt:false,group:"",desc:item+" "+d,note:"",pcs:1,len:null,wt:null,price:a,basis:"ls",ext:a});
+    }
+    if(/Price Excludes Tax/i.test(t)&&(m=t.match(/\d[\d,]*\.\d{2}/)))printed=num(m[0]);
+    if(!project&&(m=t.match(/Project:\s*(.+)$/)))project=m[1].trim();
+  });
+  var flags=rows.length?["Lump sum quote. Freight, escalation and exclusions are in the supplier's terms, not in these lines. Read them before you send."]:[];
+  return{layout:"Lump sum proposal",rows:rows,printed:printed,project:project,flags:flags};
+}
+function plainMatch(list,val){for(var i=0;i<list.length;i++)if(num(list[i])===val)return list[i];return""}
+var RE_C=/^([\d,]+\.\d{2})\s*(SY|LF|EA|GALS?|SF|CY|TONS?|LBS?|FT)\s*(.+?)\s+\$?\s*([\d,]+\.\d{2,4})\s*\$?\s+([A-Za-z]{1,5})(?:\s+\$?\s*([\d,]+\.\d{2})\s*\$?)?\s*$/i;
+function parseQtyList(L){
+  var rows=[],subs=[],group="",flags=[],last=null,project="",afterSub=true;
+  for(var i=0;i<L.length;i++){
+    var t=L[i].text,m,code="";
+    if(L[i].page>1&&!rows.length)break;
+    if(!project&&(m=t.match(/^Project Name\s+(.+?)(?:\s*Bid Date.*)?$/)))project=m[1].trim();
+    if(m=t.match(/^([A-Z]-\d+-\d+)\s+(.*)$/)){code=m[1];t=m[2]}
+    m=t.match(RE_C);
+    if(m){
+      var ext=m[6]?num(m[6]):null;
+      if(ext==null){group=(code?code+" ":"")+m[3].trim();flags.push('"'+plain(num(m[1]),0)+" "+m[2]+" "+m[3].trim()+'" has a rate and no total. It reads as a summary line, so it was left out. Confirm.');last=null;afterSub=false;continue}
+      last={opt:false,group:group,desc:m[3].trim(),note:"",pcs:1,len:num(m[1]),wt:null,price:num(m[4]),basis:"qty",ext:ext,um:m[2]};
+      rows.push(last);afterSub=false;continue;
+    }
+    if(/^\$?\s*[\d,]+\.\d{2}\s*\$?$/.test(t)&&rows.length){subs.push(num(t));last=null;afterSub=true;continue}
+    if(/^(Notes:|TERMS:|Page \d)/i.test(t)){last=null;if(/^Notes:/i.test(t))break;continue}
+    if(last){if(last.note.length<140)last.note+=(last.note?" ":"")+t}
+    else if(afterSub&&rows.length&&/^[A-Za-z]/.test(t)&&t.length<60&&!/FAX|TEL|Suite|Ave|Paving Solutions/i.test(t))group=t;
+  }
+  var printed=subs.length?r2(subs.reduce(function(a,b){return a+b},0)):null;
+  if(subs.length>1)flags.push("The supplier prints "+subs.length+" subtotals and no grand total. The printed total shown here is their sum.");
+  return{layout:"Quantity list",rows:rows,printed:printed,project:project,flags:flags};
+}
+function calcExt(r){
+  var p=r.price||0;
+  if(r.basis==="ft")return r2((r.pcs||0)*(r.len||0)*p);
+  if(r.basis==="ea"||r.basis==="ls")return r2((r.pcs||0)*p);
+  if(r.basis==="cwt")return r2((r.wt||0)/100*p);
+  return r2((r.len||0)*p);
+}
+function sell(r,mult){
+  if(r.basis==="cwt"){var u=r4((r.price||0)/100*mult);return{unit:u,ext:r2((r.wt||0)*u),txt:u.toFixed(4)}}
+  var u2=r2((r.price||0)*mult),c={pcs:r.pcs,len:r.len,wt:r.wt,price:u2,basis:r.basis};
+  return{unit:u2,ext:calcExt(c),txt:plain(u2,2)};
+}
+async function parseBuffer(buf,name){
+  var t0=performance.now(),L=await pdfLines(buf);
+  var c=[parseNucor(L),parseLump(L),parseQtyList(L)].sort(function(a,b){return b.rows.length-a.rows.length})[0];
+  var q={name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:c.project||name.replace(/\.pdf$/i,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  if(!q.rows.length)q.flags.push("This layout was not recognised. Add the lines by hand below; the checks and the proposal still work.");
+  if(q.rows.some(function(r){return r.opt}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
+  return q;
+}
+function totals(q,mult){
+  var cost=0,sellT=0,off=0,n=0;
+  q.rows.forEach(function(r){
+    var ok=Math.abs(calcExt(r)-(r.ext||0))<0.005;if(!ok)off++;
+    if(r.opt)return;n++;cost+=r.ext||0;sellT+=sell(r,mult).ext;
+  });
+  cost=r2(cost);sellT=r2(sellT);
+  return{cost:cost,sell:sellT,off:off,n:n,match:q.printed==null?null:Math.abs(cost-q.printed)<0.005,diff:q.printed==null?null:r2(cost-q.printed)};
+}
+
+/* ---------- screen ---------- */
+function mult(){var v=parseFloat($("mk").value);return 1+(isNaN(v)?0:v)/100}
+function render(){
+  if(!quotes.length){$("work").classList.add("hide");return}
+  $("work").classList.remove("hide");
+  var q=quotes[cur],T=totals(q,mult());
+  $("tabs").innerHTML=quotes.map(function(x,i){var t=totals(x,1);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
+  $("stats").innerHTML=
+    '<div class="stat"><b>'+T.n+"</b><span>Lines in the bid</span></div>"+
+    '<div class="stat"><b>'+(q.printed==null?"None found":money(q.printed))+"</b><span>Supplier's printed total</span></div>"+
+    '<div class="stat"><b>'+money(T.cost)+"</b><span>Your lines add to</span></div>"+
+    '<div class="stat '+(T.match?"ok":T.match===false?"bad":"")+'"><b>'+(T.match==null?"Check by eye":T.match?"Matches":"Off by "+money(T.diff))+"</b><span>Add up check</span></div>"+
+    '<div class="stat '+(T.off?"bad":"ok")+'"><b>'+(T.off?T.off+" to look at":"All recompute")+"</b><span>Quantity × price, each line</span></div>"+
+    '<div class="stat"><b>'+q.secs.toFixed(1)+" s</b><span>Read time · "+esc(q.layout)+"</span></div>";
+  $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag">'+esc(f)+"</div>"}).join("")+(T.match===false?'<div class="flag">The lines do not add to the supplier\'s printed total. Look for an Optional mark, a missed line or a typo before you send anything.</div>':"");
+  var h='<tr><th>Opt.</th><th>Description</th><th class="num">Pieces</th><th class="num">Length / qty</th><th class="num">Weight lb</th><th class="num">Unit cost</th><th>Per</th><th class="num">Supplier total</th><th>Check</th><th class="num">Your price</th><th class="num">Your total</th><th></th></tr>',g=null;
+  q.rows.forEach(function(r,i){
+    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="12">'+esc(g)+"</td></tr>"}
+    var calc=calcExt(r),ok=Math.abs(calc-(r.ext||0))<0.005,s=sell(r,mult());
+    var inp=function(k,cls,v){return'<input class="'+cls+'" data-i="'+i+'" data-k="'+k+'" value="'+esc(v==null?"":v)+'"'+(cls==="n"?' inputmode="decimal"':"")+">"};
+    h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:auto" title="Optional: leave out of the total"></td>'+
+      "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+"</td>"+
+      "<td>"+inp("pcs","n",r.pcs)+"</td><td>"+inp("len","n",r.len)+"</td><td>"+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
+      '<td><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
+      "<td>"+inp("ext","n",r.ext==null?"":r.ext.toFixed(2))+'</td><td class="chk">'+(ok?"✓":"recomputes to "+money(calc))+"</td>"+
+      '<td class="num" style="padding-top:8px">'+s.txt+'</td><td class="num" style="padding-top:8px">'+(r.opt?"left out":money(s.ext))+'</td><td><button class="x" data-del="'+i+'" title="Remove line">×</button></td></tr>';
+  });
+  $("tbl").innerHTML=h;
+  $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
+  if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
+}
+function softTotals(){ /* update numbers without rebuilding inputs while typing */
+  var q=quotes[cur],T=totals(q,mult());
+  $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
+}
+$("tbl").addEventListener("change",function(e){
+  var t=e.target,i=t.getAttribute("data-i"),k=t.getAttribute("data-k");if(i==null)return;
+  var r=quotes[cur].rows[+i];
+  if(k==="opt")r.opt=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;else r[k]=num(t.value);
+  render();
+});
+$("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del");if(d!=null){quotes[cur].rows.splice(+d,1);render()}});
+$("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
+$("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0});render()});
+$("mk").addEventListener("input",function(){render()});
+$("p_project").addEventListener("input",function(){quotes[cur].project=this.value});
+
+/* ---------- files ---------- */
+async function take(files){
+  var msg=$("msg");msg.classList.add("hide");
+  if(!window.pdfjsLib){msg.textContent="The PDF reader did not load. Check the connection and reload.";msg.classList.remove("hide");return}
+  for(var i=0;i<files.length;i++){
+    var f=files[i];if(!/pdf$/i.test(f.type)&&!/\.pdf$/i.test(f.name))continue;
+    try{quotes.push(await parseBuffer(await f.arrayBuffer(),f.name));cur=quotes.length-1}
+    catch(err){msg.textContent="Could not read "+f.name+": "+err.message;msg.classList.remove("hide")}
+  }
+  render();
+}
+var drop=$("drop"),file=$("file");
+drop.addEventListener("click",function(){file.click()});
+drop.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();file.click()}});
+file.addEventListener("change",function(){take(file.files);file.value=""});
+["dragenter","dragover"].forEach(function(n){drop.addEventListener(n,function(e){e.preventDefault();drop.classList.add("over")})});
+["dragleave","drop"].forEach(function(n){drop.addEventListener(n,function(e){e.preventDefault();drop.classList.remove("over")})});
+drop.addEventListener("drop",function(e){take(e.dataTransfer.files)});
+
+/* ---------- saved company details ---------- */
+var saved={};try{saved=JSON.parse(localStorage.getItem("cb_company")||"{}")}catch(e){}
+document.querySelectorAll("[data-save]").forEach(function(el){
+  if(saved[el.id])el.value=saved[el.id];
+  el.addEventListener("input",function(){saved[el.id]=el.value;try{localStorage.setItem("cb_company",JSON.stringify(saved))}catch(e){}});
+});
+$("p_date").value=new Date().toLocaleDateString("en-US");
+
+/* ---------- proposal ---------- */
+function qtyCells(r){
+  if(r.basis==="ft")return[r.pcs>1?plain(r.pcs,0):"",plain(r.len,2)+" ft"];
+  if(r.basis==="sqft"||r.basis==="qty")return[plain(r.len,2),""];
+  return[plain(r.pcs,0),""];
+}
+function buildPrint(){
+  var q=quotes[cur],m=mult(),T=totals(q,m),g=null,v=function(id){return esc($(id).value)};
+  var h='<div class="ph"><div class="co"><b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+"</div></div>"+
+    "<p><b>PROJECT:</b> "+v("p_project")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>Description</th><th class="num">Qty</th><th class="num">Lgth</th><th class="num">Wgt</th><th class="num">Price ($)</th><th>UM</th><th class="num">Total ($)</th></tr>';
+  q.rows.forEach(function(r){
+    if(r.opt)return;
+    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="7">'+esc(g)+"</td></tr>"}
+    var s=sell(r,m),c=qtyCells(r);
+    h+="<tr><td>"+esc(r.desc)+'</td><td class="num">'+c[0]+'</td><td class="num">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">'+s.txt+"</td><td>"+esc(r.um&&r.basis==="qty"?r.um.toUpperCase():UM[r.basis])+'</td><td class="num">'+plain(s.ext,2)+"</td></tr>";
+  });
+  h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+
+    ($("c_terms").value?'<div class="terms"><b>NOTES:</b>\n'+v("c_terms")+"</div>":"")+
+    '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
+  $("print").innerHTML=h;
+}
+$("doprint").addEventListener("click",function(){buildPrint();window.print()});
+$("csv").addEventListener("click",function(){
+  var q=quotes[cur],m=mult(),c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'};
+  var out=[["group","description","optional","pieces","length_or_qty","weight_lb","unit_cost","per","supplier_total","your_price","your_total"].join(",")];
+  q.rows.forEach(function(r){var s=sell(r,m);out.push([c(r.group),c(r.desc),r.opt?"yes":"",r.pcs,r.len==null?"":r.len,r.wt==null?"":r.wt,r.price,r.basis,r.ext,s.unit,r.opt?"":s.ext].join(","))});
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download=q.name.replace(/\.pdf$/i,"")+"_lines.csv";a.click();
+});
+function feedback(){
+  var q=quotes[cur],T=totals(q,1);
+  return["Construction Bidding test feedback","From: "+$("fb_name").value,"When: "+new Date().toLocaleString("en-US"),"File: "+q.name,"Layout read as: "+q.layout,
+    "Lines: "+q.rows.length+" ("+q.rows.filter(function(r){return r.opt}).length+" optional)","Add up check: "+(T.match==null?"no printed total found":T.match?"matches":"does not match"),
+    "Lines that do not recompute: "+T.off,"Read time: "+q.secs.toFixed(1)+" s","Minutes by hand today: "+$("fb_min").value,"Every line right: "+$("fb_ok").value,"","Notes:",$("fb_txt").value].join("\n");
+}
+$("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
+$("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
+window.CB={parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+})();
+</script>
+</body>
+</html>
