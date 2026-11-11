@@ -239,6 +239,9 @@
   @media(prefers-reduced-motion:reduce){.doors .tile{animation:none}}
 
   .locker{margin-top:14px;display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:center}
+  .lk-game{margin-top:26px;display:flex;gap:16px;align-items:flex-end}
+  .lk-game video{width:170px;aspect-ratio:1170/1992;object-fit:cover;border:6px solid #222;border-radius:24px;background:#000}
+  .lk-game .cap{font-size:11px;opacity:.6;max-width:180px;line-height:1.5}
   .lk-img{border-radius:3px;overflow:hidden;background:#111}
   .lk-img img{width:100%;aspect-ratio:3/4;object-fit:cover}
   .lk-copy h3{font-weight:900;text-transform:uppercase;font-size:clamp(24px,3vw,40px);line-height:1.05}
@@ -498,6 +501,10 @@
             <li><b>03</b><span>Scan, play, win</span></li>
             <li><b>04</b><span>Come back tomorrow</span></li>
           </ul>
+          <div class="lk-game">
+            <video src="/mmmultiple/img/vyb-game.mp4" poster="/mmmultiple/img/vyb-game.jpg" muted loop playsinline autoplay preload="metadata" aria-label="A short play of the Scan to Win game"></video>
+            <span class="cap">What a scan opens: one round, two minutes, eat the gummies</span>
+          </div>
           <a class="opener lk-play" href="https://www.vybrancelabs.co/pages/scan-to-win?utm_source=randomstorytelling&amp;utm_medium=site&amp;utm_campaign=mmmultiple" target="_blank" rel="noopener"><span>Play the game</span> <i>↗</i></a>
         </div>
       </div>
