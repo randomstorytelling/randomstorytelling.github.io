@@ -144,6 +144,7 @@
     </div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_addr">Address</label><input id="c_addr" data-save></div>
+      <div class="f"><label for="c_logo">Your logo (shows on the printed bid)</label><input id="c_logo" type="file" accept="image/*"><div id="c_logo_prev" style="margin-top:8px"></div></div>
     </div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_terms">Notes and terms (saved on this device)</label><textarea id="c_terms" rows="5" data-save placeholder="Delivery, validity, FOB, payment terms"></textarea></div>
@@ -170,7 +171,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 4, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 5, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -534,6 +535,15 @@ document.querySelectorAll("[data-save]").forEach(function(el){
   el.addEventListener("input",function(){saved[el.id]=el.value;try{localStorage.setItem("cb_company",JSON.stringify(saved))}catch(e){}});
 });
 $("p_date").value=new Date().toLocaleDateString("en-US");
+var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
+function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
+showLogo();
+$("c_logo").addEventListener("change",async function(){
+  var f=this.files[0];if(!f)return;
+  try{var bmp=await createImageBitmap(f),k=Math.min(1,480/bmp.width),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
+    cv.getContext("2d").drawImage(bmp,0,0,cv.width,cv.height);logo=cv.toDataURL("image/png");try{localStorage.setItem("cb_logo",logo)}catch(e){}showLogo()}catch(e){}
+});
+$("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x"){logo="";try{localStorage.removeItem("cb_logo")}catch(x){}showLogo()}});
 
 /* ---------- proposal ---------- */
 function qtyCells(r){
@@ -543,7 +553,7 @@ function qtyCells(r){
 }
 function buildPrint(){
   var q=quotes[cur],m=mult(),T=totals(q,m),g=null,v=function(id){return esc($(id).value)};
-  var h='<div class="ph"><div class="co"><b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+"</div></div>"+
+  var h='<div class="ph"><div class="co">'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block;margin-bottom:8px">':"")+'<b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+"</div></div>"+
     "<p><b>PROJECT:</b> "+v("p_project")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>Description</th><th class="num">Qty</th><th class="num">Lgth</th><th class="num">Wgt</th><th class="num">Price ($)</th><th>UM</th><th class="num">Total ($)</th></tr>';
   q.rows.forEach(function(r){
     if(r.opt)return;
