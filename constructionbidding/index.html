@@ -260,7 +260,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 43, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 44, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -268,6 +268,12 @@
 <script>
 (function(){
 "use strict";
+/* WHICH LINK. /constructionbidding is WD3's own: its letterhead and footer are built in, always.
+   /bid is for any other firm: nothing of WD3 is loaded or shown, and everything the page remembers is stored under its own names,
+   so the two links never share settings, even in the same browser. /bid/index.html is a copy made by ship.sh; edit only this file. */
+var firmId=/^\/bid(\/|$)/i.test((typeof location!=="undefined"&&location.pathname)||"")?"new":"wd3";
+function NS(k){return firmId==="wd3"?k:String(k).replace(/^cb_/,"bid_")}
+var LS={getItem:function(k){return localStorage.getItem(NS(k))},setItem:function(k,v){localStorage.setItem(NS(k),v)},removeItem:function(k){localStorage.removeItem(NS(k))}};
 if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 var $=function(id){return document.getElementById(id)};
 var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
@@ -673,7 +679,7 @@ function totals(q,pct){
 
 /* ---------- screen ---------- */
 function pctNow(){var v=parseFloat($("mk").value);return isNaN(v)?0:v}
-var tiers=[];try{tiers=JSON.parse(localStorage.getItem("cb_tiers")||"[]")||[]}catch(e){}
+var tiers=[];try{tiers=JSON.parse(LS.getItem("cb_tiers")||"[]")||[]}catch(e){}
 function tierFor(cost){var best=null;tiers.forEach(function(t){if(t.over!=null&&!isNaN(t.over)&&t.pct!=null&&!isNaN(t.pct)&&cost>=t.over&&(!best||t.over>=best.over))best=t});return best}
 function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,0).cost);if(t){q.mk=String(t.pct);q.mkFrom="table";q.mkTier=t}else{q.mk="";q.mkFrom="";q.mkTier=null}}
 /* MONEY GUARD. Recomputed from scratch, a different way from the display code, every time a bid is about to leave.
@@ -716,11 +722,11 @@ function qtyText(r){
   if(r.basis==="ea")return plain(r.pcs,0)+" ea";
   return r.len==null?"type a quantity":plain(r.len,2)+(r.basis==="sqft"?" sq ft":u?" "+u:"");
 }
-var hid={};try{hid=JSON.parse(localStorage.getItem("cb_hidecols")||"{}")||{}}catch(e){hid={}}
-var showAll=false,heads={};try{heads=JSON.parse(localStorage.getItem("cb_heads")||"{}")}catch(e){}
+var hid={};try{hid=JSON.parse(LS.getItem("cb_hidecols")||"{}")||{}}catch(e){hid={}}
+var showAll=false,heads={};try{heads=JSON.parse(LS.getItem("cb_heads")||"{}")}catch(e){}
 var PH=[["code","CODE"],["desc","DESCRIPTION"],["qty","PCS"],["lgth","UNITS"],["wgt","WEIGHT"],["price","UNIT PRICE"],["total","EXTENDED PRICE ($)"]];
 function ph(k){for(var i=0;i<PH.length;i++)if(PH[i][0]===k)return heads["p_"+k]||PH[i][1];return k}
-function saveHeads(){try{localStorage.setItem("cb_heads",JSON.stringify(heads))}catch(e){}}
+function saveHeads(){try{LS.setItem("cb_heads",JSON.stringify(heads))}catch(e){}}
 function render(){
   if(!quotes.length){$("work").classList.add("hide");return}
   $("work").classList.remove("hide");
@@ -871,9 +877,9 @@ $("day").addEventListener("click",function(e){
   }
 });
 /* ---------- quotes stay on this computer until cleared, so a typo is fixed without adding the quote again ---------- */
-function saveQuotes(){try{localStorage.setItem("cb_quotes",JSON.stringify({at:Date.now(),cur:cur,quotes:quotes.map(function(q){var c={};for(var k in q)c[k]=q[k];c.text=(q.text||"").slice(0,3000);return c})}))}catch(e){}}
+function saveQuotes(){try{LS.setItem("cb_quotes",JSON.stringify({at:Date.now(),cur:cur,quotes:quotes.map(function(q){var c={};for(var k in q)c[k]=q[k];c.text=(q.text||"").slice(0,3000);return c})}))}catch(e){}}
 function restoreQuotes(){
-  var d=null;try{d=JSON.parse(localStorage.getItem("cb_quotes")||"null")}catch(e){}
+  var d=null;try{d=JSON.parse(LS.getItem("cb_quotes")||"null")}catch(e){}
   if(!d||!d.quotes||!d.quotes.length)return;
   d.quotes.forEach(function(q){ /* quotes saved by an earlier version kept the tool's own hints in the note; move them so they never print */
     (q.rows||[]).forEach(function(r){var n=String(r.note||"");
@@ -906,10 +912,10 @@ function toLine(q,g){var i=-1;q.rows.forEach(function(r,k){if(i<0&&(r.group||"")
   q.rows.splice(i<0?q.rows.length:i,0,{opt:true,auto:true,group:prev,desc:hd?hd.desc:g,note:"",hint:"This was read as a heading. Type its quantity and price, then untick Leave out.",pcs:1,len:hd?hd.qty:null,wt:null,price:hd&&hd.rate!=null?hd.rate:0,basis:"qty",ext:0,um:hd?hd.um:""})}
 /* A fix made once sticks: remembered per supplier on this computer, re-applied to that supplier's next quote.
    A remembered fix is never allowed to break a quote that adds up: if it would, it is undone and not counted. */
-var fixes={};try{fixes=JSON.parse(localStorage.getItem("cb_fixes")||"{}")||{}}catch(e){fixes={}}
+var fixes={};try{fixes=JSON.parse(LS.getItem("cb_fixes")||"{}")||{}}catch(e){fixes={}}
 function fixNorm(t){return String(t||"").toLowerCase().replace(/^\S+ · /,"").replace(/[\d.,]+/g,"#").replace(/\s+/g," ").trim()}
 function fixKey(q){return String(q.vendor||guessVendor(q)||"").trim().toLowerCase()}
-function fixSave(){try{localStorage.setItem("cb_fixes",JSON.stringify(fixes))}catch(e){}}
+function fixSave(){try{LS.setItem("cb_fixes",JSON.stringify(fixes))}catch(e){}}
 function fixLearn(q,kind,text){var k=fixKey(q),n=fixNorm(text);if(!k||!n)return false;var f=fixes[k]=fixes[k]||{head:[],line:[]},other=kind==="head"?"line":"head";
   f[other]=f[other].filter(function(x){return x!==n});if(f[kind].indexOf(n)<0)f[kind].push(n);fixSave();return true}
 function fixApply(q){var f=fixes[fixKey(q)];if(!f)return 0;var n=0,ok0=totals(q,0).match;
@@ -993,16 +999,16 @@ function rtHtml(str){return esc(str||"").replace(/&lt;(\/?)b&gt;/g,"<$1b>").repl
 document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-bold]");if(!b)return;var el=$(b.getAttribute("data-bold"));el.focus();try{document.execCommand("bold")}catch(x){}el.dispatchEvent(new Event("input",{bubbles:true}))});
 
 /* ---------- saved company details ---------- */
-var saved={};try{saved=JSON.parse(localStorage.getItem("cb_company")||"{}")}catch(e){}
+var saved={};try{saved=JSON.parse(LS.getItem("cb_company")||"{}")}catch(e){}
 document.querySelectorAll("[data-save]").forEach(function(el){
   if(saved[el.id])el.value=saved[el.id];
-  el.addEventListener("input",function(){saved[el.id]=el.value;try{localStorage.setItem("cb_company",JSON.stringify(saved))}catch(e){}});
+  el.addEventListener("input",function(){saved[el.id]=el.value;try{LS.setItem("cb_company",JSON.stringify(saved))}catch(e){}});
 });
 $("p_date").value=new Date().toLocaleDateString("en-US");
 /* ---------- supplier templates: terms saved per supplier ---------- */
 var KNOWN=["Nucor Skyline","Nucor Rebar Fabrication","Triad","Hennegan","CMC Paving","CMC","JD Fields","Votorantim","Prairie","Ozinga","Harris","ABC Coating","Shoreline","Dywidag","DSI","Williams","Adelphia","Veritas","DS Brown","Skyline","Nucor"];
-var vterms={};try{vterms=JSON.parse(localStorage.getItem("cb_vterms")||"{}")}catch(e){}
-function vSave(){try{localStorage.setItem("cb_vterms",JSON.stringify(vterms))}catch(e){}}
+var vterms={};try{vterms=JSON.parse(LS.getItem("cb_vterms")||"{}")}catch(e){}
+function vSave(){try{LS.setItem("cb_vterms",JSON.stringify(vterms))}catch(e){}}
 function vList(){$("v_list").innerHTML=Object.keys(vterms).sort().map(function(n){return'<option value="'+esc(n)+'">'}).join("")}
 function guessVendor(q){
   var names=Object.keys(vterms).sort(function(a,b){return b.length-a.length}).concat(KNOWN),t=q.text||"";
@@ -1030,22 +1036,14 @@ $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.tr
 $("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
 vList();
 $("phd").innerHTML=PH.map(function(c){return'<div><input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'+(/^(code|qty|lgth|wgt)$/.test(c[0])?'<label style="display:flex;gap:6px;align-items:center;font-weight:400;font-size:13px;margin-top:4px"><input type="checkbox" data-col="'+c[0]+'"'+(hid[c[0]]?"":" checked")+' style="min-width:0;width:18px;height:18px"> Show on the bid</label>':"")+"</div>"}).join("");
-$("phd").addEventListener("change",function(e){var c=e.target.getAttribute("data-col");if(!c)return;if(e.target.checked)delete hid[c];else hid[c]=true;try{localStorage.setItem("cb_hidecols",JSON.stringify(hid))}catch(x){}});
+$("phd").addEventListener("change",function(e){var c=e.target.getAttribute("data-col");if(!c)return;if(e.target.checked)delete hid[c];else hid[c]=true;try{LS.setItem("cb_hidecols",JSON.stringify(hid))}catch(x){}});
 $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
 /* HOUSE: what is built in for the company this version is set up for. One place. Empty it when the tool leaves that company;
    then each company uploads its own letterhead and footer. An uploaded picture always wins over the built-in one. */
-/* FIRM: which company this browser is set up for. One place.
-   - A link ending in ?firm=wd3 (or a browser that already used this tool before firm profiles existed) is WD3: its letterhead and footer are built in.
-   - Any other browser is a NEW company: nothing of another company is loaded or shown. They type their details and add their own letterhead and footer once.
-   The choice is remembered in the browser, so the link is only needed the first time. */
+/* FIRM: decided by the link (see the top of this script). WD3's letterhead and footer are built in on its own link only. */
 var FIRMS={wd3:{lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3"}};
-var firmId="";(function(){var had=false,st="";
-  try{st=localStorage.getItem("cb_firm")||"";for(var i=0;i<localStorage.length;i++){if(/^cb_/.test(localStorage.key(i)||"")&&localStorage.key(i)!=="cb_firm")had=true}}catch(e){}
-  var fp="";try{fp=((location.search||"").match(/[?&]firm=([a-z0-9-]{1,30})/i)||[])[1]||""}catch(e){}
-  firmId=(fp||st||(had||typeof location.search!=="string"?"wd3":"new")).toLowerCase(); /* no address bar = the test harness, which checks the WD3 setup */
-  try{localStorage.setItem("cb_firm",firmId)}catch(e){}})();
 var HOUSE=FIRMS[firmId]||{lh:"",ft:"",short:""};
-var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=localStorage.getItem("cb_img_"+k)||""}catch(e){}});
+var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=LS.getItem("cb_img_"+k)||""}catch(e){}});
 var imgs={};function useImgs(){["lh","ft"].forEach(function(k){imgs[k]=own[k]||HOUSE[k]||""});
   document.documentElement.style.setProperty("--foot",imgs.ft?"25mm":"12mm")}useImgs();
 ["lh","ft"].forEach(function(k){if(HOUSE[k]){var pre=new Image();pre.src=HOUSE[k]}}); /* loaded before anyone prints */
@@ -1062,21 +1060,21 @@ function firstRun(){var isNew=!FIRMS[firmId],named=$("c_name").value.trim()!==""
     var f=this.files[0];if(!f)return;
     try{var bmp=await createImageBitmap(f),s=Math.min(1,1600/bmp.width),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*s);cv.height=Math.round(bmp.height*s);
       var cx=cv.getContext("2d");cx.fillStyle="#fff";cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(bmp,0,0,cv.width,cv.height);own[k]=cv.toDataURL("image/jpeg",0.9);useImgs();
-      try{localStorage.setItem("cb_img_"+k,own[k])}catch(e){var m=$("msg");m.textContent="That picture is too big to remember on this computer. It will work until you close the page.";m.classList.remove("hide")}
+      try{LS.setItem("cb_img_"+k,own[k])}catch(e){var m=$("msg");m.textContent="That picture is too big to remember on this computer. It will work until you close the page.";m.classList.remove("hide")}
       showImg(k)}catch(e){}
   });
-  $("c_"+k+"_prev").addEventListener("click",function(e){if(e.target.getAttribute("data-imgx")===k){own[k]="";useImgs();try{localStorage.removeItem("cb_img_"+k)}catch(x){}showImg(k)}});
+  $("c_"+k+"_prev").addEventListener("click",function(e){if(e.target.getAttribute("data-imgx")===k){own[k]="";useImgs();try{LS.removeItem("cb_img_"+k)}catch(x){}showImg(k)}});
 });
-var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
+var logo="";try{logo=LS.getItem("cb_logo")||""}catch(e){}
 firstRun();document.addEventListener("change",function(){setTimeout(firstRun,1200)});$("c_name").addEventListener("input",firstRun);
 function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
 showLogo();
 $("c_logo").addEventListener("change",async function(){
   var f=this.files[0];if(!f)return;
   try{var bmp=await createImageBitmap(f),k=Math.min(1,480/bmp.width),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
-    cv.getContext("2d").drawImage(bmp,0,0,cv.width,cv.height);logo=cv.toDataURL("image/png");try{localStorage.setItem("cb_logo",logo)}catch(e){}showLogo()}catch(e){}
+    cv.getContext("2d").drawImage(bmp,0,0,cv.width,cv.height);logo=cv.toDataURL("image/png");try{LS.setItem("cb_logo",logo)}catch(e){}showLogo()}catch(e){}
 });
-$("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x"){logo="";try{localStorage.removeItem("cb_logo")}catch(x){}showLogo()}});
+$("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x"){logo="";try{LS.removeItem("cb_logo")}catch(x){}showLogo()}});
 
 /* ---------- proposal ---------- */
 /* what goes in the PCS and UNITS cells of the printed bid */
@@ -1140,14 +1138,14 @@ function buildPrint(){
     '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
   $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+(sigRoom==="big"?" sigbig":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
-var layout="one";try{layout=localStorage.getItem("cb_layout")||"one"}catch(e){}
-var sigRoom="std";try{sigRoom=localStorage.getItem("cb_sig")||"std"}catch(e){}
+var layout="one";try{layout=LS.getItem("cb_layout")||"one"}catch(e){}
+var sigRoom="std";try{sigRoom=LS.getItem("cb_sig")||"std"}catch(e){}
 function showSig(){document.querySelectorAll("#sigsp button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-sig")===sigRoom)})}
-$("sigsp").addEventListener("click",function(e){var v=e.target.getAttribute("data-sig");if(!v)return;sigRoom=v;try{localStorage.setItem("cb_sig",v)}catch(x){}showSig()});
+$("sigsp").addEventListener("click",function(e){var v=e.target.getAttribute("data-sig");if(!v)return;sigRoom=v;try{LS.setItem("cb_sig",v)}catch(x){}showSig()});
 showSig();
 function showLay(){document.querySelectorAll("#lay button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-lay")===layout)});
   $("layNote").textContent=layout==="two"?"Page 1: letterhead, the lines and the total. Page 2: the conditions in larger type and the signature lines. Both pages carry the letterhead and footer.":"Everything on one page when it fits, with the conditions in small type. A long bid still runs onto a second page."}
-$("lay").addEventListener("click",function(e){var l=e.target.getAttribute("data-lay");if(!l)return;layout=l;try{localStorage.setItem("cb_layout",l)}catch(x){}showLay()});
+$("lay").addEventListener("click",function(e){var l=e.target.getAttribute("data-lay");if(!l)return;layout=l;try{LS.setItem("cb_layout",l)}catch(x){}showLay()});
 showLay();
 /* the name the browser offers when a bid is saved as a PDF */
 function fileTitle(q){var who=$("p_to").value.trim(),co=(HOUSE.short||$("c_name").value.trim());return[co,q.project||"Bid",who].filter(Boolean).join(" - ").replace(/[\\/:*?"<>|]+/g," ").replace(/\s+/g," ").slice(0,120)}
@@ -1159,7 +1157,7 @@ var tiersSaved=JSON.stringify(tiers);
 function saveTiers(){} /* rows stay where she typed them; saving is the user's choice */
 function fullRow(t){return t.over!=null&&!isNaN(t.over)&&t.pct!=null&&!isNaN(t.pct)}
 function tierState(){
-  var now=JSON.stringify(tiers),has=false;try{has=!!localStorage.getItem("cb_tiers")&&localStorage.getItem("cb_tiers")!=="[]"}catch(e){}
+  var now=JSON.stringify(tiers),has=false;try{has=!!LS.getItem("cb_tiers")&&LS.getItem("cb_tiers")!=="[]"}catch(e){}
   $("tierState").textContent=!tiers.length&&!has?"":now===tiersSaved&&has?"Saved on this computer. It will be here next time.":tiers.length?(tiers.some(function(t){return!fullRow(t)})?"A row needs both an amount and a percent before it counts. ":"")+"In use for now, not saved. Tap Save my table to keep it for next time.":"The table is empty for now. Your saved one comes back when you reopen the page, unless you tap Forget.";
   $("tierSave").style.display=tiers.length&&now!==tiersSaved?"":"none";$("tierForget").style.display=has?"":"none";
 }
@@ -1167,8 +1165,8 @@ function renderTiers(){
   $("tierRows").innerHTML=tiers.length?tiers.map(function(t,i){return'<div class="trow">Supplier\'s price of $ <input data-to="'+i+'" inputmode="decimal" value="'+(t.over==null?"":Number(t.over).toLocaleString("en-US"))+'" aria-label="Amount"> and up gets <input class="p" data-tp="'+i+'" inputmode="decimal" value="'+(t.pct==null||isNaN(t.pct)?"":t.pct)+'" aria-label="Markup percent"> % <button class="x" data-tx="'+i+'" type="button" title="Remove this row">×</button></div>'}).join(""):'<div class="sub" style="font-size:14px">No rows yet. The page stops and asks for a markup on every bid.</div>';
   tierState();
 }
-$("tierSave").addEventListener("click",function(){tiers=tiers.filter(fullRow).sort(function(a,b){return a.over-b.over});try{localStorage.setItem("cb_tiers",JSON.stringify(tiers));tiersSaved=JSON.stringify(tiers);renderTiers();if(quotes.length)render()}catch(e){$("tierState").textContent="This browser would not save it. The table still works until you close the page.";return}tierState()});
-$("tierForget").addEventListener("click",function(){if(!confirm("Forget the saved markup table on this computer?"))return;try{localStorage.removeItem("cb_tiers")}catch(e){}tiersSaved="[]";tierState()});
+$("tierSave").addEventListener("click",function(){tiers=tiers.filter(fullRow).sort(function(a,b){return a.over-b.over});try{LS.setItem("cb_tiers",JSON.stringify(tiers));tiersSaved=JSON.stringify(tiers);renderTiers();if(quotes.length)render()}catch(e){$("tierState").textContent="This browser would not save it. The table still works until you close the page.";return}tierState()});
+$("tierForget").addEventListener("click",function(){if(!confirm("Forget the saved markup table on this computer?"))return;try{LS.removeItem("cb_tiers")}catch(e){}tiersSaved="[]";tierState()});
 $("tierAdd").addEventListener("click",function(){tiers.push({over:tiers.length?null:0,pct:null});renderTiers()});
 $("tierRows").addEventListener("change",function(e){
   var o=e.target.getAttribute("data-to"),pc=e.target.getAttribute("data-tp");
@@ -1179,7 +1177,7 @@ $("tierRows").addEventListener("click",function(e){var x=e.target.getAttribute("
 renderTiers();
 /* ---------- REVISIONS: every printed bid is remembered per project and contractor.
    Printing the same bid again keeps its revision; printing a changed one makes the next revision and says what changed. ---------- */
-var revs={};try{revs=JSON.parse(localStorage.getItem("cb_revs")||"{}")||{}}catch(e){}
+var revs={};try{revs=JSON.parse(LS.getItem("cb_revs")||"{}")||{}}catch(e){}
 function revKey(q,to){return String(q.project||q.name||"").toLowerCase().replace(/\s+/g," ").trim()+"|"+String(to||"").split(", attn.")[0].toLowerCase().replace(/\s+/g," ").trim()}
 function snap(q,pct){var B=priceBid(q,pct),lines=[];q.rows.forEach(function(r,i){if(!r.opt)lines.push([r.desc,B.lines[i].extC])});return{pct:pct,totalC:B.sellC,costC:B.costC,vendor:q.vendor||"",lines:lines}}
 function revDiff(a,b){
@@ -1203,7 +1201,7 @@ function commitRev(q,to,pct){
   var R=revFor(q,to,pct),k=revKey(q,to);
   if(R.fresh||R.changes.length){var e=R.now;e.rev=R.rev;e.at=Date.now();e.changes=R.changes;(revs[k]=revs[k]||[]).push(e);revs[k]=revs[k].slice(-20);
     var keys=Object.keys(revs);if(keys.length>600)keys.slice(0,keys.length-600).forEach(function(x){delete revs[x]});
-    try{localStorage.setItem("cb_revs",JSON.stringify(revs))}catch(x){}}
+    try{LS.setItem("cb_revs",JSON.stringify(revs))}catch(x){}}
   return R;
 }
 function revNote(){
@@ -1213,8 +1211,8 @@ function revNote(){
   el.innerHTML=R.fresh?"":R.changes.length?"<b>This will print as revision "+R.rev+".</b> Changed since revision "+R.last.rev+" (printed "+esc(when)+"): "+esc(R.changes.join("; "))+".":"Same as revision "+R.rev+", printed "+esc(when)+". Printing again keeps it revision "+R.rev+".";
 }
 /* ---------- BID DAY CHECKLIST: who got what, and whether it was sent ---------- */
-var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
-function saveSent(){sent=sent.slice(0,800);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}}
+var sent=[];try{sent=JSON.parse(LS.getItem("cb_sent")||"[]")}catch(e){}
+function saveSent(){sent=sent.slice(0,800);try{LS.setItem("cb_sent",JSON.stringify(sent))}catch(e){}}
 /* TIMER: from adding the quote to the first time its bid is printed, her checking included.
    Counted once per quote, and only when it happened in one sitting (under an hour), so a page left open overnight is not a timing. */
 function bidSecs(q){
@@ -1222,7 +1220,7 @@ function bidSecs(q){
   var s=(Date.now()-q.addedAt)/1000;return s>0&&s<3600?Math.round(s):null;
 }
 function fmtSecs(s){return s<60?s+" sec":Math.floor(s/60)+" min "+(s%60?(s%60)+" sec":"")}
-var byHand="";try{byHand=localStorage.getItem("cb_byhand")||""}catch(e){}
+var byHand="";try{byHand=LS.getItem("cb_byhand")||""}catch(e){}
 function renderTime(){
   var el=$("timeBox");if(!el)return;
   var t=sent.filter(function(x){return x.secs!=null}).map(function(x){return x.secs}).sort(function(a,b){return a-b});
@@ -1290,11 +1288,11 @@ $("sentCsv").addEventListener("click",function(){
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="bid-day-checklist.csv";a.click();
 });
 $("byHand").value=byHand;
-$("byHand").addEventListener("input",function(){byHand=this.value;try{localStorage.setItem("cb_byhand",byHand)}catch(e){}renderTime()});
+$("byHand").addEventListener("input",function(){byHand=this.value;try{LS.setItem("cb_byhand",byHand)}catch(e){}renderTime()});
 renderTime();
-$("sentClear").addEventListener("click",function(){if(confirm("Clear the whole checklist? The revision history of each bid is kept. This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
+$("sentClear").addEventListener("click",function(){if(confirm("Clear the whole checklist? The revision history of each bid is kept. This cannot be undone.")){sent=[];try{LS.removeItem("cb_sent")}catch(e){}renderSent()}});
 $("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;buildPrint();logSent($("p_to").value.trim());window.print()});
-var cmk={};try{cmk=JSON.parse(localStorage.getItem("cb_cmk")||"{}")}catch(e){}
+var cmk={};try{cmk=JSON.parse(LS.getItem("cb_cmk")||"{}")}catch(e){}
 function hMk(h){var v=h.mk!=null?h.mk:cmk[h.company];return v===""||v==null||isNaN(parseFloat(v))?null:parseFloat(v)}
 function hTotal(h){if(!quotes.length)return"";var m=hMk(h),base=parseFloat($("mk").value)||0;return money(totals(quotes[cur],m==null?base:m).sell)}
 function renderHolders(){
@@ -1312,7 +1310,7 @@ $("hold").addEventListener("change",function(e){var i=e.target.getAttribute("dat
 $("hold").addEventListener("input",function(e){
   var i=e.target.getAttribute("data-hm");if(i==null)return;var h=holders.list[+i],v=e.target.value.trim();
   h.mk=v;if(v===""||isNaN(parseFloat(v)))delete cmk[h.company];else cmk[h.company]=parseFloat(v);
-  try{localStorage.setItem("cb_cmk",JSON.stringify(cmk))}catch(x){}
+  try{LS.setItem("cb_cmk",JSON.stringify(cmk))}catch(x){}
   var t=$("hold").querySelector('[data-ht="'+i+'"]');if(t)t.textContent=hTotal(h);
 });
 $("hold").addEventListener("click",function(e){
