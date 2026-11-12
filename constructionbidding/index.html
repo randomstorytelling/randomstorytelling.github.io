@@ -278,7 +278,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 51, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 52, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -637,10 +637,18 @@ function grabTerms(L){
   var out=[],on=false,n=0;
   for(var i=0;i<L.length;i++){
     var t=L[i].text;
-    if(!on){if(/^(quote conditions|conditions|terms|terms\s*:|notes\s*:|\*+\s*please make note of terms)/i.test(t)&&t.length<70){on=true;continue}
+    if(!on){ /* a heading on its own line ("Terms:", "Messages:", "Quote Conditions"), never a form field like "Terms: Due Date: 06/13/2025" */
+      if(/^(quote conditions|conditions|terms(?: (?:and|&) conditions)?|notes?|messages?|qualifications|\*+\s*please make note of terms.*)\s*:?\s*$/i.test(t)&&t.length<70){on=true;continue}
       if(/^[•\u2022·]\s*(Freight|Taxes)\b/i.test(t)){on=true}else continue}
     if(/^(TERMS AND CONDITIONS OF SALE|Product Details|Product Name\b|Authorized Signature|Accepted by|Sign here|Signature)/i.test(t))break;
     if(/^(Sales Rep|Phone|Email|Address):/i.test(t)||/^\d{3}[-.]\d{3}[-.]\d{4}/.test(t)||/^validity$/i.test(t))continue;
+    /* the page furniture and order form that repeat on a later page are not notes */
+    if(/\S+@\S+\.\w{2,}/.test(t)&&t.length<80||/\b(Phone|Fax|Tel)\s*:/i.test(t)||/^Page \d+( of \d+)?$/i.test(t)||/\bPage \d+ of \d+\b/i.test(t)&&t.length<80)continue;
+    if(/^(bill to|ship to|sold to|attn\b|customer p\.?o|quotation no|quote (no|number|#)|contract\s*:|order qty|sign to convert|unloading instructions|receiving hours|max bundle weight|sales \d|terms\s*:\s*\S)/i.test(t)&&t.length<110)continue;
+    if(/\$\s*[\d,]+\.\d{2}\s*[A-Z]?\s*$/.test(t)&&/\d/.test(t.slice(0,12))||/\b(sub\s?total|total( weight)?)\b.*[\d,]+\.\d{2}\s*$/i.test(t))continue; /* a priced line or a total */
+    if((t.match(/\b[A-Z][\w .#]{1,18}:\s/g)||[]).length>=2&&t.length<100)continue; /* two or more "Label:" fields on one line */
+    if(/^,\s/.test(t)||/^\d+\s+[\w .]*\b(Way|Road|Rd|Street|St|Ave|Avenue|Drive|Dr|Blvd|Suite|Hwy)\b.*\b(19|20)\d\d$/i.test(t)&&t.length<70)continue; /* an address with the date beside it */
+    t=t.replace(/^PO#\s+(?=[A-Z][a-z])/,"");
     if(/\b[A-Z]{2},?\s+\d{5}\b/.test(t)&&t.length<70)continue;
     if(/^\d+\s+[A-Za-z][\w .]*\b(Way|Road|Rd|Street|St|Ave|Avenue|Drive|Dr|Blvd|Boulevard|Suite|Hwy|Highway)\b\.?$/i.test(t)&&t.length<60)continue;
     t=t.replace(/\s+Validity$/i,"");
@@ -714,6 +722,8 @@ function fromLines(L,name,t0){
   else if(!q.rows.length)q.flags.push("No priced lines were found in this file. Add the lines by hand below; the checks and the proposal still work.");
   if(q.rows.some(function(r){return r.opt&&!r.auto}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt&&!r.auto}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   if(L.cand){if(L.cand.vendor)q.vendor=L.cand.vendor;if(L.cand.bidDate)q.bidDate=L.cand.bidDate;q.byAI=true}
+  /* a file is usually named after its supplier; when the project name had to come from the file name, the supplier's name is taken off the front */
+  if(!c.project){var gv0=guessVendor(q);if(gv0){var pj=q.project.replace(new RegExp("^\\s*"+gv0.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+(?:Steel|Metals|Rebar|Paving))?\\b[\\s\\-–—:,]*","i"),"").trim();if(pj)q.project=pj}}
   fixApply(q);
   return q;
 }
@@ -793,6 +803,7 @@ function render(){
   var fk=fixKey(q),fN=fixes[fk]?fixes[fk].head.length+fixes[fk].line.length:0;
   $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("")+
     (q.rows.some(function(r){return!r.opt&&hasOwn(r)})?'<div class="flag"><b>Your own price.</b> '+q.rows.filter(function(r){return!r.opt&&hasOwn(r)}).length+" line(s) carry a price you typed. The markup is applied to every other line and not to "+(q.rows.filter(function(r){return!r.opt&&hasOwn(r)}).length>1?"those":"that one")+". Clear the box to go back to the markup.</div>":"")+
+    ((function(){var vn=String(q.vendor||guessVendor(q)||"").trim();return vn.length>2&&String(q.project||"").toLowerCase().indexOf(vn.toLowerCase())>=0?'<div class="flag"><b>Check the project name.</b> It contains your supplier\'s name ('+esc(vn)+"). Change it in Step 3 so it does not print on your bid.</div>":""})())+
     (q.fixed?'<div class="flag"><b>Remembered.</b> '+q.fixed+" fix"+(q.fixed>1?"es":"")+" you made before on "+esc(q.vendor||guessVendor(q))+" quotes "+(q.fixed>1?"were":"was")+' applied to this one. The lines still add up. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
     (q.learned&&!q.fixed&&fN?'<div class="flag"><b>Saved.</b> The next '+esc(q.vendor||guessVendor(q))+' quote will be read this way on this computer. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
     (q.learned===false&&!fk?'<div class="flag"><b>Not saved for next time.</b> Type the supplier\'s name in Step 3 and this fix can be remembered for their next quote.</div>':"");
