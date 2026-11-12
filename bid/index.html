@@ -260,7 +260,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 45, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 46, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -762,11 +762,12 @@ function render(){
     var needQty=r.auto&&r.len==null&&r.basis==="qty";
     h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
       "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+(r.hint&&r.opt?'<div class="note">'+esc(r.hint)+"</div>":"")+
-      (r.opt?'<label style="display:flex;gap:6px;align-items:center;font-weight:700;font-size:13px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="show"'+(r.show?" checked":"")+' style="min-width:0;width:18px;height:18px"> Show on the bid as '+esc(r.optWord||"OPTIONAL")+", priced, not in the total</label>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button></td>'+
+      (r.opt?'<label style="display:flex;gap:6px;align-items:center;font-weight:700;font-size:13px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="show"'+(r.show?" checked":"")+' style="min-width:0;width:18px;height:18px"> Show on the bid as '+esc(r.optWord||"OPTIONAL")+", priced, not in the total</label>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button>'+
+      ' <span style="font-size:11px;opacity:.7;white-space:nowrap"> · <button type="button" class="lk" style="font-size:11px;font-weight:400" data-up="'+i+'" title="Move this line up">▲ up</button> <button type="button" class="lk" style="font-size:11px;font-weight:400" data-down="'+i+'" title="Move this line down">▼ down</button> · <button type="button" class="lk" style="font-size:11px;font-weight:400" data-below="'+i+'" title="Add a new line right under this one">＋ line below</button></span></td>'+
       (needQty||(r.auto&&r.basis==="qty")?'<td>'+inp("len","n",r.len)+"</td>":'<td class="num ro">'+esc(qtyText(r))+"</td>")+
       '<td class="adv">'+inp("pcs","n",r.pcs)+'</td><td class="adv">'+inp("len","n",r.len)+'</td><td class="adv">'+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
       '<td class="adv"><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
-      "<td>"+inp("ext","n",r.ext==null?"":r.ext.toFixed(2))+'</td><td class="chk">'+(ok?"✓":"should be "+money(calc))+"</td>"+
+      "<td>"+inp("ext","n",r.ext==null?"":r.ext.toFixed(2))+'</td><td class="chk">'+(ok?"✓":"should be "+money(calc))+(!ok&&r.mine&&!hasOwn(r)&&!r.opt?'<div style="font-weight:400;white-space:normal;max-width:190px">Is '+money(r.ext)+' the price YOU are charging for this line? <button type="button" class="lk" data-useown="'+i+'">Use it as my price, no markup</button></div>':"")+"</td>"+
       '<td class="num ro adv">'+s.txt+'</td><td class="num ro"><b>'+(r.opt?"left out":money(s.ext))+'</b>'+(r.opt?"":'<div style="margin-top:4px"><input class="n" data-i="'+i+'" data-k="own" inputmode="decimal" value="'+(hasOwn(r)?esc(r.own):"")+'" placeholder="own price" title="Type your own unit price for this line (for example freight). The markup is not applied to it." aria-label="Your own unit price for this line" style="width:104px;min-width:0;font-size:13px;padding:5px 7px'+(hasOwn(r)?";border-color:var(--ink);font-weight:700":"")+'">'+(hasOwn(r)?'<div style="font-size:11px;font-weight:400">your price per unit, no markup'+(B.lines[i]&&B.lines[i].extC<cents(r.ext)?' · <b>below the supplier\'s cost</b>':"")+"</div>":"")+"</div>")+'</td><td class="adv"><button class="x" data-del="'+i+'" title="Remove line">×</button></td></tr>';
   });
   $("tbl").innerHTML=h;$("tbl").className=showAll?"":"simple";
@@ -904,6 +905,13 @@ $("tbl").addEventListener("change",function(e){
 });
 $("tbl").addEventListener("focusout",function(e){var k=e.target.getAttribute&&e.target.getAttribute("data-th");if(!k)return;var v=e.target.textContent.replace(/\s+/g," ").trim();if(v)heads[k]=v;else delete heads[k];saveHeads()});
 $("tbl").addEventListener("keydown",function(e){if(e.target.getAttribute&&e.target.getAttribute("data-th")&&e.key==="Enter"){e.preventDefault();e.target.blur()}});
+/* A line can go anywhere. Up or down one place inside its section; at a section's edge it crosses into the next section. */
+function moveRow(q,i,d){var r=q.rows[i],n=q.rows[i+d];if(!r||!n)return;
+  if((n.group||"")===(r.group||"")){q.rows[i]=n;q.rows[i+d]=r}else r.group=n.group||""}
+function addBelow(q,i){var r=q.rows[i];q.rows.splice(i+1,0,{opt:false,group:r?r.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true,mine:true})}
+/* She typed her selling price into the supplier's total on a line she added: move it to her own price, where the markup leaves it alone. */
+function useOwn(q,i){var r=q.rows[i];if(!r)return;var f=r.basis==="ft"?(r.pcs||0)*(r.len||0):(r.basis==="ea"||r.basis==="ls")?(r.pcs||0):r.basis==="cwt"?(r.wt||0)/100:(r.len||0);
+  if(!(f>0))return;r.own=Math.round((r.ext||0)/f*10000)/10000;r.ext=calcExt(r)}
 /* The reader's guess is never final: any line can become a heading and any heading a line, on any layout. */
 function toHead(q,i){var r=q.rows[i];if(!r||!String(r.desc||"").trim())return;var old=r.group||"",g=String(r.desc).trim();q.rows.splice(i,1);
   for(var k=i;k<q.rows.length&&(q.rows[k].group||"")===old;k++)q.rows[k].group=g}
@@ -926,6 +934,11 @@ function fixApply(q){var f=fixes[fixKey(q)];if(!f)return 0;var n=0,ok0=totals(q,
   groupsOf(q).forEach(function(g){if(f.line.indexOf(fixNorm(g))>=0)attempt(function(){toLine(q,g)})});
   q.fixed=n;return n}
 $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del"),th=e.target.getAttribute("data-tohead"),tl=e.target.getAttribute("data-toline"),q=quotes[cur];
+  var A=function(k){return e.target.getAttribute(k)};
+  if(A("data-up")!=null){moveRow(q,+A("data-up"),-1);render();return}
+  if(A("data-down")!=null){moveRow(q,+A("data-down"),1);render();return}
+  if(A("data-below")!=null){addBelow(q,+A("data-below"));render();return}
+  if(A("data-useown")!=null){useOwn(q,+A("data-useown"));render();return}
   if(d!=null){q.rows.splice(+d,1);render()}
   else if(th!=null){q.learned=fixLearn(q,"head",q.rows[+th]&&q.rows[+th].desc);toHead(q,+th);render()}
   else if(tl!=null){q.learned=fixLearn(q,"line",tl);toLine(q,tl);render()}});
@@ -1343,7 +1356,7 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
