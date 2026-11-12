@@ -215,6 +215,9 @@
       <div class="f"><label>When the supplier's own name appears in their notes</label>
         <div class="quick" id="nm" style="margin-top:6px"><button type="button" data-nm="us">Change it to our company name</button><button type="button" data-nm="sup">Change it to "the supplier"</button><button type="button" data-nm="keep">Leave it as written</button></div>
         <div class="sub" id="nmNote" style="font-size:13px;margin-top:4px"></div></div>
+      <div class="f"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="nmk" style="min-width:0;width:20px;height:20px"> Add this bid's markup to the dollar amounts inside these notes</label>
+        <div class="sub" style="font-size:13px;margin-top:4px">The box below keeps the supplier's own figures. The printed bid shows each one with the markup. Tick "leave as is" beside any amount you price your own way.</div>
+        <div id="nmkPrev" style="margin-top:6px;font-size:14px"></div></div>
       <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="v_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button><span class="sub" style="font-size:13px">Select words, then tap Bold.</span></div><div id="v_terms" class="rt" contenteditable="true" data-ph="Paste the terms you put at the bottom of bids that use this supplier"></div><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div></div>
     </div>
     <details id="co"><summary>Your company details (typed once, remembered on this computer)</summary>
@@ -274,7 +277,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 49, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 50, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -1088,13 +1091,35 @@ function scrubTerms(txt,vendor,mode){
   });
   return{text:lines.join("\n").trim(),hit:hit,mode:mode};
 }
+/* The supplier's dollar amounts inside the notes (unloading per hour, escalation per ton). The box always holds the supplier's
+   own figures, so a saved note is never marked up twice; the markup is applied when the bid prints, with that bid's own markup.
+   An amount ticked "leave as is" is never changed. Remembered per supplier. */
+var noteMk=false;try{noteMk=LS.getItem("cb_notemk")==="1"}catch(e){}
+var noteSkip={};try{noteSkip=JSON.parse(LS.getItem("cb_noteskip")||"{}")||{}}catch(e){}
+function noteMoney(html,pct,skip){var ch=[];
+  var out=String(html||"").replace(/\$\s?(\d[\d,]*(?:\.\d{1,4})?)/g,function(m,n){
+    var key=n.replace(/,/g,""),v=parseFloat(key);if(!(v>0))return m;
+    var dec=(n.split(".")[1]||"").length,c=Math.round(Number((v*(1+(pct||0)/100)*10000).toFixed(4)))/10000,
+        d=dec>2?dec:(dec===0&&Math.abs(c-Math.round(c))<1e-9?0:2),txt="$"+c.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d}),kept=!!(skip&&skip[key]);
+    ch.push({from:"$"+n,to:kept?"$"+n:txt,key:key,kept:kept});return kept?m:txt});
+  return{html:out,changes:ch}}
+function notePrev(){var el=$("nmkPrev"),q=quotes[cur];$("nmk").checked=noteMk;if(!el)return;
+  if(!noteMk||!q){el.innerHTML="";return}
+  var noMk=String(q.mk||"").trim()==="",sk=noteSkip[q.vendor||""]||{},R=noteMoney($("v_terms").value,noMk?0:pctNow(),sk),seen={};
+  var list=R.changes.filter(function(c){if(seen[c.key])return false;seen[c.key]=1;return true});
+  el.innerHTML=!list.length?'<span class="sub">No dollar amounts in these notes.</span>':(noMk?'<span class="sub">Type the markup first to see the new amounts.</span>':"")+list.map(function(c){
+    return'<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span>'+esc(c.from)+" → <b>"+esc(c.to)+'</b></span><label style="font-weight:400;font-size:13px;display:flex;gap:5px;align-items:center"><input type="checkbox" data-nskip="'+esc(c.key)+'"'+(c.kept?" checked":"")+' style="min-width:0;width:16px;height:16px"> leave as is</label></div>'}).join("")}
+$("nmk").addEventListener("change",function(){noteMk=this.checked;try{LS.setItem("cb_notemk",noteMk?"1":"0")}catch(e){}notePrev()});
+$("nmkPrev").addEventListener("change",function(e){var k=e.target.getAttribute("data-nskip");if(k==null||!quotes.length)return;var v=quotes[cur].vendor||"",o=noteSkip[v]=noteSkip[v]||{};
+  if(e.target.checked)o[k]=1;else delete o[k];try{LS.setItem("cb_noteskip",JSON.stringify(noteSkip))}catch(x){}notePrev()});
 function showNm(){document.querySelectorAll("#nm button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-nm")===nameMode)});
   $("nmNote").textContent=nameMode==="us"&&!ourName()?"Type your company name in Your company details and it will be used. Until then the notes say \"the supplier\".":"Remembered. Picking one refills the notes below from this supplier's quote."}
 $("nm").addEventListener("click",function(e){var v=e.target.getAttribute("data-nm");if(!v)return;nameMode=v;try{LS.setItem("cb_namemode",v)}catch(x){}showNm();
   var q=quotes[cur];if(!q||!q.terms)return;var sc=scrubTerms(q.terms,q.vendor||guessVendor(q));$("v_terms").value=sc.text;q.termsOff=false;
   if(q.vendor){vterms[q.vendor]=sc.text;vSave();vList()}
   $("v_note").textContent="Refilled from the supplier's own quote"+(sc.mode==="keep"?", left as written.":sc.mode==="us"?", with the supplier's name changed to "+ourName()+".":", with the supplier's name changed to \"the supplier\".")+" Read it once before you send."});
-function vShow(){
+function vShow(){vShow0();notePrev()}
+function vShow0(){
   showNm();if(!quotes.length)return;var q=quotes[cur];
   if(q.vendor==null)q.vendor=guessVendor(q);
   if(document.activeElement!==$("v_name"))$("v_name").value=q.vendor;
@@ -1104,7 +1129,7 @@ function vShow(){
   $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote"+(sc&&sc.hit?(sc.mode==="us"?", with the supplier's name changed to "+ourName():", with the supplier's name changed to \"the supplier\""):"")+". Read them once before you send, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
 }
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
-$("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
+$("v_terms").addEventListener("input",function(){notePrev();var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
 vList();
 $("phd").innerHTML=PH.map(function(c){return'<div><input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'+(/^(code|qty|lgth|wgt)$/.test(c[0])?'<label style="display:flex;gap:6px;align-items:center;font-weight:400;font-size:13px;margin-top:4px"><input type="checkbox" data-col="'+c[0]+'"'+(hid[c[0]]?"":" checked")+' style="min-width:0;width:18px;height:18px"> Show on the bid</label>':"")+"</div>"}).join("");
 $("phd").addEventListener("change",function(e){var c=e.target.getAttribute("data-col");if(!c)return;if(e.target.checked)delete hid[c];else hid[c]=true;try{LS.setItem("cb_hidecols",JSON.stringify(hid))}catch(x){}});
@@ -1208,7 +1233,7 @@ function buildPrint(){
     h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
   h+='<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
-    '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
+    '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[noteMk?noteMoney(rtHtml($("v_terms").value),m,noteSkip[q.vendor||""]).html:rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
   $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+(sigRoom==="big"?" sigbig":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
@@ -1458,7 +1483,7 @@ $("h_out").addEventListener("click",function(e){
     if(t.length){if(t[0].over!==0)t[0].over=0;tiers=t;renderTiers();if(quotes.length)render();$("h_say").textContent="Filled into the markup table in Step 3. Press Save there to keep it."}}
   if(e.target.id==="h_csv"&&hLast){var c=function(x){return'"'+String(x).replace(/"/g,'""')+'"'},csv=["Your bid,Supplier quote,Supplier,Supplier total,Your bid total,Markup %"].concat(hLast.map(function(p){return[c(p.bid),c(p.sup),c(p.vendor),p.cost,p.total,p.pct].join(",")})).join("\n");
     var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="my-bid-history.csv";document.body.appendChild(a);a.click();a.remove()}});
-window.CB={hPair:hPair,hRead:hRead,scrubTerms:scrubTerms,moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={noteMoney:noteMoney,hPair:hPair,hRead:hRead,scrubTerms:scrubTerms,moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
