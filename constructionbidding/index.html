@@ -135,10 +135,11 @@
       <div><label>You make</label><div class="big" id="spread">$0.00</div></div>
     </div>
 
-    <details id="tiers"><summary>Markup table (optional). Set it once and the markup fills itself in.</summary>
-      <p class="sub" style="font-size:14px;margin:8px 0">Bigger quotes usually get a smaller markup. Add a row for each size. Leave the table empty and the page will always stop and ask you.</p>
+    <details id="tiers"><summary>Your markup table (optional). Set your own sizes and percents and the markup fills itself in.</summary>
+      <p class="sub" style="font-size:14px;margin:8px 0">Bigger quotes usually get a smaller markup. Add a row for each size, with your own numbers. Leave the table empty and the page will always stop and ask you.</p>
       <div id="tierRows"></div>
-      <p style="margin-top:10px"><button class="btn ghost sm" id="tierAdd" type="button">+ Add a row</button></p>
+      <p style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn ghost sm" id="tierAdd" type="button">+ Add a row</button><button class="btn sm" id="tierSave" type="button">Save my table</button><button class="btn ghost sm" id="tierForget" type="button">Forget the saved table</button></p>
+      <div class="sub" id="tierState" style="font-size:14px;margin-top:6px"></div>
     </details>
 
     <h2>Step 4. Print your bid</h2>
@@ -202,7 +203,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 13, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 14, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -696,10 +697,19 @@ function buildPrint(){
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
   $("print").innerHTML=h;
 }
-function saveTiers(){tiers.sort(function(a,b){return(a.over||0)-(b.over||0)});try{localStorage.setItem("cb_tiers",JSON.stringify(tiers))}catch(e){}}
+var tiersSaved=JSON.stringify(tiers);
+function saveTiers(){tiers.sort(function(a,b){return(a.over||0)-(b.over||0)})} /* sorts only; saving is the user's choice */
+function tierState(){
+  var now=JSON.stringify(tiers),has=false;try{has=!!localStorage.getItem("cb_tiers")&&localStorage.getItem("cb_tiers")!=="[]"}catch(e){}
+  $("tierState").textContent=!tiers.length&&!has?"":now===tiersSaved&&has?"Saved on this computer. It will be here next time.":tiers.length?"In use for now, not saved. Tap Save my table to keep it for next time.":"The table is empty for now. Your saved one comes back when you reopen the page, unless you tap Forget.";
+  $("tierSave").style.display=tiers.length&&now!==tiersSaved?"":"none";$("tierForget").style.display=has?"":"none";
+}
 function renderTiers(){
   $("tierRows").innerHTML=tiers.length?tiers.map(function(t,i){return'<div class="trow">Supplier\'s price of $ <input data-to="'+i+'" inputmode="decimal" value="'+(t.over==null?"":Number(t.over).toLocaleString("en-US"))+'" aria-label="Amount"> and up gets <input class="p" data-tp="'+i+'" inputmode="decimal" value="'+(t.pct==null||isNaN(t.pct)?"":t.pct)+'" aria-label="Markup percent"> % <button class="x" data-tx="'+i+'" type="button" title="Remove this row">×</button></div>'}).join(""):'<div class="sub" style="font-size:14px">No rows yet. The page stops and asks for a markup on every bid.</div>';
+  tierState();
 }
+$("tierSave").addEventListener("click",function(){var ok=tiers.filter(function(t){return t.pct!=null&&!isNaN(t.pct)});try{localStorage.setItem("cb_tiers",JSON.stringify(ok));tiersSaved=JSON.stringify(tiers)}catch(e){$("tierState").textContent="This browser would not save it. The table still works until you close the page.";return}tierState()});
+$("tierForget").addEventListener("click",function(){if(!confirm("Forget the saved markup table on this computer?"))return;try{localStorage.removeItem("cb_tiers")}catch(e){}tiersSaved="[]";tierState()});
 $("tierAdd").addEventListener("click",function(){tiers.push({over:tiers.length?null:0,pct:null});renderTiers()});
 $("tierRows").addEventListener("change",function(e){
   var o=e.target.getAttribute("data-to"),pc=e.target.getAttribute("data-tp");
