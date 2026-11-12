@@ -260,7 +260,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 44, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 45, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -268,11 +268,12 @@
 <script>
 (function(){
 "use strict";
-/* WHICH LINK. /constructionbidding is WD3's own: its letterhead and footer are built in, always.
-   /bid is for any other firm: nothing of WD3 is loaded or shown, and everything the page remembers is stored under its own names,
-   so the two links never share settings, even in the same browser. /bid/index.html is a copy made by ship.sh; edit only this file. */
-var firmId=/^\/bid(\/|$)/i.test((typeof location!=="undefined"&&location.pathname)||"")?"new":"wd3";
-function NS(k){return firmId==="wd3"?k:String(k).replace(/^cb_/,"bid_")}
+/* WHICH LINK. /constructionbidding is the HOUSE link: the company this tool was first built for, with its letterhead and footer built in.
+   /bid is for any other firm. Everything the page remembers is stored under separate names per link, so the two never share settings.
+   Anything that belongs to the house company alone sits between HOUSE-ONLY markers; ship.sh cuts those blocks out of the /bid copy
+   and refuses to publish if any house name is left in it. Edit only this file; /bid/index.html is generated. */
+var firmId=/^\/bid(\/|$)/i.test((typeof location!=="undefined"&&location.pathname)||"")?"new":"house";
+function NS(k){return firmId==="house"?k:String(k).replace(/^cb_/,"bid_")}
 var LS={getItem:function(k){return localStorage.getItem(NS(k))},setItem:function(k,v){localStorage.setItem(NS(k),v)},removeItem:function(k){localStorage.removeItem(NS(k))}};
 if(window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 var $=function(id){return document.getElementById(id)};
@@ -391,7 +392,7 @@ function parsePlanHolders(L){
 
 /* ---------- three layouts ---------- */
 var RE_N=/(\d[\d,]*)\s+(-|[\d,]+\.\d+\s*(?:sq\s*ft|ft))\s+(-|[\d,]+\.\d+\s*lb)\s+\$\s*([\d,]+\.\d+)\s*\/\s*(ft|ea|cwt|sqft)\s+\$\s*([\d,]+\.\d{2})\s*(.*)$/i;
-function parseNucor(L){
+function parseSteel(L){
   var rows=[],group="",printed=null,subs=[],project="",last=null;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
@@ -415,7 +416,7 @@ function parseNucor(L){
   }
   rows.forEach(function(r){if(r.tail){r.desc+=r.tail;delete r.tail}});
   if(printed==null&&subs.length)printed=r2(subs.reduce(function(a,b){return a+b},0));
-  return{layout:"Nucor Skyline",rows:rows,printed:printed,project:project,flags:[]};
+  return{layout:"Steel piling quote",rows:rows,printed:printed,project:project,flags:[]};
 }
 function parseLump(L){
   var rows=[],printed=null,project="";
@@ -655,7 +656,7 @@ function parsePasted(text){
 }
 function fromLines(L,name,t0){
   L.blank=L.blank||[];L.ocr=L.ocr||[];
-  var all=L.cand?[L.cand]:[parseNucor(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
+  var all=L.cand?[L.cand]:[parseSteel(L),parseLump(L),parseQtyList(L),parseGeneric(L)],c=null;
   all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
   var MT=grabMeta(L);
@@ -1006,7 +1007,10 @@ document.querySelectorAll("[data-save]").forEach(function(el){
 });
 $("p_date").value=new Date().toLocaleDateString("en-US");
 /* ---------- supplier templates: terms saved per supplier ---------- */
-var KNOWN=["Nucor Skyline","Nucor Rebar Fabrication","Triad","Hennegan","CMC Paving","CMC","JD Fields","Votorantim","Prairie","Ozinga","Harris","ABC Coating","Shoreline","Dywidag","DSI","Williams","Adelphia","Veritas","DS Brown","Skyline","Nucor"];
+var KNOWN=[]; /* supplier names to keep off a bid. A firm's own list builds up from the suppliers it types and saves. */
+/*HOUSE-ONLY-START*/
+KNOWN=["Nucor Skyline","Nucor Rebar Fabrication","Triad","Hennegan","CMC Paving","CMC","JD Fields","Votorantim","Prairie","Ozinga","Harris","ABC Coating","Shoreline","Dywidag","DSI","Williams","Adelphia","Veritas","DS Brown","Skyline","Nucor"];
+/*HOUSE-ONLY-END*/
 var vterms={};try{vterms=JSON.parse(LS.getItem("cb_vterms")||"{}")}catch(e){}
 function vSave(){try{LS.setItem("cb_vterms",JSON.stringify(vterms))}catch(e){}}
 function vList(){$("v_list").innerHTML=Object.keys(vterms).sort().map(function(n){return'<option value="'+esc(n)+'">'}).join("")}
@@ -1040,8 +1044,11 @@ $("phd").addEventListener("change",function(e){var c=e.target.getAttribute("data
 $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
 /* HOUSE: what is built in for the company this version is set up for. One place. Empty it when the tool leaves that company;
    then each company uploads its own letterhead and footer. An uploaded picture always wins over the built-in one. */
-/* FIRM: decided by the link (see the top of this script). WD3's letterhead and footer are built in on its own link only. */
-var FIRMS={wd3:{lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3"}};
+/* FIRM: decided by the link (see the top of this script). */
+var FIRMS={};
+/*HOUSE-ONLY-START*/
+FIRMS.house={lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3"};
+/*HOUSE-ONLY-END*/
 var HOUSE=FIRMS[firmId]||{lh:"",ft:"",short:""};
 var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=LS.getItem("cb_img_"+k)||""}catch(e){}});
 var imgs={};function useImgs(){["lh","ft"].forEach(function(k){imgs[k]=own[k]||HOUSE[k]||""});
