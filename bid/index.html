@@ -144,6 +144,17 @@
     <p style="margin-top:8px"><button type="button" class="btn" id="ai_go">Read the reply</button></p>
   </details>
 
+  <details id="hist" style="margin-top:12px;border:1px solid var(--ink);border-radius:12px;padding:12px 14px">
+    <summary style="font-weight:700;cursor:pointer">Have past quotes and bids? Drop them in and see the markup you actually use</summary>
+    <div class="sub" style="font-size:14px;margin-top:8px">Pick the folder of quotes your suppliers sent you and the folder of bids you sent out. This page reads every PDF, finds which bid was made from which quote, and works out the markup you used: by supplier and by job size. Nothing leaves this computer.</div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="h_sup">Folder of supplier quotes (PDF)</label><input id="h_sup" type="file" webkitdirectory multiple></div>
+      <div class="f"><label for="h_bid">Folder of the bids you sent (PDF)</label><input id="h_bid" type="file" webkitdirectory multiple></div>
+    </div>
+    <p style="margin-top:10px"><button type="button" class="btn" id="h_go">Read my history</button> <span id="h_say" class="sub" style="font-size:14px"></span></p>
+    <div id="h_out"></div>
+  </details>
+
   <div id="work" class="hide">
     <div id="day"></div>
     <h2>Step 2. Check the numbers<small>We read every line and added it up for you.</small></h2>
@@ -263,7 +274,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 48, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 49, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -1403,7 +1414,51 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={scrubTerms:scrubTerms,moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+/* ---------- HISTORY: a firm's own past quotes and bids, read on this computer ----------
+   A bid is matched to the quote it came from by the arithmetic (quote total x one clean markup = bid total, to the nickel)
+   AND by the wording they share. Neither file names nor folders are trusted. Nothing is uploaded. */
+var HSTEPS=[];for(var hsI=0;hsI<=160;hsI++)HSTEPS.push(hsI/400); /* 0% to 40% in quarter points */
+function hTokens(q){var t={};String(q.text||"").replace(/[a-z]{4,}/g,function(w){t[w]=1});return t}
+function hMedian(a){a=a.slice().sort(function(x,y){return x-y});var n=a.length;return n?(n%2?a[(n-1)/2]:r2((a[n/2-1]+a[n/2])/2)):null}
+async function hRead(files,kind,say){var out=[],pdfs=[].filter.call(files,function(f){return/\.pdf$/i.test(f.name)&&f.size<20e6});
+  for(var i=0;i<pdfs.length;i++){var f=pdfs[i];say((kind==="bid"?"Reading your bids: ":"Reading supplier quotes: ")+(i+1)+" of "+pdfs.length);
+    try{var q=fromLines(await pdfLines(await f.arrayBuffer()),f.name,performance.now()),T=totals(q,0),tot=kind==="bid"?(q.printed||T.cost):T.cost;
+      if(q.rows.length&&tot>0)out.push({name:f.name,total:tot,vendor:kind==="bid"?"":(guessVendor(q)||(f.name.split(/\s+-\s+|_/)[0]||"").trim().slice(0,30)||"Supplier"),tok:hTokens(q)})}catch(e){}
+    if(i%4===3)await new Promise(function(r){setTimeout(r,0)})}
+  out.seen=pdfs.length;return out}
+function hPair(S,B){var pairs=[];
+  B.forEach(function(b){var best=null,bk=Object.keys(b.tok).length;
+    S.forEach(function(s){var r=b.total/s.total;if(r<0.995||r>1.45)return;
+      var m=0,d=1e18;HSTEPS.forEach(function(x){var dd=Math.abs(r2(s.total*(1+x))-b.total);if(dd<d){d=dd;m=x}});
+      if(d>0.05)return;
+      var sk=Object.keys(s.tok),small=sk.length<bk?s.tok:b.tok,big=small===s.tok?b.tok:s.tok,ks=Object.keys(small),hit=0;ks.forEach(function(w){if(big[w])hit++});
+      var ov=ks.length?hit/ks.length:0;if(ov<0.35)return;
+      if(!best||ov>best.ov)best={s:s,m:m,ov:ov}});
+    if(best)pairs.push({bid:b.name,sup:best.s.name,vendor:best.s.vendor,cost:best.s.total,total:b.total,pct:r2(best.m*100)})});
+  return pairs}
+var HBANDS=[[0,"under $25,000"],[25000,"$25,000 to $100,000"],[100000,"$100,000 to $500,000"],[500000,"over $500,000"]],hLast=null;
+function hShow(S,B,P){hLast=P;
+  var by={},bands=HBANDS.map(function(){return[]});
+  P.forEach(function(p){(by[p.vendor]=by[p.vendor]||[]).push(p.pct);for(var k=HBANDS.length-1;k>=0;k--)if(p.cost>=HBANDS[k][0]){bands[k].push(p.pct);break}});
+  var row=function(a,b,c,d){return"<tr><td>"+esc(a)+'</td><td class="num">'+b+'</td><td class="num"><b>'+c+'</b></td><td class="num">'+d+"</td></tr>"},rng=function(a){return Math.min.apply(null,a)+"% to "+Math.max.apply(null,a)+"%"};
+  var h='<div class="flag" style="margin-top:10px"><b>'+P.length+" of your "+B.length+" bids were matched to the supplier quote they came from, to the nickel.</b> "+S.length+" supplier quotes and "+B.length+" bids were read ("+(S.seen+B.seen)+" PDFs picked). A bid with no match was built from a quote that is not in the folder, has lines you added, or uses more than one markup.</div>";
+  if(P.length){
+    h+='<table class="t" style="margin-top:10px;width:100%"><tr><th style="text-align:left">By supplier</th><th>Bids</th><th>Your usual markup</th><th>Range</th></tr>'+Object.keys(by).sort(function(a,b){return by[b].length-by[a].length}).slice(0,25).map(function(v){return row(v,by[v].length,hMedian(by[v])+"%",rng(by[v]))}).join("")+"</table>";
+    h+='<table class="t" style="margin-top:10px;width:100%"><tr><th style="text-align:left">By size of the supplier\'s quote</th><th>Bids</th><th>Your usual markup</th><th>Range</th></tr>'+HBANDS.map(function(b,k){return bands[k].length?row(b[1],bands[k].length,hMedian(bands[k])+"%",rng(bands[k])):""}).join("")+"</table>";
+    h+='<p style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="h_use">Use these as my markup table</button><button type="button" class="btn ghost" id="h_csv">Download the matched list</button></p>';
+  }
+  h+='<div class="sub" style="font-size:13px;margin-top:6px">Wins and losses are not written in a quote or a bid, so they cannot be read from these folders. Mark each bid Won or Lost in the checklist as results come in and that record builds from today.</div>';
+  $("h_out").innerHTML=h}
+$("h_go").addEventListener("click",async function(){var say=function(t){$("h_say").textContent=t},fs=$("h_sup").files,fb=$("h_bid").files;
+  if(!fs.length||!fb.length){say("Pick both folders first.");return}
+  if(!window.pdfjsLib){say("The page did not finish loading. Refresh and try again.");return}
+  this.disabled=true;try{var S=await hRead(fs,"sup",say),B=await hRead(fb,"bid",say);say("Matching bids to quotes…");await new Promise(function(r){setTimeout(r,0)});hShow(S,B,hPair(S,B));say("Done.")}catch(e){say("Something went wrong reading the folders: "+e.message)}this.disabled=false});
+$("h_out").addEventListener("click",function(e){
+  if(e.target.id==="h_use"&&hLast){var t=[];HBANDS.forEach(function(b){var a=hLast.filter(function(p){return p.cost>=b[0]&&!HBANDS.some(function(o){return o[0]>b[0]&&p.cost>=o[0]})}).map(function(p){return p.pct});if(a.length)t.push({over:b[0],pct:hMedian(a)})});
+    if(t.length){if(t[0].over!==0)t[0].over=0;tiers=t;renderTiers();if(quotes.length)render();$("h_say").textContent="Filled into the markup table in Step 3. Press Save there to keep it."}}
+  if(e.target.id==="h_csv"&&hLast){var c=function(x){return'"'+String(x).replace(/"/g,'""')+'"'},csv=["Your bid,Supplier quote,Supplier,Supplier total,Your bid total,Markup %"].concat(hLast.map(function(p){return[c(p.bid),c(p.sup),c(p.vendor),p.cost,p.total,p.pct].join(",")})).join("\n");
+    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="my-bid-history.csv";document.body.appendChild(a);a.click();a.remove()}});
+window.CB={hPair:hPair,hRead:hRead,scrubTerms:scrubTerms,moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
