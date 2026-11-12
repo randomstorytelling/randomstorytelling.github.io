@@ -101,7 +101,9 @@
     #print .tot td{font-weight:700;font-size:13px;border-top:2px solid #000;border-bottom:none}
     #print .terms{margin-top:18px;white-space:pre-wrap} #print .sig{margin-top:44px;display:flex;gap:60px}
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
-    @page{margin:14mm}
+    @page{margin:0} /* zero page margin is what makes the browser drop its own header and footer (page title, date, web address) */
+    #print table.pg{width:100%;border-collapse:collapse} #print table.pg>thead>tr>td,#print table.pg>tfoot>tr>td{height:14mm;padding:0;border:none}
+    #print table.pg>tbody>tr>td.pgc{padding:0 14mm;border:none;vertical-align:top}
   }
 </style>
 </head>
@@ -205,7 +207,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 16, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 17, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -714,8 +716,11 @@ function buildPrint(){
   h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+(tw?'<p style="margin-top:6px">TOTAL WEIGHT: '+plain(tw,2)+" lb</p>":"")+($("p_note").value?'<p style="margin-top:6px">'+v("p_note")+"</p>":"")+
     ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b>\n'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
-  $("print").innerHTML=h;
+  $("print").innerHTML='<table class="pg"><thead><tr><td></td></tr></thead><tfoot><tr><td></td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
+var pageTitle=document.title;
+window.addEventListener("beforeprint",function(){var q=quotes[cur];document.title=q?(q.project||"Bid"):pageTitle});
+window.addEventListener("afterprint",function(){document.title=pageTitle});
 var tiersSaved=JSON.stringify(tiers);
 function saveTiers(){} /* rows stay where she typed them; saving is the user's choice */
 function fullRow(t){return t.over!=null&&!isNaN(t.over)&&t.pct!=null&&!isNaN(t.pct)}
