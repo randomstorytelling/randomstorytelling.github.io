@@ -244,7 +244,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 34, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 35, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -981,10 +981,13 @@ $("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x
 /* Which columns the printed bid carries. A column with nothing in it is left off; she can also hide the optional ones.
    When no line has a piece count, the quantity goes under the first quantity column and its unit under the second. */
 function bidCols(q){
-  var live=q.rows.filter(function(r){return!r.opt}),cells=live.map(qtyCells),pay=Object.keys(q.pay||{}).length>0;
-  var anyPcs=cells.some(function(c){return c[0]!==""}),anyLen=pay||cells.some(function(c){return c[1]!==""}),anyWt=live.some(function(r){return r.wt});
-  var split=!anyPcs&&anyLen,show={code:pay&&!hid.code,qty:(anyPcs||split)&&!hid.qty,lgth:anyLen&&!hid.lgth,wgt:anyWt&&!hid.wgt};
-  if(!show.qty&&!show.lgth&&(anyPcs||anyLen))show.qty=true; /* a bid never prints without its quantities */
+  var live=q.rows.filter(function(r){return!r.opt}),cells=live.map(qtyCells),pay=q.pay||{};
+  Object.keys(pay).forEach(function(g){pay[g].heads.forEach(function(hd){cells.push(["",plain(hd.qty,2)+" "+hd.um])})});
+  var split=!cells.some(function(c){return c[0]!==""}),all={show:{qty:true,lgth:true},split:split};
+  var pairs=cells.map(function(c){return qtyPair(c,all)}); /* emptiness is judged on what would actually print */
+  var anyA=pairs.some(function(x){return x[0]!==""}),anyB=pairs.some(function(x){return x[1]!==""}),anyWt=live.some(function(r){return r.wt});
+  var show={code:Object.keys(pay).length>0&&!hid.code,qty:anyA&&!hid.qty,lgth:anyB&&!hid.lgth,wgt:anyWt&&!hid.wgt};
+  if(!show.qty&&!show.lgth&&(anyA||anyB))show[anyA?"qty":"lgth"]=true; /* a bid never prints without its quantities */
   var n=1+2+(show.code?1:0)+(show.qty?1:0)+(show.lgth?1:0)+(show.wgt?1:0);
   return{show:show,split:split,n:n,pre:n-2-(show.wgt?1:0)}}
 function qtyPair(c,C){
