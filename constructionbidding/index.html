@@ -201,6 +201,9 @@
       <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
     </div>
     <div class="row" style="margin-top:12px">
+      <div class="f"><label>When the supplier's own name appears in their notes</label>
+        <div class="quick" id="nm" style="margin-top:6px"><button type="button" data-nm="us">Change it to our company name</button><button type="button" data-nm="sup">Change it to "the supplier"</button><button type="button" data-nm="keep">Leave it as written</button></div>
+        <div class="sub" id="nmNote" style="font-size:13px;margin-top:4px"></div></div>
       <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="v_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button><span class="sub" style="font-size:13px">Select words, then tap Bold.</span></div><div id="v_terms" class="rt" contenteditable="true" data-ph="Paste the terms you put at the bottom of bids that use this supplier"></div><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div></div>
     </div>
     <details id="co"><summary>Your company details (typed once, remembered on this computer)</summary>
@@ -260,7 +263,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 46, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 48, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -488,14 +491,16 @@ var RE_D=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*("+UOM+")$","i");
 function toks(t){var out=[],m;RE_TOK.lastIndex=0;while((m=RE_TOK.exec(t))){var s=m[1];out.push({v:num(s),raw:s,at:m.index+m[0].indexOf(s),dec:(s.split(".")[1]||"").length});if(m[0].length===0)RE_TOK.lastIndex++}return out}
 function near(a,b){return Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.00002)}
 function parseGeneric(L){
-  var rows=[],subs=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
+  var rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
     if(L[i].page!==page){page=L[i].page;last=null}
     if(m=t.match(/(?:Quote Number|Quotation No\.?|Quote No\.?|Quote #)\s*:?\s*(\S.*)$/i)){if(!/^(Date|Good)/i.test(m[1]))group=m[1].trim().slice(0,60)}
     if(!project&&(m=t.match(/^(?:Project(?: Name)?|Job Name|Re|Ref)\s*:\s*(\S.+)$/i)))project=m[1].trim().slice(0,80);
     if(m=t.match(/^(Item\s+\S+)\s*[–—-]\s*Total\b.*?\$\s*([\d,]+\.\d{2})\s*$/i)){itemTotals.push({d:t.replace(/\s*\$\s*[\d,]+\.\d{2}\s*$/,""),v:num(m[2])});last=null;continue}
-    if(/\b(sub\s?total|total)\b/i.test(t)&&(m=t.match(/\$?\s*([\d,]+\.\d{2})\s*\$?\s*$/))&&!/\d\s*(?:LF|EA|SF)\s+\$/i.test(t)){subs.push(num(m[1]));last=null;continue}
+    if(/\b(sub\s?total|total)\b/i.test(t)&&(m=t.match(/\$?\s*([\d,]+\.\d{2})\s*\$?\s*$/))&&!/\d\s*(?:LF|EA|SF)\s+\$/i.test(t)){
+      if(/\btotal\s*(net\s*)?(weight|wt|lbs?|tons?|pieces|pcs|qty|quantity|feet|footage|length)\b|\b(weight|wt|lbs?|tons?|pieces|pcs|footage)\s*total\b/i.test(t)&&t.indexOf("$")<0){last=null;continue} /* "Total Weight 24,468.64" is pounds, not dollars */
+      var tv0=num(m[1]);subs.push(tv0);if(!/sub\s?total/i.test(t))grand.push(tv0);last=null;continue}
     if(/^(notes?|terms|conditions|page \d)/i.test(t)){last=null;continue}
     var tk=toks(t),found=null;
     if(tk.length>=3){
@@ -513,12 +518,25 @@ function parseGeneric(L){
       last={opt:false,group:group,desc:d||"(no description read)",note:"",pcs:1,len:found.basis==="cwt"?null:found.q.v,wt:found.basis==="cwt"?found.q.v:null,price:found.p.v,basis:found.basis,ext:found.e.v,um:um,page:page};
       rows.push(last);continue;
     }
-    if(m=t.match(RE_B)){
+    if(m=t.match(/^(.+?)\s+([\d,]+(?:\.\d+)?)\s*(LBS?|LF|EA|SF|SY|CY|TONS?|FT|GALS?)\.?\s+\$\s*([\d,]+\.\d{2,4})\s*\/\s*(CWT|LBS?|LF|EA|SF|SY|CY|TONS?|FT|GALS?)\.?\s*$/i)){
+      var uq=num(m[2]),up=num(m[4]),perCwt=/^CWT$/i.test(m[5])&&/^LBS?$/i.test(m[3]),cm=m[1].match(/^(\d{3,5})\s+(\S.*)$/);if(cm)m[1]=cm[2];
+      last=perCwt?{opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:uq,price:up,basis:"cwt",ext:r2(uq/100*up),um:"LB",auto:true,page:page}
+                 :{opt:false,group:group,desc:m[1],note:"",pcs:1,len:uq,wt:null,price:up,basis:"qty",ext:r2(uq*up),um:m[3],auto:true,page:page};
+      if(cm)last.code=cm[1];
+      rows.push(last);continue;
+    }
+    /* a lump sum written as a sentence: "Base Bid Approx. (942) tons of Rebar & Accessories for $1,383,420 plus applicable tax." */
+    if(m=t.match(/^((?:Base Bid|Alt(?:ernate)?\.?|Add(?:ition)?\b|Deduct(?:ion)?\b|Option\b)[^$]*?)\s+for\s+\$\s*([\d,]+(?:\.\d{2})?)\b/i)){
+      var lv=num(m[2]),alt=!/^Base Bid/i.test(m[1]);
+      lumps.push({opt:alt,auto:alt,group:group,desc:m[1].trim(),note:"",hint:alt?"An alternate on the supplier's quote, so it is left out. Untick Leave out to include it"+(/deduct/i.test(m[1])?" (a deduct: type it as a minus amount).":"."):"",optWord:alt?"ALTERNATE":"",pcs:1,len:null,wt:null,price:lv,basis:"ls",ext:lv,page:page});last=null;continue}
+    /* a sentence from the terms ("pricing will be firm through June 30th, 2026 add $60.00/ton") is not a priced line */
+    var termsy=/\b(increase[ds]?|escalat\w*|surcharge|pricing will|prices? will|effective|thereafter|firm (on|through)|per hour|unloading|after the date|backcharge|days? of)\b/i.test(t)||/^\(?\d{1,2}[.)]\)?\s/.test(t)||t.length>150;
+    if(!termsy&&(m=t.match(RE_B))){
       var q=num(m[2]),pr=num(m[4]);
       last={opt:false,group:group,desc:m[1],note:"",pcs:1,len:q,wt:null,price:pr,basis:"qty",ext:r2(q*pr),um:m[3],auto:true,page:page};
       rows.push(last);continue;
     }
-    if((m=t.match(RE_Q))&&num(m[2])>0&&/[A-Za-z]/.test(m[4])){
+    if(!termsy&&(m=t.match(RE_Q))&&num(m[2])>0&&/[A-Za-z]/.test(m[4])){
       var q2=num(m[2]),p2=num(m[5]),alts=(m[6].match(/[\d,]+\.\d{2,4}/g)||[]);
       last={opt:false,group:group,desc:(m[1]+" "+m[4]).replace(/\s+/g," ").trim(),note:alts.length?"Other prices on this line for longer lengths: $"+alts.join(", $")+". Using the first.":"",pcs:1,len:q2,wt:null,price:p2,basis:"qty",ext:r2(q2*p2),um:m[3],auto:true,page:page};
       if(alts.length)multi=true;
@@ -532,6 +550,8 @@ function parseGeneric(L){
   if(itemTotals.length>=2){
     rows=itemTotals.map(function(x){return{opt:false,group:"",desc:x.d,note:"",pcs:1,len:null,wt:null,price:x.v,basis:"ls",ext:x.v}});subs=[];
     flags.push("This quote prices each item across several lines. It was read at the item total level: one line per item, not per length. Open the PDF to check the unit detail.");mode="Any layout · item totals";
+  }else if(!rows.length&&lumps.length){
+    rows=lumps;mode="Any layout · lump sum";flags.push("This quote is a lump sum written in sentences. The base bid is one line; alternates are listed and left out. Read the scope in the PDF before you send.");
   }else if(!rows.length&&priceOnly.length){
     rows=priceOnly;flags.push("This is a price list: the supplier gives unit prices and no quantities. Type a quantity on each line you are bidding, and tick Opt. on the rest.");mode="Any layout · price list";
     rows.forEach(function(r){r.opt=true});
@@ -541,8 +561,19 @@ function parseGeneric(L){
   if(multi)flags.push("Some lines give more than one price, by length. The first price is used. Change the unit price on a line if your job needs the longer length.");
   if(rows.length&&mode==="Any layout"&&priceOnly.length){var extras=priceOnly.length;priceOnly.forEach(function(r){r.opt=true;r.group="Extras priced each (tick off Leave out and type a quantity to add one)";rows.push(r)});flags.push("This quote also lists "+extras+" extra items priced each (points, splicers and the like). They are at the bottom, left out until you add a quantity.")}
   if(rows.some(function(r){return r.auto&&r.ext>0}))flags.push("The supplier prints unit prices without line totals. Line totals here are quantity times price, computed.");
-  var printed=subs.length?r2(subs.reduce(function(a,b){return a+b},0)):null;
-  if(subs.length>1)flags.push("The supplier prints "+subs.length+" totals in this file. The printed total shown here is their sum.");
+  /* which printed number the lines are held against: the supplier's Total if the lines reach it; else a Subtotal the lines reach
+     (the Total then carries tax or freight, and we say so); else the Total; else, with only subtotals, their sum */
+  var printed=null,lineSum=r2(rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0)),eq=function(v){return Math.abs(v-lineSum)<0.005};
+  if(subs.length){
+    var gT=grand.length?grand[grand.length-1]:null,uniq=subs.filter(function(v,k){return subs.indexOf(v)===k}),add=function(a){return r2(a.reduce(function(x,y){return x+y},0))},sumG=add(grand),sumAll=add(subs);
+    if(gT!=null&&eq(gT))printed=gT;
+    else if(grand.length>1&&eq(sumG))printed=sumG; /* several quotes in one file, one Total each */
+    else if(subs.some(eq)){printed=lineSum;if(gT!=null&&gT>lineSum)flags.push("The supplier's Total is "+money(gT)+", which is "+money(r2(gT-lineSum))+" more than the lines. That is usually tax or freight. Add a line for it if it belongs in your bid.")}
+    else if(eq(sumAll))printed=sumAll;
+    else if(grand.length>1){printed=sumG;flags.push("This file prints "+grand.length+" totals. The printed total shown here is their sum.")}
+    else if(gT!=null)printed=gT;
+    else{printed=add(uniq);if(uniq.length>1)flags.push("The supplier prints "+uniq.length+" subtotals and no grand total. The printed total shown here is their sum.")}
+  }
   return{layout:mode,rows:rows,printed:printed,project:project,flags:flags};
 }
 function calcExt(r){
@@ -1032,22 +1063,36 @@ function guessVendor(q){
   for(var i=0;i<names.length;i++){if(names[i]&&t.indexOf(names[i].toLowerCase())>=0)return names[i]}
   return"";
 }
-function scrubTerms(txt,vendor){ /* keep the supplier's name out of the bid that goes to the contractor */
+/* The supplier's name inside the notes she passes on. Three house styles, her choice, remembered:
+   "us" = put our own company name in its place (the usual), "sup" = say "the supplier", "keep" = leave the notes as the supplier wrote them. */
+var nameMode="us";try{nameMode=LS.getItem("cb_namemode")||"us"}catch(e){}
+function ourName(){return($("c_name").value||"").trim()||HOUSE.name||""}
+function scrubTerms(txt,vendor,mode){
+  mode=mode||nameMode;if(mode==="us"&&!ourName())mode="sup"; /* no company name typed yet: fall back to "the supplier" */
+  if(mode==="keep")return{text:String(txt||"").trim(),hit:false,mode:mode};
   var names=[vendor].concat(KNOWN).filter(Boolean).sort(function(a,b){return b.length-a.length}),hit=false;
   var lines=txt.split("\n").filter(function(l){if(/^- Governing Terms/i.test(l)){hit=true;return false}return true}).map(function(l){
-    names.forEach(function(n){var re=new RegExp("\\b"+n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+Steel)?(?:,?\\s+(?:LLC|Inc\\.?|Ltd\\.?|Corp\\.?))?(?:[’']s)?\\s*","gi");if(re.test(l)){hit=true;l=l.replace(re,"")}});
+    names.forEach(function(n){var re=new RegExp("\\b"+n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+Steel)?(?:,?\\s+(?:LLC|Inc\\.?|Ltd\\.?|Corp\\.?))?([’']s)?(\\s*)","gi");
+      l=l.replace(re,function(m,poss,sp,at){hit=true;var start=at===0||/(^|[.:;]\s+|^-\s+|^[•\u2022·]\s*)$/.test(l.slice(0,at));
+        return(mode==="us"?ourName():(start?"The supplier":"the supplier"))+(poss||"")+sp})});
     return l.replace(/\(\s+/g,"(").replace(/\s{2,}/g," ").replace(/\s+([.,;:)])/g,"$1");
   });
-  return{text:lines.join("\n").trim(),hit:hit};
+  return{text:lines.join("\n").trim(),hit:hit,mode:mode};
 }
+function showNm(){document.querySelectorAll("#nm button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-nm")===nameMode)});
+  $("nmNote").textContent=nameMode==="us"&&!ourName()?"Type your company name in Your company details and it will be used. Until then the notes say \"the supplier\".":"Remembered. Picking one refills the notes below from this supplier's quote."}
+$("nm").addEventListener("click",function(e){var v=e.target.getAttribute("data-nm");if(!v)return;nameMode=v;try{LS.setItem("cb_namemode",v)}catch(x){}showNm();
+  var q=quotes[cur];if(!q||!q.terms)return;var sc=scrubTerms(q.terms,q.vendor||guessVendor(q));$("v_terms").value=sc.text;q.termsOff=false;
+  if(q.vendor){vterms[q.vendor]=sc.text;vSave();vList()}
+  $("v_note").textContent="Refilled from the supplier's own quote"+(sc.mode==="keep"?", left as written.":sc.mode==="us"?", with the supplier's name changed to "+ourName()+".":", with the supplier's name changed to \"the supplier\".")+" Read it once before you send."});
 function vShow(){
-  if(!quotes.length)return;var q=quotes[cur];
+  showNm();if(!quotes.length)return;var q=quotes[cur];
   if(q.vendor==null)q.vendor=guessVendor(q);
   if(document.activeElement!==$("v_name"))$("v_name").value=q.vendor;
   var saved=vterms[q.vendor]||"",fromQuote=!saved&&q.terms&&!q.termsOff;
   var sc=fromQuote?scrubTerms(q.terms,q.vendor):null;
   if(document.activeElement!==$("v_terms"))$("v_terms").value=saved||(sc?sc.text:"");
-  $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote"+(sc&&sc.hit?", with the supplier's name taken out":"")+". Read them once before you send, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
+  $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote"+(sc&&sc.hit?(sc.mode==="us"?", with the supplier's name changed to "+ourName():", with the supplier's name changed to \"the supplier\""):"")+". Read them once before you send, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
 }
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
 $("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
@@ -1060,7 +1105,7 @@ $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-
 /* FIRM: decided by the link (see the top of this script). */
 var FIRMS={};
 /*HOUSE-ONLY-START*/
-FIRMS.house={lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3"};
+FIRMS.house={lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3",name:"WD3 Associates"};
 /*HOUSE-ONLY-END*/
 var HOUSE=FIRMS[firmId]||{lh:"",ft:"",short:""};
 var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=LS.getItem("cb_img_"+k)||""}catch(e){}});
@@ -1107,8 +1152,8 @@ function bidCols(q){
      including a line counted in pieces (an added freight line: 1 EA). Steel lines with pieces AND lengths keep both columns as they are. */
   var split=!cells.some(function(c){return c[0]!==""&&c[1]!==""}),all={show:{qty:true,lgth:true},split:split};
   var pairs=cells.map(function(c){return qtyPair(c,all)}); /* emptiness is judged on what would actually print */
-  var anyA=pairs.some(function(x){return x[0]!==""}),anyB=pairs.some(function(x){return x[1]!==""}),anyWt=live.some(function(r){return r.wt});
-  var show={code:Object.keys(pay).length>0&&!hid.code,qty:anyA&&!hid.qty,lgth:anyB&&!hid.lgth,wgt:anyWt&&!hid.wgt};
+  var anyA=pairs.some(function(x){return x[0]!==""}),anyB=pairs.some(function(x){return x[1]!==""}),anyWt=live.some(function(r){return r.wt&&!byWt(r)});
+  var show={code:(Object.keys(pay).length>0||live.some(function(r){return r.code}))&&!hid.code,qty:anyA&&!hid.qty,lgth:anyB&&!hid.lgth,wgt:anyWt&&!hid.wgt};
   if(!show.qty&&!show.lgth&&(anyA||anyB))show[anyA?"qty":"lgth"]=true; /* a bid never prints without its quantities */
   var n=1+2+(show.code?1:0)+(show.qty?1:0)+(show.lgth?1:0)+(show.wgt?1:0);
   return{show:show,split:split,n:n,pre:n-2-(show.wgt?1:0)}}
@@ -1119,8 +1164,10 @@ function qtyPair(c,C){
   if(C.show.lgth&&!C.show.qty)b=[a,b].filter(Boolean).join(C.split?" ":" x ");
   return[a,b]}
 function colHead(k,C){return heads["p_"+k]||(C.split&&k==="qty"?"QTY":C.split&&k==="lgth"?"UNIT":ph(k))}
+function byWt(r){return r.basis==="cwt"&&r.len==null&&(r.pcs||1)<=1}
 function qtyCells(r){
   var u=(r.um||"").toUpperCase();
+  if(r.basis==="cwt"&&r.len==null&&(r.pcs||1)<=1)return["",plain(r.wt,2)+" LB"]; /* sold by weight alone (rebar): the weight is the quantity */
   if(r.basis==="ft")return[r.pcs>1?plain(r.pcs,0):"",plain(r.len,2)+" ft"];
   if(r.basis==="sqft")return["",plain(r.len,2)+" sq ft"];
   if(r.basis==="qty")return["",plain(r.len,2)+(u?" "+u:"")];
@@ -1149,9 +1196,9 @@ function buildPrint(){
       else if(g)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
     var c=qtyPair(qtyCells(r),C);
     if(r.opt){ /* shown as the supplier shows it: the words, the line, its unit price, no extended price, not in the total */
-      h+='<tr class="optrow">'+TD("code","","")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
-    tw+=r.wt||0;
-    h+="<tr>"+TD("code","","")+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
+      h+='<tr class="optrow">'+TD("code",esc(r.code||""),"c")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
+    tw+=byWt(r)?0:(r.wt||0);
+    h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
   h+='<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
     '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
@@ -1360,7 +1407,7 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={scrubTerms:scrubTerms,moveRow:moveRow,addBelow:addBelow,useOwn:useOwn,firmId:firmId,HOUSE:HOUSE,parsePasted:parsePasted,AI_PROMPT:AI_PROMPT,ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
