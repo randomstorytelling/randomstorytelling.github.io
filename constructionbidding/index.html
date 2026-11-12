@@ -278,7 +278,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 54, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 56, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -506,7 +506,7 @@ var RE_D=new RegExp("^(.*?\\S)\\s+([\\d,]+(?:\\.\\d+)?)\\s*("+UOM+")$","i");
 function toks(t){var out=[],m;RE_TOK.lastIndex=0;while((m=RE_TOK.exec(t))){var s=m[1];out.push({v:num(s),raw:s,at:m.index+m[0].indexOf(s),dec:(s.split(".")[1]||"").length});if(m[0].length===0)RE_TOK.lastIndex++}return out}
 function near(a,b){return Math.abs(a-b)<=Math.max(0.011,Math.abs(b)*0.00002)}
 function parseGeneric(L){
-  var rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
+  var prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
     if(L[i].page!==page){page=L[i].page;last=null}
@@ -533,8 +533,11 @@ function parseGeneric(L){
       last={opt:false,group:group,desc:d||"(no description read)",note:"",pcs:1,len:found.basis==="cwt"?null:found.q.v,wt:found.basis==="cwt"?found.q.v:null,price:found.p.v,basis:found.basis,ext:found.e.v,um:um,page:page};
       rows.push(last);continue;
     }
-    if(m=t.match(/^(.+?)\s+([\d,]+(?:\.\d+)?)\s*(LBS?|LF|EA|SF|SY|CY|TONS?|FT|GALS?)\.?\s+\$\s*([\d,]+\.\d{2,4})\s*\/\s*(CWT|LBS?|LF|EA|SF|SY|CY|TONS?|FT|GALS?)\.?\s*$/i)){
-      var uq=num(m[2]),up=num(m[4]),perCwt=/^CWT$/i.test(m[5])&&/^LBS?$/i.test(m[3]),cm=m[1].match(/^(\d{3,5})\s+(\S.*)$/);if(cm)m[1]=cm[2];
+    /* quantity, unit, then a price per unit and no line total: "879,441 LB $69.0000 /CWT", "4 SETS $25.75 PER SET", "1,212 EA $20.00 EACH" */
+    if((m=t.match(/^(.*?)\s*([\d,]+(?:\.\d+)?)\s*(LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)\.?\s+\$\s*([\d,]+\.\d{2,4})\s*(?:\/|PER\s+|EACH\b)\s*(CWT|LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)?\.?\s*$/i))&&(m[1].trim()||prevText)){
+      var uq=num(m[2]),up=num(m[4]),perCwt=/^CWT$/i.test(m[5]||"")&&/^LBS?$/i.test(m[3]),d0=m[1].trim(),cm=d0.match(/^([A-Z]{0,2}\d{3,9})\s+(\S.*)$/)||d0.match(/^([A-Z]{0,2}\d{6,9})()$/);
+      if(cm)d0=cm[2];if(!d0)d0=prevText; /* the description sat on the line above */
+      m[1]=d0;
       last=perCwt?{opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:uq,price:up,basis:"cwt",ext:r2(uq/100*up),um:"LB",auto:true,page:page}
                  :{opt:false,group:group,desc:m[1],note:"",pcs:1,len:uq,wt:null,price:up,basis:"qty",ext:r2(uq*up),um:m[3],auto:true,page:page};
       if(cm)last.code=cm[1];
@@ -560,7 +563,9 @@ function parseGeneric(L){
     if((m=t.match(RE_P))&&num(m[2])>0&&!/increase|escalat|surcharge/i.test(t)){priceOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:null,price:num(m[2]),basis:"qty",ext:0,um:m[3]||"",auto:true,page:page});last=null;continue}
     if((m=t.match(RE_D))&&!/total/i.test(t)){qtyOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:num(m[2]),wt:null,price:0,basis:"qty",ext:0,um:m[3],auto:true,page:page});last=null;continue}
     if(last&&last.page===page&&last.note.length<120&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
+    prevText=t.length<90&&/[A-Za-z]{3}/.test(t)?t:"";
   }
+  rows.concat(priceOnly,qtyOnly).forEach(function(r){if(r.code)return;var cm=String(r.desc).match(/^((?:[A-Z]{0,2}\d{6,9}[A-Z]?)|Incidental)\s*[-–—:]\s*(\S.*)$/)||String(r.desc).match(/^([A-Z]{0,2}\d{7,9})\s+([A-Za-z#].*)$/);if(cm){r.code=cm[1];r.desc=cm[2]}});
   var mode="Any layout";
   if(itemTotals.length>=2){
     rows=itemTotals.map(function(x){return{opt:false,group:"",desc:x.d,note:"",pcs:1,len:null,wt:null,price:x.v,basis:"ls",ext:x.v}});subs=[];
