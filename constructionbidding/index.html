@@ -259,7 +259,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 40, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 41, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -1061,7 +1061,9 @@ $("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x
 function bidCols(q){
   var live=q.rows.filter(function(r){return!r.opt}),cells=live.map(qtyCells),pay=q.pay||{};
   Object.keys(pay).forEach(function(g){pay[g].heads.forEach(function(hd){cells.push(["",plain(hd.qty,2)+" "+hd.um])})});
-  var split=!cells.some(function(c){return c[0]!==""}),all={show:{qty:true,lgth:true},split:split};
+  /* quantity-style bid: no line carries BOTH a piece count and a length. Then every quantity goes under the first column and its unit under the second,
+     including a line counted in pieces (an added freight line: 1 EA). Steel lines with pieces AND lengths keep both columns as they are. */
+  var split=!cells.some(function(c){return c[0]!==""&&c[1]!==""}),all={show:{qty:true,lgth:true},split:split};
   var pairs=cells.map(function(c){return qtyPair(c,all)}); /* emptiness is judged on what would actually print */
   var anyA=pairs.some(function(x){return x[0]!==""}),anyB=pairs.some(function(x){return x[1]!==""}),anyWt=live.some(function(r){return r.wt});
   var show={code:Object.keys(pay).length>0&&!hid.code,qty:anyA&&!hid.qty,lgth:anyB&&!hid.lgth,wgt:anyWt&&!hid.wgt};
@@ -1070,7 +1072,7 @@ function bidCols(q){
   return{show:show,split:split,n:n,pre:n-2-(show.wgt?1:0)}}
 function qtyPair(c,C){
   var a=c[0],b=c[1];
-  if(C.split){var m=String(b).match(/^([\d,]+(?:\.\d+)?)\s*(.*)$/);if(m){a=m[1];b=m[2].toUpperCase()}}
+  if(C.split){if(a!==""&&b==="")b="EA";else{var m=String(b).match(/^([\d,]+(?:\.\d+)?)\s*(.*)$/);if(m){a=m[1];b=m[2].toUpperCase()}}}
   if(C.show.qty&&!C.show.lgth)a=[a,b].filter(Boolean).join(C.split?" ":" x ");
   if(C.show.lgth&&!C.show.qty)b=[a,b].filter(Boolean).join(C.split?" ":" x ");
   return[a,b]}
