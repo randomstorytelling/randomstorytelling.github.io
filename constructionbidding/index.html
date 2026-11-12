@@ -203,7 +203,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 14, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 15, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -518,7 +518,7 @@ function totals(q,mult){
 /* ---------- screen ---------- */
 function mult(){var v=parseFloat($("mk").value);return 1+(isNaN(v)?0:v)/100}
 var tiers=[];try{tiers=JSON.parse(localStorage.getItem("cb_tiers")||"[]")||[]}catch(e){}
-function tierFor(cost){var best=null;tiers.forEach(function(t){if(t.pct!=null&&!isNaN(t.pct)&&cost>=(t.over||0)&&(!best||(t.over||0)>=(best.over||0)))best=t});return best}
+function tierFor(cost){var best=null;tiers.forEach(function(t){if(t.over!=null&&!isNaN(t.over)&&t.pct!=null&&!isNaN(t.pct)&&cost>=t.over&&(!best||t.over>=best.over))best=t});return best}
 function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,1).cost);if(t){q.mk=String(t.pct);q.mkFrom="table";q.mkTier=t}else{q.mk="";q.mkFrom="";q.mkTier=null}}
 function needMarkup(){var q=quotes[cur];if(q&&String(q.mk||"").trim()!=="")return false;var m=$("msg");m.textContent="This bid has no markup yet. Type one in Step 3 first.";m.classList.remove("hide");$("mk").scrollIntoView({behavior:"smooth",block:"center"});$("mk").focus();return true}
 function qtyText(r){
@@ -698,22 +698,23 @@ function buildPrint(){
   $("print").innerHTML=h;
 }
 var tiersSaved=JSON.stringify(tiers);
-function saveTiers(){tiers.sort(function(a,b){return(a.over||0)-(b.over||0)})} /* sorts only; saving is the user's choice */
+function saveTiers(){} /* rows stay where she typed them; saving is the user's choice */
+function fullRow(t){return t.over!=null&&!isNaN(t.over)&&t.pct!=null&&!isNaN(t.pct)}
 function tierState(){
   var now=JSON.stringify(tiers),has=false;try{has=!!localStorage.getItem("cb_tiers")&&localStorage.getItem("cb_tiers")!=="[]"}catch(e){}
-  $("tierState").textContent=!tiers.length&&!has?"":now===tiersSaved&&has?"Saved on this computer. It will be here next time.":tiers.length?"In use for now, not saved. Tap Save my table to keep it for next time.":"The table is empty for now. Your saved one comes back when you reopen the page, unless you tap Forget.";
+  $("tierState").textContent=!tiers.length&&!has?"":now===tiersSaved&&has?"Saved on this computer. It will be here next time.":tiers.length?(tiers.some(function(t){return!fullRow(t)})?"A row needs both an amount and a percent before it counts. ":"")+"In use for now, not saved. Tap Save my table to keep it for next time.":"The table is empty for now. Your saved one comes back when you reopen the page, unless you tap Forget.";
   $("tierSave").style.display=tiers.length&&now!==tiersSaved?"":"none";$("tierForget").style.display=has?"":"none";
 }
 function renderTiers(){
   $("tierRows").innerHTML=tiers.length?tiers.map(function(t,i){return'<div class="trow">Supplier\'s price of $ <input data-to="'+i+'" inputmode="decimal" value="'+(t.over==null?"":Number(t.over).toLocaleString("en-US"))+'" aria-label="Amount"> and up gets <input class="p" data-tp="'+i+'" inputmode="decimal" value="'+(t.pct==null||isNaN(t.pct)?"":t.pct)+'" aria-label="Markup percent"> % <button class="x" data-tx="'+i+'" type="button" title="Remove this row">×</button></div>'}).join(""):'<div class="sub" style="font-size:14px">No rows yet. The page stops and asks for a markup on every bid.</div>';
   tierState();
 }
-$("tierSave").addEventListener("click",function(){var ok=tiers.filter(function(t){return t.pct!=null&&!isNaN(t.pct)});try{localStorage.setItem("cb_tiers",JSON.stringify(ok));tiersSaved=JSON.stringify(tiers)}catch(e){$("tierState").textContent="This browser would not save it. The table still works until you close the page.";return}tierState()});
+$("tierSave").addEventListener("click",function(){tiers=tiers.filter(fullRow).sort(function(a,b){return a.over-b.over});try{localStorage.setItem("cb_tiers",JSON.stringify(tiers));tiersSaved=JSON.stringify(tiers);renderTiers();if(quotes.length)render()}catch(e){$("tierState").textContent="This browser would not save it. The table still works until you close the page.";return}tierState()});
 $("tierForget").addEventListener("click",function(){if(!confirm("Forget the saved markup table on this computer?"))return;try{localStorage.removeItem("cb_tiers")}catch(e){}tiersSaved="[]";tierState()});
 $("tierAdd").addEventListener("click",function(){tiers.push({over:tiers.length?null:0,pct:null});renderTiers()});
 $("tierRows").addEventListener("change",function(e){
   var o=e.target.getAttribute("data-to"),pc=e.target.getAttribute("data-tp");
-  if(o!=null)tiers[+o].over=num(e.target.value)||0;if(pc!=null){var v=num(e.target.value);tiers[+pc].pct=v==null?null:v}
+  if(o!=null){var ov=num(e.target.value);tiers[+o].over=ov==null?null:ov}if(pc!=null){var v=num(e.target.value);tiers[+pc].pct=v==null?null:v}
   saveTiers();renderTiers();if(quotes.length)render();
 });
 $("tierRows").addEventListener("click",function(e){var x=e.target.getAttribute("data-tx");if(x!=null){tiers.splice(+x,1);saveTiers();renderTiers();if(quotes.length)render()}});
