@@ -77,6 +77,9 @@
   .btn.sm{font-size:15px;padding:10px 16px}
   .f input,.f textarea{font-size:17px;padding:12px;border-radius:10px}
   label{font-size:13px;text-transform:none;letter-spacing:0}
+  .ask{border-radius:14px;padding:14px 18px;font-size:18px;font-weight:700;margin-bottom:12px}
+  .ask.need{background:#fdecea;color:#8c1d18;border:2px solid #8c1d18} .ask.tbl{background:#e9f6ee;color:#0a5a2c} .ask small{display:block;font-weight:400;font-size:14px;margin-top:2px}
+  .trow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 0;font-size:16px} .trow input{font:inherit;font-size:17px;font-weight:700;padding:8px;border:2px solid var(--ink);border-radius:10px;width:150px;text-align:right} .trow input.p{width:90px}
   .quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   .quick button{border:2px solid var(--ink);background:none;font:inherit;font-size:17px;font-weight:700;padding:10px 16px;border-radius:999px;cursor:pointer}
   .quick button.on{background:var(--ink);color:var(--paper)}
@@ -120,9 +123,10 @@
     <p class="sub" style="font-size:14px;margin-top:8px">Headings not the way you say it? Click any heading and type your own. It is remembered.</p>
     <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="add">+ Add a line</button><button class="btn ghost sm" id="more">Show every column</button></p>
 
-    <h2>Step 3. Add your markup</h2>
+    <h2>Step 3. Set the markup for this bid</h2>
+    <div id="mkask"></div>
     <div class="row">
-      <div class="f s"><label for="mk">Your markup, in percent</label><input id="mk" type="number" step="0.01" value="4" inputmode="decimal" style="font-size:24px;font-weight:700"></div>
+      <div class="f s"><label for="mk">Your markup, in percent</label><input id="mk" type="number" step="0.01" value="" placeholder="?" inputmode="decimal" style="font-size:24px;font-weight:700"></div>
     </div>
     <div class="quick" id="quick"><button data-m="3">3%</button><button data-m="4">4%</button><button data-m="5">5%</button><button data-m="7">7%</button><button data-m="10">10%</button></div>
     <div class="money3">
@@ -130,6 +134,12 @@
       <div><label>Supplier's price</label><div class="big" id="cost">$0.00</div></div>
       <div><label>You make</label><div class="big" id="spread">$0.00</div></div>
     </div>
+
+    <details id="tiers"><summary>Markup table (optional). Set it once and the markup fills itself in.</summary>
+      <p class="sub" style="font-size:14px;margin:8px 0">Bigger quotes usually get a smaller markup. Add a row for each size. Leave the table empty and the page will always stop and ask you.</p>
+      <div id="tierRows"></div>
+      <p style="margin-top:10px"><button class="btn ghost sm" id="tierAdd" type="button">+ Add a row</button></p>
+    </details>
 
     <h2>Step 4. Print your bid</h2>
     <div class="row">
@@ -192,7 +202,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 12, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 13, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -506,6 +516,10 @@ function totals(q,mult){
 
 /* ---------- screen ---------- */
 function mult(){var v=parseFloat($("mk").value);return 1+(isNaN(v)?0:v)/100}
+var tiers=[];try{tiers=JSON.parse(localStorage.getItem("cb_tiers")||"[]")||[]}catch(e){}
+function tierFor(cost){var best=null;tiers.forEach(function(t){if(t.pct!=null&&!isNaN(t.pct)&&cost>=(t.over||0)&&(!best||(t.over||0)>=(best.over||0)))best=t});return best}
+function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,1).cost);if(t){q.mk=String(t.pct);q.mkFrom="table";q.mkTier=t}else{q.mk="";q.mkFrom="";q.mkTier=null}}
+function needMarkup(){var q=quotes[cur];if(q&&String(q.mk||"").trim()!=="")return false;var m=$("msg");m.textContent="This bid has no markup yet. Type one in Step 3 first.";m.classList.remove("hide");$("mk").scrollIntoView({behavior:"smooth",block:"center"});$("mk").focus();return true}
 function qtyText(r){
   var u=(r.um||"").toLowerCase();
   if(r.basis==="ft")return(r.pcs>1?plain(r.pcs,0)+" × ":"")+plain(r.len,2)+" ft";
@@ -521,7 +535,10 @@ function saveHeads(){try{localStorage.setItem("cb_heads",JSON.stringify(heads))}
 function render(){
   if(!quotes.length){$("work").classList.add("hide");return}
   $("work").classList.remove("hide");
-  var q=quotes[cur],T=totals(q,mult()),nOpt=q.rows.filter(function(r){return r.opt}).length;
+  var q=quotes[cur];applyTier(q);
+  if(document.activeElement!==$("mk"))$("mk").value=q.mk==null?"":q.mk;
+  var T=totals(q,mult()),nOpt=q.rows.filter(function(r){return r.opt}).length,noMk=String(q.mk||"").trim()==="";
+  $("mkask").innerHTML=noMk?'<div class="ask need">Stop here. What markup goes on this bid?<small>Supplier\'s price is '+money(T.cost)+'. Type the percent below, or tap one. Nothing prints until you do.</small></div>':q.mkFrom==="table"?'<div class="ask tbl">From your markup table: '+esc(String(q.mk))+'%<small>Supplier\'s price is '+money(T.cost)+", which is in your \""+money(q.mkTier.over||0)+' and up" row. Change it below if this job is different.</small></div>':"";
   $("tabs").innerHTML=quotes.length<2?"":quotes.map(function(x,i){var t=totals(x,1);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
   var v;
   if(!q.rows.length)v='<div class="verdict na"><span class="ic">✍️</span><div>We could not read lines from this file<small>Tap "+ Add a line" and type them in. Everything else still works.</small></div></div>';
@@ -549,7 +566,7 @@ function render(){
   });
   $("tbl").innerHTML=h;$("tbl").className=showAll?"":"simple";
   $("more").textContent=showAll?"Show fewer columns":"Show every column";
-  $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
+  $("sell").textContent=noMk?"needs a markup":money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=noMk?"—":money(r2(T.sell-T.cost));
   var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
   vShow();
@@ -571,8 +588,8 @@ $("tbl").addEventListener("keydown",function(e){if(e.target.getAttribute&&e.targ
 $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del");if(d!=null){quotes[cur].rows.splice(+d,1);render()}});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
 $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true});render()});
-$("mk").addEventListener("input",function(){render()});
-$("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;render()}});
+$("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
+$("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;if(quotes.length){quotes[cur].mk=m;quotes[cur].mkFrom="you"}render()}});
 $("more").addEventListener("click",function(){showAll=!showAll;render()});
 $("p_project").addEventListener("input",function(){quotes[cur].project=this.value});
 $("p_to").addEventListener("change",function(){var n=this.value.trim(),k=Object.keys(cmk).filter(function(x){return x.toLowerCase()===n.toLowerCase()})[0];if(k&&String(cmk[k])!==$("mk").value){$("mk").value=cmk[k];render();var m=$("msg");m.textContent="Used your saved markup for "+k+": "+cmk[k]+"%.";m.classList.remove("hide")}});
@@ -679,6 +696,18 @@ function buildPrint(){
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
   $("print").innerHTML=h;
 }
+function saveTiers(){tiers.sort(function(a,b){return(a.over||0)-(b.over||0)});try{localStorage.setItem("cb_tiers",JSON.stringify(tiers))}catch(e){}}
+function renderTiers(){
+  $("tierRows").innerHTML=tiers.length?tiers.map(function(t,i){return'<div class="trow">Supplier\'s price of $ <input data-to="'+i+'" inputmode="decimal" value="'+(t.over==null?"":Number(t.over).toLocaleString("en-US"))+'" aria-label="Amount"> and up gets <input class="p" data-tp="'+i+'" inputmode="decimal" value="'+(t.pct==null||isNaN(t.pct)?"":t.pct)+'" aria-label="Markup percent"> % <button class="x" data-tx="'+i+'" type="button" title="Remove this row">×</button></div>'}).join(""):'<div class="sub" style="font-size:14px">No rows yet. The page stops and asks for a markup on every bid.</div>';
+}
+$("tierAdd").addEventListener("click",function(){tiers.push({over:tiers.length?null:0,pct:null});renderTiers()});
+$("tierRows").addEventListener("change",function(e){
+  var o=e.target.getAttribute("data-to"),pc=e.target.getAttribute("data-tp");
+  if(o!=null)tiers[+o].over=num(e.target.value)||0;if(pc!=null){var v=num(e.target.value);tiers[+pc].pct=v==null?null:v}
+  saveTiers();renderTiers();if(quotes.length)render();
+});
+$("tierRows").addEventListener("click",function(e){var x=e.target.getAttribute("data-tx");if(x!=null){tiers.splice(+x,1);saveTiers();renderTiers();if(quotes.length)render()}});
+renderTiers();
 var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
 function logSent(to){
   var q=quotes[cur],T=totals(q,mult());
@@ -696,7 +725,7 @@ $("sentCsv").addEventListener("click",function(){
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="who-got-what.csv";a.click();
 });
 $("sentClear").addEventListener("click",function(){if(confirm("Clear the whole chart? This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
-$("doprint").addEventListener("click",function(){buildPrint();logSent($("p_to").value.trim());window.print()});
+$("doprint").addEventListener("click",function(){if(needMarkup())return;buildPrint();logSent($("p_to").value.trim());window.print()});
 var cmk={};try{cmk=JSON.parse(localStorage.getItem("cb_cmk")||"{}")}catch(e){}
 function hMk(h){var v=h.mk!=null?h.mk:cmk[h.company];return v===""||v==null||isNaN(parseFloat(v))?null:parseFloat(v)}
 function hTotal(h){if(!quotes.length)return"";var m=hMk(h),base=parseFloat($("mk").value)||0;return money(totals(quotes[cur],1+(m==null?base:m)/100).sell)}
@@ -720,12 +749,14 @@ $("hold").addEventListener("input",function(e){
 });
 $("hold").addEventListener("click",function(e){
   if(e.target.id!=="printall"||!quotes.length)return;
+  if(holders.list.some(function(h){return h.gc&&h.on&&hMk(h)==null})&&needMarkup())return;
   var picks=holders.list.filter(function(h){return h.gc&&h.on}),keepTo=$("p_to").value,keepMk=$("mk").value,html="";
   picks.forEach(function(h,i){var m=hMk(h);$("mk").value=m==null?keepMk:m;$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();logSent(h.company);html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
   $("p_to").value=keepTo;$("mk").value=keepMk;if(!picks.length)return;$("print").innerHTML=html;window.print();
 });
 renderHolders();
 $("csv").addEventListener("click",function(){
+  if(needMarkup())return;
   var q=quotes[cur],m=mult(),c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'};
   var out=[["group","description","optional","pieces","length_or_qty","weight_lb","unit_cost","per","supplier_total","your_price","your_total"].join(",")];
   q.rows.forEach(function(r){var s=sell(r,m);out.push([c(r.group),c(r.desc),r.opt?"yes":"",r.pcs,r.len==null?"":r.len,r.wt==null?"":r.wt,r.price,r.basis,r.ext,s.unit,r.opt?"":s.ext].join(","))});
@@ -740,7 +771,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
