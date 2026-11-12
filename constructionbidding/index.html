@@ -65,6 +65,7 @@
   .verdict small{display:block;font-weight:400;font-size:15px;margin-top:2px}
   .verdict.ok{background:#e9f6ee;color:#0a5a2c} .verdict.bad{background:#fdecea;color:#8c1d18} .verdict.na{background:#f3f3f3;color:#333}
   .facts{font-size:15px;color:var(--mute);margin:0 2px 12px}
+  #revNote:empty{display:none}
   .flag{font-size:15px;border-left:none;background:#fff7e0;color:#5c4300;border-radius:10px;padding:10px 14px;margin:8px 0}
   .flag b{font-weight:700}
   table{font-size:15px} th{font-size:12px;padding:10px 8px} td input,td select{font-size:15px;padding:8px 6px}
@@ -206,14 +207,16 @@
     <div style="margin-top:16px"><label>How the bid sits on the page</label>
       <div class="quick" id="lay" style="margin-top:6px"><button type="button" data-lay="one">Fit on one page</button><button type="button" data-lay="two">Conditions and signature on page 2, larger type</button></div>
       <div class="sub" id="layNote" style="font-size:13px;margin-top:4px"></div></div>
+    <div id="revNote" class="flag" style="margin-top:12px"></div>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn" id="doprint">Print my bid</button>
       <button class="btn ghost" id="csv">Save the lines for Excel</button>
     </p>
 
-    <h2>Who got what<small>Every bid you print is added here, so you can see which contractor got which quote.</small></h2>
+    <h2>Bid day checklist<small>Every bid you print lands here. Tick it once it is sent, so nobody gets missed.</small></h2>
+    <div class="big" id="sentSum" style="font-size:18px;margin-bottom:10px"></div>
     <div class="scroll"><table id="sentTbl"></table></div>
-    <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="sentCsv" type="button">Save the chart for Excel</button><button class="btn ghost sm" id="sentClear" type="button">Clear the chart</button></p>
+    <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="sentCsv" type="button">Save the checklist for Excel</button><button class="btn ghost sm" id="sentClear" type="button">Clear the chart</button></p>
 
     <h2>How did it go?<small>This is a test version. Two minutes of your notes makes it better.</small></h2>
     <div class="row">
@@ -231,7 +234,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 28, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 29, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -635,7 +638,7 @@ function render(){
   $("sell").textContent=noMk?"needs a markup":money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=noMk?"—":money(r2(T.sell-T.cost));
   var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
-  vShow();renderDay();saveQuotes();
+  vShow();renderDay();saveQuotes();revNote();
   if(holders&&!(document.activeElement&&document.activeElement.getAttribute&&document.activeElement.getAttribute("data-hm")!=null))renderHolders();
 }
 /* ---------- BID DAY: every quote on one table, one markup pass, one print ---------- */
@@ -739,7 +742,8 @@ $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=thi
 $("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;if(quotes.length){quotes[cur].mk=m;quotes[cur].mkFrom="you"}render()}});
 $("more").addEventListener("click",function(){showAll=!showAll;render()});
 $("clearOne").addEventListener("click",function(){if(!quotes.length||!confirm("Clear this quote from the page?"))return;quotes.splice(cur,1);cur=Math.max(0,Math.min(cur,quotes.length-1));saveQuotes();render();if(!quotes.length)$("day").innerHTML=""});
-$("p_project").addEventListener("input",function(){quotes[cur].project=this.value});
+$("p_project").addEventListener("input",function(){quotes[cur].project=this.value;revNote()});
+$("p_to").addEventListener("input",function(){revNote()});
 $("p_to").addEventListener("change",function(){var n=this.value.trim(),k=Object.keys(cmk).filter(function(x){return x.toLowerCase()===n.toLowerCase()})[0];if(k&&String(cmk[k])!==$("mk").value){$("mk").value=cmk[k];render();var m=$("msg");m.textContent="Used your saved markup for "+k+": "+cmk[k]+"%.";m.classList.remove("hide")}});
 
 /* ---------- files ---------- */
@@ -753,7 +757,7 @@ async function take(files){
     busy(isImg?"Reading the picture. This takes a few seconds…":"Reading "+f.name+"…");
     try{
       if(isPdf){var PL=await pdfLines(await f.arrayBuffer()),ph=parsePlanHolders(PL);
-        if(ph){holders=ph;busy("");renderHolders();msg.textContent="Got the plan holders list: "+ph.list.filter(function(h){return h.gc}).length+" general contractors. They are in Step 4.";msg.classList.remove("hide");continue}
+        if(ph){holders=ph;busy("");renderHolders();renderSent();msg.textContent="Got the plan holders list: "+ph.list.filter(function(h){return h.gc}).length+" general contractors. They are in Step 4.";msg.classList.remove("hide");continue}
         q=fromLines(PL,f.name,t0)}
       else if(isImg)q=fromLines(await imageLines(f),f.name,t0);
       else q=fromLines(await sheetLines(await f.arrayBuffer()),f.name,t0);
@@ -873,9 +877,10 @@ function unitLabel(r){return r.basis==="cwt"?"/lb":r.basis==="ft"?"/ft":r.basis=
    date and numbers on the right, PROJECT line, ruled grid, total, quote conditions, signature, footer. */
 function buildPrint(){
   var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)},has=function(id){return $(id).value.trim()!==""};
+  var RV=revFor(q,$("p_to").value.trim(),m);
   var head=imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':'<div class="ph"><div>'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block">':"")+'</div><h1>PROPOSAL</h1></div>';
   var co=[has("c_contact")?"<b>"+v("c_contact")+"</b>":"",has("c_name")&&!imgs.lh?v("c_name"):"",v("c_phone"),v("c_email"),v("c_addr")].filter(Boolean).join("<br>");
-  var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Valid until:",v("p_valid")],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
+  var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Valid until:",v("p_valid")],["Revision:",RV.rev>1?"rev "+RV.rev:""],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
   var h=(imgs.lh?"":head)+'<div class="meta"><div class="co">'+co+'</div><div class="rt2">'+right+"</div></div>"+
     '<div class="proj"><span>PROJECT:</span><b>'+v("p_project")+(has("p_item")?"<br>"+v("p_item"):"")+"</b></div>"+
     '<table class="bid"><tr><th>'+esc(ph("desc"))+"</th><th>"+esc(ph("qty"))+"</th><th>"+esc(ph("lgth"))+"</th><th>"+esc(ph("wgt"))+"</th><th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>";
@@ -924,23 +929,81 @@ $("tierRows").addEventListener("change",function(e){
 });
 $("tierRows").addEventListener("click",function(e){var x=e.target.getAttribute("data-tx");if(x!=null){tiers.splice(+x,1);saveTiers();renderTiers();if(quotes.length)render()}});
 renderTiers();
+/* ---------- REVISIONS: every printed bid is remembered per project and contractor.
+   Printing the same bid again keeps its revision; printing a changed one makes the next revision and says what changed. ---------- */
+var revs={};try{revs=JSON.parse(localStorage.getItem("cb_revs")||"{}")||{}}catch(e){}
+function revKey(q,to){return String(q.project||q.name||"").toLowerCase().replace(/\s+/g," ").trim()+"|"+String(to||"").split(", attn.")[0].toLowerCase().replace(/\s+/g," ").trim()}
+function snap(q,pct){var B=priceBid(q,pct),lines=[];q.rows.forEach(function(r,i){if(!r.opt)lines.push([r.desc,B.lines[i].extC])});return{pct:pct,totalC:B.sellC,costC:B.costC,vendor:q.vendor||"",lines:lines}}
+function revDiff(a,b){
+  var ch=[],am={},bm={},add=0,gone=0,moved=0;
+  if(a.totalC!==b.totalC)ch.push("bid total "+money(a.totalC/100)+" to "+money(b.totalC/100));
+  if(a.pct!==b.pct)ch.push("markup "+a.pct+"% to "+b.pct+"%");
+  if(a.costC!==b.costC)ch.push("supplier's price "+money(a.costC/100)+" to "+money(b.costC/100));
+  if((a.vendor||"")!==(b.vendor||""))ch.push("supplier "+(a.vendor||"none")+" to "+(b.vendor||"none"));
+  a.lines.forEach(function(l){am[l[0]]=(am[l[0]]||0)+l[1]});b.lines.forEach(function(l){bm[l[0]]=(bm[l[0]]||0)+l[1]});
+  Object.keys(bm).forEach(function(k){if(!(k in am))add++;else if(am[k]!==bm[k])moved++});Object.keys(am).forEach(function(k){if(!(k in bm))gone++});
+  if(add)ch.push(add+" line"+(add>1?"s":"")+" added");if(gone)ch.push(gone+" line"+(gone>1?"s":"")+" removed");
+  if(moved&&a.pct===b.pct)ch.push(moved+" line"+(moved>1?"s":"")+" repriced");
+  return ch;
+}
+function revFor(q,to,pct){
+  var hist=revs[revKey(q,to)]||[],last=hist[hist.length-1],now=snap(q,pct);
+  if(!last)return{rev:1,changes:[],fresh:true,now:now};
+  var ch=revDiff(last,now);return{rev:ch.length?last.rev+1:last.rev,changes:ch,last:last,now:now,fresh:false};
+}
+function commitRev(q,to,pct){
+  var R=revFor(q,to,pct),k=revKey(q,to);
+  if(R.fresh||R.changes.length){var e=R.now;e.rev=R.rev;e.at=Date.now();e.changes=R.changes;(revs[k]=revs[k]||[]).push(e);revs[k]=revs[k].slice(-20);
+    var keys=Object.keys(revs);if(keys.length>600)keys.slice(0,keys.length-600).forEach(function(x){delete revs[x]});
+    try{localStorage.setItem("cb_revs",JSON.stringify(revs))}catch(x){}}
+  return R;
+}
+function revNote(){
+  var el=$("revNote");if(!el)return;if(!quotes.length){el.textContent="";return}
+  var q=quotes[cur],v=parseFloat(q.mk);if(isNaN(v)){el.textContent="";return}
+  var R=revFor(q,$("p_to").value.trim(),v),when=R.last?new Date(R.last.at).toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}):"";
+  el.innerHTML=R.fresh?"":R.changes.length?"<b>This will print as revision "+R.rev+".</b> Changed since revision "+R.last.rev+" (printed "+esc(when)+"): "+esc(R.changes.join("; "))+".":"Same as revision "+R.rev+", printed "+esc(when)+". Printing again keeps it revision "+R.rev+".";
+}
+/* ---------- BID DAY CHECKLIST: who got what, and whether it was sent ---------- */
 var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
+function saveSent(){sent=sent.slice(0,800);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}}
 function logSent(to){
-  var q=quotes[cur],T=totals(q,pctNow());
+  var q=quotes[cur],pct=pctNow(),T=totals(q,pct);
   if(q.vendor&&$("v_terms").value.trim()&&!vterms[q.vendor]){vterms[q.vendor]=$("v_terms").value;vSave();vList()}
-  sent.unshift({when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:to||"(no name typed)",markup:$("mk").value+"%",total:T.sell});
-  sent=sent.slice(0,500);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}renderSent();
+  var who=String(to||"").split(", attn.")[0].trim(),R=commitRev(q,who,pct);
+  sent.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),at:Date.now(),when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:who||"(no name typed)",markup:$("mk").value+"%",total:T.sell,rev:R.rev,sentAt:null});
+  saveSent();renderSent();revNote();
 }
 function renderSent(){
-  $("sentTbl").innerHTML=sent.length?"<tr><th>When</th><th>Project</th><th>Supplier</th><th>Went to</th><th class=\"num\">Markup</th><th class=\"num\">Bid total</th></tr>"+sent.map(function(x){return'<tr><td class="ro">'+esc(x.when)+'</td><td class="ro" style="white-space:normal">'+esc(x.project)+'</td><td class="ro">'+esc(x.supplier)+'</td><td class="ro" style="white-space:normal">'+esc(x.to)+'</td><td class="num ro">'+esc(x.markup)+'</td><td class="num ro">'+money(x.total)+"</td></tr>"}).join(""):'<tr><td class="ro" style="color:var(--mute)">Nothing printed yet.</td></tr>';
+  var el=$("sentTbl");if(!sent.length){el.innerHTML='<tr><td class="ro" style="color:var(--mute)">Nothing printed yet. Each bid you print shows up here, with a box to tick once you have sent it.</td></tr>';$("sentSum").textContent="";return}
+  /* newest print per project and contractor; older revisions are counted, not listed */
+  var order=[],by={};sent.forEach(function(x){var p=x.project||"(no project)",k=p+"|"+x.to;if(!by[p]){by[p]={rows:[],seen:{}};order.push(p)}if(by[p].seen[k]){by[p].seen[k].older++;return}var e={x:x,older:0};by[p].seen[k]=e;by[p].rows.push(e)});
+  var gcs=holders?holders.list.filter(function(h){return h.gc&&h.on}).map(function(h){return h.company}):[],allP=0,allS=0;
+  var h='<tr><th>Sent?</th><th>Went to</th><th class="num">Markup</th><th class="num">Bid total</th><th>Revision</th><th>Printed</th></tr>';
+  order.forEach(function(p){
+    var g=by[p],done=g.rows.filter(function(e){return e.x.sentAt}).length,names=g.rows.map(function(e){return e.x.to.toLowerCase()}),miss=gcs.filter(function(n){return names.indexOf(n.toLowerCase())<0});
+    allP+=g.rows.length;allS+=done;
+    h+='<tr class="grp"><td colspan="6">'+esc(p)+' <span style="font-weight:400">· printed for '+g.rows.length+(gcs.length?" of "+gcs.length+" contractors":"")+" · sent "+done+" of "+g.rows.length+'</span> <button type="button" class="btn ghost sm" data-allsent="'+esc(p)+'" style="padding:3px 10px;font-size:13px;margin-left:8px">Mark all sent</button></td></tr>';
+    g.rows.forEach(function(e){var x=e.x;h+='<tr'+(x.sentAt?"":' style="background:#fffdf3"')+'><td style="text-align:center"><input type="checkbox" data-sid="'+esc(x.id||"")+'" data-old="'+esc(x.when+"|"+x.project+"|"+x.to)+'"'+(x.sentAt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Sent to '+esc(x.to)+'"></td><td class="ro" style="white-space:normal">'+esc(x.to)+'</td><td class="num ro">'+esc(x.markup)+'</td><td class="num ro">'+money(x.total)+'</td><td class="ro">rev '+(x.rev||1)+(e.older?' <span style="color:var(--mute)">('+e.older+" earlier print"+(e.older>1?"s":"")+")</span>":"")+'</td><td class="ro">'+esc(x.when)+(x.sentAt?' <span style="color:var(--ok)">· sent '+esc(new Date(x.sentAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}))+"</span>":"")+"</td></tr>"});
+    miss.forEach(function(n){h+='<tr><td style="text-align:center;color:var(--bad);font-weight:700">!</td><td class="ro" style="white-space:normal;color:var(--bad)">'+esc(n)+'</td><td colspan="4" class="ro" style="color:var(--bad)">on the plan holders list, no bid printed yet</td></tr>'});
+  });
+  el.innerHTML=h;$("sentSum").textContent=allP+" bid"+(allP>1?"s":"")+" printed · "+allS+" marked sent · "+(allP-allS)+" still to send";
 }
 renderSent();
-$("sentCsv").addEventListener("click",function(){
-  var c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'},out=["when,project,supplier,went_to,markup,bid_total"];
-  sent.forEach(function(x){out.push([c(x.when),c(x.project),c(x.supplier),c(x.to),c(x.markup),x.total].join(","))});
-  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="who-got-what.csv";a.click();
+$("sentTbl").addEventListener("change",function(e){
+  var id=e.target.getAttribute("data-sid");if(id==null)return;var old=e.target.getAttribute("data-old");
+  sent.forEach(function(x){if((id&&x.id===id)||(!id&&(x.when+"|"+x.project+"|"+x.to)===old))x.sentAt=e.target.checked?Date.now():null});saveSent();renderSent();
 });
-$("sentClear").addEventListener("click",function(){if(confirm("Clear the whole chart? This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
+$("sentTbl").addEventListener("click",function(e){
+  var p=e.target.getAttribute("data-allsent");if(p==null)return;var seen={};
+  sent.forEach(function(x){var k=(x.project||"(no project)")+"|"+x.to;if((x.project||"(no project)")!==p||seen[k])return;seen[k]=1;if(!x.sentAt)x.sentAt=Date.now()});saveSent();renderSent();
+});
+$("sentCsv").addEventListener("click",function(){
+  var c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'},out=["printed,project,supplier,went_to,markup,bid_total,revision,sent"];
+  sent.forEach(function(x){out.push([c(x.when),c(x.project),c(x.supplier),c(x.to),c(x.markup),x.total,x.rev||1,c(x.sentAt?new Date(x.sentAt).toLocaleString("en-US"):"")].join(","))});
+  var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="bid-day-checklist.csv";a.click();
+});
+$("sentClear").addEventListener("click",function(){if(confirm("Clear the whole checklist? The revision history of each bid is kept. This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
 $("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;buildPrint();logSent($("p_to").value.trim());window.print()});
 var cmk={};try{cmk=JSON.parse(localStorage.getItem("cb_cmk")||"{}")}catch(e){}
 function hMk(h){var v=h.mk!=null?h.mk:cmk[h.company];return v===""||v==null||isNaN(parseFloat(v))?null:parseFloat(v)}
@@ -956,7 +1019,7 @@ function renderHolders(){
       '<span data-ht="'+i+'" style="min-width:120px;text-align:right;font-weight:700">'+hTotal(h)+"</span></div>"}).join("")+
     '</div><div class="sub" style="font-size:13px;margin-top:4px">Leave a box empty to use the markup from Step 3 ('+esc(base)+'%). A markup you type is remembered for that contractor. '+gcs.length+" general contractors on the list"+(others?"; "+others+" others (suppliers, agencies, plan rooms) left off":"")+'.</div><p style="margin-top:10px"><button class="btn" id="printall" type="button">Print one bid for each contractor ticked</button></p>';
 }
-$("hold").addEventListener("change",function(e){var i=e.target.getAttribute("data-h");if(i!=null)holders.list[+i].on=e.target.checked});
+$("hold").addEventListener("change",function(e){var i=e.target.getAttribute("data-h");if(i!=null){holders.list[+i].on=e.target.checked;renderSent()}});
 $("hold").addEventListener("input",function(e){
   var i=e.target.getAttribute("data-hm");if(i==null)return;var h=holders.list[+i],v=e.target.value.trim();
   h.mk=v;if(v===""||isNaN(parseFloat(v)))delete cmk[h.company];else cmk[h.company]=parseFloat(v);
@@ -990,7 +1053,7 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
