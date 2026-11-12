@@ -101,6 +101,16 @@
     #print .tot td{font-weight:700;font-size:16px;border-top:2px solid #000;border-bottom:none;padding-top:12px}
     #print .terms{margin-top:20px;white-space:pre-wrap;font-size:11.5px;line-height:1.55} #print p{font-size:12.5px} #print .sig{margin-top:44px;display:flex;gap:60px}
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
+    #print img.lh{width:100%;display:block;margin:0 0 12px} #print img.ftimg{width:100%;display:block;margin-top:22px}
+    #print .ph{align-items:center;border-bottom:none;margin-bottom:8px}
+    #print .meta{display:flex;justify-content:space-between;gap:30px;margin:4px 0 14px;font-size:12px;line-height:1.5}
+    #print .meta .rt2{display:grid;grid-template-columns:auto auto;gap:1px 10px;align-content:start} #print .meta .rt2 span{text-align:right} #print .meta .rt2 b{min-width:90px}
+    #print .proj{display:flex;gap:18px;align-items:baseline;border-bottom:3px solid #000;padding:0 0 7px;margin-bottom:0} #print .proj span{font-weight:700;font-size:12px} #print .proj b{flex:1;text-align:center;font-size:15px}
+    #print table.bid{border-collapse:collapse;width:100%;margin-top:0} #print table.bid th,#print table.bid td{border:1px solid #000;padding:8px 9px;vertical-align:middle}
+    #print table.bid th{text-align:center;font-size:11.5px;letter-spacing:.02em;border-top:1px solid #000} #print table.bid td.c{text-align:center} #print table.bid td.d .n{font-weight:400;font-size:11px;margin-top:3px}
+    #print table.bid .u{font-size:10.5px;margin-left:2px} #print table.bid tr.grp td{font-weight:700;background:#f2f2f2;font-size:12px}
+    #print table.bid tr.tot td{border:none;font-size:13px;padding-top:11px} #print table.bid tr.tot td.box{border:2px solid #000;font-size:15px}
+    #print .terms{border:1px solid #999;padding:10px 12px}
     @page{margin:0} /* zero page margin is what makes the browser drop its own header and footer (page title, date, web address) */
     #print table.pg{width:100%;border-collapse:collapse} #print table.pg>thead>tr>td,#print table.pg>tfoot>tr>td{height:14mm;padding:0;border:none}
     #print table.pg>tbody>tr>td.pgc{padding:0 14mm;border:none;vertical-align:top}
@@ -152,14 +162,16 @@
       <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
       <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
     </div>
+    <details id="moreBid" style="margin-top:12px"><summary>More for this bid: item and delivery, project and contract numbers, notes, column headings</summary>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="p_item">Item and delivery address</label><input id="p_item" placeholder="Item #007 - M26 Eagle Harbor, MI"></div>
       <div class="f s"><label for="p_pno">Project #</label><input id="p_pno"></div>
       <div class="f s"><label for="p_cno">Contract #</label><input id="p_cno"></div>
-      <div class="f"><label for="p_note">Note on this bid</label><input id="p_note" placeholder="Stock, subject to prior sale"></div>
+      <div class="f"><label for="p_note">Notes (for example rev 4)</label><input id="p_note"></div>
     </div>
     <div style="margin-top:14px"><label>Column headings on the printed bid (change any of them; remembered)</label>
       <div id="phd" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:6px"></div></div>
+    </details>
     <div id="hold" style="margin-top:14px"></div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
@@ -176,7 +188,11 @@
     </div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_addr">Address</label><input id="c_addr" data-save></div>
-      <div class="f"><label for="c_logo">Your logo (shows on the printed bid)</label><input id="c_logo" type="file" accept="image/*"><div id="c_logo_prev" style="margin-top:8px"></div></div>
+      <div class="f"><label for="c_logo">Your logo (used if you have no letterhead picture)</label><input id="c_logo" type="file" accept="image/*"><div id="c_logo_prev" style="margin-top:8px"></div></div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="f"><label for="c_lh">Your letterhead picture (the banner across the top of your proposal)</label><input id="c_lh" type="file" accept="image/*" data-img="lh"><div id="c_lh_prev" style="margin-top:8px"></div></div>
+      <div class="f"><label for="c_ft">Your footer picture (certification badges along the bottom)</label><input id="c_ft" type="file" accept="image/*" data-img="ft"><div id="c_ft_prev" style="margin-top:8px"></div></div>
     </div>
     <div class="row" style="margin-top:12px">
       <div class="f"><label for="c_terms">Notes that go on every bid, any supplier</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="c_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button></div><div id="c_terms" class="rt" contenteditable="true" data-save data-ph="Delivery, validity, FOB, payment terms"></div></div>
@@ -207,7 +223,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 20, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 21, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -570,7 +586,7 @@ function qtyText(r){
   return r.len==null?"type a quantity":plain(r.len,2)+(r.basis==="sqft"?" sq ft":u?" "+u:"");
 }
 var showAll=false,heads={};try{heads=JSON.parse(localStorage.getItem("cb_heads")||"{}")}catch(e){}
-var PH=[["desc","Description"],["qty","Qty"],["lgth","Lgth"],["wgt","Wgt"],["price","Price ($)"],["um","UM"],["total","Total ($)"]];
+var PH=[["desc","DESCRIPTION"],["qty","PCS"],["lgth","UNITS"],["wgt","WEIGHT"],["price","UNIT PRICE"],["total","EXTENDED PRICE ($)"]];
 function ph(k){for(var i=0;i<PH.length;i++)if(PH[i][0]===k)return heads["p_"+k]||PH[i][1];return k}
 function saveHeads(){try{localStorage.setItem("cb_heads",JSON.stringify(heads))}catch(e){}}
 function render(){
@@ -723,6 +739,19 @@ $("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!th
 vList();
 $("phd").innerHTML=PH.map(function(c){return'<input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'}).join("");
 $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
+var imgs={lh:"",ft:""};["lh","ft"].forEach(function(k){try{imgs[k]=localStorage.getItem("cb_img_"+k)||""}catch(e){}});
+function showImg(k){$("c_"+k+"_prev").innerHTML=imgs[k]?'<img src="'+imgs[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"> <button class="btn ghost sm" data-imgx="'+k+'" type="button">Remove</button>':""}
+["lh","ft"].forEach(function(k){
+  showImg(k);
+  $("c_"+k).addEventListener("change",async function(){
+    var f=this.files[0];if(!f)return;
+    try{var bmp=await createImageBitmap(f),s=Math.min(1,1600/bmp.width),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*s);cv.height=Math.round(bmp.height*s);
+      var cx=cv.getContext("2d");cx.fillStyle="#fff";cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(bmp,0,0,cv.width,cv.height);imgs[k]=cv.toDataURL("image/jpeg",0.9);
+      try{localStorage.setItem("cb_img_"+k,imgs[k])}catch(e){var m=$("msg");m.textContent="That picture is too big to remember on this computer. It will work until you close the page.";m.classList.remove("hide")}
+      showImg(k)}catch(e){}
+  });
+  $("c_"+k+"_prev").addEventListener("click",function(e){if(e.target.getAttribute("data-imgx")===k){imgs[k]="";try{localStorage.removeItem("cb_img_"+k)}catch(x){}showImg(k)}});
+});
 var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
 function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
 showLogo();
@@ -734,25 +763,37 @@ $("c_logo").addEventListener("change",async function(){
 $("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x"){logo="";try{localStorage.removeItem("cb_logo")}catch(x){}showLogo()}});
 
 /* ---------- proposal ---------- */
+/* what goes in the PCS and UNITS cells of the printed bid */
 function qtyCells(r){
+  var u=(r.um||"").toUpperCase();
   if(r.basis==="ft")return[r.pcs>1?plain(r.pcs,0):"",plain(r.len,2)+" ft"];
-  if(r.basis==="sqft"||r.basis==="qty")return[plain(r.len,2),""];
-  return[plain(r.pcs,0),r.len!=null&&r.basis!=="ls"?plain(r.len,2)+" ft":""];
+  if(r.basis==="sqft")return["",plain(r.len,2)+" sq ft"];
+  if(r.basis==="qty")return["",plain(r.len,2)+(u?" "+u:"")];
+  if(r.basis==="ls")return["","lump sum"];
+  return[plain(r.pcs,0),r.len!=null?plain(r.len,2)+" ft":""];
 }
+function unitLabel(r){return r.basis==="cwt"?"/lb":r.basis==="ft"?"/ft":r.basis==="ea"?"/ea":r.basis==="sqft"?"/sq ft":r.basis==="qty"&&r.um?"/"+r.um.toLowerCase():""}
+/* The printed bid follows the proposal sheet contractors already know: letterhead, contact block on the left,
+   date and numbers on the right, PROJECT line, ruled grid, total, quote conditions, signature, footer. */
 function buildPrint(){
-  var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)};
-  var h='<div class="ph"><div class="co">'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block;margin-bottom:8px">':"")+'<b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+($("p_pno").value?"<br>Project #: "+v("p_pno"):"")+($("p_cno").value?"<br>Contract #: "+v("p_cno"):"")+"</div></div>"+
-    "<p><b>PROJECT:</b> "+v("p_project")+($("p_item").value?"<br>"+v("p_item"):"")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>'+esc(ph("desc"))+'</th><th class="num">'+esc(ph("qty"))+'</th><th class="num">'+esc(ph("lgth"))+'</th><th class="num">'+esc(ph("wgt"))+'</th><th class="num">'+esc(ph("price"))+"</th><th>"+esc(ph("um"))+'</th><th class="num">'+esc(ph("total"))+"</th></tr>";
-  q.rows.forEach(function(r){
+  var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)},has=function(id){return $(id).value.trim()!==""};
+  var head=imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':'<div class="ph"><div>'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block">':"")+'</div><h1>PROPOSAL</h1></div>';
+  var co=[has("c_contact")?"<b>"+v("c_contact")+"</b>":"",has("c_name")&&!imgs.lh?v("c_name"):"",v("c_phone"),v("c_email"),v("c_addr")].filter(Boolean).join("<br>");
+  var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
+  var h=head+'<div class="meta"><div class="co">'+co+'</div><div class="rt2">'+right+"</div></div>"+
+    '<div class="proj"><span>PROJECT:</span><b>'+v("p_project")+(has("p_item")?"<br>"+v("p_item"):"")+"</b></div>"+
+    '<table class="bid"><tr><th>'+esc(ph("desc"))+"</th><th>"+esc(ph("qty"))+"</th><th>"+esc(ph("lgth"))+"</th><th>"+esc(ph("wgt"))+"</th><th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>";
+  var tw=0;
+  q.rows.forEach(function(r,i){
     if(r.opt)return;
-    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="7">'+esc(g)+"</td></tr>"}
-    var s={txt:unitTxt(r,m),ext:B.lines[q.rows.indexOf(r)].extC/100},c=qtyCells(r);
-    h+="<tr><td>"+esc(r.desc)+'</td><td class="num">'+c[0]+'</td><td class="num">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">'+s.txt+"</td><td>"+esc(r.um&&r.basis==="qty"?r.um.toUpperCase():UM[r.basis])+'</td><td class="num">'+plain(s.ext,2)+"</td></tr>";
+    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="6">'+esc(g)+"</td></tr>"}
+    var c=qtyCells(r);tw+=r.wt||0;
+    h+='<tr><td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+'</td><td class="c">'+c[0]+'</td><td class="c">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
-  var tw=q.rows.reduce(function(a,r){return a+(r.opt?0:(r.wt||0))},0);
-  h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+(tw?'<p style="margin-top:6px">TOTAL WEIGHT: '+plain(tw,2)+" lb</p>":"")+($("p_note").value?'<p style="margin-top:6px">'+v("p_note")+"</p>":"")+
-    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b>\n'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
-    '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
+  h+='<tr class="tot"><td colspan="3" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+'</td><td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
+    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
+    '<p style="margin-top:22px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div>'+
+    (imgs.ft?'<img class="ftimg" src="'+imgs.ft+'" alt="">':"");
   $("print").innerHTML='<table class="pg"><thead><tr><td></td></tr></thead><tfoot><tr><td></td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
 var pageTitle=document.title;
