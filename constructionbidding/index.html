@@ -112,7 +112,7 @@
     #print .proj{display:flex;gap:18px;align-items:baseline;border-bottom:3px solid #000;padding:0 0 7px;margin-bottom:0} #print .proj span{font-weight:700;font-size:12px} #print .proj b{flex:1;text-align:center;font-size:15px}
     #print table.bid{border-collapse:collapse;width:100%;margin-top:0} #print table.bid th,#print table.bid td{border:1px solid #000;padding:6px 8px;vertical-align:middle}
     #print table.bid th{text-align:center;font-size:11.5px;letter-spacing:.02em;border-top:1px solid #000} #print table.bid td.c{text-align:center;white-space:nowrap} #print table.bid td.num{white-space:nowrap} #print table.bid td.d .n{font-weight:400;font-size:10px;margin-top:2px;line-height:1.35}
-    #print table.bid .u{font-size:10.5px;margin-left:2px} #print table.bid tr.grp td{font-weight:700;background:#f2f2f2;font-size:12px} #print table.bid tr.sec td{background:#f2f2f2;font-weight:700;font-size:12px}
+    #print table.bid .u{font-size:10.5px;margin-left:2px} #print table.bid tr.grp td{font-weight:700;background:#f2f2f2;font-size:12px} #print table.bid .ow{font-weight:700;text-align:center;font-size:11.5px;letter-spacing:.03em;margin-bottom:2px} #print table.bid tr.sec td{background:#f2f2f2;font-weight:700;font-size:12px}
     #print table.bid tr.tot td{border:none;font-size:13px;padding-top:11px} #print table.bid tr.tot td.box{border:2px solid #000;font-size:15px}
     #print .terms{border:1px solid #999;padding:10px 12px}
     @page{margin:0} /* zero page margin is what makes the browser drop its own header and footer (page title, date, web address) */
@@ -259,7 +259,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 41, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 42, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -456,7 +456,8 @@ function parseQtyList(L){
       var ext=m[6]?num(m[6]):null,qy=num(m[1]),pr=num(m[4]);
       last={opt:false,group:group,desc:m[3].trim(),note:"",pcs:1,len:qy,wt:null,price:pr,basis:"qty",ext:ext,um:m[2]};
       if(ext==null){last.opt=true;last.auto=true;last.alt=true;last.ext=r2(qy*pr);
-        last.note=optNext?"OR OPTIONAL on the supplier's quote: offered instead of the line above. It is not in the supplier's total, so it is left out.":"The supplier gives a price and no total for this line, so it is left out. Untick Leave out to include it."}
+        if(optNext)last.optWord="OR OPTIONAL";
+        last.hint=optNext?"OR OPTIONAL on the supplier's quote: offered instead of the line above. It is not in the supplier's total, so it is left out.":"The supplier gives a price and no total for this line, so it is left out. Untick Leave out to include it."}
       optNext=false;rows.push(last);afterSub=false;continue;
     }
     if(/^\$?\s*[\d,]+\.\d{2}\s*\$?$/.test(t)&&rows.length){subs.push(num(t));last=null;afterSub=true;headOpen=false;continue}
@@ -627,12 +628,12 @@ function parsePasted(text){
     else if(k==="LINE"||k==="OPTION"){headOpen=false;
       var qty=val(f[2]),pr=val(f[4]),ext=val(f[5]),r={opt:k==="OPTION",group:group,desc:(f[1]||"").replace(/\?/g,"").trim()||"(not readable)",note:"",pcs:1,len:null,wt:null,price:0,basis:"qty",ext:0,um:f[3]||"",auto:true};
       if(bad(qty)||bad(pr)||bad(ext)||/\?/.test(f[1]||"")){unsure++;r.opt=true;r.len=bad(qty)?null:qty;r.price=bad(pr)||pr==null?0:pr;r.ext=bad(ext)||ext==null?0:ext;
-        r.note="Your AI could not read part of this line. Type the numbers from the original, then untick Leave out."}
+        r.hint="Your AI could not read part of this line. Type the numbers from the original, then untick Leave out."}
       else if(qty==null&&(pr==null)!==(ext==null)){r.basis="ls";r.price=ext!=null?ext:pr;r.ext=r.price}
       else{r.len=qty;r.price=pr||0;
-        if(ext==null){r.ext=r2((qty||0)*(pr||0));if(k==="LINE"){r.opt=true;r.alt=true;r.note="The supplier gives a price and no total for this line, so it is left out. Untick Leave out to include it."}}
+        if(ext==null){r.ext=r2((qty||0)*(pr||0));if(k==="LINE"){r.opt=true;r.alt=true;r.hint="The supplier gives a price and no total for this line, so it is left out. Untick Leave out to include it."}}
         else r.ext=ext}
-      if(k==="OPTION"&&!r.note)r.note="Marked optional on the supplier's quote, so it is left out. Untick Leave out to include it.";
+      if(k==="OPTION"&&!r.hint)r.hint="Marked optional on the supplier's quote, so it is left out. Untick Leave out to include it.";
       rows.push(r)}
     else if(k==="SUB"){var sv=val(f[1]);if(sv!=null&&!isNaN(sv))subs.push(sv);headOpen=false;group=""}
     else if(k==="TOTAL"){var tv=val(f[1]);if(tv!=null&&!isNaN(tv))total=tv}
@@ -752,7 +753,8 @@ function render(){
     var inp=function(k,cls,v){return'<input class="'+cls+'" data-i="'+i+'" data-k="'+k+'" value="'+esc(v==null?"":v)+'"'+(cls==="n"?' inputmode="decimal"':"")+">"};
     var needQty=r.auto&&r.len==null&&r.basis==="qty";
     h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
-      "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button></td>'+
+      "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+(r.hint&&r.opt?'<div class="note">'+esc(r.hint)+"</div>":"")+
+      (r.opt?'<label style="display:flex;gap:6px;align-items:center;font-weight:700;font-size:13px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="show"'+(r.show?" checked":"")+' style="min-width:0;width:18px;height:18px"> Show on the bid as '+esc(r.optWord||"OPTIONAL")+", priced, not in the total</label>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button></td>'+
       (needQty||(r.auto&&r.basis==="qty")?'<td>'+inp("len","n",r.len)+"</td>":'<td class="num ro">'+esc(qtyText(r))+"</td>")+
       '<td class="adv">'+inp("pcs","n",r.pcs)+'</td><td class="adv">'+inp("len","n",r.len)+'</td><td class="adv">'+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
       '<td class="adv"><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
@@ -872,7 +874,11 @@ function saveQuotes(){try{localStorage.setItem("cb_quotes",JSON.stringify({at:Da
 function restoreQuotes(){
   var d=null;try{d=JSON.parse(localStorage.getItem("cb_quotes")||"null")}catch(e){}
   if(!d||!d.quotes||!d.quotes.length)return;
-  d.quotes.forEach(function(q){quotes.push(q)});cur=Math.min(d.cur||0,quotes.length-1);render();
+  d.quotes.forEach(function(q){ /* quotes saved by an earlier version kept the tool's own hints in the note; move them so they never print */
+    (q.rows||[]).forEach(function(r){var n=String(r.note||"");
+      if(/^OR OPTIONAL on the supplier's quote/.test(n)){r.optWord="OR OPTIONAL";r.hint=n;r.note=""}
+      else if(/^(The supplier gives a price and no total|This was read as a heading|Your AI could not read|Marked optional on the supplier's quote)/.test(n)){r.hint=n;r.note=""}});
+    quotes.push(q)});cur=Math.min(d.cur||0,quotes.length-1);render();
   var m=$("msg");m.textContent="Your "+quotes.length+" quote"+(quotes.length>1?"s":"")+" from "+new Date(d.at).toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"})+" "+(quotes.length>1?"are":"is")+" still here. Fix anything and print again."+(quotes.length>1?"":" To start over, tap Clear this quote under the lines.");m.classList.remove("hide");
 }
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
@@ -882,7 +888,7 @@ function softTotals(){ /* update numbers without rebuilding inputs while typing 
 $("tbl").addEventListener("change",function(e){
   var t=e.target,i=t.getAttribute("data-i"),k=t.getAttribute("data-k");if(i==null)return;
   var r=quotes[cur].rows[+i];
-  if(k==="opt")r.opt=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;
+  if(k==="opt")r.opt=t.checked;else if(k==="show")r.show=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;
   else if(k==="own"){var ov=t.value.replace(/[$,\s]/g,"");r.own=ov===""||!isFinite(+ov)||+ov<0?null:+ov}
   else r[k]=num(t.value);
   if(r.auto&&k!=="ext"&&k!=="opt"&&k!=="desc"&&k!=="own")r.ext=calcExt(r);
@@ -896,7 +902,7 @@ function toHead(q,i){var r=q.rows[i];if(!r||!String(r.desc||"").trim())return;va
 function toLine(q,g){var i=-1;q.rows.forEach(function(r,k){if(i<0&&(r.group||"")===g)i=k});
   var prev=i>0?(q.rows[i-1].group||""):"",hd=((q.pay||{})[g]||{heads:[]}).heads[0];
   q.rows.forEach(function(r){if((r.group||"")===g)r.group=prev});if(q.pay)delete q.pay[g];
-  q.rows.splice(i<0?q.rows.length:i,0,{opt:true,auto:true,group:prev,desc:hd?hd.desc:g,note:"This was read as a heading. Type its quantity and price, then untick Leave out.",pcs:1,len:hd?hd.qty:null,wt:null,price:hd&&hd.rate!=null?hd.rate:0,basis:"qty",ext:0,um:hd?hd.um:""})}
+  q.rows.splice(i<0?q.rows.length:i,0,{opt:true,auto:true,group:prev,desc:hd?hd.desc:g,note:"",hint:"This was read as a heading. Type its quantity and price, then untick Leave out.",pcs:1,len:hd?hd.qty:null,wt:null,price:hd&&hd.rate!=null?hd.rate:0,basis:"qty",ext:0,um:hd?hd.um:""})}
 /* A fix made once sticks: remembered per supplier on this computer, re-applied to that supplier's next quote.
    A remembered fix is never allowed to break a quote that adds up: if it would, it is undone and not counted. */
 var fixes={};try{fixes=JSON.parse(localStorage.getItem("cb_fixes")||"{}")||{}}catch(e){fixes={}}
@@ -1059,7 +1065,7 @@ $("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x
 /* Which columns the printed bid carries. A column with nothing in it is left off; she can also hide the optional ones.
    When no line has a piece count, the quantity goes under the first quantity column and its unit under the second. */
 function bidCols(q){
-  var live=q.rows.filter(function(r){return!r.opt}),cells=live.map(qtyCells),pay=q.pay||{};
+  var live=q.rows.filter(function(r){return!r.opt||r.show}),cells=live.map(qtyCells),pay=q.pay||{};
   Object.keys(pay).forEach(function(g){pay[g].heads.forEach(function(hd){cells.push(["",plain(hd.qty,2)+" "+hd.um])})});
   /* quantity-style bid: no line carries BOTH a piece count and a length. Then every quantity goes under the first column and its unit under the second,
      including a line counted in pieces (an added freight line: 1 EA). Steel lines with pieces AND lengths keep both columns as they are. */
@@ -1100,12 +1106,15 @@ function buildPrint(){
     '<table class="bid"><tr>'+TH("code")+"<th>"+esc(ph("desc"))+"</th>"+TH("qty")+TH("lgth")+TH("wgt")+"<th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>";
   var tw=0;
   q.rows.forEach(function(r,i){
-    if(r.opt)return;
+    if(r.opt&&!r.show)return;
     if((r.group||"")!==g){g=r.group||"";var SI=secInfo(q,B,g);
       if(SI)SI.heads.forEach(function(hd,k){var lastH=k===SI.heads.length-1,sp=qtyPair(["",plain(hd.qty,2)+" "+hd.um],C);
         h+='<tr class="sec">'+TD("code",esc(hd.code),"c")+'<td class="d"><b>'+esc(hd.desc)+"</b></td>"+TD("qty",esc(sp[0]),"c")+TD("lgth",esc(sp[1]),"c")+TD("wgt","","")+'<td class="num">'+(lastH&&SI.sellRate!=null?"$ "+SI.sellRate.toFixed(4)+'<span class="u">/'+esc(String(SI.um).toLowerCase())+"</span>":"")+"</td><td></td></tr>"});
       else if(g)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
-    var c=qtyPair(qtyCells(r),C);tw+=r.wt||0;
+    var c=qtyPair(qtyCells(r),C);
+    if(r.opt){ /* shown as the supplier shows it: the words, the line, its unit price, no extended price, not in the total */
+      h+='<tr class="optrow">'+TD("code","","")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
+    tw+=r.wt||0;
     h+="<tr>"+TD("code","","")+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
   h+='<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
