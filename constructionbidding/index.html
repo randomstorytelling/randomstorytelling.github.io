@@ -112,7 +112,7 @@
     #print .proj{display:flex;gap:18px;align-items:baseline;border-bottom:3px solid #000;padding:0 0 7px;margin-bottom:0} #print .proj span{font-weight:700;font-size:12px} #print .proj b{flex:1;text-align:center;font-size:15px}
     #print table.bid{border-collapse:collapse;width:100%;margin-top:0} #print table.bid th,#print table.bid td{border:1px solid #000;padding:6px 8px;vertical-align:middle}
     #print table.bid th{text-align:center;font-size:11.5px;letter-spacing:.02em;border-top:1px solid #000} #print table.bid td.c{text-align:center;white-space:nowrap} #print table.bid td.num{white-space:nowrap} #print table.bid td.d .n{font-weight:400;font-size:10px;margin-top:2px;line-height:1.35}
-    #print table.bid .u{font-size:10.5px;margin-left:2px} #print table.bid tr.grp td{font-weight:700;background:#f2f2f2;font-size:12px}
+    #print table.bid .u{font-size:10.5px;margin-left:2px} #print table.bid tr.grp td{font-weight:700;background:#f2f2f2;font-size:12px} #print table.bid tr.sec td{background:#f2f2f2;font-weight:700;font-size:12px}
     #print table.bid tr.tot td{border:none;font-size:13px;padding-top:11px} #print table.bid tr.tot td.box{border:2px solid #000;font-size:15px}
     #print .terms{border:1px solid #999;padding:10px 12px}
     @page{margin:0} /* zero page margin is what makes the browser drop its own header and footer (page title, date, web address) */
@@ -244,7 +244,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 31, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 32, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -414,29 +414,46 @@ function parseLump(L){
 }
 function plainMatch(list,val){for(var i=0;i<list.length;i++)if(num(list[i])===val)return list[i];return""}
 var RE_C=/^([\d,]+\.\d{2})\s*(SY|LF|EA|GALS?|SF|CY|TONS?|LBS?|FT)\s*(.+?)\s+\$?\s*([\d,]+\.\d{2,4})\s*\$?\s+([A-Za-z]{1,5})(?:\s+\$?\s*([\d,]+\.\d{2})\s*\$?)?\s*$/i;
+/* A pay item (state code, total quantity, a rate per unit) sits above the material lines that make it up.
+   It is a SECTION: it carries its own code, quantity and rate and is never multiplied or added to the total. */
+var RE_HEAD=/^(\d{6,9}|[A-Z]{1,3}-\d+(?:-\d+)*)\s+([\d,]+\.\d{2})\s*([A-Za-z]{1,5})\s+(.+?)(?:\s+\$?\s*([\d,]+\.\d{2,4})\s*\$?\s*([A-Za-z]{1,5}))?\s*$/;
 function parseQtyList(L){
-  var rows=[],subs=[],group="",flags=[],last=null,project="",afterSub=true;
+  var rows=[],subs=[],secs={},flags=[],project="",group="",last=null,afterSub=true,optNext=false,headOpen=false,docId=L.length?L[0].text:"";
   for(var i=0;i<L.length;i++){
-    var t=L[i].text,m,code="";
+    var t=L[i].text,m;
     if(L[i].page>1&&!rows.length)break;
     if(!project&&(m=t.match(/^Project Name\s+(.+?)(?:\s*Bid Date.*)?$/)))project=m[1].trim();
-    if(m=t.match(/^([A-Z]-\d+-\d+)\s+(.*)$/)){code=m[1];t=m[2]}
+    if(t===docId||/^Page \d+$/i.test(t))continue; /* running page header and footer are never headings */
+    if(/^Notes:/i.test(t))break;
+    if(/^TERMS:/i.test(t)){last=null;continue}
+    if(/^OR OPTIONAL$/i.test(t)){optNext=true;continue}
+    if(/^Total\s+[\d,]+\.\d{2}\s+[A-Za-z]+$/i.test(t))continue; /* a quantity total for the pay items above, not money */
+    if(/freight/i.test(t)&&/\$\s*[\d,]+\.\d{2}/.test(t)&&!RE_C.test(t)){flags.push('The supplier adds a freight charge that is not in the lines: "'+t+'". Add a line for it if it applies to this bid.');last=null;continue}
+    if(m=t.match(RE_HEAD)){
+      var hd={code:m[1],qty:num(m[2]),um:m[3],desc:m[4].trim(),rate:m[5]?num(m[5]):null};
+      if(headOpen&&secs[group])secs[group].heads.push(hd); /* two pay items in a row share the lines below them */
+      else{group=hd.code+" · "+hd.desc;secs[group]={heads:[hd]}}
+      headOpen=true;last=null;afterSub=false;continue;
+    }
     m=t.match(RE_C);
     if(m){
-      var ext=m[6]?num(m[6]):null;
-      if(ext==null){group=(code?code+" ":"")+m[3].trim();flags.push('"'+plain(num(m[1]),0)+" "+m[2]+" "+m[3].trim()+'" has a rate and no total. It reads as a summary line, so it was left out. Confirm.');last=null;afterSub=false;continue}
-      last={opt:false,group:group,desc:m[3].trim(),note:"",pcs:1,len:num(m[1]),wt:null,price:num(m[4]),basis:"qty",ext:ext,um:m[2]};
-      rows.push(last);afterSub=false;continue;
+      headOpen=false;
+      var ext=m[6]?num(m[6]):null,qy=num(m[1]),pr=num(m[4]);
+      last={opt:false,group:group,desc:m[3].trim(),note:"",pcs:1,len:qy,wt:null,price:pr,basis:"qty",ext:ext,um:m[2]};
+      if(ext==null){last.opt=true;last.auto=true;last.alt=true;last.ext=r2(qy*pr);
+        last.note=optNext?"OR OPTIONAL on the supplier's quote: offered instead of the line above. It is not in the supplier's total, so it is left out.":"The supplier gives a price and no total for this line, so it is left out. Untick Leave out to include it."}
+      optNext=false;rows.push(last);afterSub=false;continue;
     }
-    if(/^\$?\s*[\d,]+\.\d{2}\s*\$?$/.test(t)&&rows.length){subs.push(num(t));last=null;afterSub=true;continue}
-    if(/^(Notes:|TERMS:|Page \d)/i.test(t)){last=null;if(/^Notes:/i.test(t))break;continue}
-    if(last){if(last.note.length<140)last.note+=(last.note?" ":"")+t}
-    else if(afterSub&&rows.length&&/^[A-Za-z]/.test(t)&&t.length<60&&!/FAX|TEL|Suite|Ave|Paving Solutions/i.test(t))group=t;
+    if(/^\$?\s*[\d,]+\.\d{2}\s*\$?$/.test(t)&&rows.length){subs.push(num(t));last=null;afterSub=true;headOpen=false;continue}
+    if(last){if(!last.alt&&last.note.length<140)last.note+=(last.note?" ":"")+t}
+    else if(afterSub&&rows.length&&/^[A-Za-z]/.test(t)&&t.length<60&&!/FAX|TEL|Suite|Ave|Paving Solutions|Fabricators/i.test(t))group=t;
   }
-  var printed=subs.length?r2(subs.reduce(function(a,b){return a+b},0)):null;
+  var printed=subs.length?r2(subs.reduce(function(a,b){return a+b},0)):null,alts=rows.filter(function(r){return r.alt}).length;
   if(subs.length>1)flags.push("The supplier prints "+subs.length+" subtotals and no grand total. The printed total shown here is their sum.");
-  return{layout:"Quantity list",rows:rows,printed:printed,project:project,flags:flags};
+  if(alts)flags.push(alts+" line"+(alts>1?"s are":" is")+" priced by the supplier without a total (an optional alternative). "+(alts>1?"They are":"It is")+" listed and left out. Untick Leave out if you want "+(alts>1?"them":"it")+" in the bid.");
+  return{layout:"Quantity list",rows:rows,printed:printed,project:project,flags:flags,secs:secs};
 }
+
 /* ---------- any layout: rows found by their arithmetic, not their position ---------- */
 var UOM="LF|EA|SF|SY|GAL|GALS|TON|TONS|LB|LBS|CY|YD|YD³|YD3|FT|LS|CWT|EACH|BAG|BAGS|PC|PCS|SQFT|SQ FT|WF|HR|HRS|LOAD|LOADS|KIT|KITS|BOX|ROLL|ROLLS|SHEET|SHEETS|M|MT|GL";
 var RE_TOK=/(?:^|[\s$(])\$?\s?(\d[\d,]*(?:\.\d+)?)(?=$|[\s),;]|\s*\/\s*[A-Za-z])/g;
@@ -529,6 +546,14 @@ function priceBid(q,pct){
   idx.forEach(function(o){lines[o.i]={extC:o.fl}});
   return{pct:pct||0,costC:costC,sellC:sellC,lines:lines};
 }
+/* a section's rate per unit, the way the supplier shows it: its lines' total divided by its quantity. Display only. */
+function secInfo(q,B,g){
+  var sc=(q.pay||{})[g];if(!sc)return null;
+  var costC=0,sellC=0,qty=0;q.rows.forEach(function(r,i){if(r.opt||(r.group||"")!==g)return;costC+=cents(r.ext);if(B&&B.lines[i])sellC+=B.lines[i].extC});
+  sc.heads.forEach(function(h){qty+=h.qty||0});
+  var um=sc.heads[sc.heads.length-1].um;
+  return{heads:sc.heads,um:um,qty:qty,costRate:qty?(costC/100/qty):null,sellRate:qty&&B?(sellC/100/qty):null};
+}
 /* the unit price printed beside a line: display only, never used to compute a total */
 function unitTxt(r,pct){var m=1+(pct||0)/100;return r.basis==="cwt"?r4((r.price||0)/100*m).toFixed(4):plain(r2((r.price||0)*m),2)}
 async function parseBuffer(buf,name){return fromLines(await pdfLines(buf),name,performance.now())}
@@ -568,7 +593,7 @@ function fromLines(L,name,t0){
   all.forEach(function(x){if(c||!x.rows.length||x.printed==null)return;var sum=r2(x.rows.reduce(function(a,r){return a+(r.opt?0:(r.ext||0))},0));if(Math.abs(sum-x.printed)<0.005)c=x});
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
   var MT=grabMeta(L);
-  var q={bidDate:MT.bidDate,addenda:MT.addenda,metaBy:MT.by,terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  var q={bidDate:MT.bidDate,addenda:MT.addenda,metaBy:MT.by,terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),pay:c.secs||{},name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
@@ -622,7 +647,7 @@ function qtyText(r){
   return r.len==null?"type a quantity":plain(r.len,2)+(r.basis==="sqft"?" sq ft":u?" "+u:"");
 }
 var showAll=false,heads={};try{heads=JSON.parse(localStorage.getItem("cb_heads")||"{}")}catch(e){}
-var PH=[["desc","DESCRIPTION"],["qty","PCS"],["lgth","UNITS"],["wgt","WEIGHT"],["price","UNIT PRICE"],["total","EXTENDED PRICE ($)"]];
+var PH=[["code","CODE"],["desc","DESCRIPTION"],["qty","PCS"],["lgth","UNITS"],["wgt","WEIGHT"],["price","UNIT PRICE"],["total","EXTENDED PRICE ($)"]];
 function ph(k){for(var i=0;i<PH.length;i++)if(PH[i][0]===k)return heads["p_"+k]||PH[i][1];return k}
 function saveHeads(){try{localStorage.setItem("cb_heads",JSON.stringify(heads))}catch(e){}}
 function render(){
@@ -646,12 +671,14 @@ function render(){
   var B=priceBid(q,pctNow());
   var h="<tr>"+TH.map(function(c){return'<th class="'+c[2]+'"><span class="eh" contenteditable="true" spellcheck="false" data-th="'+c[0]+'" title="Click to rename this heading">'+esc(heads[c[0]]||c[1])+"</span></th>"}).join("")+'<th class="adv"></th></tr>',g=null;
   q.rows.forEach(function(r,i){
-    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="13">'+esc(g)+"</td></tr>"}
+    if((r.group||"")!==g){g=r.group||"";var SI=secInfo(q,noMk?null:B,g);
+      if(SI)h+='<tr class="grp"><td colspan="13">'+SI.heads.map(function(hd){return'<span style="display:inline-block;min-width:92px">'+esc(hd.code)+"</span> "+esc(hd.desc)+' <span style="font-weight:400">· '+plain(hd.qty,2)+" "+esc(hd.um)+"</span>"}).join("<br>")+'<div style="font-weight:400;font-size:13px;margin-top:2px">Pay item'+(SI.heads.length>1?"s":"")+": supplier's rate "+(SI.costRate==null?"":"$"+SI.costRate.toFixed(4)+" per "+esc(SI.um))+(SI.sellRate==null?"":" · your rate $"+SI.sellRate.toFixed(4)+" per "+esc(SI.um))+". Shown on the bid as its own row, not multiplied. "+'<button type="button" class="lk" style="font-weight:400;font-size:12px" data-toline="'+esc(g)+'">Not a heading? Make it a line</button></div></td></tr>';
+      else if(g)h+='<tr class="grp"><td colspan="13">'+esc(g)+' <button type="button" class="lk" style="font-weight:400;font-size:12px" data-toline="'+esc(g)+'">Not a heading? Make it a line</button></td></tr>'}
     var calc=calcExt(r),ok=Math.abs(calc-(r.ext||0))<0.005,s={txt:unitTxt(r,pctNow()),ext:B.lines[i]?B.lines[i].extC/100:0};
     var inp=function(k,cls,v){return'<input class="'+cls+'" data-i="'+i+'" data-k="'+k+'" value="'+esc(v==null?"":v)+'"'+(cls==="n"?' inputmode="decimal"':"")+">"};
     var needQty=r.auto&&r.len==null&&r.basis==="qty";
     h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
-      "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+"</td>"+
+      "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button></td>'+
       (needQty||(r.auto&&r.basis==="qty")?'<td>'+inp("len","n",r.len)+"</td>":'<td class="num ro">'+esc(qtyText(r))+"</td>")+
       '<td class="adv">'+inp("pcs","n",r.pcs)+'</td><td class="adv">'+inp("len","n",r.len)+'</td><td class="adv">'+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
       '<td class="adv"><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
@@ -701,7 +728,7 @@ function renderDay(){
     if(!q.skip){inc++;costC+=cents(T.cost);if(B)bidC+=B.sellC;else need++}
     var chk=!q.rows.length?'<span style="color:var(--bad)">nothing read</span>':T.match===true&&!T.off?'<span style="color:var(--ok)">✓ adds up</span>':T.match===true?'<span style="color:var(--ok)">✓ adds up</span>, '+T.off+" to look at":T.match===false?'<span style="color:var(--bad);font-weight:700">⚠ off by '+money(Math.abs(T.diff))+"</span>":"no printed total";
     return'<tr class="'+(q.skip?"opt ":"")+(i===cur?"here":"")+'"><td style="text-align:center"><input type="checkbox" data-dk="'+i+'"'+(q.skip?"":" checked")+' style="min-width:0;width:22px;height:22px" aria-label="Include this bid"></td><td style="text-align:center"><input type="checkbox" data-cmp="'+i+'"'+(q.cmp?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Compare this quote"></td>'+
-      '<td class="ro" style="white-space:normal"><button type="button" class="lk" data-open="'+i+'">'+esc(q.project||q.name)+"</button>"+(gs.length>1&&T.match!==false?' <button type="button" class="btn ghost sm" data-split="'+i+'" style="padding:4px 10px;font-size:13px">Split into '+gs.length+" bids</button>":"")+'<div class="note" style="padding:0">'+esc(q.name)+"</div></td>"+
+      '<td class="ro" style="white-space:normal"><button type="button" class="lk" data-open="'+i+'">'+esc(q.project||q.name)+"</button>"+(gs.length>1&&T.match!==false&&!Object.keys(q.pay||{}).length?' <button type="button" class="btn ghost sm" data-split="'+i+'" style="padding:4px 10px;font-size:13px">Split into '+gs.length+" bids</button>":"")+'<div class="note" style="padding:0">'+esc(q.name)+"</div></td>"+
       '<td class="ro">'+esc(vend)+'</td><td class="num ro">'+money(T.cost)+'</td><td class="ro" style="white-space:normal">'+chk+"</td>"+
       '<td><input class="n" data-dm="'+i+'" inputmode="decimal" value="'+esc(q.mk==null?"":q.mk)+'" placeholder="?" aria-label="Markup percent" style="min-width:70px;font-weight:700;border:2px solid '+(p==null?"var(--bad)":"var(--ink)")+';border-radius:8px"></td>'+
       '<td class="num ro"><b>'+(B?money(B.sellC/100):"needs a markup")+"</b></td></tr>";
@@ -787,7 +814,15 @@ $("tbl").addEventListener("change",function(e){
 });
 $("tbl").addEventListener("focusout",function(e){var k=e.target.getAttribute&&e.target.getAttribute("data-th");if(!k)return;var v=e.target.textContent.replace(/\s+/g," ").trim();if(v)heads[k]=v;else delete heads[k];saveHeads()});
 $("tbl").addEventListener("keydown",function(e){if(e.target.getAttribute&&e.target.getAttribute("data-th")&&e.key==="Enter"){e.preventDefault();e.target.blur()}});
-$("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del");if(d!=null){quotes[cur].rows.splice(+d,1);render()}});
+/* The reader's guess is never final: any line can become a heading and any heading a line, on any layout. */
+function toHead(q,i){var r=q.rows[i];if(!r||!String(r.desc||"").trim())return;var old=r.group||"",g=String(r.desc).trim();q.rows.splice(i,1);
+  for(var k=i;k<q.rows.length&&(q.rows[k].group||"")===old;k++)q.rows[k].group=g}
+function toLine(q,g){var i=-1;q.rows.forEach(function(r,k){if(i<0&&(r.group||"")===g)i=k});
+  var prev=i>0?(q.rows[i-1].group||""):"",hd=((q.pay||{})[g]||{heads:[]}).heads[0];
+  q.rows.forEach(function(r){if((r.group||"")===g)r.group=prev});if(q.pay)delete q.pay[g];
+  q.rows.splice(i<0?q.rows.length:i,0,{opt:true,auto:true,group:prev,desc:hd?hd.desc:g,note:"This was read as a heading. Type its quantity and price, then untick Leave out.",pcs:1,len:hd?hd.qty:null,wt:null,price:hd&&hd.rate!=null?hd.rate:0,basis:"qty",ext:0,um:hd?hd.um:""})}
+$("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del"),th=e.target.getAttribute("data-tohead"),tl=e.target.getAttribute("data-toline");
+  if(d!=null){quotes[cur].rows.splice(+d,1);render()}else if(th!=null){toHead(quotes[cur],+th);render()}else if(tl!=null){toLine(quotes[cur],tl);render()}});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
 $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true});render()});
 $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
@@ -933,20 +968,24 @@ function unitLabel(r){return r.basis==="cwt"?"/lb":r.basis==="ft"?"/ft":r.basis=
 function buildPrint(){
   var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)},has=function(id){return $(id).value.trim()!==""};
   var RV=revFor(q,$("p_to").value.trim(),m);
+  var hasCode=Object.keys(q.pay||{}).length>0,X=hasCode?"<td></td>":"";
   var head=imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':'<div class="ph"><div>'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block">':"")+'</div><h1>PROPOSAL</h1></div>';
   var co=[has("c_contact")?"<b>"+v("c_contact")+"</b>":"",has("c_name")&&!imgs.lh?v("c_name"):"",v("c_phone"),v("c_email"),v("c_addr")].filter(Boolean).join("<br>");
   var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Valid until:",v("p_valid")],["Bid date:",v("p_bid")],["Addenda:",v("p_add")],["Revision:",RV.rev>1?"rev "+RV.rev:""],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
   var h=(imgs.lh?"":head)+'<div class="meta"><div class="co">'+co+'</div><div class="rt2">'+right+"</div></div>"+
     '<div class="proj"><span>PROJECT:</span><b>'+v("p_project")+(has("p_item")?"<br>"+v("p_item"):"")+"</b></div>"+
-    '<table class="bid"><tr><th>'+esc(ph("desc"))+"</th><th>"+esc(ph("qty"))+"</th><th>"+esc(ph("lgth"))+"</th><th>"+esc(ph("wgt"))+"</th><th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>";
+    '<table class="bid"><tr>'+(hasCode?"<th>"+esc(ph("code"))+"</th>":"")+"<th>"+esc(ph("desc"))+"</th><th>"+esc(ph("qty"))+"</th><th>"+esc(ph("lgth"))+"</th><th>"+esc(ph("wgt"))+"</th><th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>";
   var tw=0;
   q.rows.forEach(function(r,i){
     if(r.opt)return;
-    if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="6">'+esc(g)+"</td></tr>"}
+    if((r.group||"")!==g){g=r.group||"";var SI=secInfo(q,B,g);
+      if(SI)SI.heads.forEach(function(hd,k){var lastH=k===SI.heads.length-1;
+        h+='<tr class="sec"><td class="c">'+esc(hd.code)+'</td><td class="d"><b>'+esc(hd.desc)+'</b></td><td class="c"></td><td class="c">'+plain(hd.qty,2)+" "+esc(hd.um)+'</td><td></td><td class="num">'+(lastH&&SI.sellRate!=null?"$ "+SI.sellRate.toFixed(4)+'<span class="u">/'+esc(String(SI.um).toLowerCase())+"</span>":"")+"</td><td></td></tr>"});
+      else if(g)h+='<tr class="grp">'+'<td colspan="'+(hasCode?7:6)+'">'+esc(g)+"</td></tr>"}
     var c=qtyCells(r);tw+=r.wt||0;
-    h+='<tr><td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+'</td><td class="c">'+c[0]+'</td><td class="c">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
+    h+="<tr>"+X+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+'</td><td class="c">'+c[0]+'</td><td class="c">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
-  h+='<tr class="tot"><td colspan="3" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+'</td><td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
+  h+='<tr class="tot"><td colspan="'+(hasCode?4:3)+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+'</td><td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
     '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
   $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
@@ -1149,7 +1188,7 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
