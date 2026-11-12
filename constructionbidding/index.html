@@ -101,9 +101,10 @@
     #print td{padding:9px 8px;border-bottom:1px solid #bbb;color:#000} #print td.num,#print th.num{padding-left:14px} #print tr.grp td{background:none;border-top:1px solid #000;font-size:12.5px}
     #print .tot td{font-weight:700;font-size:16px;border-top:2px solid #000;border-bottom:none;padding-top:12px}
     #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:26px;display:flex;gap:60px}
+    #print table.lay2 .pg2{break-before:page;page-break-before:always} #print table.lay2 .terms{font-size:12px;line-height:1.55;margin-top:0}
     #print .keep{break-inside:avoid;page-break-inside:avoid} /* the acceptance line and the signature lines never split across pages */
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
-    #print img.lh{width:100%;display:block;margin:0 0 10px}
+    #print img.lh{width:100%;display:block;margin:0 0 9px}
     #print .ph{align-items:center;border-bottom:none;margin-bottom:8px}
     #print .meta{display:flex;justify-content:space-between;gap:30px;margin:2px 0 9px;font-size:12px;line-height:1.5}
     #print .meta .rt2{display:grid;grid-template-columns:auto auto;gap:1px 10px;align-content:start} #print .meta .rt2 span{text-align:right} #print .meta .rt2 b{min-width:90px}
@@ -114,7 +115,7 @@
     #print table.bid tr.tot td{border:none;font-size:13px;padding-top:11px} #print table.bid tr.tot td.box{border:2px solid #000;font-size:15px}
     #print .terms{border:1px solid #999;padding:10px 12px}
     @page{margin:0} /* zero page margin is what makes the browser drop its own header and footer (page title, date, web address) */
-    @page{size:letter} #print table.pg{width:100%;border-collapse:collapse;height:277mm} /* each bid's frame is at least one page tall, so its footer row sits at the bottom of the page; when a bid runs long the browser repeats the footer row on every page */ #print table.pg>thead>tr>td{height:10mm;padding:0;border:none} #print table.pg>tfoot>tr>td{height:var(--foot,14mm);padding:0 14mm 7mm;border:none;vertical-align:bottom} #print table.pg>tfoot img{width:100%;display:block}
+    @page{size:letter} #print table.pg{width:100%;border-collapse:collapse;height:277mm} /* each bid's frame is at least one page tall, so its footer row sits at the bottom of the page; when a bid runs long the browser repeats the footer row on every page */ #print table.pg>thead>tr>td{padding:9mm 14mm 0;border:none} /* the letterhead lives in the repeating top row, so a second page carries it too */ #print table.pg>tfoot>tr>td{height:var(--foot,14mm);padding:0 14mm 7mm;border:none;vertical-align:bottom} #print table.pg>tfoot img{width:100%;display:block}
     #print table.pg>tbody>tr>td.pgc{padding:0 14mm;border:none;vertical-align:top}
   }
 </style>
@@ -138,7 +139,7 @@
     <div id="flags"></div>
     <div class="scroll"><table id="tbl"></table></div>
     <p class="sub" style="font-size:14px;margin-top:8px">Headings not the way you say it? Click any heading and type your own. It is remembered.</p>
-    <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="add">+ Add a line</button><button class="btn ghost sm" id="more">Show every column</button></p>
+    <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="add">+ Add a line</button><button class="btn ghost sm" id="more">Show every column</button><button class="btn ghost sm" id="clearOne" type="button">Clear this quote</button></p>
 
     <h2>Step 3. Set the markup for this bid</h2>
     <div id="mkask"></div>
@@ -164,6 +165,7 @@
       <div class="f"><label for="p_project">Project</label><input id="p_project"></div>
       <div class="f"><label for="p_to">Prepared for</label><input id="p_to" placeholder="Contractor name"></div>
       <div class="f s"><label for="p_date">Date</label><input id="p_date"></div>
+      <div class="f s"><label for="p_valid">Valid until</label><input id="p_valid" placeholder="optional"></div>
     </div>
     <details id="moreBid" style="margin-top:12px"><summary>More for this bid: item and delivery, project and contract numbers, notes, column headings</summary>
     <div class="row" style="margin-top:12px">
@@ -201,6 +203,9 @@
       <div class="f"><label for="c_terms">Notes that go on every bid, any supplier</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="c_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button></div><div id="c_terms" class="rt" contenteditable="true" data-save data-ph="Delivery, validity, FOB, payment terms"></div></div>
     </div>
     </details>
+    <div style="margin-top:16px"><label>How the bid sits on the page</label>
+      <div class="quick" id="lay" style="margin-top:6px"><button type="button" data-lay="one">Fit on one page</button><button type="button" data-lay="two">Conditions and signature on page 2, larger type</button></div>
+      <div class="sub" id="layNote" style="font-size:13px;margin-top:4px"></div></div>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn" id="doprint">Print my bid</button>
       <button class="btn ghost" id="csv">Save the lines for Excel</button>
@@ -226,7 +231,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 27, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 28, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -630,7 +635,7 @@ function render(){
   $("sell").textContent=noMk?"needs a markup":money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=noMk?"—":money(r2(T.sell-T.cost));
   var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
-  vShow();renderDay();
+  vShow();renderDay();saveQuotes();
   if(holders&&!(document.activeElement&&document.activeElement.getAttribute&&document.activeElement.getAttribute("data-hm")!=null))renderHolders();
 }
 /* ---------- BID DAY: every quote on one table, one markup pass, one print ---------- */
@@ -655,7 +660,8 @@ function renderDay(){
     '<div class="scroll"><table class="daytbl"><tr><th>Include</th><th>Quote</th><th>Supplier</th><th class="num">Supplier\'s price</th><th>Check</th><th class="num">Markup %</th><th class="num">Your bid</th></tr>'+body+
     '<tr class="grp"><td></td><td colspan="2">'+inc+" included</td><td class=\"num\">"+money(costC/100)+'</td><td></td><td></td><td class="num">'+(need?"—":money(bidC/100))+"</td></tr></table></div>"+
     '<p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span>Use</span><input id="dayAll" inputmode="decimal" placeholder="%" style="font:inherit;font-size:17px;font-weight:700;width:84px;padding:9px;border:2px solid var(--ink);border-radius:10px;text-align:right"><span>% on</span><button class="btn ghost sm" id="dayNeed" type="button">every quote with no markup</button><button class="btn ghost sm" id="dayEvery" type="button">every quote</button></p>'+
-    '<p style="margin-top:6px"><button class="btn" id="dayPrint" type="button">Print all '+inc+" bids</button></p>";
+    '<p style="margin-top:6px"><button class="btn" id="dayPrint" type="button">Print all '+inc+' bids together</button> <button class="btn ghost" id="dayEach" type="button">Save each bid as its own PDF</button></p><div class="sub" style="font-size:13px;margin-top:4px">Together: one print job, one PDF with every bid. Each as its own: a save box opens for each bid, already named with the project. Choose "Save as PDF" in the box.</div>'+
+    '<p style="margin-top:14px"><button class="btn ghost sm" id="dayClear" type="button">Start a new bid day (clear these quotes)</button></p>';
 }
 function splitQuote(i){
   var q=quotes[i],gs=groupsOf(q);if(gs.length<2)return;
@@ -683,18 +689,36 @@ $("day").addEventListener("click",function(e){
     var v=$("dayAll").value.trim();if(v===""||isNaN(parseFloat(v))){$("dayAll").focus();return}
     quotes.forEach(function(q){if(q.skip)return;if(t.id==="dayEvery"||qPct(q)==null){q.mk=v;q.mkFrom="you"}});render();return;
   }
-  if(t.id==="dayPrint"){
+  if(t.id==="dayClear"){if(confirm("Clear all "+quotes.length+" quotes from this page? Your saved terms, markup table and chart stay.")){quotes.length=0;cur=0;saveQuotes();render();$("day").innerHTML=""}return}
+  if(t.id==="dayPrint"||t.id==="dayEach"){
     var list=[],msg=$("msg");quotes.forEach(function(q,i){if(!q.skip)list.push(i)});
     var bad=list.filter(function(i){return qPct(quotes[i])==null}),off=list.filter(function(i){return totals(quotes[i],0).match===false||!quotes[i].rows.length});
     if(!list.length)return;
     if(bad.length||off.length){msg.textContent=(bad.length?bad.length+" quote"+(bad.length>1?"s":"")+" still need a markup. ":"")+(off.length?off.length+" quote"+(off.length>1?"s do":" does")+" not add up to the supplier's total, or could not be read. Fix or untick "+(off.length>1?"them":"it")+" first. ":"")+"Nothing was printed.";msg.classList.remove("hide");msg.scrollIntoView({behavior:"smooth",block:"center"});return}
-    var keep=cur,html="",stopped=false,pages=[];
-    list.forEach(function(i){if(stopped)return;cur=i;render();if(moneyStop(qPct(quotes[i]))){stopped=true;return}buildPrint();pages.push({i:i,html:$("print").innerHTML})});
+    var keep=cur,stopped=false,pages=[];
+    list.forEach(function(i){if(stopped)return;cur=i;render();if(moneyStop(qPct(quotes[i]))){stopped=true;return}buildPrint();pages.push({i:i,html:$("print").innerHTML,title:fileTitle(quotes[i])})});
     if(stopped){cur=keep;render();return} /* nothing prints and nothing is logged unless every bid reconciles */
-    pages.forEach(function(pg,k){cur=pg.i;render();logSent($("p_to").value.trim());html+='<div style="'+(k?"page-break-before:always":"")+'">'+pg.html+"</div>"});
-    cur=keep;render();$("print").innerHTML=html;window.print();
+    if(t.id==="dayPrint"){
+      var html="";pages.forEach(function(pg,k){cur=pg.i;render();logSent($("p_to").value.trim());html+='<div style="'+(k?"page-break-before:always":"")+'">'+pg.html+"</div>"});
+      cur=keep;render();$("print").innerHTML=html;printTitle=(HOUSE.short||"Bids")+" - "+pages.length+" bids - "+new Date().toLocaleDateString("en-US").replace(/\//g,"-");window.print();printTitle=null;return;
+    }
+    /* one save box per bid, one after another */
+    var k=0;(function next(){
+      if(k>=pages.length){cur=keep;render();printTitle=null;return}
+      var pg=pages[k++];cur=pg.i;render();logSent($("p_to").value.trim());$("print").innerHTML=pg.html;printTitle=pg.title;
+      var done=false,go=function(){if(done)return;done=true;window.removeEventListener("afterprint",go);setTimeout(next,350)};
+      window.addEventListener("afterprint",go);window.print();setTimeout(go,1500); /* in browsers where print() waits for the box, this runs after it closes */
+    })();
   }
 });
+/* ---------- quotes stay on this computer until cleared, so a typo is fixed without adding the quote again ---------- */
+function saveQuotes(){try{localStorage.setItem("cb_quotes",JSON.stringify({at:Date.now(),cur:cur,quotes:quotes.map(function(q){var c={};for(var k in q)c[k]=q[k];c.text=(q.text||"").slice(0,3000);return c})}))}catch(e){}}
+function restoreQuotes(){
+  var d=null;try{d=JSON.parse(localStorage.getItem("cb_quotes")||"null")}catch(e){}
+  if(!d||!d.quotes||!d.quotes.length)return;
+  d.quotes.forEach(function(q){quotes.push(q)});cur=Math.min(d.cur||0,quotes.length-1);render();
+  var m=$("msg");m.textContent="Your "+quotes.length+" quote"+(quotes.length>1?"s":"")+" from "+new Date(d.at).toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"})+" "+(quotes.length>1?"are":"is")+" still here. Fix anything and print again."+(quotes.length>1?"":" To start over, tap Clear this quote under the lines.");m.classList.remove("hide");
+}
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
   var q=quotes[cur],T=totals(q,pctNow());
   $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
@@ -714,6 +738,7 @@ $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.l
 $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
 $("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;if(quotes.length){quotes[cur].mk=m;quotes[cur].mkFrom="you"}render()}});
 $("more").addEventListener("click",function(){showAll=!showAll;render()});
+$("clearOne").addEventListener("click",function(){if(!quotes.length||!confirm("Clear this quote from the page?"))return;quotes.splice(cur,1);cur=Math.max(0,Math.min(cur,quotes.length-1));saveQuotes();render();if(!quotes.length)$("day").innerHTML=""});
 $("p_project").addEventListener("input",function(){quotes[cur].project=this.value});
 $("p_to").addEventListener("change",function(){var n=this.value.trim(),k=Object.keys(cmk).filter(function(x){return x.toLowerCase()===n.toLowerCase()})[0];if(k&&String(cmk[k])!==$("mk").value){$("mk").value=cmk[k];render();var m=$("msg");m.textContent="Used your saved markup for "+k+": "+cmk[k]+"%.";m.classList.remove("hide")}});
 
@@ -806,7 +831,7 @@ $("phd").innerHTML=PH.map(function(c){return'<input data-ph="'+c[0]+'" value="'+
 $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
 /* HOUSE: what is built in for the company this version is set up for. One place. Empty it when the tool leaves that company;
    then each company uploads its own letterhead and footer. An uploaded picture always wins over the built-in one. */
-var HOUSE={lh:"house-letterhead.jpg",ft:"house-footer.jpg"};
+var HOUSE={lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3"};
 var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=localStorage.getItem("cb_img_"+k)||""}catch(e){}});
 var imgs={};function useImgs(){["lh","ft"].forEach(function(k){imgs[k]=own[k]||HOUSE[k]||""});
   document.documentElement.style.setProperty("--foot",imgs.ft?"25mm":"12mm")}useImgs();
@@ -850,8 +875,8 @@ function buildPrint(){
   var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)},has=function(id){return $(id).value.trim()!==""};
   var head=imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':'<div class="ph"><div>'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block">':"")+'</div><h1>PROPOSAL</h1></div>';
   var co=[has("c_contact")?"<b>"+v("c_contact")+"</b>":"",has("c_name")&&!imgs.lh?v("c_name"):"",v("c_phone"),v("c_email"),v("c_addr")].filter(Boolean).join("<br>");
-  var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
-  var h=head+'<div class="meta"><div class="co">'+co+'</div><div class="rt2">'+right+"</div></div>"+
+  var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Valid until:",v("p_valid")],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
+  var h=(imgs.lh?"":head)+'<div class="meta"><div class="co">'+co+'</div><div class="rt2">'+right+"</div></div>"+
     '<div class="proj"><span>PROJECT:</span><b>'+v("p_project")+(has("p_item")?"<br>"+v("p_item"):"")+"</b></div>"+
     '<table class="bid"><tr><th>'+esc(ph("desc"))+"</th><th>"+esc(ph("qty"))+"</th><th>"+esc(ph("lgth"))+"</th><th>"+esc(ph("wgt"))+"</th><th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>";
   var tw=0;
@@ -862,12 +887,20 @@ function buildPrint(){
     h+='<tr><td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+'</td><td class="c">'+c[0]+'</td><td class="c">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
   h+='<tr class="tot"><td colspan="3" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+'</td><td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
-    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
-    '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div>';
-  $("print").innerHTML='<table class="pg"><thead><tr><td></td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
+    '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
+    '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
+  $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
+var layout="one";try{layout=localStorage.getItem("cb_layout")||"one"}catch(e){}
+function showLay(){document.querySelectorAll("#lay button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-lay")===layout)});
+  $("layNote").textContent=layout==="two"?"Page 1: letterhead, the lines and the total. Page 2: the conditions in larger type and the signature lines. Both pages carry the letterhead and footer.":"Everything on one page when it fits, with the conditions in small type. A long bid still runs onto a second page."}
+$("lay").addEventListener("click",function(e){var l=e.target.getAttribute("data-lay");if(!l)return;layout=l;try{localStorage.setItem("cb_layout",l)}catch(x){}showLay()});
+showLay();
+/* the name the browser offers when a bid is saved as a PDF */
+function fileTitle(q){var who=$("p_to").value.trim(),co=(HOUSE.short||$("c_name").value.trim());return[co,q.project||"Bid",who].filter(Boolean).join(" - ").replace(/[\\/:*?"<>|]+/g," ").replace(/\s+/g," ").slice(0,120)}
 var pageTitle=document.title;
-window.addEventListener("beforeprint",function(){var q=quotes[cur];document.title=q?(q.project||"Bid"):pageTitle});
+var printTitle=null;
+window.addEventListener("beforeprint",function(){var q=quotes[cur];document.title=printTitle||(q?fileTitle(q):pageTitle)});
 window.addEventListener("afterprint",function(){document.title=pageTitle});
 var tiersSaved=JSON.stringify(tiers);
 function saveTiers(){} /* rows stay where she typed them; saving is the user's choice */
@@ -956,7 +989,8 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+restoreQuotes();
+window.CB={saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
