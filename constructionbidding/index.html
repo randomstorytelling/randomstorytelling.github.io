@@ -101,7 +101,7 @@
     #print table{font-size:12.5px} #print th{background:none;border-top:2px solid #000;border-bottom:1.5px solid #000;font-size:11px;letter-spacing:.05em;padding:9px 8px;color:#000}
     #print td{padding:9px 8px;border-bottom:1px solid #bbb;color:#000} #print td.num,#print th.num{padding-left:14px} #print tr.grp td{background:none;border-top:1px solid #000;font-size:12.5px}
     #print .tot td{font-weight:700;font-size:16px;border-top:2px solid #000;border-bottom:none;padding-top:12px}
-    #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:58px;display:flex;gap:60px}
+    #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:38px;display:flex;gap:60px} #print table.lay2 .sig,#print table.sigbig .sig{margin-top:72px}
     #print table.lay2 .pg2{break-before:page;page-break-before:always} #print table.lay2 .terms{font-size:12px;line-height:1.55;margin-top:0}
     #print .keep{break-inside:avoid;page-break-inside:avoid} /* the acceptance line and the signature lines never split across pages */
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
@@ -212,6 +212,9 @@
     <div style="margin-top:16px"><label>How the bid sits on the page</label>
       <div class="quick" id="lay" style="margin-top:6px"><button type="button" data-lay="one">Fit on one page</button><button type="button" data-lay="two">Conditions and signature on page 2, larger type</button></div>
       <div class="sub" id="layNote" style="font-size:13px;margin-top:4px"></div></div>
+    <div style="margin-top:12px"><label>Room to sign above the signature line</label>
+      <div class="quick" id="sigsp" style="margin-top:6px"><button type="button" data-sig="std">Standard</button><button type="button" data-sig="big">Extra room for a name and signature</button></div>
+      <div class="sub" style="font-size:13px;margin-top:4px">Extra room can push a full one page bid onto a second page. The page 2 layout always has the extra room.</div></div>
     <div id="revNote" class="flag" style="margin-top:12px"></div>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn" id="doprint">Print my bid</button>
@@ -244,7 +247,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 36, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 37, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -1046,9 +1049,13 @@ function buildPrint(){
   h+='<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
     '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
-  $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
+  $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+(sigRoom==="big"?" sigbig":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
 var layout="one";try{layout=localStorage.getItem("cb_layout")||"one"}catch(e){}
+var sigRoom="std";try{sigRoom=localStorage.getItem("cb_sig")||"std"}catch(e){}
+function showSig(){document.querySelectorAll("#sigsp button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-sig")===sigRoom)})}
+$("sigsp").addEventListener("click",function(e){var v=e.target.getAttribute("data-sig");if(!v)return;sigRoom=v;try{localStorage.setItem("cb_sig",v)}catch(x){}showSig()});
+showSig();
 function showLay(){document.querySelectorAll("#lay button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-lay")===layout)});
   $("layNote").textContent=layout==="two"?"Page 1: letterhead, the lines and the total. Page 2: the conditions in larger type and the signature lines. Both pages carry the letterhead and footer.":"Everything on one page when it fits, with the conditions in small type. A long bid still runs onto a second page."}
 $("lay").addEventListener("click",function(e){var l=e.target.getAttribute("data-lay");if(!l)return;layout=l;try{localStorage.setItem("cb_layout",l)}catch(x){}showLay()});
