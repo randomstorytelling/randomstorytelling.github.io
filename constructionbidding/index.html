@@ -70,6 +70,7 @@
   table{font-size:15px} th{font-size:12px;padding:10px 8px} td input,td select{font-size:15px;padding:8px 6px}
   td.chk{font-size:14px;padding-top:12px} td.ro{padding:11px 8px;white-space:nowrap}
   table.simple .adv{display:none}
+  .lk{border:none;background:none;font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;padding:0;text-align:left;color:var(--ink)} tr.here td{background:#fff7e0}
   .eh{display:inline-block;min-width:30px;padding:2px 4px;border-bottom:1px dashed #999;cursor:text;outline:none} .eh:focus{background:#fff7e0;border-bottom-color:var(--ink)}
   @media(max-width:720px){td input.d{min-width:150px} td input.n{min-width:70px} table{font-size:14px} .wrap{padding:20px 12px 70px}}
   .tab{font-size:15px;padding:10px 14px;border-radius:999px}
@@ -128,6 +129,7 @@
   <div id="msg" class="flag hide"></div>
 
   <div id="work" class="hide">
+    <div id="day"></div>
     <h2>Step 2. Check the numbers<small>We read every line and added it up for you.</small></h2>
     <div class="tabs" id="tabs"></div>
     <div id="verdict"></div>
@@ -223,7 +225,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 23, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 24, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -596,7 +598,7 @@ function render(){
   if(document.activeElement!==$("mk"))$("mk").value=q.mk==null?"":q.mk;
   var T=totals(q,pctNow()),nOpt=q.rows.filter(function(r){return r.opt}).length,noMk=String(q.mk||"").trim()==="";
   $("mkask").innerHTML=noMk?'<div class="ask need">Stop here. What markup goes on this bid?<small>Supplier\'s price is '+money(T.cost)+'. Type the percent below, or tap one. Nothing prints until you do.</small></div>':q.mkFrom==="table"?'<div class="ask tbl">From your markup table: '+esc(String(q.mk))+'%<small>Supplier\'s price is '+money(T.cost)+", which is in your \""+money(q.mkTier.over||0)+' and up" row. Change it below if this job is different.</small></div>':"";
-  $("tabs").innerHTML=quotes.length<2?"":quotes.map(function(x,i){var t=totals(x,0);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
+  $("tabs").innerHTML=true?"":quotes.map(function(x,i){var t=totals(x,0);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
   var v;
   if(!q.rows.length)v='<div class="verdict na"><span class="ic">✍️</span><div>We could not read lines from this file<small>Tap "+ Add a line" and type them in. Everything else still works.</small></div></div>';
   else if(T.match===true&&!T.off)v='<div class="verdict ok"><span class="ic">✅</span><div>All '+T.n+" lines add up to your supplier's total, "+money(q.printed)+"<small>Give the lines a quick look, then go to Step 3.</small></div></div>";
@@ -627,9 +629,71 @@ function render(){
   $("sell").textContent=noMk?"needs a markup":money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=noMk?"—":money(r2(T.sell-T.cost));
   var mv=parseFloat($("mk").value);document.querySelectorAll("#quick button").forEach(function(b){b.classList.toggle("on",+b.getAttribute("data-m")===mv)});
   if(document.activeElement!==$("p_project"))$("p_project").value=q.project;
-  vShow();
+  vShow();renderDay();
   if(holders&&!(document.activeElement&&document.activeElement.getAttribute&&document.activeElement.getAttribute("data-hm")!=null))renderHolders();
 }
+/* ---------- BID DAY: every quote on one table, one markup pass, one print ---------- */
+function qPct(q){var v=parseFloat(q.mk);return isNaN(v)?null:v}
+function groupsOf(q){var g=[];q.rows.forEach(function(r){var k=r.group||"";if(k&&g.indexOf(k)<0)g.push(k)});return g}
+function renderDay(){
+  var el=$("day");if(quotes.length<2){el.innerHTML="";return}
+  if(el.contains(document.activeElement)&&document.activeElement.tagName==="INPUT"&&document.activeElement.type!=="checkbox")return;
+  var costC=0,bidC=0,need=0,inc=0;
+  var body=quotes.map(function(q,i){
+    applyTier(q);var p=qPct(q),T=totals(q,p==null?0:p),B=p==null?null:priceBid(q,p),gs=groupsOf(q),vend=q.vendor!=null?q.vendor:guessVendor(q);
+    if(!q.skip){inc++;costC+=cents(T.cost);if(B)bidC+=B.sellC;else need++}
+    var chk=!q.rows.length?'<span style="color:var(--bad)">nothing read</span>':T.match===true&&!T.off?'<span style="color:var(--ok)">✓ adds up</span>':T.match===true?'<span style="color:var(--ok)">✓ adds up</span>, '+T.off+" to look at":T.match===false?'<span style="color:var(--bad);font-weight:700">⚠ off by '+money(Math.abs(T.diff))+"</span>":"no printed total";
+    return'<tr class="'+(q.skip?"opt ":"")+(i===cur?"here":"")+'"><td style="text-align:center"><input type="checkbox" data-dk="'+i+'"'+(q.skip?"":" checked")+' style="min-width:0;width:22px;height:22px" aria-label="Include this bid"></td>'+
+      '<td class="ro" style="white-space:normal"><button type="button" class="lk" data-open="'+i+'">'+esc(q.project||q.name)+"</button>"+(gs.length>1&&T.match!==false?' <button type="button" class="btn ghost sm" data-split="'+i+'" style="padding:4px 10px;font-size:13px">Split into '+gs.length+" bids</button>":"")+'<div class="note" style="padding:0">'+esc(q.name)+"</div></td>"+
+      '<td class="ro">'+esc(vend)+'</td><td class="num ro">'+money(T.cost)+'</td><td class="ro" style="white-space:normal">'+chk+"</td>"+
+      '<td><input class="n" data-dm="'+i+'" inputmode="decimal" value="'+esc(q.mk==null?"":q.mk)+'" placeholder="?" aria-label="Markup percent" style="min-width:70px;font-weight:700;border:2px solid '+(p==null?"var(--bad)":"var(--ink)")+';border-radius:8px"></td>'+
+      '<td class="num ro"><b>'+(B?money(B.sellC/100):"needs a markup")+"</b></td></tr>";
+  }).join("");
+  el.innerHTML='<h2>Bid day: '+quotes.length+" quotes<small>Everything you added, on one table. Set the markups, then print them all at once.</small></h2>"+
+    (need?'<div class="ask need">'+need+" quote"+(need>1?"s":"")+" still need"+(need>1?"":"s")+" a markup<small>Type it on the row, or set one for all of them below.</small></div>":"")+
+    '<div class="scroll"><table class="daytbl"><tr><th>Include</th><th>Quote</th><th>Supplier</th><th class="num">Supplier\'s price</th><th>Check</th><th class="num">Markup %</th><th class="num">Your bid</th></tr>'+body+
+    '<tr class="grp"><td></td><td colspan="2">'+inc+" included</td><td class=\"num\">"+money(costC/100)+'</td><td></td><td></td><td class="num">'+(need?"—":money(bidC/100))+"</td></tr></table></div>"+
+    '<p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span>Use</span><input id="dayAll" inputmode="decimal" placeholder="%" style="font:inherit;font-size:17px;font-weight:700;width:84px;padding:9px;border:2px solid var(--ink);border-radius:10px;text-align:right"><span>% on</span><button class="btn ghost sm" id="dayNeed" type="button">every quote with no markup</button><button class="btn ghost sm" id="dayEvery" type="button">every quote</button></p>'+
+    '<p style="margin-top:6px"><button class="btn" id="dayPrint" type="button">Print all '+inc+" bids</button></p>";
+}
+function splitQuote(i){
+  var q=quotes[i],gs=groupsOf(q);if(gs.length<2)return;
+  var parts=gs.map(function(g){
+    var rows=q.rows.filter(function(r){return(r.group||"")===g}).map(function(r){var c={};for(var k in r)c[k]=r[k];c.group="";return c}),costC=0;
+    rows.forEach(function(r){if(!r.opt)costC+=cents(r.ext)});
+    var c={};for(var k in q)c[k]=q[k];
+    c.name=q.name+" · "+g;c.project=(q.project&&q.project!==q.name.replace(/\.[a-z0-9]+$/i,"")?q.project+" · ":"")+g;c.rows=rows;c.printed=costC/100;c.skip=false;
+    c.flags=["This is one section of "+q.name+". The full file added up to the supplier's printed totals before it was split."];
+    if(c.mkFrom!=="you"){c.mk="";c.mkFrom=""}
+    return c;
+  });
+  Array.prototype.splice.apply(quotes,[i,1].concat(parts));cur=i;render();
+}
+$("day").addEventListener("change",function(e){
+  var t=e.target,dm=t.getAttribute("data-dm"),dk=t.getAttribute("data-dk");
+  if(dm!=null){var q=quotes[+dm];q.mk=t.value.trim();q.mkFrom=q.mk===""?"":"you";t.blur();render()}
+  if(dk!=null){quotes[+dk].skip=!t.checked;render()}
+});
+$("day").addEventListener("click",function(e){
+  var t=e.target,o=t.getAttribute("data-open"),sp=t.getAttribute("data-split");
+  if(o!=null){cur=+o;render();$("verdict").scrollIntoView({behavior:"smooth",block:"center"});return}
+  if(sp!=null){splitQuote(+sp);return}
+  if(t.id==="dayNeed"||t.id==="dayEvery"){
+    var v=$("dayAll").value.trim();if(v===""||isNaN(parseFloat(v))){$("dayAll").focus();return}
+    quotes.forEach(function(q){if(q.skip)return;if(t.id==="dayEvery"||qPct(q)==null){q.mk=v;q.mkFrom="you"}});render();return;
+  }
+  if(t.id==="dayPrint"){
+    var list=[],msg=$("msg");quotes.forEach(function(q,i){if(!q.skip)list.push(i)});
+    var bad=list.filter(function(i){return qPct(quotes[i])==null}),off=list.filter(function(i){return totals(quotes[i],0).match===false||!quotes[i].rows.length});
+    if(!list.length)return;
+    if(bad.length||off.length){msg.textContent=(bad.length?bad.length+" quote"+(bad.length>1?"s":"")+" still need a markup. ":"")+(off.length?off.length+" quote"+(off.length>1?"s do":" does")+" not add up to the supplier's total, or could not be read. Fix or untick "+(off.length>1?"them":"it")+" first. ":"")+"Nothing was printed.";msg.classList.remove("hide");msg.scrollIntoView({behavior:"smooth",block:"center"});return}
+    var keep=cur,html="",stopped=false,pages=[];
+    list.forEach(function(i){if(stopped)return;cur=i;render();if(moneyStop(qPct(quotes[i]))){stopped=true;return}buildPrint();pages.push({i:i,html:$("print").innerHTML})});
+    if(stopped){cur=keep;render();return} /* nothing prints and nothing is logged unless every bid reconciles */
+    pages.forEach(function(pg,k){cur=pg.i;render();logSent($("p_to").value.trim());html+='<div style="'+(k?"page-break-before:always":"")+'">'+pg.html+"</div>"});
+    cur=keep;render();$("print").innerHTML=html;window.print();
+  }
+});
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
   var q=quotes[cur],T=totals(q,pctNow());
   $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
@@ -891,7 +955,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
