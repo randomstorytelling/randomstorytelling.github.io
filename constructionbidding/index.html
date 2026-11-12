@@ -131,11 +131,13 @@
   <input type="file" id="file" accept="application/pdf,image/*,.xlsx,.xls,.csv" multiple class="hide">
   <div id="msg" class="flag hide"></div>
   <details id="ai" style="margin-top:12px;border:1px solid var(--ink);border-radius:12px;padding:12px 14px">
-    <summary style="font-weight:700;cursor:pointer">A photo or scan we cannot read? Let your own AI read it (ChatGPT, Claude, Gemini or Copilot)</summary>
+    <summary style="font-weight:700;cursor:pointer">A photo or scan we cannot read? Let your own AI read it (Claude, Gemini, Copilot or ChatGPT)</summary>
     <div class="sub" style="font-size:14px;margin-top:8px">No sign up here and no key. You use the AI you already have, then this page checks its work: every line is recomputed and added up against the supplier's totals.</div>
     <p style="margin:12px 0 6px"><b>1.</b> Copy these instructions. <button type="button" class="btn ghost sm" id="ai_copy">Copy the instructions</button> <span id="ai_copied" class="sub" style="font-size:13px"></span></p>
     <textarea id="ai_prompt" readonly rows="4" style="width:100%;font:inherit;font-size:12px;padding:8px;border:1px solid #bbb;border-radius:8px"></textarea>
     <p style="margin:12px 0 6px"><b>2.</b> Open your AI, attach every page of the quote (pictures or the file), paste the instructions and send.</p>
+    <p style="margin:0 0 6px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn ghost sm" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude</a><a class="btn ghost sm" href="https://gemini.google.com/app" target="_blank" rel="noopener">Open Gemini</a><a class="btn ghost sm" href="https://copilot.microsoft.com/" target="_blank" rel="noopener">Open Copilot</a><a class="btn ghost sm" href="https://chatgpt.com/" target="_blank" rel="noopener">Open ChatGPT</a></p>
+    <div class="sub" style="font-size:13px">It opens in a new tab. Come back to this tab with its answer.</div>
     <p style="margin:12px 0 6px"><b>3.</b> Copy its whole reply and paste it here.</p>
     <textarea id="ai_txt" rows="6" placeholder="Paste the AI's reply here" style="width:100%;font:inherit;font-size:14px;padding:10px;border:1px solid var(--ink);border-radius:10px"></textarea>
     <p style="margin-top:8px"><button type="button" class="btn" id="ai_go">Read the reply</button></p>
@@ -257,7 +259,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 39, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 40, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
