@@ -278,7 +278,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 52, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 53, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -1096,19 +1096,21 @@ function ourName(){return($("c_name").value||"").trim()||HOUSE.name||""}
    sentence, shows them all, and she can flip any; her picks are remembered per supplier. A proposal is only ever a starting point. */
 var namePick={};try{namePick=JSON.parse(LS.getItem("cb_namepick")||"{}")||{}}catch(e){}
 var MAKER=/\b(certif\w*|shop|fabricat\w*|weld\w*|mill|manufactur\w*|produc\w*|roll(?:ed|ing)s?|galvaniz\w*|coat(?:ed|ing)s?|test(?:ed|ing)|inspect\w*|plant|yard|warehouse|AISC|domestic|melted)\b/i;
+var STANDS=/\b(not responsible|responsible for|liable|reserves? the right|will not accept|will hold|shall not|backcharges?|invoic\w*|payment|credit approval)\b/i; /* we stand behind these, so our name */
 function nameKey(l){return String(l).toLowerCase().replace(/[^a-z]+/g," ").trim().slice(0,90)}
 function scrubTerms(txt,vendor,mode){
   mode=mode||nameMode;var noName=!ourName(),picks=namePick[String(vendor||"").toLowerCase()]||{},info=[];
   var names=[vendor].concat(KNOWN).filter(Boolean).sort(function(a,b){return b.length-a.length}),hit=false;
-  var lines=String(txt||"").split("\n").filter(function(l){if(mode!=="keep"&&/^- Governing Terms/i.test(l)){hit=true;return false}return true}).map(function(l){
-    var key=nameKey(l),lm=picks[key]||(mode==="us"?(MAKER.test(l)?"sup":"us"):mode),found=false,orig=l;
+  var one=function(l){ /* one sentence */
+    var key=nameKey(l),lm=picks[key]||(mode==="us"?(STANDS.test(l)?"us":MAKER.test(l)?"sup":"us"):mode),found=false,orig=l;
     if(lm==="us"&&noName)lm="sup"; /* no company name typed yet */
     names.forEach(function(n){var re=new RegExp("\\b"+n.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+(?:Steel|Metals|Rebar|Paving|Coatings?|Supply|Industries|Materials|Fabricators|International|Solutions|Company|Co\\.?))*(?:,?\\s+(?:LLC|Inc\\.?|Ltd\\.?|Corp\\.?))?([’']s)?(\\s*)","gi");
       l=l.replace(re,function(m,poss,sp,at){found=true;if(lm==="keep")return m;hit=true;var start=at===0||/(^|[.:;]\s+|^-\s+|^[•\u2022·]\s*)$/.test(l.slice(0,at));
         return(lm==="us"?ourName():(start?"The supplier":"the supplier"))+(poss||"")+sp})});
     if(found)info.push({key:key,text:orig.trim(),mode:lm});
-    return lm==="keep"?l:l.replace(/\(\s+/g,"(").replace(/\s{2,}/g," ").replace(/\s+([.,;:)])/g,"$1");
-  });
+    return lm==="keep"?l:l.replace(/\(\s+/g,"(").replace(/\s{2,}/g," ").replace(/\s+([.,;:)])/g,"$1")};
+  var lines=String(txt||"").split("\n").filter(function(l){if(mode!=="keep"&&/^- Governing Terms/i.test(l)){hit=true;return false}return true}).map(function(l){
+    return l.split(/(?<=[.!?])\s+(?=[A-Z])/).map(one).join(" ")});
   return{text:lines.join("\n").trim(),hit:hit,mode:mode==="us"&&noName?"sup":mode,lines:info};
 }
 /* The supplier's dollar amounts inside the notes (unloading per hour, escalation per ton). The box always holds the supplier's
