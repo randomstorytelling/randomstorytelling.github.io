@@ -101,7 +101,7 @@
     #print table{font-size:12.5px} #print th{background:none;border-top:2px solid #000;border-bottom:1.5px solid #000;font-size:11px;letter-spacing:.05em;padding:9px 8px;color:#000}
     #print td{padding:9px 8px;border-bottom:1px solid #bbb;color:#000} #print td.num,#print th.num{padding-left:14px} #print tr.grp td{background:none;border-top:1px solid #000;font-size:12.5px}
     #print .tot td{font-weight:700;font-size:16px;border-top:2px solid #000;border-bottom:none;padding-top:12px}
-    #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:26px;display:flex;gap:60px}
+    #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:58px;display:flex;gap:60px}
     #print table.lay2 .pg2{break-before:page;page-break-before:always} #print table.lay2 .terms{font-size:12px;line-height:1.55;margin-top:0}
     #print .keep{break-inside:avoid;page-break-inside:avoid} /* the acceptance line and the signature lines never split across pages */
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
@@ -244,7 +244,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 35, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 36, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -535,16 +535,22 @@ function calcExt(r){
    Everything is whole cents. Screen, print, Excel, per-contractor totals and the chart all read this result;
    nothing else multiplies money. */
 function cents(x){return Math.round(Number(((x||0)*100).toFixed(4)))}
+/* Her own price on a line (freight is the usual one): quantity x the unit price she typed, in cents. The markup never touches it. */
+function hasOwn(r){return r.own!=null&&r.own!==""&&isFinite(+r.own)&&+r.own>=0}
+function ownCents(r){var p=+r.own,f=r.basis==="ft"?(r.pcs||0)*(r.len||0):(r.basis==="ea"||r.basis==="ls")?(r.pcs||0):r.basis==="cwt"?(r.wt||0)/100:(r.len||0);
+  return Math.round(Number((f*p*100).toFixed(6)))}
 function priceBid(q,pct){
-  var bp=Math.round(Number(((pct||0)*10000).toFixed(2))),lines={},idx=[],costC=0; /* bp = markup in millionths, an integer */
-  q.rows.forEach(function(r,i){if(r.opt)return;var c=cents(r.ext);costC+=c;idx.push({i:i,c:c})});
+  var bp=Math.round(Number(((pct||0)*10000).toFixed(2))),lines={},idx=[],costC=0,poolC=0,ownC=0; /* bp = markup in millionths, an integer */
+  q.rows.forEach(function(r,i){if(r.opt)return;var c=cents(r.ext);costC+=c;
+    if(hasOwn(r)){var o=ownCents(r);ownC+=o;lines[i]={extC:o,own:true};return}
+    poolC+=c;idx.push({i:i,c:c})});
   var num=function(c){return c*(1000000+bp)}, /* exact integer: cents x millionths */
-      sellC=Math.round(num(costC)/1000000),sum=0;
+      poolSellC=Math.round(num(poolC)/1000000),sum=0;
   idx.forEach(function(o){o.fl=Math.floor(num(o.c)/1000000);o.rem=num(o.c)-o.fl*1000000;sum+=o.fl});
-  var left=sellC-sum,order=idx.slice().sort(function(a,b){return b.rem-a.rem||b.c-a.c||a.i-b.i});
+  var left=poolSellC-sum,order=idx.slice().sort(function(a,b){return b.rem-a.rem||b.c-a.c||a.i-b.i});
   for(var k=0;k<order.length&&left>0;k++,left--)order[k].fl+=1;
   idx.forEach(function(o){lines[o.i]={extC:o.fl}});
-  return{pct:pct||0,costC:costC,sellC:sellC,lines:lines};
+  return{pct:pct||0,costC:costC,poolC:poolC,ownC:ownC,sellC:poolSellC+ownC,lines:lines};
 }
 /* a section's rate per unit, the way the supplier shows it: its lines' total divided by its quantity. Display only. */
 function secInfo(q,B,g){
@@ -555,7 +561,7 @@ function secInfo(q,B,g){
   return{heads:sc.heads,um:um,qty:qty,costRate:qty?(costC/100/qty):null,sellRate:qty&&B?(sellC/100/qty):null};
 }
 /* the unit price printed beside a line: display only, never used to compute a total */
-function unitTxt(r,pct){var m=1+(pct||0)/100;return r.basis==="cwt"?r4((r.price||0)/100*m).toFixed(4):plain(r2((r.price||0)*m),2)}
+function unitTxt(r,pct){if(hasOwn(r))return r.basis==="cwt"?r4(+r.own/100).toFixed(4):plain(r2(+r.own),2);var m=1+(pct||0)/100;return r.basis==="cwt"?r4((r.price||0)/100*m).toFixed(4):plain(r2((r.price||0)*m),2)}
 async function parseBuffer(buf,name){return fromLines(await pdfLines(buf),name,performance.now())}
 function grabTerms(L){
   var out=[],on=false,n=0;
@@ -616,19 +622,25 @@ function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,0).cost)
 /* MONEY GUARD. Recomputed from scratch, a different way from the display code, every time a bid is about to leave.
    If any of these fail, nothing prints or exports. */
 function moneyCheck(q,pct){
-  var bad=[],B=priceBid(q,pct),T=totals(q,pct),cost=0,sumC=0,n=0;
+  var bad=[],B=priceBid(q,pct),T=totals(q,pct),cost=0,sumC=0,n=0,ownSum=0,ownCost=0;
   q.rows.forEach(function(r,i){
     if(r.opt){if(B.lines[i])bad.push("a left-out line was priced");return}
     n++;cost+=(r.ext||0);var L=B.lines[i];
     if(!L){bad.push("a line has no price");return}
-    sumC+=L.extC;var exact=(r.ext||0)*(1+pct/100)*100;
+    sumC+=L.extC;
+    if(r.own!=null&&r.own!==""){ /* her own price: must be exactly quantity x what she typed, nothing else */
+      var qf=r.basis==="ft"?(r.pcs||0)*(r.len||0):(r.basis==="ea"||r.basis==="ls")?(r.pcs||0):r.basis==="cwt"?(r.wt||0)/100:(r.len||0),wantOwn=Math.round(Number((qf*Number(r.own)*100).toFixed(6)));
+      if(!(Number(r.own)>=0)||!isFinite(Number(r.own)))bad.push("line "+(i+1)+" has an own price that is not a number");
+      else if(L.extC!==wantOwn)bad.push("line "+(i+1)+" does not equal its quantity times the price typed for it");
+      ownSum+=wantOwn;ownCost+=(r.ext||0);return}
+    var exact=(r.ext||0)*(1+pct/100)*100;
     if(Math.abs(L.extC-exact)>1.0001)bad.push("line "+(i+1)+" is more than a cent away from its own "+pct+"%");
     if(pct>=0&&L.extC<cents(r.ext)-0)bad.push("line "+(i+1)+" is priced below the supplier's cost");
   });
-  var costC=Math.round(Number((cost*100).toFixed(4))),wantC=Math.round(Number((costC*(1+pct/100)).toFixed(6)));
+  var costC=Math.round(Number((cost*100).toFixed(4))),poolC=costC-Math.round(Number((ownCost*100).toFixed(4))),wantC=Math.round(Number((poolC*(1+pct/100)).toFixed(6)))+ownSum;
   if(!n)bad.push("there are no lines in this bid");
   if(B.costC!==costC)bad.push("the supplier total ("+money(B.costC/100)+") is not the sum of the lines ("+money(costC/100)+")");
-  if(B.sellC!==wantC)bad.push("the bid ("+money(B.sellC/100)+") is not the supplier total plus "+pct+"% ("+money(wantC/100)+")");
+  if(B.sellC!==wantC)bad.push("the bid ("+money(B.sellC/100)+") is not the marked-up lines plus "+pct+"% and the lines at your own price ("+money(wantC/100)+")");
   if(sumC!==B.sellC)bad.push("the bid lines add to "+money(sumC/100)+" but the bid total says "+money(B.sellC/100));
   if(cents(T.sell)!==B.sellC||cents(T.cost)!==B.costC)bad.push("the totals on screen do not match the priced bid");
   if(!(pct>=0&&pct<=200))bad.push("the markup "+pct+"% is outside 0 to 200");
@@ -670,6 +682,7 @@ function render(){
   $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
   var fk=fixKey(q),fN=fixes[fk]?fixes[fk].head.length+fixes[fk].line.length:0;
   $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("")+
+    (q.rows.some(function(r){return!r.opt&&hasOwn(r)})?'<div class="flag"><b>Your own price.</b> '+q.rows.filter(function(r){return!r.opt&&hasOwn(r)}).length+" line(s) carry a price you typed. The markup is applied to every other line and not to "+(q.rows.filter(function(r){return!r.opt&&hasOwn(r)}).length>1?"those":"that one")+". Clear the box to go back to the markup.</div>":"")+
     (q.fixed?'<div class="flag"><b>Remembered.</b> '+q.fixed+" fix"+(q.fixed>1?"es":"")+" you made before on "+esc(q.vendor||guessVendor(q))+" quotes "+(q.fixed>1?"were":"was")+' applied to this one. The lines still add up. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
     (q.learned&&!q.fixed&&fN?'<div class="flag"><b>Saved.</b> The next '+esc(q.vendor||guessVendor(q))+' quote will be read this way on this computer. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
     (q.learned===false&&!fk?'<div class="flag"><b>Not saved for next time.</b> Type the supplier\'s name in Step 3 and this fix can be remembered for their next quote.</div>':"");
@@ -689,7 +702,7 @@ function render(){
       '<td class="adv">'+inp("pcs","n",r.pcs)+'</td><td class="adv">'+inp("len","n",r.len)+'</td><td class="adv">'+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
       '<td class="adv"><select data-i="'+i+'" data-k="basis">'+["ft","ea","cwt","sqft","qty","ls"].map(function(b){return"<option"+(b===r.basis?" selected":"")+">"+b+"</option>"}).join("")+"</select></td>"+
       "<td>"+inp("ext","n",r.ext==null?"":r.ext.toFixed(2))+'</td><td class="chk">'+(ok?"✓":"should be "+money(calc))+"</td>"+
-      '<td class="num ro adv">'+s.txt+'</td><td class="num ro"><b>'+(r.opt?"left out":money(s.ext))+'</b></td><td class="adv"><button class="x" data-del="'+i+'" title="Remove line">×</button></td></tr>';
+      '<td class="num ro adv">'+s.txt+'</td><td class="num ro"><b>'+(r.opt?"left out":money(s.ext))+'</b>'+(r.opt?"":'<div style="margin-top:4px"><input class="n" data-i="'+i+'" data-k="own" inputmode="decimal" value="'+(hasOwn(r)?esc(r.own):"")+'" placeholder="own price" title="Type your own unit price for this line (for example freight). The markup is not applied to it." aria-label="Your own unit price for this line" style="width:104px;min-width:0;font-size:13px;padding:5px 7px'+(hasOwn(r)?";border-color:var(--ink);font-weight:700":"")+'">'+(hasOwn(r)?'<div style="font-size:11px;font-weight:400">your price per unit, no markup'+(B.lines[i]&&B.lines[i].extC<cents(r.ext)?' · <b>below the supplier\'s cost</b>':"")+"</div>":"")+"</div>")+'</td><td class="adv"><button class="x" data-del="'+i+'" title="Remove line">×</button></td></tr>';
   });
   $("tbl").innerHTML=h;$("tbl").className=showAll?"":"simple";
   $("more").textContent=showAll?"Show fewer columns":"Show every column";
@@ -814,8 +827,10 @@ function softTotals(){ /* update numbers without rebuilding inputs while typing 
 $("tbl").addEventListener("change",function(e){
   var t=e.target,i=t.getAttribute("data-i"),k=t.getAttribute("data-k");if(i==null)return;
   var r=quotes[cur].rows[+i];
-  if(k==="opt")r.opt=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;else r[k]=num(t.value);
-  if(r.auto&&k!=="ext"&&k!=="opt"&&k!=="desc")r.ext=calcExt(r);
+  if(k==="opt")r.opt=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;
+  else if(k==="own"){var ov=t.value.replace(/[$,\s]/g,"");r.own=ov===""||!isFinite(+ov)||+ov<0?null:+ov}
+  else r[k]=num(t.value);
+  if(r.auto&&k!=="ext"&&k!=="opt"&&k!=="desc"&&k!=="own")r.ext=calcExt(r);
   render();
 });
 $("tbl").addEventListener("focusout",function(e){var k=e.target.getAttribute&&e.target.getAttribute("data-th");if(!k)return;var v=e.target.textContent.replace(/\s+/g," ").trim();if(v)heads[k]=v;else delete heads[k];saveHeads()});
@@ -1231,7 +1246,7 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={ownCents:ownCents,hasOwn:hasOwn,bidCols:bidCols,qtyPair:qtyPair,hid:hid,fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
