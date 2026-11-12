@@ -244,7 +244,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 32, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 33, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -599,6 +599,7 @@ function fromLines(L,name,t0){
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
   else if(!q.rows.length)q.flags.push("No priced lines were found in this file. Add the lines by hand below; the checks and the proposal still work.");
   if(q.rows.some(function(r){return r.opt&&!r.auto}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt&&!r.auto}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
+  fixApply(q);
   return q;
 }
 function totals(q,pct){
@@ -666,7 +667,11 @@ function render(){
   else v='<div class="verdict na"><span class="ic">👀</span><div>'+T.n+" lines read, adding to "+money(T.cost)+"<small>This quote has no printed total to check against, so compare it to the PDF yourself.</small></div></div>";
   $("verdict").innerHTML=v;
   $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
-  $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("");
+  var fk=fixKey(q),fN=fixes[fk]?fixes[fk].head.length+fixes[fk].line.length:0;
+  $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("")+
+    (q.fixed?'<div class="flag"><b>Remembered.</b> '+q.fixed+" fix"+(q.fixed>1?"es":"")+" you made before on "+esc(q.vendor||guessVendor(q))+" quotes "+(q.fixed>1?"were":"was")+' applied to this one. The lines still add up. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
+    (q.learned&&!q.fixed&&fN?'<div class="flag"><b>Saved.</b> The next '+esc(q.vendor||guessVendor(q))+' quote will be read this way on this computer. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
+    (q.learned===false&&!fk?'<div class="flag"><b>Not saved for next time.</b> Type the supplier\'s name in Step 3 and this fix can be remembered for their next quote.</div>':"");
   var TH=[["opt","Leave out",""],["desc","What it is",""],["much","How much","num"],["pcs","Pieces","num adv"],["len","Length / qty","num adv"],["wt","Weight lb","num adv"],["price","Supplier's unit price","num"],["per","Per","adv"],["ext","Supplier's total","num"],["chk","Check",""],["yprice","Your price","num adv"],["ytotal","Your total","num"]];
   var B=priceBid(q,pctNow());
   var h="<tr>"+TH.map(function(c){return'<th class="'+c[2]+'"><span class="eh" contenteditable="true" spellcheck="false" data-th="'+c[0]+'" title="Click to rename this heading">'+esc(heads[c[0]]||c[1])+"</span></th>"}).join("")+'<th class="adv"></th></tr>',g=null;
@@ -821,8 +826,25 @@ function toLine(q,g){var i=-1;q.rows.forEach(function(r,k){if(i<0&&(r.group||"")
   var prev=i>0?(q.rows[i-1].group||""):"",hd=((q.pay||{})[g]||{heads:[]}).heads[0];
   q.rows.forEach(function(r){if((r.group||"")===g)r.group=prev});if(q.pay)delete q.pay[g];
   q.rows.splice(i<0?q.rows.length:i,0,{opt:true,auto:true,group:prev,desc:hd?hd.desc:g,note:"This was read as a heading. Type its quantity and price, then untick Leave out.",pcs:1,len:hd?hd.qty:null,wt:null,price:hd&&hd.rate!=null?hd.rate:0,basis:"qty",ext:0,um:hd?hd.um:""})}
-$("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del"),th=e.target.getAttribute("data-tohead"),tl=e.target.getAttribute("data-toline");
-  if(d!=null){quotes[cur].rows.splice(+d,1);render()}else if(th!=null){toHead(quotes[cur],+th);render()}else if(tl!=null){toLine(quotes[cur],tl);render()}});
+/* A fix made once sticks: remembered per supplier on this computer, re-applied to that supplier's next quote.
+   A remembered fix is never allowed to break a quote that adds up: if it would, it is undone and not counted. */
+var fixes={};try{fixes=JSON.parse(localStorage.getItem("cb_fixes")||"{}")||{}}catch(e){fixes={}}
+function fixNorm(t){return String(t||"").toLowerCase().replace(/^\S+ · /,"").replace(/[\d.,]+/g,"#").replace(/\s+/g," ").trim()}
+function fixKey(q){return String(q.vendor||guessVendor(q)||"").trim().toLowerCase()}
+function fixSave(){try{localStorage.setItem("cb_fixes",JSON.stringify(fixes))}catch(e){}}
+function fixLearn(q,kind,text){var k=fixKey(q),n=fixNorm(text);if(!k||!n)return false;var f=fixes[k]=fixes[k]||{head:[],line:[]},other=kind==="head"?"line":"head";
+  f[other]=f[other].filter(function(x){return x!==n});if(f[kind].indexOf(n)<0)f[kind].push(n);fixSave();return true}
+function fixApply(q){var f=fixes[fixKey(q)];if(!f)return 0;var n=0,ok0=totals(q,0).match;
+  function attempt(fn){var keep=JSON.stringify({rows:q.rows,pay:q.pay||{}});fn();
+    if(ok0===true&&totals(q,0).match!==true){var o=JSON.parse(keep);q.rows=o.rows;q.pay=o.pay;return false}n++;return true}
+  for(var i=0;i<q.rows.length;i++){if(f.head.indexOf(fixNorm(q.rows[i].desc))>=0){var at=i;if(attempt(function(){toHead(q,at)}))i--}}
+  groupsOf(q).forEach(function(g){if(f.line.indexOf(fixNorm(g))>=0)attempt(function(){toLine(q,g)})});
+  q.fixed=n;return n}
+$("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-del"),th=e.target.getAttribute("data-tohead"),tl=e.target.getAttribute("data-toline"),q=quotes[cur];
+  if(d!=null){q.rows.splice(+d,1);render()}
+  else if(th!=null){q.learned=fixLearn(q,"head",q.rows[+th]&&q.rows[+th].desc);toHead(q,+th);render()}
+  else if(tl!=null){q.learned=fixLearn(q,"line",tl);toLine(q,tl);render()}});
+$("flags").addEventListener("click",function(e){if(e.target.id!=="fixForget")return;var q=quotes[cur];delete fixes[fixKey(q)];fixSave();q.fixed=0;q.learned=false;render()});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
 $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true});render()});
 $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
@@ -1188,7 +1210,7 @@ $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject=
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
 restoreQuotes();
-window.CB={toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={fixKey:fixKey,fixApply:fixApply,fixLearn:fixLearn,fixes:fixes,toHead:toHead,toLine:toLine,secInfo:secInfo,grabMeta:grabMeta,renderWins:renderWins,setHolders2:function(h){holders=h;renderHolders();renderSent()},revFor:revFor,renderSent:renderSent,saveQuotes:saveQuotes,fileTitle:fileTitle,renderDay:renderDay,splitQuote:splitQuote,moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
