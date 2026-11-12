@@ -278,7 +278,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 53, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 54, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -647,6 +647,7 @@ function grabTerms(L){
     if(/^(bill to|ship to|sold to|attn\b|customer p\.?o|quotation no|quote (no|number|#)|contract\s*:|order qty|sign to convert|unloading instructions|receiving hours|max bundle weight|sales \d|terms\s*:\s*\S)/i.test(t)&&t.length<110)continue;
     if(/\$\s*[\d,]+\.\d{2}\s*[A-Z]?\s*$/.test(t)&&/\d/.test(t.slice(0,12))||/\b(sub\s?total|total( weight)?)\b.*[\d,]+\.\d{2}\s*$/i.test(t))continue; /* a priced line or a total */
     if((t.match(/\b[A-Z][\w .#]{1,18}:\s/g)||[]).length>=2&&t.length<100)continue; /* two or more "Label:" fields on one line */
+    if(/\bsales\s+rep(resentative)?\b|\baccount (manager|executive)\b|\bestimator\b\s*\|/i.test(t)&&t.length<160)continue; /* the salesperson's signature block is not a note */
     if(/^,\s/.test(t)||/^\d+\s+[\w .]*\b(Way|Road|Rd|Street|St|Ave|Avenue|Drive|Dr|Blvd|Suite|Hwy)\b.*\b(19|20)\d\d$/i.test(t)&&t.length<70)continue; /* an address with the date beside it */
     t=t.replace(/^PO#\s+(?=[A-Z][a-z])/,"");
     if(/\b[A-Z]{2},?\s+\d{5}\b/.test(t)&&t.length<70)continue;
