@@ -223,7 +223,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 22, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 23, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -739,18 +739,23 @@ $("v_terms").addEventListener("input",function(){var n=quotes[cur].vendor;if(!th
 vList();
 $("phd").innerHTML=PH.map(function(c){return'<input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'}).join("");
 $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
-var imgs={lh:"",ft:""};["lh","ft"].forEach(function(k){try{imgs[k]=localStorage.getItem("cb_img_"+k)||""}catch(e){}});
-function showImg(k){$("c_"+k+"_prev").innerHTML=imgs[k]?'<img src="'+imgs[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"> <button class="btn ghost sm" data-imgx="'+k+'" type="button">Remove</button>':""}
+/* HOUSE: what is built in for the company this version is set up for. One place. Empty it when the tool leaves that company;
+   then each company uploads its own letterhead and footer. An uploaded picture always wins over the built-in one. */
+var HOUSE={lh:"house-letterhead.jpg",ft:"house-footer.jpg"};
+var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=localStorage.getItem("cb_img_"+k)||""}catch(e){}});
+var imgs={};function useImgs(){["lh","ft"].forEach(function(k){imgs[k]=own[k]||HOUSE[k]||""})}useImgs();
+["lh","ft"].forEach(function(k){if(HOUSE[k]){var pre=new Image();pre.src=HOUSE[k]}}); /* loaded before anyone prints */
+function showImg(k){$("c_"+k+"_prev").innerHTML=own[k]?'<img src="'+own[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"> <button class="btn ghost sm" data-imgx="'+k+'" type="button">Remove mine</button>':HOUSE[k]?'<img src="'+HOUSE[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"><div class="sub" style="font-size:13px">Already built in. Nothing to do. Choose a file only to replace it.</div>':""}
 ["lh","ft"].forEach(function(k){
   showImg(k);
   $("c_"+k).addEventListener("change",async function(){
     var f=this.files[0];if(!f)return;
     try{var bmp=await createImageBitmap(f),s=Math.min(1,1600/bmp.width),cv=document.createElement("canvas");cv.width=Math.round(bmp.width*s);cv.height=Math.round(bmp.height*s);
-      var cx=cv.getContext("2d");cx.fillStyle="#fff";cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(bmp,0,0,cv.width,cv.height);imgs[k]=cv.toDataURL("image/jpeg",0.9);
-      try{localStorage.setItem("cb_img_"+k,imgs[k])}catch(e){var m=$("msg");m.textContent="That picture is too big to remember on this computer. It will work until you close the page.";m.classList.remove("hide")}
+      var cx=cv.getContext("2d");cx.fillStyle="#fff";cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(bmp,0,0,cv.width,cv.height);own[k]=cv.toDataURL("image/jpeg",0.9);useImgs();
+      try{localStorage.setItem("cb_img_"+k,own[k])}catch(e){var m=$("msg");m.textContent="That picture is too big to remember on this computer. It will work until you close the page.";m.classList.remove("hide")}
       showImg(k)}catch(e){}
   });
-  $("c_"+k+"_prev").addEventListener("click",function(e){if(e.target.getAttribute("data-imgx")===k){imgs[k]="";try{localStorage.removeItem("cb_img_"+k)}catch(x){}showImg(k)}});
+  $("c_"+k+"_prev").addEventListener("click",function(e){if(e.target.getAttribute("data-imgx")===k){own[k]="";useImgs();try{localStorage.removeItem("cb_img_"+k)}catch(x){}showImg(k)}});
 });
 var logo="";try{logo=localStorage.getItem("cb_logo")||""}catch(e){}
 function showLogo(){$("c_logo_prev").innerHTML=logo?'<img src="'+logo+'" alt="Your logo" style="max-height:60px;max-width:220px"> <button class="btn ghost sm" id="c_logo_x" type="button">Remove</button>':""}
