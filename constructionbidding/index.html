@@ -80,6 +80,8 @@
   .ask{border-radius:14px;padding:14px 18px;font-size:18px;font-weight:700;margin-bottom:12px}
   .ask.need{background:#fdecea;color:#8c1d18;border:2px solid #8c1d18} .ask.tbl{background:#e9f6ee;color:#0a5a2c} .ask small{display:block;font-weight:400;font-size:14px;margin-top:2px}
   .trow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:6px 0;font-size:16px} .trow input{font:inherit;font-size:17px;font-weight:700;padding:8px;border:2px solid var(--ink);border-radius:10px;width:150px;text-align:right} .trow input.p{width:90px}
+  .rt{font:inherit;font-size:16px;border:1px solid var(--ink);border-radius:10px;padding:12px;margin-top:4px;background:#fff;min-height:120px;max-height:340px;overflow:auto;white-space:pre-wrap;line-height:1.4}
+  .rt:empty:before{content:attr(data-ph);color:#999} .rt:focus{outline:2px solid var(--ink)} .rtbar{display:flex;gap:10px;align-items:center;margin-top:6px}
   .quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   .quick button{border:2px solid var(--ink);background:none;font:inherit;font-size:17px;font-weight:700;padding:10px 16px;border-radius:999px;cursor:pointer}
   .quick button.on{background:var(--ink);color:var(--paper)}
@@ -161,7 +163,7 @@
       <div class="f"><label for="v_name">Supplier this quote came from</label><input id="v_name" list="v_list" placeholder="Type the supplier's name once"><datalist id="v_list"></datalist></div>
     </div>
     <div class="row" style="margin-top:12px">
-      <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><textarea id="v_terms" rows="6" placeholder="Paste the terms you put at the bottom of bids that use this supplier"></textarea><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div></div>
+      <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="v_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button><span class="sub" style="font-size:13px">Select words, then tap Bold.</span></div><div id="v_terms" class="rt" contenteditable="true" data-ph="Paste the terms you put at the bottom of bids that use this supplier"></div><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div></div>
     </div>
     <details id="co"><summary>Your company details (typed once, remembered on this computer)</summary>
     <div class="row" style="margin-top:12px">
@@ -175,7 +177,7 @@
       <div class="f"><label for="c_logo">Your logo (shows on the printed bid)</label><input id="c_logo" type="file" accept="image/*"><div id="c_logo_prev" style="margin-top:8px"></div></div>
     </div>
     <div class="row" style="margin-top:12px">
-      <div class="f"><label for="c_terms">Notes that go on every bid, any supplier</label><textarea id="c_terms" rows="5" data-save placeholder="Delivery, validity, FOB, payment terms"></textarea></div>
+      <div class="f"><label for="c_terms">Notes that go on every bid, any supplier</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="c_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button></div><div id="c_terms" class="rt" contenteditable="true" data-save data-ph="Delivery, validity, FOB, payment terms"></div></div>
     </div>
     </details>
     <p style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
@@ -203,7 +205,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 15, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
+  <p class="foot">Test version 16, November 11, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Random Storytelling.</p>
 </div>
 <div id="print"></div>
 
@@ -332,7 +334,7 @@ function parseNucor(L){
   var rows=[],group="",printed=null,subs=[],project="",last=null;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
-    if(/^Product Name\b/.test(t)){var g=i>0?L[i-1].text:"";group=/^Product Details$/i.test(g)?"":g;last=null;continue}
+    if(/^Product Name\b/.test(t)){var g=i>0?L[i-1].text:"";group=/^Product Details$/i.test(g)||g.length>60||/[.@•]/.test(g)&&g.split(" ").length>6?"":g;last=null;continue}
     if(/Net Weight\s+Net Tons\s+Net Amount/i.test(t)&&L[i+1]){m=L[i+1].text.match(/\$\s*([\d,]+\.\d{2})\s*$/);if(m)printed=num(m[1])}
     if((m=t.match(/Total Price:\s*\$\s*([\d,]+\.\d{2})/i))&&printed==null)printed=num(m[1]);
     if(m=t.match(/Subtotal:\s*\$\s*([\d,]+\.\d{2})/i)){subs.push(num(m[1]));last=null;continue}
@@ -524,7 +526,7 @@ function needMarkup(){var q=quotes[cur];if(q&&String(q.mk||"").trim()!=="")retur
 function qtyText(r){
   var u=(r.um||"").toLowerCase();
   if(r.basis==="ft")return(r.pcs>1?plain(r.pcs,0)+" × ":"")+plain(r.len,2)+" ft";
-  if(r.basis==="cwt")return plain(r.wt,2)+" lb";
+  if(r.basis==="cwt")return(r.pcs>1||r.len!=null?plain(r.pcs,0)+(r.len!=null?" × "+plain(r.len,2)+" ft":" pcs")+" · ":"")+plain(r.wt,2)+" lb";
   if(r.basis==="ls")return"lump sum";
   if(r.basis==="ea")return plain(r.pcs,0)+" ea";
   return r.len==null?"type a quantity":plain(r.len,2)+(r.basis==="sqft"?" sq ft":u?" "+u:"");
@@ -626,6 +628,23 @@ file.addEventListener("change",function(){take(file.files);file.value=""});
 ["dragleave","drop"].forEach(function(n){drop.addEventListener(n,function(e){e.preventDefault();drop.classList.remove("over")})});
 drop.addEventListener("drop",function(e){take(e.dataTransfer.files)});
 
+/* ---------- notes boxes that can hold bold; they still read and write through .value ---------- */
+function rtOut(el){ /* DOM -> text with <b></b> and newlines */
+  var out="";(function walk(n,bold){
+    n.childNodes.forEach(function(c){
+      if(c.nodeType===3){var t=c.nodeValue;if(t)out+=bold?"<b>"+t+"</b>":t;return}
+      if(c.nodeType!==1)return;var tag=c.tagName,b=bold||tag==="B"||tag==="STRONG"||/^(bold|[6-9]00)$/.test(c.style&&c.style.fontWeight||"");
+      if(tag==="BR"){out+="\n";return}
+      if((tag==="DIV"||tag==="P")&&out&&!/\n$/.test(out))out+="\n";
+      walk(c,b);
+    });
+  })(el,false);
+  return out.replace(/<\/b><b>/g,"").replace(/\u00a0/g," ");
+}
+function rtHtml(str){return esc(str||"").replace(/&lt;(\/?)b&gt;/g,"<$1b>").replace(/\n/g,"<br>")}
+["v_terms","c_terms"].forEach(function(id){var el=$(id);try{Object.defineProperty(el,"value",{get:function(){return rtOut(el).trim()},set:function(v){el.innerHTML=rtHtml(v)},configurable:true})}catch(e){}});
+document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-bold]");if(!b)return;var el=$(b.getAttribute("data-bold"));el.focus();try{document.execCommand("bold")}catch(x){}el.dispatchEvent(new Event("input",{bubbles:true}))});
+
 /* ---------- saved company details ---------- */
 var saved={};try{saved=JSON.parse(localStorage.getItem("cb_company")||"{}")}catch(e){}
 document.querySelectorAll("[data-save]").forEach(function(el){
@@ -634,7 +653,7 @@ document.querySelectorAll("[data-save]").forEach(function(el){
 });
 $("p_date").value=new Date().toLocaleDateString("en-US");
 /* ---------- supplier templates: terms saved per supplier ---------- */
-var KNOWN=["Nucor Skyline","Nucor Rebar Fabrication","Triad","Hennegan","CMC Paving","CMC","JD Fields","Votorantim","Prairie","Ozinga","Harris","ABC Coating","Shoreline","Dywidag","DSI","Williams","Adelphia","Veritas","DS Brown"];
+var KNOWN=["Nucor Skyline","Nucor Rebar Fabrication","Triad","Hennegan","CMC Paving","CMC","JD Fields","Votorantim","Prairie","Ozinga","Harris","ABC Coating","Shoreline","Dywidag","DSI","Williams","Adelphia","Veritas","DS Brown","Skyline","Nucor"];
 var vterms={};try{vterms=JSON.parse(localStorage.getItem("cb_vterms")||"{}")}catch(e){}
 function vSave(){try{localStorage.setItem("cb_vterms",JSON.stringify(vterms))}catch(e){}}
 function vList(){$("v_list").innerHTML=Object.keys(vterms).sort().map(function(n){return'<option value="'+esc(n)+'">'}).join("")}
@@ -679,7 +698,7 @@ $("c_logo_prev").addEventListener("click",function(e){if(e.target.id==="c_logo_x
 function qtyCells(r){
   if(r.basis==="ft")return[r.pcs>1?plain(r.pcs,0):"",plain(r.len,2)+" ft"];
   if(r.basis==="sqft"||r.basis==="qty")return[plain(r.len,2),""];
-  return[plain(r.pcs,0),""];
+  return[plain(r.pcs,0),r.len!=null&&r.basis!=="ls"?plain(r.len,2)+" ft":""];
 }
 function buildPrint(){
   var q=quotes[cur],m=mult(),T=totals(q,m),g=null,v=function(id){return esc($(id).value)};
@@ -693,7 +712,7 @@ function buildPrint(){
   });
   var tw=q.rows.reduce(function(a,r){return a+(r.opt?0:(r.wt||0))},0);
   h+='<tr class="tot"><td colspan="6" class="num">TOTAL:</td><td class="num">'+money(T.sell)+"</td></tr></table>"+(tw?'<p style="margin-top:6px">TOTAL WEIGHT: '+plain(tw,2)+" lb</p>":"")+($("p_note").value?'<p style="margin-top:6px">'+v("p_note")+"</p>":"")+
-    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b>\n'+[v("v_terms"),v("c_terms")].filter(Boolean).join("\n\n")+"</div>":"")+
+    ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b>\n'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<p style="margin-top:26px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over printed name</div><div>Date signed</div></div>';
   $("print").innerHTML=h;
 }
