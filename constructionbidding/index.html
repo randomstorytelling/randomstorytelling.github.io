@@ -247,7 +247,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 37, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 38, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -323,9 +323,9 @@ function wordsToLines(words,page){
   }).filter(function(l){return l.text});
 }
 async function bigger(file){ /* small screenshots read far better enlarged */
-  var bmp=await createImageBitmap(file),k=Math.max(1,Math.min(3,2600/bmp.width)),cv=document.createElement("canvas");
+  var bmp=await createImageBitmap(file),photo=bmp.width>2600,k=photo?2600/bmp.width:Math.max(1,Math.min(3,2600/bmp.width)),cv=document.createElement("canvas");
   cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
-  var cx=cv.getContext("2d");cx.imageSmoothingQuality="high";cx.drawImage(bmp,0,0,cv.width,cv.height);return cv;
+  var cx=cv.getContext("2d");cx.imageSmoothingQuality="high";if(photo)cx.filter="blur(1px) grayscale(1) contrast(1.6)";cx.drawImage(bmp,0,0,cv.width,cv.height);return cv;
 }
 async function imageLines(file){var src=file;try{src=await bigger(file)}catch(e){}
   var L=wordsToLines(await ocrWords(src),1);L.blank=[];L.ocr=L.length?[1]:[];return L}
@@ -606,15 +606,17 @@ function fromLines(L,name,t0){
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
+  else if(!q.rows.length&&L.ocr.length)q.flags.push("This picture could not be read well enough to trust its numbers. A photo of a screen or of paper loses decimal points and digits. Ask whoever sent it for the PDF file itself (forwarding the supplier's email works): a PDF reads exactly, in seconds. Or add the lines by hand below.");
   else if(!q.rows.length)q.flags.push("No priced lines were found in this file. Add the lines by hand below; the checks and the proposal still work.");
   if(q.rows.some(function(r){return r.opt&&!r.auto}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt&&!r.auto}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   fixApply(q);
   return q;
 }
 function totals(q,pct){
-  var off=0,n=0,B=priceBid(q,pct),cost=B.costC/100;
-  q.rows.forEach(function(r){if(Math.abs(calcExt(r)-(r.ext||0))>=0.005)off++;if(!r.opt)n++});
-  return{cost:cost,sell:B.sellC/100,off:off,n:n,match:q.printed==null?null:cents(q.printed)===B.costC,diff:q.printed==null?null:(B.costC-cents(q.printed))/100};
+  var off=0,n=0,B=priceBid(q,pct),cost=B.costC/100,mineC=0,mineN=0;
+  q.rows.forEach(function(r){if(Math.abs(calcExt(r)-(r.ext||0))>=0.005)off++;if(!r.opt){n++;if(r.mine){mineN++;mineC+=cents(r.ext)}}});
+  var supC=B.costC-mineC; /* the supplier's own lines: only these are held against the supplier's printed total */
+  return{cost:cost,sell:B.sellC/100,off:off,n:n,mineN:mineN,mine:mineC/100,sup:supC/100,match:q.printed==null?null:cents(q.printed)===supC,diff:q.printed==null?null:(supC-cents(q.printed))/100};
 }
 
 /* ---------- screen ---------- */
@@ -677,9 +679,9 @@ function render(){
   $("tabs").innerHTML=true?"":quotes.map(function(x,i){var t=totals(x,0);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
   var v;
   if(!q.rows.length)v='<div class="verdict na"><span class="ic">✍️</span><div>We could not read lines from this file<small>Tap "+ Add a line" and type them in. Everything else still works.</small></div></div>';
-  else if(T.match===true&&!T.off)v='<div class="verdict ok"><span class="ic">✅</span><div>All '+T.n+" lines add up to your supplier's total, "+money(q.printed)+"<small>Give the lines a quick look, then go to Step 3.</small></div></div>";
+  else if(T.match===true&&!T.off)v='<div class="verdict ok"><span class="ic">✅</span><div>All '+(T.n-T.mineN)+" lines add up to your supplier's total, "+money(q.printed)+"<small>"+(T.mineN?"Plus "+T.mineN+" line"+(T.mineN>1?"s":"")+" you added, "+money(T.mine)+" before markup. ":"")+"Give the lines a quick look, then go to Step 3.</small></div></div>";
   else if(T.match===true)v='<div class="verdict ok"><span class="ic">✅</span><div>The lines add up to your supplier\'s total, '+money(q.printed)+"<small>"+T.off+" line"+(T.off>1?"s are":" is")+" off by a few cents inside the supplier's own quote. Marked in red below.</small></div></div>";
-  else if(T.match===false)v='<div class="verdict bad"><span class="ic">⚠️</span><div>The lines do not add up to the supplier\'s total<small>Supplier says '+money(q.printed)+". The lines add to "+money(T.cost)+". That is "+money(Math.abs(T.diff))+(T.diff>0?" too much":" short")+". Look for a missed line or a line that should be left out.</small></div></div>";
+  else if(T.match===false)v='<div class="verdict bad"><span class="ic">⚠️</span><div>The lines do not add up to the supplier\'s total<small>Supplier says '+money(q.printed)+". The lines add to "+money(T.sup)+". That is "+money(Math.abs(T.diff))+(T.diff>0?" too much":" short")+". Look for a missed line or a line that should be left out.</small></div></div>";
   else v='<div class="verdict na"><span class="ic">👀</span><div>'+T.n+" lines read, adding to "+money(T.cost)+"<small>This quote has no printed total to check against, so compare it to the PDF yourself.</small></div></div>";
   $("verdict").innerHTML=v;
   $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
@@ -748,7 +750,7 @@ function renderDay(){
   var body=quotes.map(function(q,i){
     applyTier(q);var p=qPct(q),T=totals(q,p==null?0:p),B=p==null?null:priceBid(q,p),gs=groupsOf(q),vend=q.vendor!=null?q.vendor:guessVendor(q);
     if(!q.skip){inc++;costC+=cents(T.cost);if(B)bidC+=B.sellC;else need++}
-    var chk=!q.rows.length?'<span style="color:var(--bad)">nothing read</span>':T.match===true&&!T.off?'<span style="color:var(--ok)">✓ adds up</span>':T.match===true?'<span style="color:var(--ok)">✓ adds up</span>, '+T.off+" to look at":T.match===false?'<span style="color:var(--bad);font-weight:700">⚠ off by '+money(Math.abs(T.diff))+"</span>":"no printed total";
+    var chk=!q.rows.length?'<span style="color:var(--bad)">'+(/\.(jpe?g|png|heic|webp|gif)$/i.test(q.name)?"picture not readable, get the PDF":"nothing read")+"</span>":T.match===true&&!T.off?'<span style="color:var(--ok)">✓ adds up</span>':T.match===true?'<span style="color:var(--ok)">✓ adds up</span>, '+T.off+" to look at":T.match===false?'<span style="color:var(--bad);font-weight:700">⚠ off by '+money(Math.abs(T.diff))+"</span>":"no printed total";
     return'<tr class="'+(q.skip?"opt ":"")+(i===cur?"here":"")+'"><td style="text-align:center"><input type="checkbox" data-dk="'+i+'"'+(q.skip?"":" checked")+' style="min-width:0;width:22px;height:22px" aria-label="Include this bid"></td><td style="text-align:center"><input type="checkbox" data-cmp="'+i+'"'+(q.cmp?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Compare this quote"></td>'+
       '<td class="ro" style="white-space:normal"><button type="button" class="lk" data-open="'+i+'">'+esc(q.project||q.name)+"</button>"+(gs.length>1&&T.match!==false&&!Object.keys(q.pay||{}).length?' <button type="button" class="btn ghost sm" data-split="'+i+'" style="padding:4px 10px;font-size:13px">Split into '+gs.length+" bids</button>":"")+'<div class="note" style="padding:0">'+esc(q.name)+"</div></td>"+
       '<td class="ro">'+esc(vend)+'</td><td class="num ro">'+money(T.cost)+'</td><td class="ro" style="white-space:normal">'+chk+"</td>"+
@@ -865,7 +867,7 @@ $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-
   else if(tl!=null){q.learned=fixLearn(q,"line",tl);toLine(q,tl);render()}});
 $("flags").addEventListener("click",function(e){if(e.target.id!=="fixForget")return;var q=quotes[cur];delete fixes[fixKey(q)];fixSave();q.fixed=0;q.learned=false;render()});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
-$("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true});render()});
+$("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true,mine:true});render()});
 $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
 $("quick").addEventListener("click",function(e){var m=e.target.getAttribute("data-m");if(m){$("mk").value=m;if(quotes.length){quotes[cur].mk=m;quotes[cur].mkFrom="you"}render()}});
 $("more").addEventListener("click",function(){showAll=!showAll;render()});
