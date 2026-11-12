@@ -100,12 +100,12 @@
     #print table{font-size:12.5px} #print th{background:none;border-top:2px solid #000;border-bottom:1.5px solid #000;font-size:11px;letter-spacing:.05em;padding:9px 8px;color:#000}
     #print td{padding:9px 8px;border-bottom:1px solid #bbb;color:#000} #print td.num,#print th.num{padding-left:14px} #print tr.grp td{background:none;border-top:1px solid #000;font-size:12.5px}
     #print .tot td{font-weight:700;font-size:16px;border-top:2px solid #000;border-bottom:none;padding-top:12px}
-    #print .terms{margin-top:14px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:34px;display:flex;gap:60px}
+    #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:26px;display:flex;gap:60px}
     #print .keep{break-inside:avoid;page-break-inside:avoid} /* the acceptance line and the signature lines never split across pages */
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
     #print img.lh{width:100%;display:block;margin:0 0 10px}
     #print .ph{align-items:center;border-bottom:none;margin-bottom:8px}
-    #print .meta{display:flex;justify-content:space-between;gap:30px;margin:4px 0 14px;font-size:12px;line-height:1.5}
+    #print .meta{display:flex;justify-content:space-between;gap:30px;margin:2px 0 9px;font-size:12px;line-height:1.5}
     #print .meta .rt2{display:grid;grid-template-columns:auto auto;gap:1px 10px;align-content:start} #print .meta .rt2 span{text-align:right} #print .meta .rt2 b{min-width:90px}
     #print .proj{display:flex;gap:18px;align-items:baseline;border-bottom:3px solid #000;padding:0 0 7px;margin-bottom:0} #print .proj span{font-weight:700;font-size:12px} #print .proj b{flex:1;text-align:center;font-size:15px}
     #print table.bid{border-collapse:collapse;width:100%;margin-top:0} #print table.bid th,#print table.bid td{border:1px solid #000;padding:6px 8px;vertical-align:middle}
@@ -114,7 +114,7 @@
     #print table.bid tr.tot td{border:none;font-size:13px;padding-top:11px} #print table.bid tr.tot td.box{border:2px solid #000;font-size:15px}
     #print .terms{border:1px solid #999;padding:10px 12px}
     @page{margin:0} /* zero page margin is what makes the browser drop its own header and footer (page title, date, web address) */
-    @page{size:letter} #print table.pg{width:100%;border-collapse:collapse;height:277mm} /* each bid's frame is at least one page tall, so its footer row sits at the bottom of the page; when a bid runs long the browser repeats the footer row on every page */ #print table.pg>thead>tr>td{height:12mm;padding:0;border:none} #print table.pg>tfoot>tr>td{height:var(--foot,14mm);padding:0 14mm 8mm;border:none;vertical-align:bottom} #print table.pg>tfoot img{width:100%;display:block}
+    @page{size:letter} #print table.pg{width:100%;border-collapse:collapse;height:277mm} /* each bid's frame is at least one page tall, so its footer row sits at the bottom of the page; when a bid runs long the browser repeats the footer row on every page */ #print table.pg>thead>tr>td{height:10mm;padding:0;border:none} #print table.pg>tfoot>tr>td{height:var(--foot,14mm);padding:0 14mm 7mm;border:none;vertical-align:bottom} #print table.pg>tfoot img{width:100%;display:block}
     #print table.pg>tbody>tr>td.pgc{padding:0 14mm;border:none;vertical-align:top}
   }
 </style>
@@ -226,7 +226,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 26, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 27, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -809,7 +809,7 @@ $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-
 var HOUSE={lh:"house-letterhead.jpg",ft:"house-footer.jpg"};
 var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=localStorage.getItem("cb_img_"+k)||""}catch(e){}});
 var imgs={};function useImgs(){["lh","ft"].forEach(function(k){imgs[k]=own[k]||HOUSE[k]||""});
-  document.documentElement.style.setProperty("--foot",imgs.ft?"28mm":"14mm")}useImgs();
+  document.documentElement.style.setProperty("--foot",imgs.ft?"25mm":"12mm")}useImgs();
 ["lh","ft"].forEach(function(k){if(HOUSE[k]){var pre=new Image();pre.src=HOUSE[k]}}); /* loaded before anyone prints */
 function showImg(k){$("c_"+k+"_prev").innerHTML=own[k]?'<img src="'+own[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"> <button class="btn ghost sm" data-imgx="'+k+'" type="button">Remove mine</button>':HOUSE[k]?'<img src="'+HOUSE[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"><div class="sub" style="font-size:13px">Already built in. Nothing to do. Choose a file only to replace it.</div>':""}
 ["lh","ft"].forEach(function(k){
@@ -863,7 +863,7 @@ function buildPrint(){
   });
   h+='<tr class="tot"><td colspan="3" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+'</td><td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
     ($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
-    '<div class="keep"><p style="margin-top:16px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div>';
+    '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div>';
   $("print").innerHTML='<table class="pg"><thead><tr><td></td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
 }
 var pageTitle=document.title;
