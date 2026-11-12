@@ -220,6 +220,10 @@
 
     <h2>Bid day checklist<small>Every bid you print lands here. Tick it once it is sent, so nobody gets missed.</small></h2>
     <div class="big" id="sentSum" style="font-size:18px;margin-bottom:10px"></div>
+    <div id="timeBox" style="border:2px solid var(--ink);border-radius:14px;padding:12px 16px;margin-bottom:12px">
+      <div class="row"><div class="f s" style="flex:0 0 250px"><label for="byHand">By hand, one quote takes me about (minutes)</label><input id="byHand" type="number" inputmode="decimal" placeholder="your own number"></div>
+      <div class="f"><div id="timeOut" style="font-size:16px;margin-top:6px"></div></div></div>
+    </div>
     <div class="scroll"><table id="sentTbl"></table></div>
     <div id="wins" style="margin-top:16px"></div>
     <p style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ghost sm" id="sentCsv" type="button">Save the checklist for Excel</button><button class="btn ghost sm" id="sentClear" type="button">Clear the chart</button></p>
@@ -240,7 +244,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 30, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 31, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -811,6 +815,7 @@ async function take(files){
         q=fromLines(PL,f.name,t0)}
       else if(isImg)q=fromLines(await imageLines(f),f.name,t0);
       else q=fromLines(await sheetLines(await f.arrayBuffer()),f.name,t0);
+      q.addedAt=Date.now(); /* the clock starts when the quote is added */
       quotes.push(q);cur=quotes.length-1;
     }
     catch(err){msg.textContent="We could not open "+f.name+". Is it a PDF? ("+err.message+")";msg.classList.remove("hide")}
@@ -1017,15 +1022,32 @@ function revNote(){
 /* ---------- BID DAY CHECKLIST: who got what, and whether it was sent ---------- */
 var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
 function saveSent(){sent=sent.slice(0,800);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}}
+/* TIMER: from adding the quote to the first time its bid is printed, her checking included.
+   Counted once per quote, and only when it happened in one sitting (under an hour), so a page left open overnight is not a timing. */
+function bidSecs(q){
+  if(!q.addedAt||q.timed)return null;q.timed=true;
+  var s=(Date.now()-q.addedAt)/1000;return s>0&&s<3600?Math.round(s):null;
+}
+function fmtSecs(s){return s<60?s+" sec":Math.floor(s/60)+" min "+(s%60?(s%60)+" sec":"")}
+var byHand="";try{byHand=localStorage.getItem("cb_byhand")||""}catch(e){}
+function renderTime(){
+  var el=$("timeBox");if(!el)return;
+  var t=sent.filter(function(x){return x.secs!=null}).map(function(x){return x.secs}).sort(function(a,b){return a-b});
+  var med=t.length?(t.length%2?t[(t.length-1)/2]:Math.round((t[t.length/2-1]+t[t.length/2])/2)):null,bh=parseFloat(byHand);
+  $("timeOut").innerHTML=!t.length?"No bids timed yet. The clock runs by itself: it starts when a quote is added and stops when its bid is first printed.":
+    "<b>"+t.length+" bid"+(t.length>1?"s":"")+" timed.</b> Typical time from adding the quote to printing the bid, checking included: <b>"+fmtSecs(med)+"</b> (fastest "+fmtSecs(t[0])+", slowest "+fmtSecs(t[t.length-1])+")."+
+    (bh>0?" By hand you said about "+bh+" minutes, so that is <b>"+(bh*60/med>=10?Math.round(bh*60/med):(bh*60/med).toFixed(1))+" times faster</b>, or about "+Math.max(0,Math.round(bh-med/60))+" minutes saved per bid.":" Type your by-hand minutes to see the difference.")+
+    (t.length<5?" With fewer than 5 timed, treat this as a first look.":"");
+}
 function logSent(to){
   var q=quotes[cur],pct=pctNow(),T=totals(q,pct);
   if(q.vendor&&$("v_terms").value.trim()&&!vterms[q.vendor]){vterms[q.vendor]=$("v_terms").value;vSave();vList()}
   var who=String(to||"").split(", attn.")[0].trim(),R=commitRev(q,who,pct);
-  sent.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),at:Date.now(),when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:who||"(no name typed)",markup:$("mk").value+"%",pct:pct,total:T.sell,cost:T.cost,rev:R.rev,sentAt:null,result:"",winTotal:null});
+  sent.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),at:Date.now(),when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:who||"(no name typed)",markup:$("mk").value+"%",pct:pct,total:T.sell,cost:T.cost,rev:R.rev,sentAt:null,result:"",winTotal:null,secs:bidSecs(q)});
   saveSent();renderSent();revNote();
 }
 function renderSent(){
-  var el=$("sentTbl");if(!sent.length){el.innerHTML='<tr><td class="ro" style="color:var(--mute)">Nothing printed yet. Each bid you print shows up here, with a box to tick once you have sent it.</td></tr>';$("sentSum").textContent="";return}
+  var el=$("sentTbl");if(!sent.length){renderTime();el.innerHTML='<tr><td class="ro" style="color:var(--mute)">Nothing printed yet. Each bid you print shows up here, with a box to tick once you have sent it.</td></tr>';$("sentSum").textContent="";return}
   /* newest print per project and contractor; older revisions are counted, not listed */
   var order=[],by={};sent.forEach(function(x){var p=x.project||"(no project)",k=p+"|"+x.to;if(!by[p]){by[p]={rows:[],seen:{}};order.push(p)}if(by[p].seen[k]){by[p].seen[k].older++;return}var e={x:x,older:0};by[p].seen[k]=e;by[p].rows.push(e)});
   var gcs=holders?holders.list.filter(function(h){return h.gc&&h.on}).map(function(h){return h.company}):[],allP=0,allS=0;
@@ -1034,11 +1056,12 @@ function renderSent(){
     var g=by[p],done=g.rows.filter(function(e){return e.x.sentAt}).length,names=g.rows.map(function(e){return e.x.to.toLowerCase()}),miss=gcs.filter(function(n){return names.indexOf(n.toLowerCase())<0});
     allP+=g.rows.length;allS+=done;
     h+='<tr class="grp"><td colspan="7">'+esc(p)+' <span style="font-weight:400">· printed for '+g.rows.length+(gcs.length?" of "+gcs.length+" contractors":"")+" · sent "+done+" of "+g.rows.length+'</span> <button type="button" class="btn ghost sm" data-allsent="'+esc(p)+'" style="padding:3px 10px;font-size:13px;margin-left:8px">Mark all sent</button></td></tr>';
-    g.rows.forEach(function(e){var x=e.x;h+='<tr'+(x.sentAt?"":' style="background:#fffdf3"')+'><td style="text-align:center"><input type="checkbox" data-sid="'+esc(x.id||"")+'" data-old="'+esc(x.when+"|"+x.project+"|"+x.to)+'"'+(x.sentAt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Sent to '+esc(x.to)+'"></td><td class="ro" style="white-space:normal">'+esc(x.to)+'</td><td class="num ro">'+esc(x.markup)+'</td><td class="num ro">'+money(x.total)+'</td><td class="ro">rev '+(x.rev||1)+(e.older?' <span style="color:var(--mute)">('+e.older+" earlier print"+(e.older>1?"s":"")+")</span>":"")+'</td><td class="ro">'+esc(x.when)+(x.sentAt?' <span style="color:var(--ok)">· sent '+esc(new Date(x.sentAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}))+"</span>":"")+"</td>"+
+    g.rows.forEach(function(e){var x=e.x;h+='<tr'+(x.sentAt?"":' style="background:#fffdf3"')+'><td style="text-align:center"><input type="checkbox" data-sid="'+esc(x.id||"")+'" data-old="'+esc(x.when+"|"+x.project+"|"+x.to)+'"'+(x.sentAt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Sent to '+esc(x.to)+'"></td><td class="ro" style="white-space:normal">'+esc(x.to)+'</td><td class="num ro">'+esc(x.markup)+'</td><td class="num ro">'+money(x.total)+'</td><td class="ro">rev '+(x.rev||1)+(e.older?' <span style="color:var(--mute)">('+e.older+" earlier print"+(e.older>1?"s":"")+")</span>":"")+'</td><td class="ro">'+esc(x.when)+(x.secs!=null?' <span style="color:var(--mute)">· made in '+fmtSecs(x.secs)+"</span>":"")+(x.sentAt?' <span style="color:var(--ok)">· sent '+esc(new Date(x.sentAt).toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}))+"</span>":"")+"</td>"+
       '<td style="white-space:nowrap">'+(x.id?'<select data-res="'+esc(x.id)+'" aria-label="Result for '+esc(x.to)+'" style="min-width:86px"><option value="">open</option><option value="won"'+(x.result==="won"?" selected":"")+'>Won</option><option value="lost"'+(x.result==="lost"?" selected":"")+">Lost</option></select>"+(x.result==="lost"?' <input data-win="'+esc(x.id)+'" class="n" inputmode="decimal" placeholder="winning bid $" value="'+(x.winTotal!=null?esc(x.winTotal):"")+'" style="min-width:120px;border:1px solid var(--ink);border-radius:8px">':""):"")+"</td></tr>"});
     miss.forEach(function(n){h+='<tr><td style="text-align:center;color:var(--bad);font-weight:700">!</td><td class="ro" style="white-space:normal;color:var(--bad)">'+esc(n)+'</td><td colspan="5" class="ro" style="color:var(--bad)">on the plan holders list, no bid printed yet</td></tr>'});
   });
   renderWins();
+  renderTime();
   el.innerHTML=h;$("sentSum").textContent=allP+" bid"+(allP>1?"s":"")+" printed · "+allS+" marked sent · "+(allP-allS)+" still to send";
 }
 renderSent();
@@ -1069,10 +1092,13 @@ $("sentTbl").addEventListener("click",function(e){
   sent.forEach(function(x){var k=(x.project||"(no project)")+"|"+x.to;if((x.project||"(no project)")!==p||seen[k])return;seen[k]=1;if(!x.sentAt)x.sentAt=Date.now()});saveSent();renderSent();
 });
 $("sentCsv").addEventListener("click",function(){
-  var c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'},out=["printed,project,supplier,went_to,markup,supplier_price,bid_total,revision,sent,result,winning_bid"];
-  sent.forEach(function(x){out.push([c(x.when),c(x.project),c(x.supplier),c(x.to),c(x.markup),x.cost==null?"":x.cost,x.total,x.rev||1,c(x.sentAt?new Date(x.sentAt).toLocaleString("en-US"):""),c(x.result||""),x.winTotal==null?"":x.winTotal].join(","))});
+  var c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'},out=["printed,project,supplier,went_to,markup,supplier_price,bid_total,revision,sent,result,winning_bid,seconds_to_make"];
+  sent.forEach(function(x){out.push([c(x.when),c(x.project),c(x.supplier),c(x.to),c(x.markup),x.cost==null?"":x.cost,x.total,x.rev||1,c(x.sentAt?new Date(x.sentAt).toLocaleString("en-US"):""),c(x.result||""),x.winTotal==null?"":x.winTotal,x.secs==null?"":x.secs].join(","))});
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="bid-day-checklist.csv";a.click();
 });
+$("byHand").value=byHand;
+$("byHand").addEventListener("input",function(){byHand=this.value;try{localStorage.setItem("cb_byhand",byHand)}catch(e){}renderTime()});
+renderTime();
 $("sentClear").addEventListener("click",function(){if(confirm("Clear the whole checklist? The revision history of each bid is kept. This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
 $("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;buildPrint();logSent($("p_to").value.trim());window.print()});
 var cmk={};try{cmk=JSON.parse(localStorage.getItem("cb_cmk")||"{}")}catch(e){}
