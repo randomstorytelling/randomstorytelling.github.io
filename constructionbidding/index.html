@@ -207,7 +207,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 19, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
+  <p class="foot">Test version 20, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. Internal test tool.</p>
 </div>
 <div id="print"></div>
 
@@ -336,7 +336,7 @@ function parseNucor(L){
   var rows=[],group="",printed=null,subs=[],project="",last=null;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
-    if(/^Product Name\b/.test(t)){var g=i>0?L[i-1].text:"";group=/^Product Details$/i.test(g)||g.length>60||/[.@•]/.test(g)&&g.split(" ").length>6?"":g;last=null;continue}
+    if(/^Product Name\b/.test(t)){var g=i>0?L[i-1].text:"";group=/^Product Details$/i.test(g)||g.length>60||/[.@•]/.test(g)&&g.split(" ").length>6||/\$\s*[\d,]+\.\d{2}/.test(g)?"":g;last=null;continue}
     if(/Net Weight\s+Net Tons\s+Net Amount/i.test(t)&&L[i+1]){m=L[i+1].text.match(/\$\s*([\d,]+\.\d{2})\s*$/);if(m)printed=num(m[1])}
     if((m=t.match(/Total Price:\s*\$\s*([\d,]+\.\d{2})/i))&&printed==null)printed=num(m[1]);
     if(m=t.match(/Subtotal:\s*\$\s*([\d,]+\.\d{2})/i)){subs.push(num(m[1]));last=null;continue}
@@ -474,20 +474,26 @@ function calcExt(r){
   if(r.basis==="cwt")return r2((r.wt||0)/100*p);
   return r2((r.len||0)*p);
 }
-/* The markup goes on the supplier's line total, so the bid is exactly cost plus the percent.
-   The unit price shown is that marked-up price rounded for display. */
-function sell(r,mult){
-  var e=r2((r.ext||0)*mult);
-  if(r.basis==="cwt"){var u=r4((r.price||0)/100*mult);return{unit:u,ext:e,txt:u.toFixed(4)}}
-  var u2=r2((r.price||0)*mult);
-  return{unit:u2,ext:e,txt:plain(u2,2)};
+/* ============ MONEY: the only place a bid is priced ============
+   Definition: bid total = supplier total x (1 + markup%), rounded to the cent.
+   Each line = its supplier line total x (1 + markup%); lines are rounded so that they add to the bid total exactly
+   (largest-remainder: the lines with the biggest dropped fractions get the leftover cents).
+   Everything is whole cents. Screen, print, Excel, per-contractor totals and the chart all read this result;
+   nothing else multiplies money. */
+function cents(x){return Math.round(Number(((x||0)*100).toFixed(4)))}
+function priceBid(q,pct){
+  var bp=Math.round(Number(((pct||0)*10000).toFixed(2))),lines={},idx=[],costC=0; /* bp = markup in millionths, an integer */
+  q.rows.forEach(function(r,i){if(r.opt)return;var c=cents(r.ext);costC+=c;idx.push({i:i,c:c})});
+  var num=function(c){return c*(1000000+bp)}, /* exact integer: cents x millionths */
+      sellC=Math.round(num(costC)/1000000),sum=0;
+  idx.forEach(function(o){o.fl=Math.floor(num(o.c)/1000000);o.rem=num(o.c)-o.fl*1000000;sum+=o.fl});
+  var left=sellC-sum,order=idx.slice().sort(function(a,b){return b.rem-a.rem||b.c-a.c||a.i-b.i});
+  for(var k=0;k<order.length&&left>0;k++,left--)order[k].fl+=1;
+  idx.forEach(function(o){lines[o.i]={extC:o.fl}});
+  return{pct:pct||0,costC:costC,sellC:sellC,lines:lines};
 }
-/* line totals are rounded to the cent one by one; put any leftover cent on the biggest line so the lines add to the exact total */
-function pen(q,mult){
-  var cost=0,sum=0,big=-1,bv=-1;
-  q.rows.forEach(function(r,i){if(r.opt)return;cost+=r.ext||0;var e=sell(r,mult).ext;sum+=e;if(e>bv){bv=e;big=i}});
-  return{i:big,d:r2(r2(r2(cost)*mult)-r2(sum))};
-}
+/* the unit price printed beside a line: display only, never used to compute a total */
+function unitTxt(r,pct){var m=1+(pct||0)/100;return r.basis==="cwt"?r4((r.price||0)/100*m).toFixed(4):plain(r2((r.price||0)*m),2)}
 async function parseBuffer(buf,name){return fromLines(await pdfLines(buf),name,performance.now())}
 function grabTerms(L){
   var out=[],on=false,n=0;
@@ -518,21 +524,42 @@ function fromLines(L,name,t0){
   if(q.rows.some(function(r){return r.opt&&!r.auto}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt&&!r.auto}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   return q;
 }
-function totals(q,mult){
-  var cost=0,sellT=0,off=0,n=0;
-  q.rows.forEach(function(r){
-    var ok=Math.abs(calcExt(r)-(r.ext||0))<0.005;if(!ok)off++;
-    if(r.opt)return;n++;cost+=r.ext||0;
-  });
-  cost=r2(cost);sellT=r2(cost*mult);
-  return{cost:cost,sell:sellT,off:off,n:n,match:q.printed==null?null:Math.abs(cost-q.printed)<0.005,diff:q.printed==null?null:r2(cost-q.printed)};
+function totals(q,pct){
+  var off=0,n=0,B=priceBid(q,pct),cost=B.costC/100;
+  q.rows.forEach(function(r){if(Math.abs(calcExt(r)-(r.ext||0))>=0.005)off++;if(!r.opt)n++});
+  return{cost:cost,sell:B.sellC/100,off:off,n:n,match:q.printed==null?null:cents(q.printed)===B.costC,diff:q.printed==null?null:(B.costC-cents(q.printed))/100};
 }
 
 /* ---------- screen ---------- */
-function mult(){var v=parseFloat($("mk").value);return 1+(isNaN(v)?0:v)/100}
+function pctNow(){var v=parseFloat($("mk").value);return isNaN(v)?0:v}
 var tiers=[];try{tiers=JSON.parse(localStorage.getItem("cb_tiers")||"[]")||[]}catch(e){}
 function tierFor(cost){var best=null;tiers.forEach(function(t){if(t.over!=null&&!isNaN(t.over)&&t.pct!=null&&!isNaN(t.pct)&&cost>=t.over&&(!best||t.over>=best.over))best=t});return best}
-function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,1).cost);if(t){q.mk=String(t.pct);q.mkFrom="table";q.mkTier=t}else{q.mk="";q.mkFrom="";q.mkTier=null}}
+function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,0).cost);if(t){q.mk=String(t.pct);q.mkFrom="table";q.mkTier=t}else{q.mk="";q.mkFrom="";q.mkTier=null}}
+/* MONEY GUARD. Recomputed from scratch, a different way from the display code, every time a bid is about to leave.
+   If any of these fail, nothing prints or exports. */
+function moneyCheck(q,pct){
+  var bad=[],B=priceBid(q,pct),T=totals(q,pct),cost=0,sumC=0,n=0;
+  q.rows.forEach(function(r,i){
+    if(r.opt){if(B.lines[i])bad.push("a left-out line was priced");return}
+    n++;cost+=(r.ext||0);var L=B.lines[i];
+    if(!L){bad.push("a line has no price");return}
+    sumC+=L.extC;var exact=(r.ext||0)*(1+pct/100)*100;
+    if(Math.abs(L.extC-exact)>1.0001)bad.push("line "+(i+1)+" is more than a cent away from its own "+pct+"%");
+    if(pct>=0&&L.extC<cents(r.ext)-0)bad.push("line "+(i+1)+" is priced below the supplier's cost");
+  });
+  var costC=Math.round(Number((cost*100).toFixed(4))),wantC=Math.round(Number((costC*(1+pct/100)).toFixed(6)));
+  if(!n)bad.push("there are no lines in this bid");
+  if(B.costC!==costC)bad.push("the supplier total ("+money(B.costC/100)+") is not the sum of the lines ("+money(costC/100)+")");
+  if(B.sellC!==wantC)bad.push("the bid ("+money(B.sellC/100)+") is not the supplier total plus "+pct+"% ("+money(wantC/100)+")");
+  if(sumC!==B.sellC)bad.push("the bid lines add to "+money(sumC/100)+" but the bid total says "+money(B.sellC/100));
+  if(cents(T.sell)!==B.sellC||cents(T.cost)!==B.costC)bad.push("the totals on screen do not match the priced bid");
+  if(!(pct>=0&&pct<=200))bad.push("the markup "+pct+"% is outside 0 to 200");
+  return bad;
+}
+function moneyStop(pct){
+  var bad=moneyCheck(quotes[cur],pct);if(!bad.length)return false;
+  var m=$("msg");m.innerHTML="<b>Stopped. Do not send this bid.</b> The money did not reconcile: "+esc(bad.join("; "))+". Nothing was printed. Please send this message to Lawrence.";m.classList.remove("hide");m.scrollIntoView({behavior:"smooth",block:"center"});return true;
+}
 function needMarkup(){var q=quotes[cur];if(q&&String(q.mk||"").trim()!=="")return false;var m=$("msg");m.textContent="This bid has no markup yet. Type one in Step 3 first.";m.classList.remove("hide");$("mk").scrollIntoView({behavior:"smooth",block:"center"});$("mk").focus();return true}
 function qtyText(r){
   var u=(r.um||"").toLowerCase();
@@ -551,9 +578,9 @@ function render(){
   $("work").classList.remove("hide");
   var q=quotes[cur];applyTier(q);
   if(document.activeElement!==$("mk"))$("mk").value=q.mk==null?"":q.mk;
-  var T=totals(q,mult()),nOpt=q.rows.filter(function(r){return r.opt}).length,noMk=String(q.mk||"").trim()==="";
+  var T=totals(q,pctNow()),nOpt=q.rows.filter(function(r){return r.opt}).length,noMk=String(q.mk||"").trim()==="";
   $("mkask").innerHTML=noMk?'<div class="ask need">Stop here. What markup goes on this bid?<small>Supplier\'s price is '+money(T.cost)+'. Type the percent below, or tap one. Nothing prints until you do.</small></div>':q.mkFrom==="table"?'<div class="ask tbl">From your markup table: '+esc(String(q.mk))+'%<small>Supplier\'s price is '+money(T.cost)+", which is in your \""+money(q.mkTier.over||0)+' and up" row. Change it below if this job is different.</small></div>':"";
-  $("tabs").innerHTML=quotes.length<2?"":quotes.map(function(x,i){var t=totals(x,1);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
+  $("tabs").innerHTML=quotes.length<2?"":quotes.map(function(x,i){var t=totals(x,0);return'<button class="tab'+(i===cur?" on":"")+'" data-i="'+i+'"><span class="dot'+(t.match===false||t.off?" bad":"")+'"></span>'+esc(x.name)+"</button>"}).join("");
   var v;
   if(!q.rows.length)v='<div class="verdict na"><span class="ic">✍️</span><div>We could not read lines from this file<small>Tap "+ Add a line" and type them in. Everything else still works.</small></div></div>';
   else if(T.match===true&&!T.off)v='<div class="verdict ok"><span class="ic">✅</span><div>All '+T.n+" lines add up to your supplier's total, "+money(q.printed)+"<small>Give the lines a quick look, then go to Step 3.</small></div></div>";
@@ -564,11 +591,11 @@ function render(){
   $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
   $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("");
   var TH=[["opt","Leave out",""],["desc","What it is",""],["much","How much","num"],["pcs","Pieces","num adv"],["len","Length / qty","num adv"],["wt","Weight lb","num adv"],["price","Supplier's unit price","num"],["per","Per","adv"],["ext","Supplier's total","num"],["chk","Check",""],["yprice","Your price","num adv"],["ytotal","Your total","num"]];
-  var P=pen(q,mult());
+  var B=priceBid(q,pctNow());
   var h="<tr>"+TH.map(function(c){return'<th class="'+c[2]+'"><span class="eh" contenteditable="true" spellcheck="false" data-th="'+c[0]+'" title="Click to rename this heading">'+esc(heads[c[0]]||c[1])+"</span></th>"}).join("")+'<th class="adv"></th></tr>',g=null;
   q.rows.forEach(function(r,i){
     if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="13">'+esc(g)+"</td></tr>"}
-    var calc=calcExt(r),ok=Math.abs(calc-(r.ext||0))<0.005,s=sell(r,mult());if(i===P.i)s.ext=r2(s.ext+P.d);
+    var calc=calcExt(r),ok=Math.abs(calc-(r.ext||0))<0.005,s={txt:unitTxt(r,pctNow()),ext:B.lines[i]?B.lines[i].extC/100:0};
     var inp=function(k,cls,v){return'<input class="'+cls+'" data-i="'+i+'" data-k="'+k+'" value="'+esc(v==null?"":v)+'"'+(cls==="n"?' inputmode="decimal"':"")+">"};
     var needQty=r.auto&&r.len==null&&r.basis==="qty";
     h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
@@ -588,7 +615,7 @@ function render(){
   if(holders&&!(document.activeElement&&document.activeElement.getAttribute&&document.activeElement.getAttribute("data-hm")!=null))renderHolders();
 }
 function softTotals(){ /* update numbers without rebuilding inputs while typing */
-  var q=quotes[cur],T=totals(q,mult());
+  var q=quotes[cur],T=totals(q,pctNow());
   $("sell").textContent=money(T.sell);$("cost").textContent=money(T.cost);$("spread").textContent=money(r2(T.sell-T.cost));
 }
 $("tbl").addEventListener("change",function(e){
@@ -713,13 +740,13 @@ function qtyCells(r){
   return[plain(r.pcs,0),r.len!=null&&r.basis!=="ls"?plain(r.len,2)+" ft":""];
 }
 function buildPrint(){
-  var q=quotes[cur],m=mult(),T=totals(q,m),P=pen(q,m),g=null,v=function(id){return esc($(id).value)};
+  var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)};
   var h='<div class="ph"><div class="co">'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block;margin-bottom:8px">':"")+'<b>'+v("c_name")+"</b><br>"+v("c_contact")+"<br>"+v("c_phone")+"<br>"+v("c_email")+"<br>"+v("c_addr")+'</div><div style="text-align:right"><h1>PROPOSAL</h1>Date: '+v("p_date")+($("p_pno").value?"<br>Project #: "+v("p_pno"):"")+($("p_cno").value?"<br>Contract #: "+v("p_cno"):"")+"</div></div>"+
     "<p><b>PROJECT:</b> "+v("p_project")+($("p_item").value?"<br>"+v("p_item"):"")+($("p_to").value?"<br><b>PREPARED FOR:</b> "+v("p_to"):"")+'</p><table style="margin-top:10px"><tr><th>'+esc(ph("desc"))+'</th><th class="num">'+esc(ph("qty"))+'</th><th class="num">'+esc(ph("lgth"))+'</th><th class="num">'+esc(ph("wgt"))+'</th><th class="num">'+esc(ph("price"))+"</th><th>"+esc(ph("um"))+'</th><th class="num">'+esc(ph("total"))+"</th></tr>";
   q.rows.forEach(function(r){
     if(r.opt)return;
     if((r.group||"")!==g){g=r.group||"";if(g)h+='<tr class="grp"><td colspan="7">'+esc(g)+"</td></tr>"}
-    var s=sell(r,m),c=qtyCells(r);if(q.rows.indexOf(r)===P.i)s.ext=r2(s.ext+P.d);
+    var s={txt:unitTxt(r,m),ext:B.lines[q.rows.indexOf(r)].extC/100},c=qtyCells(r);
     h+="<tr><td>"+esc(r.desc)+'</td><td class="num">'+c[0]+'</td><td class="num">'+c[1]+'</td><td class="num">'+(r.wt?plain(r.wt,2):"")+'</td><td class="num">'+s.txt+"</td><td>"+esc(r.um&&r.basis==="qty"?r.um.toUpperCase():UM[r.basis])+'</td><td class="num">'+plain(s.ext,2)+"</td></tr>";
   });
   var tw=q.rows.reduce(function(a,r){return a+(r.opt?0:(r.wt||0))},0);
@@ -755,7 +782,7 @@ $("tierRows").addEventListener("click",function(e){var x=e.target.getAttribute("
 renderTiers();
 var sent=[];try{sent=JSON.parse(localStorage.getItem("cb_sent")||"[]")}catch(e){}
 function logSent(to){
-  var q=quotes[cur],T=totals(q,mult());
+  var q=quotes[cur],T=totals(q,pctNow());
   if(q.vendor&&$("v_terms").value.trim()&&!vterms[q.vendor]){vterms[q.vendor]=$("v_terms").value;vSave();vList()}
   sent.unshift({when:new Date().toLocaleString("en-US",{month:"numeric",day:"numeric",hour:"numeric",minute:"2-digit"}),project:q.project,supplier:q.vendor||"",to:to||"(no name typed)",markup:$("mk").value+"%",total:T.sell});
   sent=sent.slice(0,500);try{localStorage.setItem("cb_sent",JSON.stringify(sent))}catch(e){}renderSent();
@@ -770,10 +797,10 @@ $("sentCsv").addEventListener("click",function(){
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download="who-got-what.csv";a.click();
 });
 $("sentClear").addEventListener("click",function(){if(confirm("Clear the whole chart? This cannot be undone.")){sent=[];try{localStorage.removeItem("cb_sent")}catch(e){}renderSent()}});
-$("doprint").addEventListener("click",function(){if(needMarkup())return;buildPrint();logSent($("p_to").value.trim());window.print()});
+$("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;buildPrint();logSent($("p_to").value.trim());window.print()});
 var cmk={};try{cmk=JSON.parse(localStorage.getItem("cb_cmk")||"{}")}catch(e){}
 function hMk(h){var v=h.mk!=null?h.mk:cmk[h.company];return v===""||v==null||isNaN(parseFloat(v))?null:parseFloat(v)}
-function hTotal(h){if(!quotes.length)return"";var m=hMk(h),base=parseFloat($("mk").value)||0;return money(totals(quotes[cur],1+(m==null?base:m)/100).sell)}
+function hTotal(h){if(!quotes.length)return"";var m=hMk(h),base=parseFloat($("mk").value)||0;return money(totals(quotes[cur],m==null?base:m).sell)}
 function renderHolders(){
   var el=$("hold");if(!holders){el.innerHTML='<div class="sub" style="font-size:15px">Sending the same bid to several contractors? Add the plan holders list (PDF) in Step 1 and they will show up here, each with its own markup.</div>';return}
   var gcs=holders.list.filter(function(h){return h.gc}),others=holders.list.length-gcs.length,base=$("mk").value;
@@ -795,21 +822,22 @@ $("hold").addEventListener("input",function(e){
 $("hold").addEventListener("click",function(e){
   if(e.target.id!=="printall"||!quotes.length)return;
   if(holders.list.some(function(h){return h.gc&&h.on&&hMk(h)==null})&&needMarkup())return;
+  var stop=false;holders.list.forEach(function(h){if(stop||!(h.gc&&h.on))return;var hm=hMk(h);stop=moneyStop(hm==null?parseFloat($("mk").value):hm)});if(stop)return;
   var picks=holders.list.filter(function(h){return h.gc&&h.on}),keepTo=$("p_to").value,keepMk=$("mk").value,html="";
   picks.forEach(function(h,i){var m=hMk(h);$("mk").value=m==null?keepMk:m;$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();logSent(h.company);html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
   $("p_to").value=keepTo;$("mk").value=keepMk;if(!picks.length)return;$("print").innerHTML=html;window.print();
 });
 renderHolders();
 $("csv").addEventListener("click",function(){
-  if(needMarkup())return;
-  var q=quotes[cur],m=mult(),c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'};
+  if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;
+  var q=quotes[cur],m=pctNow(),c=function(x){return'"'+String(x==null?"":x).replace(/"/g,'""')+'"'};
   var out=[["group","description","optional","pieces","length_or_qty","weight_lb","unit_cost","per","supplier_total","your_price","your_total"].join(",")];
-  var P=pen(q,m);
-  q.rows.forEach(function(r,i){var s=sell(r,m);if(i===P.i)s.ext=r2(s.ext+P.d);out.push([c(r.group),c(r.desc),r.opt?"yes":"",r.pcs,r.len==null?"":r.len,r.wt==null?"":r.wt,r.price,r.basis,r.ext,s.unit,r.opt?"":s.ext].join(","))});
+  var B=priceBid(q,m);
+  q.rows.forEach(function(r,i){var s={unit:unitTxt(r,m),ext:B.lines[i]?B.lines[i].extC/100:""};out.push([c(r.group),c(r.desc),r.opt?"yes":"",r.pcs,r.len==null?"":r.len,r.wt==null?"":r.wt,r.price,r.basis,r.ext,c(s.unit),s.ext].join(","))});
   var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out.join("\n")],{type:"text/csv"}));a.download=q.name.replace(/\.pdf$/i,"")+"_lines.csv";a.click();
 });
 function feedback(){
-  var q=quotes[cur],T=totals(q,1);
+  var q=quotes[cur],T=totals(q,0);
   return["Construction Bidding test feedback","From: "+$("fb_name").value,"When: "+new Date().toLocaleString("en-US"),"File: "+q.name,"Layout read as: "+q.layout,
     "Lines: "+q.rows.length+" ("+q.rows.filter(function(r){return r.opt}).length+" optional)","Add up check: "+(T.match==null?"no printed total found":T.match?"matches":"does not match"),
     "Lines that do not recompute: "+T.off,"Read time: "+q.secs.toFixed(1)+" s","Supplier: "+(q.vendor||""),"Minutes by hand today: "+$("fb_min").value,"Every line right: "+$("fb_ok").value,"","Notes:",$("fb_txt").value].join("\n");
@@ -817,7 +845,7 @@ function feedback(){
 $("fb_mail").addEventListener("click",function(){location.href="mailto:?subject="+encodeURIComponent("Construction Bidding test feedback")+"&body="+encodeURIComponent(feedback())});
 $("fb_copy").addEventListener("click",function(){var t=feedback(),d=$("fb_done");
   (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){d.textContent="Copied. Paste it into a text or email."},function(){d.textContent="Copy did not work here. Use the email button."})});
-window.CB={sell:sell,pen:pen,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
+window.CB={moneyCheck:moneyCheck,priceBid:priceBid,unitTxt:unitTxt,cents:cents,setTiers:function(t){tiers=t;saveTiers();renderTiers();if(quotes.length)render()},scrubTerms:scrubTerms,setHolders:function(h){holders=h;renderHolders()},grabTerms:grabTerms,parsePlanHolders:parsePlanHolders,pdfLines:pdfLines,fromLines:fromLines,wordsToLines:wordsToLines,sheetToLines:sheetToLines,imageLines:imageLines,parseBuffer:parseBuffer,totals:totals,quotes:quotes,render:render,buildPrint:buildPrint,feedback:feedback};
 })();
 </script>
 </body>
