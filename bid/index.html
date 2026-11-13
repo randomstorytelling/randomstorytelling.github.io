@@ -131,6 +131,7 @@
   <div class="drop" id="drop" tabindex="0">Tap here to choose the quote<small>A PDF, a photo or screenshot, or an Excel file. You can add several at once.<br>Your file stays on this computer. It is not sent anywhere.</small></div>
   <input type="file" id="file" accept="application/pdf,image/*,.xlsx,.xls,.csv" multiple class="hide">
   <div id="msg" class="flag hide"></div>
+  <details id="more" style="margin-top:12px"><summary style="cursor:pointer;color:var(--mute);font-size:15px">More tools: read your old quotes and bids, or let your own AI read a photo</summary>
   <details id="ai" style="margin-top:12px;border:1px solid var(--ink);border-radius:12px;padding:12px 14px">
     <summary style="font-weight:700;cursor:pointer">A photo or scan we cannot read? Let your own AI read it (Claude, Gemini, Copilot or ChatGPT)</summary>
     <div class="sub" style="font-size:14px;margin-top:8px">No sign up here and no key. You use the AI you already have, then this page checks its work: every line is recomputed and added up against the supplier's totals.</div>
@@ -155,6 +156,7 @@
     <div id="h_out"></div>
   </details>
 
+  </details>
   <div id="work" class="hide">
     <div id="day"></div>
     <h2>Step 2. Check the numbers<small>We read every line and added it up for you.</small></h2>
@@ -279,7 +281,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 66, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 67, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -1119,7 +1121,7 @@ async function take(files){
       if(isPdf){var PL=await pdfLines(await f.arrayBuffer()),ph=parsePlanHolders(PL);
         if(ph){holders=ph;busy("");renderHolders();renderSent();msg.textContent="Got the plan holders list: "+ph.list.filter(function(h){return h.gc}).length+" general contractors. They are in Step 4.";msg.classList.remove("hide");continue}
         q=fromLines(PL,f.name,t0)}
-      else if(isImg){q=fromLines(await imageLines(f),f.name,t0);if(!q.rows.length)$("ai").open=true}
+      else if(isImg){q=fromLines(await imageLines(f),f.name,t0);if(!q.rows.length){$("more").open=true;$("ai").open=true}}
       else q=fromLines(await sheetLines(await f.arrayBuffer()),f.name,t0);
       q.addedAt=Date.now(); /* the clock starts when the quote is added */
       quotes.push(q);cur=quotes.length-1;
