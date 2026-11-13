@@ -279,7 +279,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 64, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 65, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -532,11 +532,11 @@ function isTermsy(t){return/\b(increase[ds]?|escalat\w*|surcharge|pricing will|p
 function applyTwo(rows,tw,both){rows.forEach(function(r){if(!r.twoOff)return; /* flagged rows, not positions: she can move and delete lines */
   if(both){r.opt=false;delete r.show;delete r.optWord;delete r.hint}else{r.opt=true;r.auto=true;r.show=true;r.optWord=tw.word;r.hint=tw.why}});tw.both=both}
 function parseGeneric(L){
-  var twoWays=null,hdr="",hdrAt=0,prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
+  var qnums={},twoWays=null,hdr="",hdrAt=0,prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
     if(L[i].page!==page){page=L[i].page;last=null}
-    if(m=t.match(/(?:Quote Number|Quotation No\.?|Quote No\.?|Quote #)\s*:?\s*(\S.*)$/i)){if(!/^(Date|Good)/i.test(m[1]))group=m[1].trim().slice(0,60)}
+    if(m=t.match(/(?:Quote Number|Quotation No\.?|Quote No\.?|Quote #)\s*:?\s*(\S.*)$/i)){if(!/^(Date|Good)/i.test(m[1])){group=m[1].trim().slice(0,60);qnums[group]=1}}
     if(!project&&(m=t.match(/^(?:Project(?: Name)?|Job Name|Re|Ref)\s*:\s*(\S.+)$/i)))project=m[1].trim().slice(0,80);
     if(m=t.match(/^(Item\s+\S+)\s*[–—-]\s*Total\b.*?\$\s*([\d,]+\.\d{2})\s*$/i)){itemTotals.push({d:t.replace(/\s*\$\s*[\d,]+\.\d{2}\s*$/,""),v:num(m[2])});last=null;continue}
     if(/\b(sub\s?total|total)\b/i.test(t)&&(m=t.match(/\$?\s*([\d,]+\.\d{2})\s*\$?\s*$/))&&!/\d\s*(?:LF|EA|SF)\s+\$/i.test(t)){
@@ -656,7 +656,7 @@ function parseGeneric(L){
     else if(gT!=null)printed=gT;
     else{printed=add(uniq);if(uniq.length>1)flags.push("The supplier prints "+uniq.length+" subtotals and no grand total. The printed total shown here is their sum.")}
   }
-  return{layout:mode,rows:rows,printed:printed,project:project,flags:flags,twoWays:twoWays};
+  return{layout:mode,rows:rows,printed:printed,project:project,flags:flags,twoWays:twoWays,nQuotes:Object.keys(qnums).length};
 }
 function calcExt(r){
   var p=r.price||0;
@@ -797,7 +797,7 @@ function fromLines(L,name,t0){
   if(!c){var ip=all.filter(function(x){return x.layout==="Item proposal"&&x.rows.length})[0];if(ip)c=ip} /* a written proposal's own items beat anything guessed from its sentences */
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
   var MT=grabMeta(L);
-  var q={bidDate:MT.bidDate,addenda:MT.addenda,metaBy:MT.by,terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),pay:c.secs||{},twoWays:c.twoWays||null,name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  var q={bidDate:MT.bidDate,addenda:MT.addenda,metaBy:MT.by,terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),pay:c.secs||{},twoWays:c.twoWays||null,nQuotes:c.nQuotes||0,name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
@@ -881,7 +881,13 @@ function render(){
   else if(T.match===true)v='<div class="verdict ok"><span class="ic">✅</span><div>The lines add up to your supplier\'s total, '+money(q.printed)+"<small>"+T.off+" line"+(T.off>1?"s are":" is")+" off by a few cents inside the supplier's own quote. Marked in red below.</small></div></div>";
   else if(T.match===false)v='<div class="verdict bad"><span class="ic">⚠️</span><div>The lines do not add up to the supplier\'s total<small>Supplier says '+money(q.printed)+". The lines add to "+money(T.sup)+". That is "+money(Math.abs(T.diff))+(T.diff>0?" too much":" short")+". Look for a missed line or a line that should be left out.</small></div></div>";
   else v='<div class="verdict na"><span class="ic">👀</span><div>'+T.n+" lines read, adding to "+money(T.cost)+"<small>This quote has no printed total to check against, so compare it to the PDF yourself.</small></div></div>";
-  $("verdict").innerHTML=v;
+  /* Green = the lines add up to a printed total. Anything else says what to look at, by the money at risk. */
+  var lookAt="";
+  if(q.rows.length){var live=q.rows.map(function(r,i){return{r:r,i:i}}).filter(function(x){return!x.r.opt&&!x.r.mine});
+    if(q.nQuotes>1)lookAt+='<div class="flag"><b>This file holds '+q.nQuotes+' separate quotes.</b> A bid is usually one of them. Tick Leave out on the lines for the others, or use Split into '+q.nQuotes+' bids in the bid day table.</div>';
+    if(T.match!==true&&live.length){var top=live.slice().sort(function(a,b){return(b.r.ext||0)-(a.r.ext||0)}).slice(0,3);
+      lookAt+='<div class="flag"><b>'+(T.match===false?"Check these against the PDF first":"Nothing on this quote adds to a printed total, so check the biggest lines against the PDF")+':</b> '+top.map(function(x){return esc(String(x.r.desc).slice(0,48))+" ("+money(x.r.ext||0)+")"}).join(" · ")+"</div>"}}
+  $("verdict").innerHTML=v+lookAt;
   $("stats").textContent=q.name+" · read in "+q.secs.toFixed(1)+" seconds"+(nOpt?" · "+nOpt+" line"+(nOpt>1?"s":"")+" left out":"");
   var fk=fixKey(q),fN=fixes[fk]?fixes[fk].head.length+fixes[fk].line.length:0;
   $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("")+
@@ -1534,7 +1540,10 @@ $("byHand").value=byHand;
 $("byHand").addEventListener("input",function(){byHand=this.value;try{LS.setItem("cb_byhand",byHand)}catch(e){}renderTime()});
 renderTime();
 $("sentClear").addEventListener("click",function(){if(confirm("Clear the whole checklist? The revision history of each bid is kept. This cannot be undone.")){sent=[];try{LS.removeItem("cb_sent")}catch(e){}renderSent()}});
-$("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;buildPrint();logSent($("p_to").value.trim());window.print()});
+$("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;
+  var qc=quotes[cur],Tc=totals(qc,0);
+  if(Tc.match===false&&!qc.checked&&!confirm("The lines on this quote do not add up to the supplier's printed total (off by "+money(Math.abs(Tc.diff))+").\n\nPress OK only if you have checked the lines against the PDF and the bid is right."))return;
+  if(Tc.match===false)qc.checked=true;buildPrint();logSent($("p_to").value.trim());window.print()});
 var cmk={};try{cmk=JSON.parse(LS.getItem("cb_cmk")||"{}")}catch(e){}
 function hMk(h){var v=h.mk!=null?h.mk:cmk[h.company];return v===""||v==null||isNaN(parseFloat(v))?null:parseFloat(v)}
 function hTotal(h){if(!quotes.length)return"";var m=hMk(h),base=parseFloat($("mk").value)||0;return money(totals(quotes[cur],m==null?base:m).sell)}
