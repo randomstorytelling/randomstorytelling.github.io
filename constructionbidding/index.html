@@ -279,7 +279,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 59, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 61, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -529,7 +529,7 @@ function parseItemProposal(L){
   return{layout:"Item proposal",rows:rows,printed:null,project:project,flags:flags};
 }
 function parseGeneric(L){
-  var prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
+  var hdr="",hdrAt=0,prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
     if(L[i].page!==page){page=L[i].page;last=null}
@@ -556,6 +556,19 @@ function parseGeneric(L){
       last={opt:false,group:group,desc:d||"(no description read)",note:"",pcs:1,len:found.basis==="cwt"?null:found.q.v,wt:found.basis==="cwt"?found.q.v:null,price:found.p.v,basis:found.basis,ext:found.e.v,um:um,page:page};
       rows.push(last);continue;
     }
+    /* small tables that name their columns: "Category Grade Total Tons Price Per Ton" / "Epoxy Green 60 81.87 $1,500.00",
+       "Product Total Units Unit of Measure Price Per UoM" / "Accessories - LF 1 LF $9,805.00". The header says what each number is. */
+    if(/\bTotal Tons\b.*\bPrice Per Ton\b/i.test(t)){hdr="ton";hdrAt=i;continue}
+    if(/\bTotal Units\b.*\bPrice Per (UoM|Unit)\b/i.test(t)){hdr="uom";hdrAt=i;continue}
+    if(hdr&&i-hdrAt>14)hdr="";
+    if(/^Unit Price:?$/i.test(t)&&L[i+1]&&/Price Per/i.test(L[i+1].text)){group="UNIT PRICE";continue}
+    if(/^Alternate Pricing:?$/i.test(t)){group="ALTERNATE PRICING";hdr="";last=null;continue}
+    if(hdr==="ton"&&(m=t.match(/^(.+?)\s+([A-Z]?\d{2,4})\s+([\d,]+(?:\.\d+)?)\s+\$\s*([\d,]+\.\d{2})\s*$/))){
+      var tq=num(m[3]),tp=num(m[4]);last={opt:false,group:group,desc:m[1].trim(),note:"Grade "+m[2],pcs:1,len:tq,wt:null,price:tp,basis:"qty",ext:r2(tq*tp),um:"TONS",auto:true,page:page};rows.push(last);hdrAt=i;continue}
+    if(hdr==="uom"&&(m=t.match(/^(.+?)\s+([\d,]+(?:\.\d+)?)\s+([A-Za-z]{1,6})\s+\$\s*([\d,]+\.\d{2,4})\s*$/))){
+      var gq=num(m[2]),gp=num(m[4]);last={opt:false,group:group,desc:m[1].trim(),note:"",pcs:1,len:gq,wt:null,price:gp,basis:"qty",ext:r2(gq*gp),um:m[3].toUpperCase(),auto:true,page:page};rows.push(last);hdrAt=i;continue}
+    if(hdr==="uom"&&(m=t.match(/^([A-Za-z][A-Za-z &\/]*?)(?:\s*-\s*(Pcs|LF|EA|Sets?))?\s+(\d+)\s+\$\s*([\d,]+\.\d{2})\s*$/))){ /* "Spirals 1 $1,953.20", "Accessories-Pcs 1 $21,625.00": a lot price */
+      var lq=num(m[3]),lp=num(m[4]);last={opt:false,group:group,desc:m[1].trim(),note:"",pcs:1,len:lq,wt:null,price:lp,basis:"qty",ext:r2(lq*lp),um:(m[2]||"LOT").toUpperCase(),auto:true,page:page};rows.push(last);hdrAt=i;continue}
     /* accessory tables: the quantity and its unit in words come first: "6,160 Pieces 4 1/2\" High Chair - Epoxy $1.00 Per Piece",
        "11,240 Linear feet 1\" Slab Bolsters - Epoxy $0.70 Linear foot", with or without a line total at the end */
     if(/^[A-Z][A-Z &/\-]{6,60}:$/.test(t)&&/\b(ACCESSOR|ONLY|DECK|SLAB|ABUTMENT|PIER|WALL|BARRIER|APPROACH|SUPERSTRUCTURE|SUBSTRUCTURE)/.test(t)){group=t.replace(/:$/,"");last=null;continue}
