@@ -279,7 +279,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 63, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 64, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -529,8 +529,10 @@ function parseItemProposal(L){
   return{layout:"Item proposal",rows:rows,printed:null,project:project,flags:flags};
 }
 function isTermsy(t){return/\b(increase[ds]?|escalat\w*|surcharge|pricing will|prices? will|effective|thereafter|firm (on|through)|per hour|unloading|after the date|backcharge|days? of)\b/i.test(t)||/^\(?\d{1,2}[.)]\)?\s/.test(t)||t.length>150}
+function applyTwo(rows,tw,both){rows.forEach(function(r){if(!r.twoOff)return; /* flagged rows, not positions: she can move and delete lines */
+  if(both){r.opt=false;delete r.show;delete r.optWord;delete r.hint}else{r.opt=true;r.auto=true;r.show=true;r.optWord=tw.word;r.hint=tw.why}});tw.both=both}
 function parseGeneric(L){
-  var hdr="",hdrAt=0,prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
+  var twoWays=null,hdr="",hdrAt=0,prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
     var t=L[i].text,m;
     if(L[i].page!==page){page=L[i].page;last=null}
@@ -614,16 +616,16 @@ function parseGeneric(L){
     if(last&&last.page===page&&last.note.length<120&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
     prevText=t.length<90&&/[A-Za-z]{3}/.test(t)?t:"";
   }
-  /* The same material priced two ways (a summary by the ton and lot, and an itemized list by the pound and piece) must not be counted twice.
-     When the two sides agree within 1%, the itemized side is the bid and the summary is shown with its prices, out of the total.
-     When the itemized side is only part of the job, the summary is the bid and the itemized lines are shown, out of the total. */
+  /* The same material priced two ways: a summary (by the ton and lot lines) and an itemized list (by the pound and piece).
+     One side is counted once by default. A firm whose own past bids add both sections can have that as its house practice (HOUSE_TWO);
+     either way the page shows both totals and one tap switches. q.twoWays carries what is needed to switch. */
   (function(){var U=rows.filter(function(r){return r.tbl&&!r.opt}),A=rows.filter(function(r){return!r.tbl&&!r.opt});if(!U.length||!A.length)return;
-    var sum=function(a){return r2(a.reduce(function(x,r){return x+(r.ext||0)},0))},u=sum(U),a=sum(A),off=function(list,word,why){list.forEach(function(r){r.opt=true;r.auto=true;r.show=true;r.optWord=word;r.hint=why})};
-    if(u>0&&Math.abs(u-a)/u<=0.01){off(U,"SAME MATERIAL, PRICED BY THE TON","The supplier prices this job two ways. This summary line is the same material as the itemized lines, so it is shown with its price and kept out of the total.");
-      flags.push("The supplier prices this job two ways: a summary ("+money(u)+") and an itemized list ("+money(a)+"). They are the same material. The itemized list is the bid; the summary is shown and not added. Tick or untick Leave out to switch.")}
-    else if(a<u){off(A,"ALTERNATE PRICING","The supplier gives this as another way to price part of the same material. It is shown with its price and kept out of the total.");
-      flags.push("The supplier also gives alternate pricing for part of this job ("+money(a)+" of "+money(u)+"). The alternate lines are shown and not added to the total.")}
-    else flags.push("This quote has two pricing sections that do not agree ("+money(u)+" and "+money(a)+"). Both are in the total. Leave out the section you are not bidding.");
+    var sum=function(a){return r2(a.reduce(function(x,r){return x+(r.ext||0)},0))},u=sum(U),a=sum(A),agree=u>0&&Math.abs(u-a)/u<=0.01,
+        offSet=agree?U:A,word=agree?"SAME MATERIAL, PRICED BY THE TON":"ALTERNATE PRICING",
+        why=agree?"The supplier prices this job two ways. This summary line is the same material as the itemized lines, so it is shown with its price and kept out of the total.":"The supplier gives this as another way to price part of the same material. It is shown with its price and kept out of the total.",
+        both=typeof HOUSE_TWO==="function"&&HOUSE_TWO(L);
+    offSet.forEach(function(r){r.twoOff=true});twoWays={u:u,a:a,agree:agree,both:both,word:word,why:why};
+    applyTwo(rows,twoWays,both);
   })();
   rows.concat(priceOnly,qtyOnly).forEach(function(r){if(r.code)return;var cm=String(r.desc).match(/^((?:[A-Z]{0,2}\d{6,9}[A-Z]?)|Incidental)\s*[-–—:]\s*(\S.*)$/)||String(r.desc).match(/^([A-Z]{0,2}\d{7,9})\s+([A-Za-z#].*)$/);if(cm){r.code=cm[1];r.desc=cm[2]}});
   var mode="Any layout";
@@ -654,7 +656,7 @@ function parseGeneric(L){
     else if(gT!=null)printed=gT;
     else{printed=add(uniq);if(uniq.length>1)flags.push("The supplier prints "+uniq.length+" subtotals and no grand total. The printed total shown here is their sum.")}
   }
-  return{layout:mode,rows:rows,printed:printed,project:project,flags:flags};
+  return{layout:mode,rows:rows,printed:printed,project:project,flags:flags,twoWays:twoWays};
 }
 function calcExt(r){
   var p=r.price||0;
@@ -795,7 +797,7 @@ function fromLines(L,name,t0){
   if(!c){var ip=all.filter(function(x){return x.layout==="Item proposal"&&x.rows.length})[0];if(ip)c=ip} /* a written proposal's own items beat anything guessed from its sentences */
   if(!c)c=all.slice().sort(function(a,b){return b.rows.length-a.rows.length})[0];
   var MT=grabMeta(L);
-  var q={bidDate:MT.bidDate,addenda:MT.addenda,metaBy:MT.by,terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),pay:c.secs||{},name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
+  var q={bidDate:MT.bidDate,addenda:MT.addenda,metaBy:MT.by,terms:grabTerms(L),text:L.map(function(l){return l.text}).join(" ").toLowerCase().slice(0,20000),pay:c.secs||{},twoWays:c.twoWays||null,name:name,layout:c.rows.length?c.layout:"Not recognised",rows:c.rows,printed:c.printed,project:(c.project||name.replace(/\.[a-z0-9]+$/i,"")).replace(/\s*[-–—]\s*$/,""),flags:c.flags.slice(),secs:(performance.now()-t0)/1000,lines:L.length};
   if(L.length&&L.blank.length)q.flags.push("Page"+(L.blank.length>1?"s ":" ")+L.blank.join(", ")+" of this file "+(L.blank.length>1?"are scans":"is a scan")+" we could not read. Add those lines by hand.");
   if(L.ocr.length)q.flags.push("This was read from a picture"+(L.ocr.length>1||L.blank.length?" (page "+L.ocr.join(", ")+")":"")+". Picture reading can mistake a digit, so check each number against the original before you send.");
   if(!L.length)q.flags.push("We could not find any text in this file. Add the lines by hand below.");
@@ -885,6 +887,7 @@ function render(){
   $("flags").innerHTML=q.flags.map(function(f){return'<div class="flag"><b>Heads up.</b> '+esc(f)+"</div>"}).join("")+
     (q.rows.some(function(r){return!r.opt&&hasOwn(r)})?'<div class="flag"><b>Your own price.</b> '+q.rows.filter(function(r){return!r.opt&&hasOwn(r)}).length+" line(s) carry a price you typed. The markup is applied to every other line and not to "+(q.rows.filter(function(r){return!r.opt&&hasOwn(r)}).length>1?"those":"that one")+". Clear the box to go back to the markup.</div>":"")+
     ((function(){var vn=String(q.vendor||guessVendor(q)||"").trim();return vn.length>2&&String(q.project||"").toLowerCase().indexOf(vn.toLowerCase())>=0?'<div class="flag"><b>Check the project name.</b> It contains your supplier\'s name ('+esc(vn)+"). Change it in Step 3 so it does not print on your bid.</div>":""})())+
+    (q.twoWays?'<div class="flag"><b>This supplier prices the same steel two ways.</b> '+(q.twoWays.both?"Your total counts both sections: "+money(r2((q.twoWays.u+q.twoWays.a)*1))+" before markup.":"Your total counts it once.")+" The summary is "+money(q.twoWays.u)+" and the itemized list is "+money(q.twoWays.a)+". <button type=\"button\" class=\"lk\" id=\"twoSwitch\">"+(q.twoWays.both?"Count it once":"Add both sections")+"</button></div>":"")+
     (q.fixed?'<div class="flag"><b>Remembered.</b> '+q.fixed+" fix"+(q.fixed>1?"es":"")+" you made before on "+esc(q.vendor||guessVendor(q))+" quotes "+(q.fixed>1?"were":"was")+' applied to this one. The lines still add up. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
     (q.learned&&!q.fixed&&fN?'<div class="flag"><b>Saved.</b> The next '+esc(q.vendor||guessVendor(q))+' quote will be read this way on this computer. <button type="button" class="lk" id="fixForget">Forget my fixes for this supplier</button></div>':"")+
     (q.learned===false&&!fk?'<div class="flag"><b>Not saved for next time.</b> Type the supplier\'s name in Step 3 and this fix can be remembered for their next quote.</div>':"");
@@ -1080,7 +1083,8 @@ $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-
   if(d!=null){q.rows.splice(+d,1);render()}
   else if(th!=null){q.learned=fixLearn(q,"head",q.rows[+th]&&q.rows[+th].desc);toHead(q,+th);render()}
   else if(tl!=null){q.learned=fixLearn(q,"line",tl);toLine(q,tl);render()}});
-$("flags").addEventListener("click",function(e){if(e.target.id!=="fixForget")return;var q=quotes[cur];delete fixes[fixKey(q)];fixSave();q.fixed=0;q.learned=false;render()});
+$("flags").addEventListener("click",function(e){if(e.target.id==="twoSwitch"){var qq=quotes[cur];if(qq&&qq.twoWays){applyTwo(qq.rows,qq.twoWays,!qq.twoWays.both);render()}return}
+  if(e.target.id!=="fixForget")return;var q=quotes[cur];delete fixes[fixKey(q)];fixSave();q.fixed=0;q.learned=false;render()});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
 $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true,mine:true});render()});
 $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
@@ -1267,6 +1271,14 @@ $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-
 var FIRMS={};
 /*HOUSE-ONLY-START*/
 FIRMS.house={lh:"house-letterhead.jpg",ft:"house-footer.jpg",short:"WD3",name:"WD3 Associates"};
+/* From the estimator's own history (516 past bids matched to their quotes, 11/12/2026): on state of Illinois rebar quotes that price the
+   steel two ways, the bid total counts BOTH sections (20 of 35); on Wisconsin quotes it counts one section (15 of 23). */
+function HOUSE_TWO(L){return L.some(function(l){return/State of Illinois|\bIDOT\b/i.test(l.text)})}
+/* Her markup by size of the supplier's quote, the middle of what she actually used on 516 past bids. A starting point she can change:
+   within one point of her real markup 86% of the time, exactly 36%. */
+var HOUSE_TIERS=[{over:0,pct:8},{over:25000,pct:6.5},{over:100000,pct:5},{over:500000,pct:4.5}];
+if(!tiers.length)tiers=HOUSE_TIERS.map(function(t){return{over:t.over,pct:t.pct}}); /* her own saved table always wins */
+$("tierRows").insertAdjacentHTML("beforebegin",'<div class="sub" id="tierHist" style="font-size:13px;margin-bottom:6px">Filled in from your own history: the markup you used on 516 past bids, by size of the supplier\'s quote. It lands within one point of what you used 86% of the time. Change any row, or type a markup on a bid.</div>');
 /*HOUSE-ONLY-END*/
 var HOUSE=FIRMS[firmId]||{lh:"",ft:"",short:""};
 var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=LS.getItem("cb_img_"+k)||""}catch(e){}});
