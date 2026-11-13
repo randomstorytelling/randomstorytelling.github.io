@@ -279,7 +279,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 61, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 62, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -528,6 +528,7 @@ function parseItemProposal(L){
   if(rows.length)flags.push("This is a written proposal priced by item. Each item is one line. The scope lists (what the price includes and excludes) were copied into the notes: read them once.");
   return{layout:"Item proposal",rows:rows,printed:null,project:project,flags:flags};
 }
+function isTermsy(t){return/\b(increase[ds]?|escalat\w*|surcharge|pricing will|prices? will|effective|thereafter|firm (on|through)|per hour|unloading|after the date|backcharge|days? of)\b/i.test(t)||/^\(?\d{1,2}[.)]\)?\s/.test(t)||t.length>150}
 function parseGeneric(L){
   var hdr="",hdrAt=0,prevText="",rows=[],subs=[],grand=[],lumps=[],itemTotals=[],group="",page=0,flags=[],project="",priceOnly=[],qtyOnly=[],last=null,multi=false;
   for(var i=0;i<L.length;i++){
@@ -578,7 +579,8 @@ function parseGeneric(L){
       rows.push(last);continue;
     }
     /* quantity, unit, then a price per unit and no line total: "879,441 LB $69.0000 /CWT", "4 SETS $25.75 PER SET", "1,212 EA $20.00 EACH" */
-    if((m=t.match(/^(.*?)\s*([\d,]+(?:\.\d+)?)\s*(LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)\.?\s+\$\s*([\d,]+\.\d{2,4})\s*(?:\/|PER\s+|EACH\b)\s*(CWT|LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)?\.?\s*$/i))&&(m[1].trim()||prevText)){
+    /* also "78,603 LB $0.7650 LB": the unit simply repeated after the price, or nothing after it */
+    if(!isTermsy(t)&&!/^\s*(sub\s?)?total\b/i.test(t)&&(m=t.match(/^(.*?)\s*([\d,]+(?:\.\d+)?)\s*(LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)\.?\s+\$\s*([\d,]+\.\d{2,4})\s*(?:\/|PER\s+)?\s*(CWT|LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)?\.?\s*$/i))&&(m[1].trim()||prevText)){
       var uq=num(m[2]),up=num(m[4]),perCwt=/^CWT$/i.test(m[5]||"")&&/^LBS?$/i.test(m[3]),d0=m[1].trim(),cm=d0.match(/^([A-Z]{0,2}\d{3,9})\s+(\S.*)$/)||d0.match(/^([A-Z]{0,2}\d{6,9})()$/);
       if(cm)d0=cm[2];if(!d0)d0=prevText; /* the description sat on the line above */
       m[1]=d0;
