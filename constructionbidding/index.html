@@ -279,7 +279,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 57, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 58, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -534,6 +534,14 @@ function parseGeneric(L){
       last={opt:false,group:group,desc:d||"(no description read)",note:"",pcs:1,len:found.basis==="cwt"?null:found.q.v,wt:found.basis==="cwt"?found.q.v:null,price:found.p.v,basis:found.basis,ext:found.e.v,um:um,page:page};
       rows.push(last);continue;
     }
+    /* accessory tables: the quantity and its unit in words come first: "6,160 Pieces 4 1/2\" High Chair - Epoxy $1.00 Per Piece",
+       "11,240 Linear feet 1\" Slab Bolsters - Epoxy $0.70 Linear foot", with or without a line total at the end */
+    if(/^[A-Z][A-Z &/\-]{6,60}:$/.test(t)&&/\b(ACCESSOR|ONLY|DECK|SLAB|ABUTMENT|PIER|WALL|BARRIER|APPROACH|SUPERSTRUCTURE|SUBSTRUCTURE)/.test(t)){group=t.replace(/:$/,"");last=null;continue}
+    if(m=t.match(/^([\d,]+(?:\.\d+)?)\s+(Pieces?|Linear\s+f(?:ee|oo)t|Each|Sets?|Pounds?|Square\s+f(?:ee|oo)t|Tons?)\s+(\S.*?)\s+\$\s*([\d,]+\.\d{2,4})\s*(?:Per\s+)?(?:Pieces?|Linear\s+f(?:ee|oo)t|Each|Sets?|Pounds?|Square\s+f(?:ee|oo)t|Tons?)?\.?\s*(?:\$\s*([\d,]+\.\d{2}))?\s*$/i)){
+      var aq=num(m[1]),ap=num(m[4]),au=m[2].toLowerCase(),aum=/^piece/.test(au)?"PCS":/^linear/.test(au)?"LF":/^each/.test(au)?"EA":/^set/.test(au)?"SETS":/^pound/.test(au)?"LB":/^square/.test(au)?"SF":"TON",at=m[5]?num(m[5]):null;
+      last={opt:false,group:group,desc:m[3].trim(),note:"",pcs:1,len:aq,wt:null,price:ap,basis:"qty",ext:at!=null?at:r2(aq*ap),um:aum,page:page};if(at==null)last.auto=true;
+      rows.push(last);continue;
+    }
     /* quantity, unit, then a price per unit and no line total: "879,441 LB $69.0000 /CWT", "4 SETS $25.75 PER SET", "1,212 EA $20.00 EACH" */
     if((m=t.match(/^(.*?)\s*([\d,]+(?:\.\d+)?)\s*(LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)\.?\s+\$\s*([\d,]+\.\d{2,4})\s*(?:\/|PER\s+|EACH\b)\s*(CWT|LBS?|LF|EA|EACH|SF|SY|CY|TONS?|FT|GALS?|SETS?|PCS?)?\.?\s*$/i))&&(m[1].trim()||prevText)){
       var uq=num(m[2]),up=num(m[4]),perCwt=/^CWT$/i.test(m[5]||"")&&/^LBS?$/i.test(m[3]),d0=m[1].trim(),cm=d0.match(/^([A-Z]{0,2}\d{3,9})\s+(\S.*)$/)||d0.match(/^([A-Z]{0,2}\d{6,9})()$/);
@@ -545,8 +553,8 @@ function parseGeneric(L){
       rows.push(last);continue;
     }
     /* a lump sum written as a sentence: "Base Bid Approx. (942) tons of Rebar & Accessories for $1,383,420 plus applicable tax." */
-    if(m=t.match(/^((?:Base Bid|Alt(?:ernate)?\.?|Add(?:ition)?\b|Deduct(?:ion)?\b|Option\b)[^$]*?)\s+for\s+\$\s*([\d,]+(?:\.\d{2})?)\b/i)){
-      var lv=num(m[2]),alt=!/^Base Bid/i.test(m[1]);
+    if(m=t.match(/^((?:Base Bid|Alt(?:ernate)?\.?|Add(?:ition)?\b|Deduct(?:ion)?\b|Option\b|Approx\.?)[^$]*?)\s+for\s+\$\s*([\d,]+(?:\.\d{2})?)\b/i)){
+      var lv=num(m[2]),alt=!/^(Base Bid|Approx)/i.test(m[1]);if(/^Approx/i.test(m[1])&&/:$/.test(prevText))m[1]=prevText+" "+m[1]; /* the heading above says which part of the job */
       lumps.push({opt:alt,auto:alt,group:group,desc:m[1].trim(),note:"",hint:alt?"An alternate on the supplier's quote, so it is left out. Untick Leave out to include it"+(/deduct/i.test(m[1])?" (a deduct: type it as a minus amount).":"."):"",optWord:alt?"ALTERNATE":"",pcs:1,len:null,wt:null,price:lv,basis:"ls",ext:lv,page:page});last=null;continue}
     /* a sentence from the terms ("pricing will be firm through June 30th, 2026 add $60.00/ton") is not a priced line */
     var termsy=/\b(increase[ds]?|escalat\w*|surcharge|pricing will|prices? will|effective|thereafter|firm (on|through)|per hour|unloading|after the date|backcharge|days? of)\b/i.test(t)||/^\(?\d{1,2}[.)]\)?\s/.test(t)||t.length>150;
@@ -561,7 +569,7 @@ function parseGeneric(L){
       if(alts.length)multi=true;
       rows.push(last);continue;
     }
-    if((m=t.match(RE_P))&&num(m[2])>0&&!/increase|escalat|surcharge/i.test(t)){priceOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:null,price:num(m[2]),basis:"qty",ext:0,um:m[3]||"",auto:true,page:page});last=null;continue}
+    if((m=t.match(RE_P))&&num(m[2])>0&&!/increase|escalat|surcharge/i.test(t)&&!termsy&&!/\b(is|are|at|of|be|to|for)$/i.test(m[1].trim())){priceOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:null,price:num(m[2]),basis:"qty",ext:0,um:m[3]||"",auto:true,page:page});last=null;continue}
     if((m=t.match(RE_D))&&!/total/i.test(t)){qtyOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:num(m[2]),wt:null,price:0,basis:"qty",ext:0,um:m[3],auto:true,page:page});last=null;continue}
     if(last&&last.page===page&&last.note.length<120&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
     prevText=t.length<90&&/[A-Za-z]{3}/.test(t)?t:"";
@@ -637,7 +645,8 @@ function secInfo(q,B,g){
   return{heads:sc.heads,um:um,qty:qty,costRate:qty?(costC/100/qty):null,sellRate:qty&&B?(sellC/100/qty):null};
 }
 /* the unit price printed beside a line: display only, never used to compute a total */
-function unitTxt(r,pct){if(hasOwn(r))return r.basis==="cwt"?r4(+r.own/100).toFixed(4):plain(r2(+r.own),2);var m=1+(pct||0)/100;return r.basis==="cwt"?r4((r.price||0)/100*m).toFixed(4):plain(r2((r.price||0)*m),2)}
+function needs4(q,pct){var m=1+(pct||0)/100;return q.rows.some(function(r){if(r.opt||hasOwn(r)||r.basis==="cwt"||r.basis==="ls")return false;var v=(r.price||0)*m*100;return Math.abs(v-Math.round(v))>1e-6})}
+function unitTxt(r,pct,four){if(hasOwn(r))return r.basis==="cwt"?r4(+r.own/100).toFixed(4):plain(r2(+r.own),2);var m=1+(pct||0)/100;if(four&&r.basis!=="cwt"&&r.basis!=="ls")return plain(r4((r.price||0)*m),4);return r.basis==="cwt"?r4((r.price||0)/100*m).toFixed(4):plain(r2((r.price||0)*m),2)}
 async function parseBuffer(buf,name){return fromLines(await pdfLines(buf),name,performance.now())}
 function grabTerms(L){
   var out=[],on=false,n=0;
@@ -1253,7 +1262,7 @@ function unitLabel(r){return r.basis==="cwt"?"/lb":r.basis==="ft"?"/ft":r.basis=
 function buildPrint(){
   var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)},has=function(id){return $(id).value.trim()!==""};
   var RV=revFor(q,$("p_to").value.trim(),m);
-  var C=bidCols(q),TH=function(k){return C.show[k]?"<th>"+esc(colHead(k,C))+"</th>":""},TD=function(k,html,cls){return C.show[k]?"<td"+(cls?' class="'+cls+'"':"")+">"+html+"</td>":""};
+  var U4=needs4(q,m),C=bidCols(q),TH=function(k){return C.show[k]?"<th>"+esc(colHead(k,C))+"</th>":""},TD=function(k,html,cls){return C.show[k]?"<td"+(cls?' class="'+cls+'"':"")+">"+html+"</td>":""};
   var head=imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':'<div class="ph"><div>'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block">':"")+'</div><h1>PROPOSAL</h1></div>';
   var co=[has("c_contact")?"<b>"+v("c_contact")+"</b>":"",has("c_name")&&!imgs.lh?v("c_name"):"",v("c_phone"),v("c_email"),v("c_addr")].filter(Boolean).join("<br>");
   var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Valid until:",v("p_valid")],["Bid date:",v("p_bid")],["Addenda:",v("p_add")],["Revision:",RV.rev>1?"rev "+RV.rev:""],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
@@ -1269,9 +1278,9 @@ function buildPrint(){
       else if(g)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
     var c=qtyPair(qtyCells(r),C);
     if(r.opt){ /* shown as the supplier shows it: the words, the line, its unit price, no extended price, not in the total */
-      h+='<tr class="optrow">'+TD("code",esc(r.code||""),"c")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
+      h+='<tr class="optrow">'+TD("code",esc(r.code||""),"c")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
     tw+=byWt(r)?0:(r.wt||0);
-    h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
+    h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
   });
   h+='<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
     '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[noteMk?noteMoney(rtHtml($("v_terms").value),m,noteSkip[q.vendor||""]).html:rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
