@@ -279,7 +279,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 65, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 66, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -556,6 +556,9 @@ function parseGeneric(L){
     }
     if(found){
       var d=t.slice(0,found.q.at).replace(/[\s$]+$/,""),after=t.slice(found.q.at+found.q.raw.length),um=(after.match(new RegExp("^\\s*("+UOM+")\\b","i"))||[])[1]||"";
+      if(!d&&found.p.at>found.q.at){ /* "6,500.00 ea #6 x 24\" Straight Epoxy Coated Tie Bars $ 2.08 ea $ 13,520.00": the description sits between the unit and the price */
+        var uStart=found.q.at+found.q.raw.length,uM=t.slice(uStart).match(new RegExp("^\\s*(?:"+UOM+"|Linear\\s+f(?:ee|oo)t|Square\\s+f(?:ee|oo)t|Pieces?|Sets?|Pounds?)\\b\\.?","i"));if(uM)uStart+=uM[0].length;
+        var mid=t.slice(uStart,found.p.at).replace(/[\s$]+$/,"").trim();if(mid&&/[A-Za-z]/.test(mid))d=mid;if(!um&&uM){var uw=uM[0].trim().toLowerCase();um=/^linear/.test(uw)?"LF":/^square/.test(uw)?"SF":/^piece/.test(uw)?"PCS":/^set/.test(uw)?"SETS":/^pound/.test(uw)?"LB":""}}
       last={opt:false,group:group,desc:d||"(no description read)",note:"",pcs:1,len:found.basis==="cwt"?null:found.q.v,wt:found.basis==="cwt"?found.q.v:null,price:found.p.v,basis:found.basis,ext:found.e.v,um:um,page:page};
       rows.push(last);continue;
     }
