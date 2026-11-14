@@ -281,7 +281,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 67, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 68, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -545,6 +545,15 @@ function parseGeneric(L){
       if(/\btotal\s*(net\s*)?(weight|wt|lbs?|tons?|pieces|pcs|qty|quantity|feet|footage|length)\b|\b(weight|wt|lbs?|tons?|pieces|pcs|footage)\s*total\b/i.test(t)&&t.indexOf("$")<0){last=null;continue} /* "Total Weight 24,468.64" is pounds, not dollars */
       var tv0=num(m[1]);subs.push(tv0);if(!/sub\s?total/i.test(t))grand.push(tv0);last=null;continue}
     if(/^(notes?|terms|conditions|page \d)/i.test(t)){last=null;continue}
+    /* A mill's order form: "Order Qty  Description  Length  Weight  Price  UM  Extension".
+       "38 14 x 89 HR H Pile 109' 0" 368,638.00 $100.31 C $369,780.78 E" = 38 pieces, 109 ft, 368,638 lb, $100.31 per hundredweight.
+       "76 14" Pile Tip (PAR-T) 2,280.00 $150.00 E $11,400.00 E" = 76 pieces, 2,280 lb in all, $150.00 each. Pieces go under QTY, weight under WEIGHT. */
+    if(m=t.match(/^(\d{1,4})\s+(\S.*?)\s+(\d{1,3})'\s*(\d{1,2})"\s+([\d,]+\.\d{2})\s+\$\s*([\d,]+\.\d{2,4})\s+C\s+\$\s*([\d,]+\.\d{2})\s*[A-Z]?\s*$/)){
+      var mp=num(m[1]),ml=r2(num(m[3])+num(m[4])/12),mw=num(m[5]),mpr=num(m[6]),mex=num(m[7]);
+      if(near(r2(mw/100*mpr),mex)){last={opt:false,group:group,desc:m[2].trim(),note:"",pcs:mp,len:ml,wt:mw,price:mpr,basis:"cwt",ext:mex,page:page};rows.push(last);continue}}
+    if(m=t.match(/^(\d{1,4})\s+(\S.*?)\s+([\d,]+\.\d{2})\s+\$\s*([\d,]+\.\d{2,4})\s+E\s+\$\s*([\d,]+\.\d{2})\s*[A-Z]?\s*$/)){
+      var ep=num(m[1]),ew=num(m[3]),epr=num(m[4]),eex=num(m[5]);
+      if(near(r2(ep*epr),eex)){last={opt:false,group:group,desc:m[2].trim(),note:"",pcs:ep,len:null,wt:ew,price:epr,basis:"ea",ext:eex,page:page};rows.push(last);continue}}
     var tk=toks(t),found=null;
     if(tk.length>=3){
       for(var e=tk.length-1;e>=2&&!found;e--){
@@ -618,7 +627,7 @@ function parseGeneric(L){
     }
     if((m=t.match(RE_P))&&num(m[2])>0&&!/increase|escalat|surcharge/i.test(t)&&!termsy&&!/\b(is|are|at|of|be|to|for)$/i.test(m[1].trim())){priceOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:null,wt:null,price:num(m[2]),basis:"qty",ext:0,um:m[3]||"",auto:true,page:page});last=null;continue}
     if((m=t.match(RE_D))&&!/total/i.test(t)){qtyOnly.push({opt:false,group:group,desc:m[1],note:"",pcs:1,len:num(m[2]),wt:null,price:0,basis:"qty",ext:0,um:m[3],auto:true,page:page});last=null;continue}
-    if(last&&last.page===page&&last.note.length<120&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
+    if(last&&last.page===page&&last.note.length<400&&!/^\$?[\d,.\s$]+$/.test(t))last.note+=(last.note?" ":"")+t;
     prevText=t.length<90&&/[A-Za-z]{3}/.test(t)?t:"";
   }
   /* The same material priced two ways: a summary (by the ton and lot lines) and an itemized list (by the pound and piece).
@@ -632,6 +641,7 @@ function parseGeneric(L){
     offSet.forEach(function(r){r.twoOff=true});twoWays={u:u,a:a,agree:agree,both:both,word:word,why:why};
     applyTwo(rows,twoWays,both);
   })();
+  rows.forEach(function(r){if(r.group&&qnums[r.group])r.qn=true}); /* a supplier's quote number groups lines on screen and never prints */
   rows.concat(priceOnly,qtyOnly).forEach(function(r){if(r.code)return;var cm=String(r.desc).match(/^((?:[A-Z]{0,2}\d{6,9}[A-Z]?)|Incidental)\s*[-–—:]\s*(\S.*)$/)||String(r.desc).match(/^([A-Z]{0,2}\d{7,9})\s+([A-Za-z#].*)$/);if(cm){r.code=cm[1];r.desc=cm[2]}});
   var mode="Any layout";
   if(itemTotals.length>=2){
@@ -889,7 +899,9 @@ function render(){
   /* Green = the lines add up to a printed total. Anything else says what to look at, by the money at risk. */
   var lookAt="";
   if(q.rows.length){var live=q.rows.map(function(r,i){return{r:r,i:i}}).filter(function(x){return!x.r.opt&&!x.r.mine});
-    if(q.nQuotes>1)lookAt+='<div class="flag"><b>This file holds '+q.nQuotes+' separate quotes.</b> A bid is usually one of them. Tick Leave out on the lines for the others, or use Split into '+q.nQuotes+' bids in the bid day table.</div>';
+    var itemG=groupsOf(q).filter(function(g){return/^Item\s*#?\s*\d+/i.test(g)}).length;
+    if(itemG>1&&!Object.keys(q.pay||{}).length)lookAt+='<div class="flag"><b>This file holds '+itemG+' bid items.</b> You bid each item on its own, with its own markup. <button type="button" class="lk" id="splitHere">Make one bid per item</button></div>';
+    else if(q.nQuotes>1)lookAt+='<div class="flag"><b>This file holds '+q.nQuotes+' separate quotes.</b> A bid is usually one of them. Tick Leave out on the lines for the others, or use Split into '+q.nQuotes+' bids in the bid day table.</div>';
     if(T.match!==true&&live.length){var top=live.slice().sort(function(a,b){return(b.r.ext||0)-(a.r.ext||0)}).slice(0,3);
       lookAt+='<div class="flag"><b>'+(T.match===false?"Check these against the PDF first":"Nothing on this quote adds to a printed total, so check the biggest lines against the PDF")+':</b> '+top.map(function(x){return esc(String(x.r.desc).slice(0,48))+" ("+money(x.r.ext||0)+")"}).join(" · ")+"</div>"}}
   $("verdict").innerHTML=v+lookAt;
@@ -913,7 +925,7 @@ function render(){
     var inp=function(k,cls,v){return'<input class="'+cls+'" data-i="'+i+'" data-k="'+k+'" value="'+esc(v==null?"":v)+'"'+(cls==="n"?' inputmode="decimal"':"")+">"};
     var needQty=r.auto&&r.len==null&&r.basis==="qty";
     h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
-      "<td>"+inp("desc","d",r.desc)+(r.note?'<div class="note">'+esc(r.note)+"</div>":"")+(r.hint&&r.opt?'<div class="note">'+esc(r.hint)+"</div>":"")+
+      "<td>"+inp("desc","d",r.desc)+(r.note?'<input class="d" data-i="'+i+'" data-k="note" value="'+esc(r.note)+'" aria-label="Notes printed under this line" style="font-size:12px;margin-top:3px">':"")+(r.hint&&r.opt?'<div class="note">'+esc(r.hint)+"</div>":"")+
       (r.opt?'<label style="display:flex;gap:6px;align-items:center;font-weight:700;font-size:13px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="show"'+(r.show?" checked":"")+' style="min-width:0;width:18px;height:18px"> Show on the bid as '+esc(r.optWord||"OPTIONAL")+", priced, not in the total</label>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button>'+
       ' <span style="font-size:11px;opacity:.7;white-space:nowrap"> · <button type="button" class="lk" style="font-size:11px;font-weight:400" data-up="'+i+'" title="Move this line up">▲ up</button> <button type="button" class="lk" style="font-size:11px;font-weight:400" data-down="'+i+'" title="Move this line down">▼ down</button> · <button type="button" class="lk" style="font-size:11px;font-weight:400" data-below="'+i+'" title="Add a new line right under this one">＋ line below</button></span></td>'+
       (needQty||(r.auto&&r.basis==="qty")?'<td>'+inp("len","n",r.len)+"</td>":'<td class="num ro">'+esc(qtyText(r))+"</td>")+
@@ -1049,7 +1061,7 @@ function softTotals(){ /* update numbers without rebuilding inputs while typing 
 $("tbl").addEventListener("change",function(e){
   var t=e.target,i=t.getAttribute("data-i"),k=t.getAttribute("data-k");if(i==null)return;
   var r=quotes[cur].rows[+i];
-  if(k==="opt")r.opt=t.checked;else if(k==="show")r.show=t.checked;else if(k==="desc"||k==="basis")r[k]=t.value;
+  if(k==="opt")r.opt=t.checked;else if(k==="show")r.show=t.checked;else if(k==="desc"||k==="basis"||k==="note")r[k]=t.value;
   else if(k==="own"){var ov=t.value.replace(/[$,\s]/g,"");r.own=ov===""||!isFinite(+ov)||+ov<0?null:+ov}
   else r[k]=num(t.value);
   if(r.auto&&k!=="ext"&&k!=="opt"&&k!=="desc"&&k!=="own")r.ext=calcExt(r);
@@ -1377,7 +1389,7 @@ function buildPrint(){
     if((r.group||"")!==g){g=r.group||"";var SI=secInfo(q,B,g);
       if(SI)SI.heads.forEach(function(hd,k){var lastH=k===SI.heads.length-1,sp=qtyPair(["",plain(hd.qty,2)+" "+hd.um],C);
         h+='<tr class="sec">'+TD("code",esc(hd.code),"c")+'<td class="d"><b>'+esc(hd.desc)+"</b></td>"+TD("qty",esc(sp[0]),"c")+TD("lgth",esc(sp[1]),"c")+TD("wgt","","")+'<td class="num">'+(lastH&&SI.sellRate!=null?"$ "+SI.sellRate.toFixed(4)+'<span class="u">/'+esc(String(SI.um).toLowerCase())+"</span>":"")+"</td><td></td></tr>"});
-      else if(g)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
+      else if(g&&!r.qn)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
     var c=qtyPair(qtyCells(r),C);
     if(r.opt){ /* shown as the supplier shows it: the words, the line, its unit price, no extended price, not in the total */
       h+='<tr class="optrow">'+TD("code",esc(r.code||""),"c")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+(r.note?'<div class="n">'+esc(r.note)+"</div>":"")+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
@@ -1545,6 +1557,7 @@ $("byHand").value=byHand;
 $("byHand").addEventListener("input",function(){byHand=this.value;try{LS.setItem("cb_byhand",byHand)}catch(e){}renderTime()});
 renderTime();
 $("sentClear").addEventListener("click",function(){if(confirm("Clear the whole checklist? The revision history of each bid is kept. This cannot be undone.")){sent=[];try{LS.removeItem("cb_sent")}catch(e){}renderSent()}});
+$("verdict").addEventListener("click",function(e){if(e.target.id==="splitHere"&&quotes.length)splitQuote(cur)});
 $("doprint").addEventListener("click",function(){if(needMarkup()||moneyStop(parseFloat($("mk").value)))return;
   var qc=quotes[cur],Tc=totals(qc,0);
   if(Tc.match===false&&!qc.checked&&!confirm("The lines on this quote do not add up to the supplier's printed total (off by "+money(Math.abs(Tc.diff))+").\n\nPress OK only if you have checked the lines against the PDF and the bid is right."))return;
