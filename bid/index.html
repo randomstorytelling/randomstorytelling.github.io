@@ -281,7 +281,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 69, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 70, November 12, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -821,9 +821,9 @@ function fromLines(L,name,t0){
   if(q.rows.some(function(r){return r.opt&&!r.auto}))q.flags.push("The supplier marked "+q.rows.filter(function(r){return r.opt&&!r.auto}).length+" line(s) Optional. They are left out of the total. Tick or untick to choose what you quote.");
   if(L.cand){if(L.cand.vendor)q.vendor=L.cand.vendor;if(L.cand.bidDate)q.bidDate=L.cand.bidDate;q.byAI=true}
   /* a file is usually named after its supplier; when the project name had to come from the file name, the supplier's name is taken off the front */
+  if(!c.project){var gv0=guessVendor(q);if(gv0){var pj=q.project.replace(new RegExp("^\\s*"+gv0.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+(?:Steel|Metals|Rebar|Paving))?\\b[\\s\\-–—:,]*","i"),"").trim();if(pj)q.project=pj}}
   if(!c.project){ /* a project name taken from the file name: take off the supplier's quote number and an estimator_date tag */
     var pj0=q.project.replace(/^\s*(?:Q-?)?\d{6,}\s*[-–_ ]+\s*/,"").replace(/\b[A-Za-z]+_\d{1,2}\.\d{1,2}\.\d{2,4}\b\s*/,"").trim();if(pj0)q.project=pj0}
-  if(!c.project){var gv0=guessVendor(q);if(gv0){var pj=q.project.replace(new RegExp("^\\s*"+gv0.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"(?:\\s+(?:Steel|Metals|Rebar|Paving))?\\b[\\s\\-–—:,]*","i"),"").trim();if(pj)q.project=pj}}
   fixApply(q);
   return q;
 }
