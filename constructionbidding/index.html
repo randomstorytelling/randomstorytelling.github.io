@@ -1043,12 +1043,12 @@ $("day").addEventListener("click",function(e){
     if(stopped){cur=keep;render();return} /* nothing prints and nothing is logged unless every bid reconciles */
     if(t.id==="dayPrint"){
       var html="";pages.forEach(function(pg,k){cur=pg.i;render();logSent($("p_to").value.trim());html+='<div style="'+(k?"page-break-before:always":"")+'">'+pg.html+"</div>"});
-      cur=keep;render();$("print").innerHTML=html;printTitle=(HOUSE.short||"Bids")+" - "+pages.length+" bids - "+new Date().toLocaleDateString("en-US").replace(/\//g,"-");window.print();printTitle=null;return;
+      cur=keep;render();$("print").innerHTML=html;fitPages();printTitle=(HOUSE.short||"Bids")+" - "+pages.length+" bids - "+new Date().toLocaleDateString("en-US").replace(/\//g,"-");window.print();printTitle=null;return;
     }
     /* one save box per bid, one after another */
     var k=0;(function next(){
       if(k>=pages.length){cur=keep;render();printTitle=null;return}
-      var pg=pages[k++];cur=pg.i;render();logSent($("p_to").value.trim());$("print").innerHTML=pg.html;printTitle=pg.title;
+      var pg=pages[k++];cur=pg.i;render();logSent($("p_to").value.trim());$("print").innerHTML=pg.html;fitPages();printTitle=pg.title;
       var done=false,go=function(){if(done)return;done=true;window.removeEventListener("afterprint",go);setTimeout(next,350)};
       window.addEventListener("afterprint",go);window.print();setTimeout(go,1500); /* in browsers where print() waits for the box, this runs after it closes */
     })();
@@ -1323,7 +1323,8 @@ $("tierRows").insertAdjacentHTML("beforebegin",'<div class="sub" id="tierHist" s
 var HOUSE=FIRMS[firmId]||{lh:"",ft:"",short:""};
 var own={lh:"",ft:""};["lh","ft"].forEach(function(k){try{own[k]=LS.getItem("cb_img_"+k)||""}catch(e){}});
 var imgs={};function useImgs(){["lh","ft"].forEach(function(k){imgs[k]=own[k]||HOUSE[k]||""});
-  document.documentElement.style.setProperty("--foot",imgs.ft?"25mm":"12mm")}useImgs();
+  document.documentElement.style.setProperty("--foot",imgs.ft?"25mm":"12mm");
+  ["lh","ft"].forEach(function(k){var u=imgs[k];if(u&&!imgR[u]){var im=new Image();im.onload=function(){if(im.naturalWidth)imgR[u]=im.naturalHeight/im.naturalWidth};im.src=u}})}var imgR={};useImgs();
 ["lh","ft"].forEach(function(k){if(HOUSE[k]){var pre=new Image();pre.src=HOUSE[k]}}); /* loaded before anyone prints */
 function showImg(k){$("c_"+k+"_prev").innerHTML=own[k]?'<img src="'+own[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"> <button class="btn ghost sm" data-imgx="'+k+'" type="button">Remove mine</button>':HOUSE[k]?'<img src="'+HOUSE[k]+'" alt="" style="max-height:70px;max-width:100%;border:1px solid var(--rule)"><div class="sub" style="font-size:13px">Already built in. Nothing to do. Choose a file only to replace it.</div>':""}
 /* a new company: say what to do once, and open the company details until they are filled in */
@@ -1416,8 +1417,22 @@ function buildPrint(){
   h+='<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>"+
     '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[noteMk?noteMoney(rtHtml($("v_terms").value),m,noteSkip[q.vendor||""]).html:rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<div class="keep"><p style="margin-top:11px">Please confirm acceptance of this quote:</p><div class="sig"><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
-  $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+(sigRoom==="big"?" sigbig":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";
+  $("print").innerHTML='<table class="pg'+(layout==="two"?" lay2":"")+(sigRoom==="big"?" sigbig":"")+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+h+"</td></tr></tbody></table>";fitPages();
 }
+/* The footer belongs at the bottom of the LAST page too. The frame is one page tall; when a bid runs to more pages the browser puts the footer right under the
+   last of the content. So: lay the bid out once in a hidden copy at the printed width, count the pages, and make the frame exactly that many pages tall. */
+function fitPages(){
+  var host=$("print"),ts=host.querySelectorAll("table.pg");if(!ts.length)return;
+  var st=document.querySelector("style").textContent,a=st.indexOf("@media print{");if(a<0)return;
+  var d=0,e=-1;for(var i=st.indexOf("{",a);i<st.length;i++){if(st[i]==="{")d++;else if(st[i]==="}"){d--;if(d===0){e=i;break}}}if(e<0)return;
+  var css="@media all{"+st.slice(a+"@media print{".length,e)+"}",f=document.createElement("iframe");
+  f.style.cssText="position:absolute;left:-9999px;top:0;width:816px;height:1200px;border:0;visibility:hidden";document.body.appendChild(f);
+  try{var dd=f.contentDocument;dd.open();dd.write("<!doctype html><html><head><style>*{box-sizing:border-box}body{margin:0}"+css+"</style></head><body><div id=\"print\">"+host.innerHTML.replace(/<img([^>]*?)\ssrc="([^"]*)"/g,function(m,r,u){return'<img'+r+' data-s="'+u+'" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="'})+"</div></body></html>");dd.close();
+    var M=dd.querySelectorAll("table.pg"),PG=277/25.4*96,FULL=279.4,res=[];
+    M.forEach(function(t){t.style.height="auto";t.querySelectorAll("img").forEach(function(im){var r=imgR[im.getAttribute("data-s")];if(r)im.style.height=(im.clientWidth*r)+"px";else res.push(0)})});
+    M.forEach(function(t,k){var th=t.tHead?t.tHead.offsetHeight:0,tf=t.tFoot?t.tFoot.offsetHeight:0,bh=t.offsetHeight-th-tf,room=PG-th-tf;
+      if(res.indexOf(0)>=0||room<=50)return;var n=Math.max(1,Math.ceil(bh/(room*1.03))); /* the hidden copy runs a little taller than the real page; err small, because one page too few only leaves the footer where it is today, while one too many adds an empty page */ts[k].style.height=(n*FULL-2.4-(n>1?2*(n-1)+1:0)-(n-1)*(th+tf)*25.4/96)+"mm" /* each further page repeats the top and bottom rows, which the table height counts once */})
+  }catch(x){}finally{document.body.removeChild(f)}}
 var layout="one";try{layout=LS.getItem("cb_layout")||"one"}catch(e){}
 var sigRoom="std";try{sigRoom=LS.getItem("cb_sig")||"std"}catch(e){}
 function showSig(){document.querySelectorAll("#sigsp button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-sig")===sigRoom)})}
@@ -1606,7 +1621,7 @@ $("hold").addEventListener("click",function(e){
   var stop=false;holders.list.forEach(function(h){if(stop||!(h.gc&&h.on))return;var hm=hMk(h);stop=moneyStop(hm==null?parseFloat($("mk").value):hm)});if(stop)return;
   var picks=holders.list.filter(function(h){return h.gc&&h.on}),keepTo=$("p_to").value,keepMk=$("mk").value,html="";
   picks.forEach(function(h,i){var m=hMk(h);$("mk").value=m==null?keepMk:m;$("p_to").value=h.company+(h.contact?", attn. "+h.contact:"");buildPrint();logSent(h.company);html+='<div style="'+(i?"page-break-before:always":"")+'">'+$("print").innerHTML+"</div>"});
-  $("p_to").value=keepTo;$("mk").value=keepMk;if(!picks.length)return;$("print").innerHTML=html;window.print();
+  $("p_to").value=keepTo;$("mk").value=keepMk;if(!picks.length)return;$("print").innerHTML=html;fitPages();window.print();
 });
 renderHolders();
 $("csv").addEventListener("click",function(){
