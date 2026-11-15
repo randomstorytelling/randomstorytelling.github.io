@@ -221,7 +221,7 @@
       <div class="f"><label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="nmk" style="min-width:0;width:20px;height:20px"> Add this bid's markup to the dollar amounts inside these notes</label>
         <div class="sub" style="font-size:13px;margin-top:4px">The box below keeps the supplier's own figures. The printed bid shows each one with the markup. Tick "leave as is" beside any amount you price your own way.</div>
         <div id="nmkPrev" style="margin-top:6px;font-size:14px"></div></div>
-      <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="v_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button><span class="sub" style="font-size:13px">Select words, then tap Bold.</span></div><div id="v_terms" class="rt" contenteditable="true" data-ph="Paste the terms you put at the bottom of bids that use this supplier"></div><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div></div>
+      <div class="f"><label for="v_terms">Terms and conditions for this supplier (typed once, remembered for next time)</label><div class="rtbar"><button type="button" class="btn ghost sm" data-bold="v_terms" title="Bold (or press Ctrl+B / ⌘B)"><b>B</b> Bold</button><span class="sub" style="font-size:13px">Select words, then tap Bold.</span></div><div id="v_terms" class="rt" contenteditable="true" data-ph="Paste the terms you put at the bottom of bids that use this supplier"></div><div class="sub" id="v_note" style="font-size:13px;margin-top:4px"></div><div id="v_swap" style="margin-top:6px"></div></div>
     </div>
     <details id="co"><summary>Your company details (typed once, remembered on this computer)</summary>
     <div class="row" style="margin-top:12px">
@@ -1290,6 +1290,10 @@ function vShow0(){
   var saved=vterms[q.vendor]||"",fromQuote=!saved&&q.terms&&!q.termsOff;
   var sc=fromQuote?scrubTerms(q.terms,q.vendor):null;
   if(document.activeElement!==$("v_terms"))$("v_terms").value=saved||(sc?sc.text:"");
+  /* her saved notes for a supplier always win; when this quote reads differently, offer the quote's own reading in one tap, never replace hers silently */
+  var fresh=saved&&q.terms&&!q.termsOff?scrubTerms(q.terms,q.vendor).text:"";
+  $("v_swap").innerHTML=fresh&&fresh.trim()!==saved.trim()?'<button type="button" class="btn ghost sm" id="v_use">Use the notes read from this quote instead</button> <span class="sub" style="font-size:13px">Replaces the notes saved for '+esc(q.vendor)+'. Your saved ones stay until you tap.</span>':"";
+  if($("v_use"))$("v_use").onclick=function(){vterms[q.vendor]=fresh;vSave();vShow();notePrev()};
   $("v_note").textContent=saved?"Your saved terms for "+q.vendor+" were filled in.":fromQuote?"These conditions were copied from the supplier's own quote"+(sc&&sc.hit?", with the supplier's name changed sentence by sentence (see the list above the box)":"")+(sc&&sc.tc?" and "+sc.tc+" reference"+(sc.tc>1?"s":"")+" to the supplier's own terms and conditions taken out":"")+". Read them once before you send, change what you need, and they are saved for "+(q.vendor||"this supplier (type the name above)")+" from now on.":!q.vendor?"Name the supplier and paste your terms once. Next time a quote from them is added, the terms fill in by themselves.":"No saved terms for "+q.vendor+" yet. Paste them here once.";
 }
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
