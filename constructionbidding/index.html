@@ -21,6 +21,7 @@
   .drop.over{background:var(--ink);color:var(--paper)}
   .drop small{display:block;color:var(--mute);font-weight:400;margin-top:6px}
   .drop.over small{color:#ccc}
+  .bidnav{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px;padding:10px 12px;border:1px solid var(--ink);border-radius:12px;background:#fff} .bidnav:empty{display:none} .bidnav select{font:inherit;min-width:0;flex:1 1 200px;padding:8px;border:1px solid var(--ink);border-radius:10px} .bidnav b{font-size:14px}
   .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
   .tab{border:1px solid var(--ink);background:none;padding:7px 10px;font:inherit;font-size:13px;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .tab.on{background:var(--ink);color:var(--paper)}
@@ -161,6 +162,7 @@
     <div id="day"></div>
     <h2>Step 2. Check the numbers<small>We read every line and added it up for you.</small></h2>
     <div class="tabs" id="tabs"></div>
+    <div class="bidnav"></div>
     <div id="verdict"></div>
     <div class="facts" id="stats"></div>
     <div id="flags"></div>
@@ -187,6 +189,7 @@
       <div class="sub" id="tierState" style="font-size:14px;margin-top:6px"></div>
     </details>
 
+    <div class="bidnav"></div>
     <h2>Step 4. Print your bid</h2>
     <div class="row">
       <div class="f"><label for="p_project">Project</label><input id="p_project"></div>
@@ -898,6 +901,9 @@ function render(){
   if(!quotes.length){$("work").classList.add("hide");return}
   $("work").classList.remove("hide");
   var q=quotes[cur];applyTier(q);
+  /* every bid in the file is reachable from where she is working: Step 2 and Step 4 both carry the same switcher */
+  var nav=quotes.length<2?"":'<b>Bid '+(cur+1)+" of "+quotes.length+'</b><button type="button" class="btn ghost sm" data-nav="'+(cur-1)+'"'+(cur<1?" disabled":"")+'>◀ Previous</button><select data-navsel aria-label="Choose which bid to work on">'+quotes.map(function(x,i){return'<option value="'+i+'"'+(i===cur?" selected":"")+">"+(i+1)+". "+esc(x.name)+(x.skip?" (not in the day's bids)":"")+"</option>"}).join("")+'</select><button type="button" class="btn ghost sm" data-nav="'+(cur+1)+'"'+(cur>=quotes.length-1?" disabled":"")+">Next ▶</button>";
+  document.querySelectorAll(".bidnav").forEach(function(el){el.innerHTML=nav});
   if(document.activeElement!==$("mk"))$("mk").value=q.mk==null?"":q.mk;
   var T=totals(q,pctNow()),nOpt=q.rows.filter(function(r){return r.opt}).length,noMk=String(q.mk||"").trim()==="";
   $("mkask").innerHTML=noMk?'<div class="ask need">Stop here. What markup goes on this bid?<small>Supplier\'s price is '+money(T.cost)+'. Type the percent below, or tap one. Nothing prints until you do.</small></div>':q.mkFrom==="table"?'<div class="ask tbl">From your markup table: '+esc(String(q.mk))+'%<small>Supplier\'s price is '+money(T.cost)+", which is in your \""+money(q.mkTier.over||0)+' and up" row. Change it below if this job is different.</small></div>':"";
@@ -1120,6 +1126,8 @@ $("tbl").addEventListener("click",function(e){var d=e.target.getAttribute("data-
   else if(tl!=null){q.learned=fixLearn(q,"line",tl);toLine(q,tl);render()}});
 $("flags").addEventListener("click",function(e){if(e.target.id==="twoSwitch"){var qq=quotes[cur];if(qq&&qq.twoWays){applyTwo(qq.rows,qq.twoWays,!qq.twoWays.both);render()}return}
   if(e.target.id!=="fixForget")return;var q=quotes[cur];delete fixes[fixKey(q)];fixSave();q.fixed=0;q.learned=false;render()});
+$("work").addEventListener("click",function(e){var b=e.target.closest("[data-nav]");if(!b||b.disabled)return;var i=+b.getAttribute("data-nav");if(quotes[i]){cur=i;render()}});
+$("work").addEventListener("change",function(e){if(e.target.hasAttribute("data-navsel")){cur=+e.target.value;render()}});
 $("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(b){cur=+b.getAttribute("data-i");render()}});
 $("add").addEventListener("click",function(){var q=quotes[cur],l=q.rows[q.rows.length-1];q.rows.push({opt:false,group:l?l.group:"",desc:"",note:"",pcs:1,len:null,wt:null,price:0,basis:"ea",ext:0,auto:true,mine:true});render()});
 $("mk").addEventListener("input",function(){if(quotes.length){quotes[cur].mk=this.value;quotes[cur].mkFrom=this.value.trim()===""?"":"you"}render()});
