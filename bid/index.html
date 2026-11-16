@@ -988,7 +988,7 @@ function totals(q,pct){
   var off=0,n=0,B=priceBid(q,pct),cost=B.costC/100,mineC=0,mineN=0;
   q.rows.forEach(function(r){if(Math.abs(calcExt(r)-(r.ext||0))>=0.005)off++;if(!r.opt){n++;if(r.mine){mineN++;mineC+=cents(r.ext)}}});
   var supC=B.costC-mineC; /* the supplier's own lines: only these are held against the supplier's printed total */
-  return{cost:cost,sell:B.sellC/100,off:off,n:n,mineN:mineN,mine:mineC/100,sup:supC/100,match:q.printed==null?null:Math.abs(cents(q.printed)-supC)<=(function(){var n=q.rows.filter(function(r){return!r.opt}).length;return n>=5?Math.min(3,Math.ceil(n/8)):0})(),diff:q.printed==null?null:(supC-cents(q.printed))/100};
+  return{cost:cost,sell:B.sellC/100,off:off,n:n,mineN:mineN,mine:mineC/100,sup:supC/100,match:q.printed==null?null:cents(q.printed)===supC,diff:q.printed==null?null:(supC-cents(q.printed))/100};
 }
 
 /* ---------- screen ---------- */
@@ -1072,7 +1072,7 @@ function render(){
   if(q.rows.length){var live=q.rows.map(function(r,i){return{r:r,i:i}}).filter(function(x){return!x.r.opt&&!x.r.mine});
     var itemG=groupsOf(q).filter(function(g){return/^Item\s*#?\s*\d+/i.test(g)}).length;
     if(itemG>1&&!Object.keys(q.pay||{}).length)lookAt+='<div class="flag"><b>This file holds '+itemG+' bid items.</b> You bid each item on its own, with its own markup. <button type="button" class="lk" id="splitHere">Make one bid per item</button></div>';
-    else if(groupsOf(q).filter(function(g){return!/^Other lines/i.test(g)}).length>1&&!q.sec)lookAt+='<div class="flag"><b>'+(q.groupNote?esc(q.groupNote.replace(/\.$/,"")):"This file holds "+groupsOf(q).length+" separate parts")+'</b> (calls or buildings), each with its own total. You bid each one on its own: use <b>Split into '+groupsOf(q).length+' bids</b> in the bid day table so each bid carries only its own lines and total.</div>';
+    else if(q.nQuotes<=1&&groupsOf(q).filter(function(g){return!/^Other lines/i.test(g)}).length>1&&!q.sec)lookAt+='<div class="flag"><b>'+(q.groupNote?esc(q.groupNote.replace(/\.$/,"")):"This file holds "+groupsOf(q).length+" separate parts")+'</b> (calls or buildings), each with its own total. You bid each one on its own: use <b>Split into '+groupsOf(q).length+' bids</b> in the bid day table so each bid carries only its own lines and total.</div>';
     else if(q.nQuotes>1)lookAt+='<div class="flag"><b>This file holds '+q.nQuotes+' separate quotes.</b> A bid is usually one of them. Tick Leave out on the lines for the others, or use Split into '+q.nQuotes+' bids in the bid day table.</div>';
     if(T.match!==true&&live.length){var top=live.slice().sort(function(a,b){return(b.r.ext||0)-(a.r.ext||0)}).slice(0,3);
       lookAt+='<div class="flag"><b>'+(T.match===false?"Check these against the PDF first":"Nothing on this quote adds to a printed total, so check the biggest lines against the PDF")+':</b> '+top.map(function(x){return esc(String(x.r.desc).slice(0,48))+" ("+money(x.r.ext||0)+")"}).join(" · ")+"</div>"}}
