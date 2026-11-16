@@ -5244,6 +5244,24 @@ URL:https://calendar.austinchronicle.com/austin/EventSearch?eventSection=1
  2198199&sortType=date&v=g
 END:VEVENT
 BEGIN:VEVENT
+SUMMARY:Raise the Red Lantern (Newly Restored)\, AFS Cinema
+DTSTART;VALUE=DATE:20261117
+DTEND;VALUE=DATE:20261120
+DTSTAMP:20261116T150720Z
+UID:raise-the-red-lantern-afs-cinema-2026-11-17@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:Time and price not listed.\nZhang Yimou's 1991 drama starring 
+ Gong Li\, newly restored. Price not on the page.\nSource: Austin Chronicle
+  film calendar\, read 2026-11-16 (run spans Nov 13-15 and 17-19\; only rem
+ aining dates kept)\nhttps://www.austinfilm.org/screening/raise-the-red-lan
+ tern
+LAST-MODIFIED:20261116T150720Z
+LOCATION:AFS Cinema\, 6406 N. I-35 Ste. 3100\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://www.austinfilm.org/screening/raise-the-red-lantern
+END:VEVENT
+BEGIN:VEVENT
 SUMMARY:Zach Theater: Acting 1 Foundations (November session\, Tuesday Dow
  ntown)
 DTSTART;VALUE=DATE:20261117
@@ -5336,6 +5354,27 @@ DESCRIPTION:$15 General Cost.\nBeginner fundamentals for Austin Public's A
 LAST-MODIFIED:20261109T151153Z
 LOCATION:Austin Public Audio Suite\, 1143 Northwestern Ave\, Austin\, TX
 URL:https://www.austinfilm.org/event/audio-suite-lab-nov18/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:Urgh! A Music War\, with the Professors of Urgh
+DTSTART;VALUE=DATE:20261119
+DTEND;VALUE=DATE:20261120
+DTSTAMP:20261116T150720Z
+UID:urgh-a-music-war-with-the-professors-of-urgh-2026-11-19@randomstorytel
+ ling.com
+SEQUENCE:0
+CATEGORIES:screening
+DESCRIPTION:Time and price not listed.\n1981 New Wave concert documentary 
+ (X\, the Police\, Devo\, Pere Ubu\, OMD\, the Go-Go's). X guitarist John D
+ oe joins Chaki and Chris Slusarenko (the Professors of Urgh) for a post-fi
+ lm discussion. Price not on the page.\nSource: Austin Chronicle film calen
+ dar\, read 2026-11-16\nhttps://www.austinfilm.org/screening/urgh-a-music-w
+ ar-with-the-professors-of-urgh
+LAST-MODIFIED:20261116T150720Z
+LOCATION:AFS Cinema\, 6406 N. I-35 Ste. 3100\, Austin\, TX
+TRANSP:TRANSPARENT
+URL:https://www.austinfilm.org/screening/urgh-a-music-war-with-the-profess
+ ors-of-urgh
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:AFS: Intermediate Field Audio Production Techniques
