@@ -4872,7 +4872,12 @@ function priceBid(q,pct){
   var left=poolSellC-sum,order=idx.slice().sort(function(a,b){return b.rem-a.rem||b.c-a.c||a.i-b.i});
   for(var k=0;k<order.length&&left>0;k++,left--)order[k].fl+=1;
   idx.forEach(function(o){lines[o.i]={extC:o.fl}});
-  return{pct:pct||0,costC:costC,poolC:poolC,ownC:ownC,sellC:poolSellC+ownC,lines:lines};
+  /* a left-out line (optional, alternate) still has an amount of its own: its cost at the same markup, rounded half up on that line alone, or quantity x her own price.
+     It is kept apart from lines and is never part of costC, poolC or sellC. A line with no amount to show (price only, no price, zero, a credit) has no entry. */
+  var opt={};
+  q.rows.forEach(function(r,i){if(!r.opt||r.priceOnly||r.noPrice||r.qtyOnly)return;var c=cents(r.ext);if(!(c>0))return;
+    opt[i]={extC:hasOwn(r)?ownCents(r):Math.round(num(c)/1000000),own:hasOwn(r)}});
+  return{pct:pct||0,costC:costC,poolC:poolC,ownC:ownC,sellC:poolSellC+ownC,lines:lines,opt:opt};
 }
 /* a section's rate per unit, the way the supplier shows it: its lines' total divided by its quantity. Display only. */
 function secInfo(q,B,g){
@@ -5086,7 +5091,15 @@ function applyTier(q){if(q.mkFrom==="you")return;var t=tierFor(totals(q,0).cost)
 function moneyCheck(q,pct){
   var bad=[],B=priceBid(q,pct),T=totals(q,pct),cost=0,sumC=0,n=0,ownSum=0,ownCost=0;
   q.rows.forEach(function(r,i){
-    if(r.opt){if(B.lines[i])bad.push("a left-out line was priced");return}
+    if(r.opt){if(B.lines[i])bad.push("a left-out line was priced");
+      var O=(B.opt||{})[i],oc=cents(r.ext),oAmt=!r.priceOnly&&!r.noPrice&&!r.qtyOnly&&oc>0;
+      if(!oAmt){if(O)bad.push("left-out line "+(i+1)+" has no amount of its own and one was given to it")}
+      else if(!O)bad.push("left-out line "+(i+1)+" has no amount to show");
+      else if(r.own!=null&&r.own!==""&&isFinite(Number(r.own))&&Number(r.own)>=0){
+        var oq=r.basis==="ft"?(r.pcs||0)*(r.len||0):(r.basis==="ea"||r.basis==="ls")?(r.pcs||0):r.basis==="cwt"?(r.wt||0)/100:(r.len||0);
+        if(O.extC!==Math.round(Number((oq*Number(r.own)*100).toFixed(6))))bad.push("left-out line "+(i+1)+" does not equal its quantity times the price typed for it")}
+      else{if(Math.abs(O.extC-oc*(1+pct/100))>0.5001)bad.push("left-out line "+(i+1)+" is not its own "+pct+"%");if(pct>=0&&O.extC<oc)bad.push("left-out line "+(i+1)+" is priced below the supplier's cost")}
+      return}
     n++;cost+=(r.ext||0);var L=B.lines[i];
     if(!L){bad.push("a line has no price");return}
     sumC+=L.extC;
@@ -5125,7 +5138,7 @@ function qtyText(r){
 }
 var hid={};try{hid=JSON.parse(LS.getItem("cb_hidecols")||"{}")||{}}catch(e){hid={}}
 var showAll=false,heads={};try{heads=JSON.parse(LS.getItem("cb_heads")||"{}")}catch(e){}
-var PH=[["code","CODE"],["desc","DESCRIPTION"],["qty","PCS"],["lgth","UNITS"],["wgt","WEIGHT"],["loads","LOADS"],["price","UNIT PRICE"],["total","EXTENDED PRICE ($)"]];
+var PH=[["code","CODE"],["desc","DESCRIPTION"],["qty","PCS"],["lgth","UNITS"],["wgt","WEIGHT"],["loads","LOADS"],["price","UNIT PRICE"],["total","EXTENDED PRICE ($)"],["optc","OPTIONAL"]];
 function ph(k){for(var i=0;i<PH.length;i++)if(PH[i][0]===k)return heads["p_"+k]||PH[i][1];return k}
 function saveHeads(){try{LS.setItem("cb_heads",JSON.stringify(heads))}catch(e){}}
 function render(){
@@ -5562,7 +5575,7 @@ function vShow0(){
 $("v_name").addEventListener("input",function(){quotes[cur].vendor=this.value.trim();vShow()});
 $("v_terms").addEventListener("input",function(){notePrev();var n=quotes[cur].vendor;if(!this.value.trim())quotes[cur].termsOff=true;if(quotes[cur].sec){quotes[cur].termsEdit=this.value;return} /* a project's own notes are kept with that project, never as the supplier's standing notes */if(!n)return;if(this.value.trim())vterms[n]=this.value;else delete vterms[n];vSave();vList()});
 vList();
-$("phd").innerHTML=PH.map(function(c){return'<div><input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'+(/^(code|qty|lgth|wgt)$/.test(c[0])?'<label style="display:flex;gap:6px;align-items:center;font-weight:400;font-size:13px;margin-top:4px"><input type="checkbox" data-col="'+c[0]+'"'+(hid[c[0]]?"":" checked")+' style="min-width:0;width:18px;height:18px"> Show on the bid</label>':"")+"</div>"}).join("");
+$("phd").innerHTML=PH.map(function(c){return'<div><input data-ph="'+c[0]+'" value="'+esc(ph(c[0]))+'" aria-label="Heading for '+c[1]+'" style="font:inherit;font-size:15px;font-weight:700;padding:9px;border:1px solid var(--ink);border-radius:10px;width:100%">'+(/^(code|qty|lgth|wgt|optc)$/.test(c[0])?'<label style="display:flex;gap:6px;align-items:center;font-weight:400;font-size:13px;margin-top:4px"><input type="checkbox" data-col="'+c[0]+'"'+(hid[c[0]]?"":" checked")+' style="min-width:0;width:18px;height:18px"> Show on the bid</label>':"")+"</div>"}).join("");
 $("phd").addEventListener("change",function(e){var c=e.target.getAttribute("data-col");if(!c)return;if(e.target.checked)delete hid[c];else hid[c]=true;try{LS.setItem("cb_hidecols",JSON.stringify(hid))}catch(x){}});
 $("phd").addEventListener("input",function(e){var k=e.target.getAttribute("data-ph");if(!k)return;var v=e.target.value.trim();if(v)heads["p_"+k]=v;else delete heads["p_"+k];saveHeads()});
 /* HOUSE: what is built in for the company this version is set up for. One place. Empty it when the tool leaves that company;
@@ -5628,10 +5641,10 @@ function bidCols(q){
   var split=!cells.some(function(c){return c[0]!==""&&c[1]!==""}),all={show:{qty:true,lgth:true},split:split};
   var pairs=cells.map(function(c){return qtyPair(c,all)}); /* emptiness is judged on what would actually print */
   var anyA=pairs.some(function(x){return x[0]!==""}),anyB=pairs.some(function(x){return x[1]!==""}),anyWt=live.some(function(r){return r.wt&&!byWt(r)});
-  var show={code:(Object.keys(pay).length>0||live.some(function(r){return r.code}))&&!hid.code,qty:anyA&&!hid.qty,lgth:anyB&&!hid.lgth,wgt:anyWt&&!hid.wgt,loads:live.some(function(r){return typeof r.loads==="number"})&&!hid.loads};
+  var show={code:(Object.keys(pay).length>0||live.some(function(r){return r.code}))&&!hid.code,qty:anyA&&!hid.qty,lgth:anyB&&!hid.lgth,wgt:anyWt&&!hid.wgt,loads:live.some(function(r){return typeof r.loads==="number"})&&!hid.loads,optc:live.some(function(r){return r.opt})&&!hid.optc};
   if(!show.qty&&!show.lgth&&(anyA||anyB))show[anyA?"qty":"lgth"]=true; /* a bid never prints without its quantities */
-  var n=1+2+(show.code?1:0)+(show.qty?1:0)+(show.lgth?1:0)+(show.wgt?1:0)+(show.loads?1:0);
-  return{show:show,split:split,n:n,pre:n-2-(show.wgt?1:0)-(show.loads?1:0)}}
+  var n=1+2+(show.code?1:0)+(show.qty?1:0)+(show.lgth?1:0)+(show.wgt?1:0)+(show.loads?1:0)+(show.optc?1:0);
+  return{show:show,split:split,n:n,pre:n-2-(show.wgt?1:0)-(show.loads?1:0)-(show.optc?1:0)}}
 function qtyPair(c,C){
   var a=c[0],b=c[1];
   if(C.split){if(a!==""&&b==="")b="EA";else{var m=String(b).match(/^([\d,]+(?:\.\d+)?)\s*(.*)$/);if(m){a=m[1];b=m[2].toUpperCase()}}}
@@ -5701,32 +5714,33 @@ function mixHtml(q,m,B){
 function buildPrint(){
   var q=quotes[cur],m=pctNow(),T=totals(q,m),B=priceBid(q,m),g=null,v=function(id){return esc($(id).value)},has=function(id){return $(id).value.trim()!==""};
   var RV=revFor(q,$("p_to").value.trim(),m);
-  var U4=needs4(q,m),C=bidCols(q),TH=function(k){return C.show[k]?"<th>"+esc(colHead(k,C))+"</th>":""},TD=function(k,html,cls){return C.show[k]?"<td"+(cls?' class="'+cls+'"':"")+">"+html+"</td>":""};
+  var U4=needs4(q,m),C=bidCols(q),OC=function(x){return C.show.optc?'<td class="c">'+(x||"")+"</td>":""},optExt=function(i){var O=B.opt[i];return O?"$ "+plain(O.extC/100,2):""},TH=function(k){return C.show[k]?"<th>"+esc(colHead(k,C))+"</th>":""},TD=function(k,html,cls){return C.show[k]?"<td"+(cls?' class="'+cls+'"':"")+">"+html+"</td>":""};
   var head=imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':'<div class="ph"><div>'+(logo?'<img src="'+logo+'" alt="" style="max-height:70px;max-width:240px;display:block">':"")+'</div><h1>PROPOSAL</h1></div>';
   var co=[has("c_contact")?"<b>"+v("c_contact")+"</b>":"",has("c_name")&&!imgs.lh?v("c_name"):"",v("c_phone"),v("c_email"),v("c_web"),v("c_addr")].filter(Boolean).join("<br>");
   var right=[["Date:",v("p_date")],["Project #:",v("p_pno")],["Contract #:",v("p_cno")],["Notes:",v("p_note")],["Valid until:",v("p_valid")],["Bid date:",v("p_bid")],["Addenda:",v("p_add")],["Revision:",RV.rev>1?"rev "+RV.rev:""],["Estimated yardage:",q.mix?esc(q.yardage||""):""],["Prices firm through:",q.mix?esc(q.firmUS||normDate(q.firm)||""):""],["Prepared for:",v("p_to")]].filter(function(x,k){return k<4||x[1]}).map(function(x){return"<span>"+x[0]+"</span><b>"+x[1]+"</b>"}).join("");
   var h=(imgs.lh?"":head)+'<div class="meta"><div class="co">'+co+'</div><div class="rt2">'+right+"</div></div>"+
     '<div class="proj"><span>PROJECT:</span><b>'+v("p_project")+(has("p_item")?"<br>"+v("p_item"):"")+"</b></div>"+
-    (q.mix?"":'<table class="bid"><tr>'+TH("code")+"<th>"+esc(ph("desc"))+"</th>"+TH("qty")+TH("lgth")+TH("wgt")+TH("loads")+"<th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th></tr>");
+    (q.mix?"":'<table class="bid"><tr>'+TH("code")+"<th>"+esc(ph("desc"))+"</th>"+TH("qty")+TH("lgth")+TH("wgt")+TH("loads")+"<th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th>"+TH("optc")+"</tr>");
   var tw=0,msec=null,MN={mix:"",mand:"Mandatory charges",add:"Additional charges"};
   q.rows.forEach(function(r,i){
     if(r.opt&&!r.show)return;
     if(q.mix)return;
     if((r.group||"")!==g){g=r.group||"";var SI=secInfo(q,B,g);
       if(SI)SI.heads.forEach(function(hd,k){var lastH=k===SI.heads.length-1,sp=qtyPair(["",plain(hd.qty,2)+" "+hd.um],C);
-        h+='<tr class="sec">'+TD("code",esc(hd.code),"c")+'<td class="d"><b>'+esc(hd.desc)+"</b></td>"+TD("qty",esc(sp[0]),"c")+TD("lgth",esc(sp[1]),"c")+TD("wgt","","")+TD("loads","","")+'<td class="num">'+(lastH&&SI.sellRate!=null?"$ "+SI.sellRate.toFixed(4)+'<span class="u">/'+esc(String(SI.um).toLowerCase())+"</span>":"")+"</td><td></td></tr>"});
+        h+='<tr class="sec">'+TD("code",esc(hd.code),"c")+'<td class="d"><b>'+esc(hd.desc)+"</b></td>"+TD("qty",esc(sp[0]),"c")+TD("lgth",esc(sp[1]),"c")+TD("wgt","","")+TD("loads","","")+'<td class="num">'+(lastH&&SI.sellRate!=null?"$ "+SI.sellRate.toFixed(4)+'<span class="u">/'+esc(String(SI.um).toLowerCase())+"</span>":"")+"</td><td></td>"+OC("")+"</tr>"});
       else if(g&&!r.qn)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
     var c=qtyPair(qtyCells(r),C);
-    if(r.qtyOnly&&(!r.opt||r.show)){h+='<tr>'+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt","","num")+TD("loads","","num")+'<td class="num"></td><td class="num"></td></tr>';return}
-    if(r.opt){ /* shown as the supplier shows it: the words, the line, its unit price, no extended price, not in the total */
-      h+='<tr class="optrow">'+TD("code",esc(r.code||""),"c")+'<td class="d"><div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div><b>"+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+TD("loads",typeof r.loads==="number"?String(r.loads):"","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="c" style="font-size:10px;white-space:normal">not in total</td></tr>';return}
+    if(r.qtyOnly&&(!r.opt||r.show)){h+='<tr>'+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt","","num")+TD("loads","","num")+'<td class="num"></td><td class="num"></td>'+OC("")+'</tr>';return}
+    if(r.opt){ /* a left-out line that is shown, the way her own proposals show it: the line, its unit price, its own amount, and a mark under the OPTIONAL column. The amount comes from priceBid().opt and is never in the total.
+      When the OPTIONAL column is switched off in Step 4, or the line carries other words (OR OPTIONAL, ALTERNATE, ADD ALTERNATE), the words print above the description instead. */
+      h+='<tr class="optrow">'+TD("code",esc(r.code||""),"c")+'<td class="d">'+(/^(OPTIONAL|OPTIONAL QUOTE)$/.test(r.optWord||"OPTIONAL")&&C.show.optc?"":'<div class="ow">'+esc(r.optWord||"OPTIONAL")+"</div>")+"<b>"+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt?plain(r.wt,2):"","num")+TD("loads",typeof r.loads==="number"?String(r.loads):"","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">'+optExt(i)+"</td>"+OC("\u2714")+'</tr>';return}
     if(r.priceOnly){ /* a unit price and no quantity: printed as a price, no quantity, no extended price, not in the total */
-      h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty","","c")+TD("lgth","","c")+TD("wgt","","num")+TD("loads","","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num"></td></tr>';return}
+      h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty","","c")+TD("lgth","","c")+TD("wgt","","num")+TD("loads","","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num"></td>'+OC("")+'</tr>';return}
     tw+=byWt(r)?0:(r.wt||0);
-    h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+TD("loads",typeof r.loads==="number"?String(r.loads):"","num")+'<td class="num">$ '+unitTxtB(r,m,U4,B,i)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td></tr>";
+    h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+TD("loads",typeof r.loads==="number"?String(r.loads):"","num")+'<td class="num">$ '+unitTxtB(r,m,U4,B,i)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td>"+OC("")+"</tr>";
   });
   var noTotal=q.rows.some(function(r){return!r.opt})&&q.rows.filter(function(r){return!r.opt}).every(function(r){return r.priceOnly});
-  h+=(q.mix?mixHtml(q,m,B):noTotal?"</table>":'<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+(C.show.loads?"<td></td>":"")+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td></tr></table>")+
+  h+=(q.mix?mixHtml(q,m,B):noTotal?"</table>":'<tr class="tot">'+(C.show.wgt?'<td colspan="'+C.pre+'" class="num">'+(tw?"TOTAL WEIGHT:":"")+'</td><td class="num">'+(tw?plain(tw,2):"")+"</td>":'<td colspan="'+C.pre+'"></td>')+(C.show.loads?"<td></td>":"")+'<td class="num">TOTAL:</td><td class="num box">'+money(T.sell)+"</td>"+(C.show.optc?"<td></td>":"")+"</tr></table>")+
     '<div class="pg2">'+($("v_terms").value||$("c_terms").value?'<div class="terms"><b>QUOTE CONDITIONS:</b><br>'+[noteMk?noteMoney(rtHtml($("v_terms").value),m,noteSkip[q.vendor||""]).html:rtHtml($("v_terms").value),rtHtml($("c_terms").value)].filter(Boolean).join("<br><br>")+"</div>":"")+
     '<div class="keep"><p style="margin-top:'+(q.mix?"3px":"11px")+'">Please confirm acceptance of this quote:</p><div class="sig"'+(q.mix?' style="margin-top:16px"':"")+'><div>Signature over Printed Name</div><div>Date Signed</div></div></div></div>';
   var frame=function(inner,cls){return'<table class="pg'+cls+'"><thead><tr><td>'+(imgs.lh?'<img class="lh" src="'+imgs.lh+'" alt="">':"")+'</td></tr></thead><tfoot><tr><td>'+(imgs.ft?'<img src="'+imgs.ft+'" alt="">':"")+'</td></tr></tfoot><tbody><tr><td class="pgc">'+inner+"</td></tr></tbody></table>"};
