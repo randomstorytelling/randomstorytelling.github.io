@@ -290,7 +290,7 @@
     </p>
     <p class="sub" style="font-size:12px">Your notes include the file name and whether the numbers added up. No prices are included.</p>
   </div>
-  <p class="foot">Test version 81, November 21, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
+  <p class="foot">Test version 82, November 21, 2026. Reads PDFs, photos, scans and Excel files by finding the lines where quantity times price equals the total. <span id="footkind">Internal test tool.</span></p>
 </div>
 <div id="print"></div>
 
@@ -4409,7 +4409,10 @@ var UM={ft:"FT",ea:"EA",ls:"LS",sqft:"SF",qty:"UNIT",cwt:"LB"};
 var quotes=[],cur=0,holders=null;
 
 /* ---------- reading the PDF into lines ---------- */
-function lineText(items){var o="";items.forEach(function(c,k){var pv=items[k-1],gap=k?c.x-(pv.x+(pv.w||0)):9;o+=(k&&!(pv.w>0&&gap>-0.6&&gap<0.6)?" ":"")+c.s});return o.replace(/\s+/g," ").trim()}
+/* The one place a line's text is made. A PDF often stores one word in pieces that touch ("materia" + "ls", "7" + "5"): pieces with no gap between them are one word.
+   Two table cells can touch too ("Bar" + "Bar", "4.5" + "4.5"): a piece that starts with a capital after a letter is a new word, and two pieces that each
+   carry a decimal point are two numbers, so those keep their space. */
+function lineText(items){var o="";items.forEach(function(c,k){var pv=items[k-1],gap=k?c.x-(pv.x+(pv.w||0)):9,touch=k&&pv.w>0&&gap>-0.6&&gap<0.6&&!(/[A-Za-z]$/.test(pv.s)&&/^[A-Z]/.test(c.s))&&!(/\d\.\d+$/.test(pv.s)&&/^\d+\.\d/.test(c.s));o+=(k&&!touch?" ":"")+c.s});return o.replace(/\s+/g," ").trim()}
 async function pdfLines(buf){
   var doc=await pdfjsLib.getDocument({data:buf}).promise,out=[];out.blank=[];out.ocr=[];out.annots=[];
   for(var p=1;p<=doc.numPages;p++){
@@ -4429,7 +4432,7 @@ async function pdfLines(buf){
     if(window.MISC_RESCUE&&!window.CB_NO_OCR){try{rescued=await maierRescue(page,p)}catch(e){rescued=null}}
     if(rescued&&rescued.length){rescued.forEach(function(l){out.push(l)});out.ocr.push(p);continue}
     if(!rows.length||(rows.length<=3&&/material pricing/i.test(rows.map(function(r){return r.items.map(function(i){return i.s}).join(" ")}).join(" "))&&!window.CB_NO_OCR)){
-      if(rows.length){rows.sort(function(a,b){return b.y-a.y});rows.forEach(function(r){r.items.sort(function(a,b){return a.x-b.x});out.push({page:p,x:r.items[0].x,yy:r.y,cells:r.items,text:r.items.map(function(i){return i.s}).join(" ").replace(/\s+/g," ").trim()})})}
+      if(rows.length){rows.sort(function(a,b){return b.y-a.y});rows.forEach(function(r){r.items.sort(function(a,b){return a.x-b.x});out.push({page:p,x:r.items[0].x,yy:r.y,cells:r.items,text:lineText(r.items)})})}
       var got=null;
       if(!window.CB_NO_OCR){try{
         var vp=page.getViewport({scale:3}),cv=document.createElement("canvas");cv.width=vp.width;cv.height=vp.height;
@@ -4442,7 +4445,7 @@ async function pdfLines(buf){
     rows.sort(function(a,b){return b.y-a.y});
     rows.forEach(function(r){
       r.items.sort(function(a,b){return a.x-b.x});
-      out.push({page:p,x:r.items[0].x,yy:r.y,cells:r.items,text:r.items.map(function(i){return i.s}).join(" ").replace(/\s+/g," ").trim()});
+      out.push({page:p,x:r.items[0].x,yy:r.y,cells:r.items,text:lineText(r.items)});
     });
     /* text a supplier typed into the PDF as a note on the page (a FreeText comment) is part of the quote: the readers get it as out.annots */
     if(p<=3){try{var an=await page.getAnnotations();an.forEach(function(x){if(x.subtype==="FreeText"&&x.contentsObj&&x.contentsObj.str)out.annots.push({page:p,str:x.contentsObj.str})})}catch(e){}}
@@ -4963,7 +4966,7 @@ function grabTerms(L,bullets,startOn){
     /* the page furniture and order form that repeat on a later page are not notes */
     if(/\S+@\S+\.\w{2,}/.test(t)&&t.length<80||/\b(Phone|Fax|Tel)\s*:/i.test(t)||/^Page \d+( of \d+)?$/i.test(t)||/\bPage \d+ of \d+\b/i.test(t)&&t.length<80)continue;
     if(/^(bill to|ship to|sold to|attn\b|customer p\.?o|quotation no|quote (no|number|#)|contract\s*:|order qty|sign to convert|unloading instructions|receiving hours|max bundle weight|sales \d|terms\s*:\s*\S)/i.test(t)&&t.length<110)continue;
-    if(/\$\s*[\d,]+\.\d{2}\s*[A-Z]?\s*$/.test(t)&&/\d/.test(t.slice(0,12))||/\b(sub\s?total|total( weight)?)\b.*[\d,]+\.\d{2}\s*$/i.test(t))continue; /* a priced line or a total */
+    if(/\$\s*[\d,]+\.\d{2}\s*[A-Z]?\s*$/.test(t)&&/\d/.test(t.slice(0,12))||/^(?:[\w#&]+\s+){0,3}(?:sub\s?total|total(?:\s+weight)?)\b.{0,40}[\d,]+\.\d{2}\s*$/i.test(t))continue; /* a priced line or a total: a total line is a label and an amount, never a sentence that happens to say "total" */
     if((t.match(/\b[A-Z][\w .#]{1,18}:\s/g)||[]).length>=2&&t.length<100)continue; /* two or more "Label:" fields on one line */
     if(/\bsales\s+rep(resentative)?\b|\baccount (manager|executive)\b|\bestimator\b\s*\|/i.test(t)&&t.length<160)continue; /* the salesperson's signature block is not a note */
     if(/^,\s/.test(t)||/^\d+\s+[\w .]*\b(Way|Road|Rd|Street|St|Ave|Avenue|Drive|Dr|Blvd|Suite|Hwy)\b.*\b(19|20)\d\d$/i.test(t)&&t.length<70)continue; /* an address with the date beside it */
@@ -5042,7 +5045,7 @@ function attTable(lines){
 }
 /* The supplier's attached pages, in their own order: a table stays a table (see attTable), everything else is a paragraph. */
 function attText(pages,key){
-  var out=[];pages.forEach(function(P){var T=null;try{T=attTable(P.lines)}catch(e){T=null}P.lines.forEach(function(l,li){if(T&&li>=T.from&&li<=T.to){if(li===T.from)out.push({table:T.table});return}var t=(l.cells&&l.cells.length?lineText(l.cells):l.text).replace(/\s+/g," ").replace(/\bPage \d+(?: of \d+)?\b/gi,"").trim();if(!t)return;
+  var out=[];pages.forEach(function(P){var T=null;try{T=attTable(P.lines)}catch(e){T=null}P.lines.forEach(function(l,li){if(T&&li>=T.from&&li<=T.to){if(li===T.from)out.push({table:T.table});return}var t=l.text.replace(/\s+/g," ").replace(/\bPage \d+(?: of \d+)?\b/gi,"").trim();if(!t)return;
     if(key&&t.indexOf(key)>=0&&t.length<120)return; /* the supplier's running header carries the quote number */
     t=t.replace(/\b\d{2}-\d{2}-\d{2}\s+IDOT\s+[\d ]+[A-Z0-9]*\s*[A-Za-z ]*?BR-?\d{5,}il\b/g,"").replace(/\bBR-?\d{5,}il\b/g,"").trim();if(!t)return;
     if((t.match(/\b(?:Company|Street Address|Job Location|Quote#|City|State|Zip Code|Market Class|Phone|Fax|Email|Rep Agency|Attn|Estimating Department|Terms|Freight Terms|Ship Via|F\.O\.B\.|SalesPerson|Customer)\s*:/gi)||[]).length>=2)return; /* the sub-quote's blank form header */
