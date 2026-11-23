@@ -104,7 +104,7 @@
     #print .tot td{font-weight:700;font-size:16px;border-top:2px solid #000;border-bottom:none;padding-top:12px}
     #print .terms{margin-top:10px;white-space:pre-wrap;font-size:9.5px;line-height:1.38} #print p{font-size:12px} #print .sig{margin-top:38px;display:flex;gap:60px} #print .sig.mx{margin-top:16px} /* a concrete price list is tight above its signature lines; the "extra room" choice below still wins */ #print table.lay2 .sig,#print table.sigbig .sig{margin-top:72px}
     #print table.lay2 .pg2{break-before:page;page-break-before:always} #print table.lay2 .terms{font-size:12px;line-height:1.55;margin-top:0}
-    #print .keep{break-inside:avoid;page-break-inside:avoid} /* the acceptance line and the signature lines never split across pages */
+    #print tr[data-brk]{break-before:page;page-break-before:always} #print .keep{break-inside:avoid;page-break-inside:avoid} /* the acceptance line and the signature lines never split across pages */
     #print .sig div{border-top:1px solid #000;padding-top:4px;width:220px}
     #print img.lh{width:100%;display:block;margin:0 0 9px}
     #print .ph{align-items:center;border-bottom:none;margin-bottom:8px}
@@ -5287,7 +5287,7 @@ function render(){
     var needQty=r.auto&&r.len==null&&r.basis==="qty";
     h+='<tr class="'+(r.opt?"opt ":"")+(ok?"":"off")+'"><td style="text-align:center"><input type="checkbox" data-i="'+i+'" data-k="opt"'+(r.opt?" checked":"")+' style="min-width:0;width:22px;height:22px" aria-label="Leave this line out"></td>'+
       "<td>"+inp("desc","d",r.desc)+(r.note||r.detailCol?'<textarea class="d" data-i="'+i+'" data-k="note" rows="'+Math.min(6,String(r.note||"").split("\n").length)+'" aria-label="'+(r.detailCol?"Detail printed in the column beside this charge":"Notes printed under this line")+'"'+(r.detailCol?' placeholder="Detail printed beside this charge"':"")+' style="font-size:12px;margin-top:3px;width:100%;box-sizing:border-box">'+esc(r.note||"")+"</textarea>":"")+(r.hint&&r.opt?'<div class="note">'+esc(r.hint)+"</div>":"")+
-      (r.opt?'<label style="display:flex;gap:6px;align-items:center;font-weight:700;font-size:13px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="show"'+(r.show?" checked":"")+' style="min-width:0;width:18px;height:18px"> Show on the bid as '+esc(r.optWord||"OPTIONAL")+", priced, not in the total</label>":"")+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button>'+
+      (r.opt?'<label style="display:flex;gap:6px;align-items:center;font-weight:700;font-size:13px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="show"'+(r.show?" checked":"")+' style="min-width:0;width:18px;height:18px"> Show on the bid as '+esc(r.optWord||"OPTIONAL")+", priced, not in the total</label>":"")+'<label style="display:flex;gap:6px;align-items:center;font-weight:400;font-size:12px;margin:4px 0"><input type="checkbox" data-i="'+i+'" data-k="brk"'+(r.brk?" checked":"")+' style="min-width:0;width:16px;height:16px"> Start a new page here</label>'+'<button type="button" class="lk" style="font-size:11px;font-weight:400;opacity:.7" data-tohead="'+i+'">Make this a heading</button>'+
       ' <span style="font-size:11px;opacity:.7;white-space:nowrap"> · <button type="button" class="lk" style="font-size:11px;font-weight:400" data-up="'+i+'" title="Move this line up">▲ up</button> <button type="button" class="lk" style="font-size:11px;font-weight:400" data-down="'+i+'" title="Move this line down">▼ down</button> · <button type="button" class="lk" style="font-size:11px;font-weight:400" data-below="'+i+'" title="Add a new line right under this one">＋ line below</button></span></td>'+
       (needQty||(r.auto&&r.basis==="qty")?'<td>'+inp("len","n",r.len)+"</td>":'<td class="num ro">'+esc(qtyText(r))+"</td>")+
       '<td class="adv">'+inp("pcs","n",r.pcs)+'</td><td class="adv">'+inp("len","n",r.len)+'</td><td class="adv">'+inp("wt","n",r.wt)+"</td><td>"+inp("price","n",r.price)+"</td>"+
@@ -5430,7 +5430,7 @@ function softTotals(){ /* update numbers without rebuilding inputs while typing 
 $("tbl").addEventListener("change",function(e){
   var t=e.target,i=t.getAttribute("data-i"),k=t.getAttribute("data-k");if(i==null)return;
   var r=quotes[cur].rows[+i];
-  if(k==="opt")r.opt=t.checked;else if(k==="show")r.show=t.checked;else if(k==="desc"||k==="basis"||k==="note")r[k]=t.value;
+  if(k==="opt")r.opt=t.checked;else if(k==="show")r.show=t.checked;else if(k==="brk")r.brk=t.checked;else if(k==="desc"||k==="basis"||k==="note")r[k]=t.value;
   else if(k==="own"){var ov=t.value.replace(/[$,\s]/g,"");r.own=ov===""||!isFinite(+ov)||+ov<0?null:+ov}
   else r[k]=num(t.value);
   if(r.priceOnly&&(k==="len"||k==="pcs"||k==="wt")&&r[k]>0)delete r.priceOnly;
@@ -5870,13 +5870,13 @@ function buildPrint(){
     '<div class="proj"><span>PROJECT:</span><b>'+v("p_project")+(has("p_item")?"<br>"+v("p_item"):"")+"</b></div>"+
     (q.mix?"":'<table class="bid"><tr>'+TH("code")+"<th>"+esc(ph("desc"))+"</th>"+TH("qty")+TH("lgth")+TH("wgt")+TH("loads")+"<th>"+esc(ph("price"))+"</th><th>"+esc(ph("total"))+"</th>"+TH("optc")+"</tr>");
   var tw=0,msec=null,MN={mix:"",mand:"Mandatory charges",add:"Additional charges"},JB=q.mix?"":jobNoteText(q).split(/\r?\n/).map(function(t){return t.trim()}).filter(Boolean).join("\n");
-  q.rows.forEach(function(r,i){
+  var row1=function(r,i){
     if(r.opt&&!r.show)return;
     if(q.mix)return;
     if((r.group||"")!==g){g=r.group||"";var SI=secInfo(q,B,g);
       if(SI)SI.heads.forEach(function(hd,k){var lastH=k===SI.heads.length-1,sp=qtyPair(["",plain(hd.qty,2)+" "+hd.um],C);
         h+='<tr class="sec">'+TD("code",esc(hd.code),"c")+'<td class="d"><b>'+esc(hd.desc)+"</b></td>"+TD("qty",esc(sp[0]),"c")+TD("lgth",esc(sp[1]),"c")+TD("wgt","","")+TD("loads","","")+'<td class="num">'+(lastH&&SI.sellRate!=null?"$ "+SI.sellRate.toFixed(4)+'<span class="u">/'+esc(String(SI.um).toLowerCase())+"</span>":"")+"</td><td></td>"+OC("")+"</tr>"});
-      else if(g&&!r.qn)h+='<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"}
+      else if(g&&!r.qn)h+=C.show.code?'<tr class="grp"><td></td><td colspan="'+(C.n-1)+'">'+esc(g)+"</td></tr>":'<tr class="grp"><td colspan="'+C.n+'">'+esc(g)+"</td></tr>"} /* v83 Rose 11/23: a heading with no item number sits in the description column */
     var c=qtyPair(qtyCells(r),C);
     if(r.qtyOnly&&(!r.opt||r.show)){h+='<tr>'+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt","","num")+TD("loads","","num")+'<td class="num"></td><td class="num"></td>'+OC(r.opt?"\u2714":"")+'</tr>';return}
     if(r.opt){ /* a left-out line that is shown, the way her own proposals show it: the line, its unit price, its own amount, and a mark under the OPTIONAL column. The amount comes from priceBid().opt and is never in the total.
@@ -5886,7 +5886,9 @@ function buildPrint(){
       h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty","","c")+TD("lgth","","c")+TD("wgt","","num")+TD("loads","","num")+'<td class="num">$ '+unitTxt(r,m,U4)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num"></td>'+OC("")+'</tr>';return}
     tw+=byWt(r)?0:(r.wt||0);
     h+="<tr>"+TD("code",esc(r.code||""),"c")+'<td class="d"><b>'+esc(r.desc)+"</b>"+rowNote(r,m)+"</td>"+TD("qty",c[0],"c")+TD("lgth",c[1],"c")+TD("wgt",r.wt&&!byWt(r)?plain(r.wt,2):"","num")+TD("loads",typeof r.loads==="number"?String(r.loads):"","num")+'<td class="num">$ '+unitTxtB(r,m,U4,B,i)+'<span class="u">'+unitLabel(r)+'</span></td><td class="num">$ '+plain(B.lines[i].extC/100,2)+"</td>"+OC("")+"</tr>";
-  });
+  };
+  /* v83 Rose 11/23: a line ticked "Start a new page here" begins the next printed page (its heading moves with it) */
+  q.rows.forEach(function(r,i){var st=h.length;row1(r,i);if(r.brk&&h.length>st)h=h.slice(0,st)+h.slice(st).replace("<tr",'<tr data-brk="1"')});
   /* the job's own notes: in a NOTES box of their own under the prices, or first inside the conditions; one text, one place */
   var JBH=JB?(noteMk?noteMoney(esc(JB).replace(/\n/g,"<br>"),m,noteSkip[q.vendor||""]).html:esc(JB).replace(/\n/g,"<br>")):"",NB=!!(q.notesBox&&JBH),JBC=NB?"":JBH;
   var noTotal=q.rows.some(function(r){return!r.opt})&&q.rows.filter(function(r){return!r.opt}).every(function(r){return r.priceOnly});
