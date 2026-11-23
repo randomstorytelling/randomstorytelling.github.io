@@ -5849,19 +5849,23 @@ URL:https://www.eventbrite.com/e/film-screening-the-grim-game-tickets-1990
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Film and Friends Showcase\, night one
-DTSTART;TZID=America/Chicago:20261205T150000
-DTEND;TZID=America/Chicago:20261205T180000
-DTSTAMP:20260928T151415Z
+DTSTART;TZID=America/Chicago:20261205T143000
+DTEND;TZID=America/Chicago:20261205T171500
+DTSTAMP:20261123T151004Z
 UID:film-and-friends-showcase-night-one-2026-12-05@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
-DESCRIPTION:Price not listed.\nMotion Media Arts Center showcase. Tickets 
- coming soon per the page. Submissions: Step 1 opens Nov 1\, Step 2 Nov 15
- \, deadline Nov 30.\nSource: Austin School of Film what's coming up page\,
-  read 2026-09-28\nhttps://austinfilmschool.org/whats-coming-up
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$20 general\, $10 for featured filmmakers\, 2 free tickets per
+  film.\nEnd time estimated.\nWinter student showcase\, screening 01. Doors
+  2:30pm\, screening at 3:00pm\, about 38 minutes of student shorts (avant 
+ garde\, digital filmmaking\, music video)\, followed by filmmaker Q and A
+ \, audience questions and group photos. Lineup of 8 films announced.\nSour
+ ce: austinfilmschool.org/film-friends-showcases (official event page\, lin
+ eup announced)\, read 2026-11-23\nhttps://austinfilmschool.org/film-friend
+ s-showcases
+LAST-MODIFIED:20261123T151004Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
-URL:https://austinfilmschool.org/whats-coming-up
+URL:https://austinfilmschool.org/film-friends-showcases
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
@@ -5932,6 +5936,25 @@ DESCRIPTION:$12 AFS Member & General Cost.\nThe one required class to beco
 LAST-MODIFIED:20261109T151153Z
 LOCATION:Austin Public\, 1143 Northwestern Ave\, Austin\, TX
 URL:https://www.austinfilm.org/event/media-policy_dec8/
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Lighting Workshop\, Lighting after Dark
+DTSTART;TZID=America/Chicago:20261208T183000
+DTEND;TZID=America/Chicago:20261208T213000
+DTSTAMP:20261123T151004Z
+UID:afs-lighting-workshop-lighting-after-dark-2026-12-08@randomstorytellin
+ g.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$25 general\, $20 AFS members.\nContinuing education workshop.
+  Turn off all the lights and work only with Austin Public's LED kits: twil
+ ight lighting\, mixed color temperature\, distance and spread\, soft versu
+ s hard light.\nSource: AFS event page\, read 2026-11-23\nhttps://www.austi
+ nfilm.org/event/lighting-workshop-lighting-after-dark-dec8/
+LAST-MODIFIED:20261123T151004Z
+LOCATION:Austin Public Studio 1\, 1143 Northwestern Ave\, Austin\, TX
+URL:https://www.austinfilm.org/event/lighting-workshop-lighting-after-dark
+ -dec8/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:WIFT Table Read: Holiday Scenes
@@ -6039,18 +6062,43 @@ URL:https://calendar.austinchronicle.com/event/under-her-name-work-in-prog
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Film and Friends Showcase\, night two
-DTSTART;TZID=America/Chicago:20261212T150000
-DTEND;TZID=America/Chicago:20261212T180000
-DTSTAMP:20260928T151415Z
+DTSTART;TZID=America/Chicago:20261212T143000
+DTEND;TZID=America/Chicago:20261212T171500
+DTSTAMP:20261123T151004Z
 UID:film-and-friends-showcase-night-two-2026-12-12@randomstorytelling.com
-SEQUENCE:0
+SEQUENCE:1
 CATEGORIES:showcase
-DESCRIPTION:Price not listed.\nMotion Media Arts Center showcase. Tickets 
- coming soon per the page.\nSource: Austin School of Film what's coming up 
- page\, read 2026-09-28\nhttps://austinfilmschool.org/whats-coming-up
-LAST-MODIFIED:20260928T151415Z
+DESCRIPTION:$20 general\, $10 for featured filmmakers\, 2 free tickets per
+  film.\nEnd time estimated.\nWinter student showcase\, screening 02. Doors
+  2:30pm\, screening at 3:00pm\, about 39 minutes of student shorts\, follo
+ wed by filmmaker Q and A\, audience questions and group photos. Lineup of 
+ 6 films announced.\nSource: austinfilmschool.org/film-friends-showcases (o
+ fficial event page\, lineup announced)\, read 2026-11-23\nhttps://austinfi
+ lmschool.org/film-friends-showcases
+LAST-MODIFIED:20261123T151004Z
 LOCATION:Hyperreal Film Club\, 301 Chicon St\, Austin\, TX
-URL:https://austinfilmschool.org/whats-coming-up
+URL:https://austinfilmschool.org/film-friends-showcases
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Principles of Screenwriting
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261221
+DTSTAMP:20261123T151004Z
+UID:afs-principles-of-screenwriting-2026-12-13@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:Time and price not listed.\n2:00pm to 5:00pm both days. Two pa
+ rt continuing education course on formatting\, structure\, character and d
+ esire\, catalyst and obstacles\, act structure\, dialogue. Participants wo
+ rkshop a short scene with the group. Taught by Stephen Ohl (AFI Conservato
+ ry MFA\, Useless Humans on Showtime).\nSource: AFS event page\, read 2026-
+ 11-23. Price not stated on the page\; hedge carried\nhttps://www.austinfil
+ m.org/event/screenwriting-101-dec1320/
+LAST-MODIFIED:20261123T151004Z
+LOCATION:Austin Public\, Conference Room\, 1143 Northwestern Ave\, Austin
+ \, TX
+TRANSP:TRANSPARENT
+URL:https://www.austinfilm.org/event/screenwriting-101-dec1320/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:UCB Class Shows\, student showcases
@@ -6181,6 +6229,25 @@ LAST-MODIFIED:20260928T143836Z
 TRANSP:TRANSPARENT
 URL:https://gov.texas.gov/film/hotline-entries/worldfest-houston-internati
  onal-film-festival-2026
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY:AFS: Pre-Production Planning
+DTSTART;TZID=America/Chicago:20261215T183000
+DTEND;TZID=America/Chicago:20261215T213000
+DTSTAMP:20261123T151004Z
+UID:afs-pre-production-planning-2026-12-15@randomstorytelling.com
+SEQUENCE:0
+CATEGORIES:class
+DESCRIPTION:$35 AFS members\, $40 general.\nContinuing education course tu
+ rning an idea into a timeline and deadlines: location scouting\, casting\,
+  budgeting\, production insurance\, production paperwork. Geared to narrat
+ ive but applies to live events\, documentary and music video.\nSource: AFS
+  event page\, read 2026-11-23\nhttps://www.austinfilm.org/event/preproduct
+ ion_dec15/
+LAST-MODIFIED:20261123T151004Z
+LOCATION:Austin Public\, Conference Room\, 1143 Northwestern Ave\, Austin
+ \, TX
+URL:https://www.austinfilm.org/event/preproduction_dec15/
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:Storytelling for Creatives (Dec 15 session)
