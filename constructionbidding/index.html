@@ -5131,6 +5131,7 @@ function attText(pages,key){
     if(li===skip)return;
     if(/^Terms\s+Freight Terms\s+Ship Via\s+F\.O\.B\.?\s+SalesPerson$/i.test(t)){skip=li+1;return} /* the form's terms row and the values printed under it */
     if(attFormLine(t)||attColHead(l))return; /* a line of form labels only, or a column heading with no items under it */
+    if(/^(?:Approved By:|Date Required On-?Site:|Ship To Address:|Preferred Delivery Method\b|Preferred Contact and Phone Number:)/i.test(t))return; /* v87: the supplier's blank purchase-order form (United Fiberglass), like D.S. Brown's Accepted By form */
     if(key&&t.indexOf(key)>=0&&t.length<120)return; /* the supplier's running header carries the quote number */
     t=t.replace(/\b\d{2}-\d{2}-\d{2}\s+IDOT\s+[\d ]+[A-Z0-9]*\s*[A-Za-z ]*?BR-?\d{5,}il\b/g,"").replace(/\bBR-?\d{5,}il\b/g,"").trim();if(!t)return;
     if((t.match(/\b(?:Company|Street Address|Job Location|Quote#|City|State|Zip Code|Market Class|Class of Trade|Phone|Fax|Email|Rep Agency|Contractor Name|Project ID|Project Name|Job #|Attn|Estimating Department|Terms|Freight Terms|Ship Via|F\.O\.B\.|SalesPerson|Customer)\s*:/gi)||[]).length>=2||/^(?:City|State)\s+(?:Market Class|Job Zip Code)\b/.test(t))return; /* the sub-quote's blank form header */
@@ -5139,7 +5140,15 @@ function attText(pages,key){
     if(/\.docm\b|^Page \d+ of \d+$|^QUOTATION$|^(TO|DATE|ATTN|OWNER|COUNTY, STATE|PROJECT|FROM|BID DATE|ADDENDA RECEIVED|DATE OF|INFORMATION|PART OF|ITEM NO\.?)\s*(?::|$)|QUOTATION NO\s*:|^\s*[\d\s-]{6,}$|UNIT PRICE IN|U\.S\. CURRENCY|^(Total|Freight)$/i.test(t))return;
     if(/\b[A-Z]{2},?\s+\d{5}\b/.test(t)||/^\d+\s+[A-Za-z][\w .]*\b(Way|Road|Rd|Street|St|Ave|Avenue|Drive|Dr|Blvd|Suite|Hwy)\b\.?$/i.test(t)||/&\s*Associates/i.test(t)&&t.length<60||KNOWN.some(function(n){return n&&t.indexOf(n)>=0})&&t.length<60)return /* a line that is only the supplier's name */;
     var starts=/^(Note\s*:|\d+\.$|\d+\.\s|[•\u2022-]\s*\S|L\d\d\)|[A-Z][A-Z &\/]{4,}:?$)/.test(t)||/^\d+$/.test(t);
-    if(!out.length||starts||typeof out[out.length-1]!=="string")out.push(t);else out[out.length-1]+=" "+t})});
+    /* v87: a line carries on the paragraph above only when it really continues it: the line above ran to the right margin and did not end a sentence, or this
+       line picks up in lowercase, and it sits at the same left margin with no extra gap. A short line, a centred title, a right-hand totals box, a sentence that
+       ends at its own line end: each starts a line of its own (Rose 11/23: United Fiberglass terms, totals box and the Job Notes title ran into one paragraph). */
+    var cont=false,pl=P.lines[li-1];
+    if(pl&&l.yy!=null&&pl.yy!=null){var rgt=function(q){return Math.max.apply(null,q.cells.map(function(c){return c.x+(c.w||String(c.s).length*5)}))},lft=function(q){return Math.min.apply(null,q.cells.map(function(c){return c.x}))};
+      var R=P.lines.reduce(function(m,q){return q.cells&&q.cells.length?Math.max(m,rgt(q)):m},0),pt=pl.text.trim(),wrapped=rgt(pl)>=R-60&&!/[.:;!?]$/.test(pt);
+      cont=(wrapped||/^[a-z(]/.test(t))&&Math.abs(lft(l)-lft(pl))<=8&&pl.yy-l.yy<=2.2*(l.cells[0].h||10)||/^[a-z]/.test(t)&&pl.yy-l.yy<=2.2*(l.cells[0].h||10)&&!/[.:;!?]$/.test(pt)}
+    else cont=/^[a-z]/.test(t); /* the first line of a page carries on the page before only when it picks up in lowercase */
+    if(!out.length||starts||typeof out[out.length-1]!=="string"||!cont)out.push(t);else out[out.length-1]+=" "+t})});
   var j=[];out.forEach(function(t){if(typeof t!=="string"){if(j.length&&j[j.length-1]===null)j.pop();j.push(t);return}if(/^\d+\.?$/.test(t)){j.push(t.replace(/\.$/,"")+".");j.push(null);return}if(j.length&&j[j.length-1]===null){j.pop();j[j.length-1]+=" "+t;return}j.push(t)});
   return j.filter(Boolean).map(function(t){return typeof t!=="string"?t:t.replace(/\s*Respectfully submitted.*$/i,"").replace(/_{3,}/g,"").trim()}).filter(function(t){return typeof t!=="string"||t&&!/^[\s:.,-]*$/.test(t)});
 }
