@@ -5061,8 +5061,13 @@ function secParts(lines){
 }
 function secTerms(lines){var P=secParts(lines);return P.notes.concat(P.terms?[P.terms]:[]).join("\n").trim()}
 /* The text of an attached sub-quote, set as paragraphs: the supplier's letterhead block, address and running page header are left off, as in her own bids. */
-function attTable(lines){
-  var hd=-1,i;for(i=0;i<lines.length;i++){var t0=lines[i].text;if(lines[i].yy!=null&&/\bDESCRIPTION\b/.test(t0)&&/\b(QUANTITY|QTY|UNIT PRICE|PRICE|ITEM)\b/.test(t0)&&t0.length<90&&!/[a-z]{3}/.test(t0)){hd=i;break}}
+function attTable(lines,carry){
+  /* v86: a page whose table carries on from the page before has no heading row of its own: it is read under the previous page's headings
+     when its first line is an item row (a figure in its first cell and three or more cells) */
+  if(carry&&lines.length&&lines[0].yy!=null&&lines[0].cells.length>=3&&/^\d[\d,.]*$/.test(String(lines[0].cells[0].s).trim())&&!lines.some(function(l){return attColHead(l)})){
+    lines=[{text:carry.text,yy:lines[0].yy+30,cells:carry.cells,page:lines[0].page,carried:true}].concat(lines);var R=attTable(lines,null);
+    if(R){R.from=Math.max(0,R.from-1);R.to=R.to-1;R.carried=true}return R}
+  var hd=-1,i;for(i=0;i<lines.length;i++){var t0=lines[i].text;if(lines[i].yy!=null&&/\bDESCRIPTION\b/i.test(t0)&&/\b(QUANTITY|QTY|UNIT PRICE|PRICE|ITEM)\b/i.test(t0)&&t0.length<90&&(!/[a-z]{3}/.test(t0)||lines[i].cells.length>=4&&lines[i].cells.every(function(c){return String(c.s).trim().length<=16&&!/\d/.test(c.s)}))){hd=i;break}} /* v86: Title Case headings too (AG Bridge Drain: "Qty. Req. Unit Part # Description Lead Time Unit Price Extended Price") */
   if(hd<0)return null;
   var headish=function(l){return!!l&&l.yy!=null&&l.text.length<60&&!/[a-z]{2}|\d/.test(l.text)},h0=hd,h1=hd;
   while(h0>0&&hd-h0<2&&headish(lines[h0-1])&&Math.abs(lines[h0-1].yy-lines[h0].yy)<18)h0--;
@@ -5071,47 +5076,64 @@ function attTable(lines){
       ln.sort(function(p,q){return p.x-q.x});
       /* v85: pieces of one word that touch are one word ("D" "-" "160" is D-160, "084" "-" "0207" is 084-0207); a dash with a space either side between two pieces of text stays " - " */
       for(var j=0;j<ln.length;j++){var P=o.length&&o[o.length-1].y===ln[j].y?o[o.length-1]:null,c=ln[j],N=ln[j+1];
-        if(P&&c.x-P.x1<=1.5&&(/^[-\u2013]$/.test(c.s)||/[-\u2013]$/.test(P.s))){P.s+=c.s;P.x1=c.x1;continue}
+        if(P&&c.s===P.s&&Math.abs(c.x-P.x)<1.5)continue; /* v86: the same word printed twice on itself ("EA" "EA") */
+        if(P&&c.x-P.x1<=1.5&&(/^[-\u2013]$/.test(c.s)||/[-\u2013]$/.test(P.s)||/\d$/.test(P.s)&&/^\d/.test(c.s))){P.s+=c.s;P.x1=c.x1;continue} /* v86: "9" "8" touching is 98 */
         if(P&&/^[-\u2013]$/.test(c.s)&&N&&c.x-P.x1<=6&&N.x-c.x1<=6&&!/^[-\u2013]$/.test(P.s)){P.s+=" "+c.s+" "+N.s;P.x1=N.x1;j++;continue}
         o.push(c)}}return o};
   var cluster=function(cs){var cl=[];cs.slice().sort(function(a,b){return a.x-b.x}).forEach(function(c){var L=cl[cl.length-1];if(L&&c.x<=L.x1+2){L.x1=Math.max(L.x1,c.x1);L.cells.push(c)}else cl.push({x:c.x,x1:c.x1,cells:[c]})});return cl};
   var txt=function(cs){return cs.slice().sort(function(a,b){return b.y-a.y||a.x-b.x}).map(function(c){return c.s}).join(" ").replace(/\s+/g," ").trim()};
   var H=cluster(cellsOf(h0,h1)).map(function(c){return{x:c.x,x1:c.x1,h:txt(c.cells),cl:[]}});if(H.length<3)return null;
-  var end=h1;for(i=h1+1;i<lines.length;i++){var l=lines[i];if(l.yy==null||/^(Notes?\b\s*:?|[A-Z][A-Z &\/]{4,}:)/.test(l.text)||l.cells.length===1&&l.text.length>95)break;end=i}
+  var end=h1;for(i=h1+1;i<lines.length;i++){var l=lines[i];if(l.yy==null||/^Page \d+(?: of \d+)?$/i.test(l.text.trim())||/^(Notes?\b\s*:?|[A-Z][A-Z &\/]{4,}:)/.test(l.text)&&!(H.length>1&&l.cells[0].x>H[1].x+20)||l.cells.length===1&&l.text.length>95)break;end=i} /* v86: "NOTE: ..." inside the description column is part of the table */
   if(end===h1)return null;
   var bodyAll=cellsOf(h1+1,end),body=bodyAll.filter(function(c){return!/^[-\u2013\u2014]$/.test(c.s)}),C=cluster(body);if(!C.length)return null;
   C.forEach(function(c){var best=null,ov=-1;H.forEach(function(hh){var o=Math.min(c.x1,hh.x1)-Math.max(c.x,hh.x);if(o>ov){ov=o;best=hh}});
     if(ov<=0){var cx=(c.x+c.x1)/2,d=1e9;H.forEach(function(hh){var dd=Math.abs((hh.x+hh.x1)/2-cx);if(dd<d){d=dd;best=hh}})}best.cl.push(c)});
-  var DH=H.filter(function(hh){return/DESCRIPTION/.test(hh.h)})[0];if(!DH||!DH.cl.length)return null;
+  var DH=H.filter(function(hh){return/DESCRIPTION/i.test(hh.h)})[0];if(!DH||!DH.cl.length)return null;
   var dcl=DH.cl.slice().sort(function(a,b){return(b.x1-b.x)-(a.x1-a.x)})[0],dc=dcl.cells.slice().sort(function(a,b){return b.y-a.y}),rows=[],others=body.filter(function(c){return dcl.cells.indexOf(c)<0});
   /* v85 Rose 11/23 (Hennegan long form, D.S. Brown page): a supplier that centres the item code and quantity beside a description of several lines.
      Each cell left of the description (code, quantity, or a dash in an empty one) anchors one row; the description is cut once between two anchors, at its
      natural break: a new label (L02), or a sentence that ends before a capital. Used only when every row has such an anchor; otherwise the rule below. */
   var anc=bodyAll.filter(function(c){return c.x1<=DH.x+2&&!(dcl.cells.indexOf(c)>=0)}).sort(function(a,b){return b.y-a.y}),ay=[];
   anc.forEach(function(c){if(!ay.length||ay[ay.length-1]-c.y>3)ay.push(c.y)});
-  if(ay.length>=2&&dc.length>ay.length&&ay.every(function(y){return dc.some(function(c){return Math.abs(c.y-y)<=dc[0].h*2.2})})){
-    var cuts=[0];for(var ai=0;ai+1<ay.length;ai++){var A=ay[ai],B=ay[ai+1],best=-1,bs=-1;
+  if(ay.length>=1&&dc.length>ay.length&&ay.every(function(y){return dc.some(function(c){return Math.abs(c.y-y)<=dc[0].h*2.2})})){
+    var gps=[];for(var gi=1;gi<dc.length;gi++)gps.push(dc[gi-1].y-dc[gi].y);gps=gps.filter(function(g){return g>2});var gc={},mg=12,mc=0;gps.forEach(function(g){var r=Math.round(g);gc[r]=(gc[r]||0)+1+(gc[r-1]||0)*0+0});
+    Object.keys(gc).forEach(function(r){var c=(gc[r]||0)+(gc[+r+1]||0)+(gc[+r-1]||0);if(c>mc||c===mc&&+r<mg){mc=c;mg=+r}}); /* the most common line spacing in the description (within a point): the spacing inside one item */
+    var cuts=[0];for(var ai=0;ai+1<ay.length;ai++){var A=ay[ai],B=ay[ai+1],best=-1,bs=-1,big=[];
       for(var k=1;k<dc.length;k++){var c=dc[k],pv=dc[k-1];if(!(c.y<A-3&&c.y>B-3)||k<=cuts[cuts.length-1])continue;
-        var sc=(/^(?:[A-Z]?\d{1,3}[.)]|[A-Z]\d{2}\)|[\u2022\u00b7]|-\s)/.test(c.s)?4:0)+(/[.)]$/.test(pv.s)&&/^[A-Z(]/.test(c.s)?2:0)+(/^[A-Z]/.test(c.s)?1:0)+Math.min(1,(pv.y-c.y)/(c.h*4));
-        if(sc>bs){bs=sc;best=k}}
-      if(best<0){cuts=null;break}cuts.push(best)}
-    if(cuts){var rws=[];cuts.forEach(function(st,ci){var en=ci+1<cuts.length?cuts[ci+1]:dc.length,cs=dc.slice(st,en);rws.push({top:cs[0].y,bot:cs[cs.length-1].y,cells:cs.slice()})});
+        var sc=(/^(?:[A-Z]?\d{1,3}[.)]|[A-Z]\d{2}\)|[\u2022\u00b7]|-\s)/.test(c.s)?4:0)+(/[.)]$/.test(pv.s)&&/^[A-Z(]/.test(c.s)?2:0)+(/^[A-Z]/.test(c.s)?1:0)+(pv.y-c.y>=1.4*mg?3:0)+Math.min(1,(pv.y-c.y)/(c.h*4)); /* v86: a gap well above the usual spacing (AG Bridge Drain) */
+        if(pv.y-c.y>=1.4*mg)big.push(k);if(sc>bs){bs=sc;best=k}}
+      if(best<0){cuts=null;break}
+      /* v86: every line set off by a clearly bigger gap starts a row (a note between two items is a row of its own); with no such gap, the best single break */
+      if(big.length)big.forEach(function(k){cuts.push(k)});else cuts.push(best)}
+    if(cuts){ /* v86: lines before the first item or after the last one, set apart by a big gap, are a note row of their own (AG Bridge Drain prints its BOM note there) */
+      var hc=-1;for(var k2=1;k2<dc.length&&dc[k2].y>ay[0]-3;k2++)if(dc[k2-1].y>ay[0]+3&&dc[k2-1].y-dc[k2].y>=1.4*mg)hc=k2;
+      if(hc>0)cuts=[0,hc].concat(cuts.slice(1));
+      for(var k3=cuts[cuts.length-1]+1;k3<dc.length;k3++)if(dc[k3].y<ay[ay.length-1]-3&&dc[k3-1].y-dc[k3].y>=1.4*mg){cuts.push(k3);break}
+      var rws=[];cuts.forEach(function(st,ci){var en=ci+1<cuts.length?cuts[ci+1]:dc.length,cs=dc.slice(st,en);rws.push({top:cs[0].y,bot:cs[cs.length-1].y,cells:cs.slice()})});
       others.forEach(function(o){var b=rws[0],d=1e9;rws.forEach(function(R){var dd=o.y>R.top+3?o.y-R.top:o.y<R.bot-3?R.bot-o.y:0;if(dd<d){d=dd;b=R}});b.cells.push(o)});rows=rws;rows.anchored=true}}
   if(!rows.length)dc.forEach(function(c,k){var prev=dc[k-1],fresh=!prev||/^(?:[A-Z]?\d{1,3}[.)]|[\u2022\u00b7]|-\s)/.test(c.s)||prev.y-c.y>1.9*(c.h||11)||others.some(function(o){return Math.abs(o.y-c.y)<3});
     if(fresh)rows.push({top:c.y,bot:c.y,cells:[c]});else{var R=rows[rows.length-1];R.bot=c.y;R.cells.push(c)}});
   if(!rows.length)return null;
   if(!rows.anchored)others.forEach(function(o){if(rows.some(function(R){return R.cells.indexOf(o)>=0}))return;var best=rows[0],d=1e9;rows.forEach(function(R){var dd=o.y>R.top+3?o.y-R.top:o.y<R.bot-3?R.bot-o.y:0;if(dd<d){d=dd;best=R}});best.cells.push(o)});
   /* the house order of the columns: what the line is, then how many, then the price */
-  var qi=-1,di=H.indexOf(DH);H.forEach(function(hh,k){if(qi<0&&/^(QUANTITY|QTY)\b/.test(hh.h))qi=k});if(qi>=0&&qi<di){var Q=H.splice(qi,1)[0];H.splice(H.indexOf(DH)+1,0,Q)}
+  var qi=-1,di=H.indexOf(DH);H.forEach(function(hh,k){if(qi<0&&/^(QUANTITY|QTY)\b/i.test(hh.h))qi=k});if(qi>=0&&qi<di){var Q=H.splice(qi,1)[0];H.splice(H.indexOf(DH)+1,0,Q)}
   var cols=[],slots=[];H.forEach(function(hh){var cs=hh.cl.slice().sort(function(a,b){return a.x-b.x});cols.push({h:hh.h,n:Math.max(1,cs.length),d:hh===DH});if(!cs.length)slots.push(null);cs.forEach(function(c){slots.push(c)})});
-  return{from:h0,to:end,table:{cols:cols,rows:rows.map(function(R){return slots.map(function(sl){return sl?txt(R.cells.filter(function(c){return sl.cells.indexOf(c)>=0})):""})})}};
+  return{from:h0,to:end,head:lines[hd].carried?null:{text:lines[hd].text,cells:lines[hd].cells},table:{cols:cols,rows:rows.map(function(R){return slots.map(function(sl){return sl?txt(R.cells.filter(function(c){return sl.cells.indexOf(c)>=0})):""})})}};
 }
 /* The supplier's attached pages, in their own order: a table stays a table (see attTable), everything else is a paragraph. */
+/* v86: a sub-quote's blank order form (United Fiberglass / AG Bridge Drain prints it on every page): its labels, the "Terms Freight Terms Ship Via F.O.B. SalesPerson" row and the values under it, and a
+   column heading with no items under it. Her bids leave the form off; the project is already on the bid. */
+var FORM_LBL=/\b(?:Company|Street Address|Job Location|Quote#|City|State|Zip Code|Job Zip Code|Market Class|Class of Trade|Phone|Fax|Email|Rep Agency|Contractor Name|Project ID|Project Name|Job #|Attn|Estimating Department|Terms|Freight Terms|Ship Via|F\.O\.B\.|SalesPerson|Customer|Date)\b\s*:?/gi;
+function attFormLine(t){var rest=t.replace(FORM_LBL,"").replace(/[\s:]+/g,"");var k=(t.match(FORM_LBL)||[]).length;return rest.length===0&&(k>=2||k===1&&/^(?:Email|Phone|Fax)\s*:?$/i.test(t))}
+function attColHead(l){var t0=l.text;return l.yy!=null&&/\bDESCRIPTION\b/i.test(t0)&&/\b(QUANTITY|QTY|UNIT PRICE|PRICE|ITEM)\b/i.test(t0)&&t0.length<90&&(!/[a-z]{3}/.test(t0)||l.cells.length>=4&&l.cells.every(function(c){return String(c.s).trim().length<=16&&!/\d/.test(c.s)}))}
 function attText(pages,key){
-  var out=[];pages.forEach(function(P){var T=null;try{T=attTable(P.lines)}catch(e){T=null}P.lines.forEach(function(l,li){if(T&&li>=T.from&&li<=T.to){if(li===T.from)out.push({table:T.table});return}var t=l.text.replace(/\s+/g," ").replace(/\bPage \d+(?: of \d+)?\b/gi,"").trim();if(!t)return;
+  var out=[],carry=null;pages.forEach(function(P){var T=null,skip=-1;try{T=attTable(P.lines,carry)}catch(e){T=null}if(T&&T.head)carry=T.head;else if(!T)carry=null;P.lines.forEach(function(l,li){if(T&&li>=T.from&&li<=T.to){if(li===T.from)out.push({table:T.table});return}var t=l.text.replace(/\s+/g," ").replace(/\bPage \d+(?: of \d+)?\b/gi,"").trim();if(!t)return;
+    if(li===skip)return;
+    if(/^Terms\s+Freight Terms\s+Ship Via\s+F\.O\.B\.?\s+SalesPerson$/i.test(t)){skip=li+1;return} /* the form's terms row and the values printed under it */
+    if(attFormLine(t)||attColHead(l))return; /* a line of form labels only, or a column heading with no items under it */
     if(key&&t.indexOf(key)>=0&&t.length<120)return; /* the supplier's running header carries the quote number */
     t=t.replace(/\b\d{2}-\d{2}-\d{2}\s+IDOT\s+[\d ]+[A-Z0-9]*\s*[A-Za-z ]*?BR-?\d{5,}il\b/g,"").replace(/\bBR-?\d{5,}il\b/g,"").trim();if(!t)return;
-    if((t.match(/\b(?:Company|Street Address|Job Location|Quote#|City|State|Zip Code|Market Class|Phone|Fax|Email|Rep Agency|Attn|Estimating Department|Terms|Freight Terms|Ship Via|F\.O\.B\.|SalesPerson|Customer)\s*:/gi)||[]).length>=2)return; /* the sub-quote's blank form header */
+    if((t.match(/\b(?:Company|Street Address|Job Location|Quote#|City|State|Zip Code|Market Class|Class of Trade|Phone|Fax|Email|Rep Agency|Contractor Name|Project ID|Project Name|Job #|Attn|Estimating Department|Terms|Freight Terms|Ship Via|F\.O\.B\.|SalesPerson|Customer)\s*:/gi)||[]).length>=2||/^(?:City|State)\s+(?:Market Class|Job Zip Code)\b/.test(t))return; /* the sub-quote's blank form header */
     if(/\b(?:BR-?\s?\d{5,}|E\d{7,}-\d)\b.*(?:Associates|LTD|\.docm)|\bAssociates,?\s+LTD\b.*\b\d{5,}\b/i.test(t)&&t.length<140)return;
     t=t.replace(/^PROJECT\s*:\s*(?=\S)/i,""); /* v85: "PROJECT: Bridge Painting on SN" is the middle line of the project's name, never a header to drop */
     if(/\.docm\b|^Page \d+ of \d+$|^QUOTATION$|^(TO|DATE|ATTN|OWNER|COUNTY, STATE|PROJECT|FROM|BID DATE|ADDENDA RECEIVED|DATE OF|INFORMATION|PART OF|ITEM NO\.?)\s*(?::|$)|QUOTATION NO\s*:|^\s*[\d\s-]{6,}$|UNIT PRICE IN|U\.S\. CURRENCY|^(Total|Freight)$/i.test(t))return;
